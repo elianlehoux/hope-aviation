@@ -83,14 +83,50 @@ export default function ComponentsDevPage() {
       <Navbar />
       
       <main className="container mx-auto py-10 px-4 md:px-8 max-w-5xl">
-        <header className="space-y-4 mb-12">
-          <Title level="h1">Catálogo de Componentes</Title>
-          <p className="text-xl text-muted-foreground">
-            Biblioteca completa de elementos UI para Hope Aviation.
-          </p>
-          <Separator className="my-8" />
-        </header>
+        <header className="mb-12">
+        <h1 className="text-4xl font-bold tracking-tight text-slate-900">Hope Aviation - Component Library</h1>
+        <p className="mt-2 text-lg text-slate-600">Development environment for UI components and brand identity.</p>
+      </header>
 
+      <Section title="Actualized Brand Colors">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="space-y-2">
+            <div className="h-24 w-full rounded-lg bg-[#00263e] shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #00263e</div>
+            <div>
+              <p className="font-semibold text-[#00263e]">Primary (Deep Blue)</p>
+              <p className="text-sm text-slate-500">bg-[#00263e] / #00263e</p>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="h-24 w-full rounded-lg bg-[#ffffff] shadow-sm border border-slate-200 flex items-end p-2 text-xs text-[#00263e] italic">HEX #ffffff</div>
+            <div>
+              <p className="font-semibold text-[#00263e]">Secondary (White)</p>
+              <p className="text-sm text-slate-500">bg-[#ffffff] / #ffffff</p>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="h-24 w-full rounded-lg bg-[#1749ff] shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #1749ff</div>
+            <div>
+              <p className="font-semibold text-[#1749ff]">Accent (Vibrant Blue)</p>
+              <p className="text-sm text-slate-500">bg-[#1749ff] / #1749ff</p>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="h-24 w-full rounded-lg bg-[#ffaa00] shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #ffaa00</div>
+            <div>
+              <p className="font-semibold text-[#ffaa00]">Aviation Orange</p>
+              <p className="text-sm text-slate-500">bg-[#ffaa00] / #ffaa00</p>
+            </div>
+          </div>
+          <div className="space-y-2 text-[#00263e]">
+            <div className="h-24 w-full rounded-lg bg-[#00263e] shadow-sm border border-slate-200"></div>
+            <div>
+              <p className="font-semibold">Current Text Color</p>
+              <p className="text-sm text-slate-500">Should be Deep Blue</p>
+            </div>
+          </div>
+        </div>
+      </Section>
         {/* UI COMPONENTS SECTION */}
         <div className="space-y-4 mb-8">
           <Title level="h3" className="uppercase tracking-widest text-slate-400 text-xs font-bold">Base UI Components</Title>

@@ -12,17 +12,18 @@
   --color-popover: hsl(var(--popover));
   --color-popover-foreground: hsl(var(--popover-foreground));
   
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-  
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-primary: #00263e;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #ffffff;
+  --color-secondary-foreground: #00263e;
+  --color-accent: #1749ff;
+  --color-accent-foreground: #ffffff;
+  --color-brand-deep: #00263e;
+  --color-brand-vibrant: #1749ff;
+  --color-brand-orange: #ffaa00;
   
   --color-muted: hsl(var(--muted));
   --color-muted-foreground: hsl(var(--muted-foreground));
-  
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
   
   --color-destructive: hsl(var(--destructive));
   --color-destructive-foreground: hsl(var(--destructive-foreground));
@@ -65,24 +66,24 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --foreground: 203 100% 12%; /* #00263e - Deep Blue for text */
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 203 100% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --popover-foreground: 203 100% 12%;
+    --primary: 203 100% 12%; /* #00263e - Deep Blue Primary */
+    --primary-foreground: 0 0% 100%; /* White text on Deep Blue */
+    --secondary: 0 0% 100%; /* #ffffff - White Secondary */
+    --secondary-foreground: 203 100% 12%; /* Deep Blue text on White */
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 227 100% 55%; /* #1749ff - Vibrant Blue Accent */
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 203 100% 12% / 0.1; /* Transparent Deep Blue border */
+    --input: 214.3 31.8% 91.4%;
+    --ring: 227 100% 55%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
