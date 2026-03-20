@@ -61,3 +61,22 @@ To maintain maximum order, any new code must be placed within its designated dir
 
 ## 8. Project Context
 **Hope Aviation** is a virtual campus platform for aviation training and education. The root `/` serves a public-facing landing page. The `/campus` route group is the authenticated product area where students access courses, schedules, grades, resources, and community features. All campus-related components should live under `components/features/campus/` and campus-specific types under `types/`.
+
+## 9. UI & Design System (Custom) - PREMIUM APPLE STYLE
+To maintain the high-end, professional branding of Hope Aviation, all UI development **MUST** strictly adhere to the established "Premium Apple-style" design system:
+
+- **CRITICAL - REUSE CUSTOM COMPONENTS**: Never recreate base UI elements. Always use the refined versions in `components/ui/` and `components/shared/` (e.g., `Button`, `Badge`, `Navbar`, `Table`, `Modal`).
+- **Aesthetics & Effects**:
+  - Use `backdrop-blur-xl` for navigation bars, modals, and overlays to create a sleek, translucent effect.
+  - Borders should be minimal and subtle (typically `border-slate-100`).
+  - Backgrounds for containers should be clean (`bg-white` or `bg-slate-50/50`).
+- **Typography**:
+  - Use `font-semibold` or `font-bold` with `tracking-tight` for a modern, compact look.
+  - Headers should use the `Title` component with appropriate hierarchy.
+- **Color Palette Consistency**:
+  - **Primary**: Brand Deep Blue (`#00263e`).
+  - **Secondary**: Soft Vibrant Blue tint (`bg-accent/10`, `text-accent`, `border-accent/20`).
+  - **Accent**: Brand Vibrant Blue (`#1749ff`).
+  - **Highlights**: Aviation Orange (`#ffaa00`).
+- **Airy Layouts**: Ensure generous vertical padding (`py-4` to `py-10`) to allow content to "breathe" and maintain a premium feel.
+- **Reference**: Always refer to the `/componentsdev` page to see the latest, correct implementation of every component and style.
