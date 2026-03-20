@@ -9,12 +9,12 @@ export interface IconButtonProps extends ButtonProps {
 }
 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({ icon, className, children, ...props }, ref) => {
+  ({ icon, className, children, size = "icon", ...props }, ref) => {
     return (
       <Button
         ref={ref}
-        size="icon"
-        className={cn("h-10 w-10 p-0", className)}
+        size={size}
+        className={cn(className)}
         {...props}
       >
         {icon}

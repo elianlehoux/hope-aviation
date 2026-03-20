@@ -29,10 +29,20 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Title } from "@/components/ui/title";
 import { IconButton } from "@/components/ui/icon-button";
 import { Navbar } from "@/components/shared/navbar";
-import { Modal } from "@/components/shared/modal";
+import {
+  Modal,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/shared/modal";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/shared/table";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Bell, Mail, Settings, User, Plus, Trash, Edit, Check } from "lucide-react";
+import { CalendarIcon, Bell, Mail, Settings, User, Plus, Trash, Edit, Check } from "lucide-react";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Select,
   SelectContent,
@@ -41,14 +51,30 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export default function ComponentsDevPage() {
   const [mounted, setMounted] = React.useState(false);
@@ -81,52 +107,52 @@ export default function ComponentsDevPage() {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      
+
       <main className="container mx-auto py-10 px-4 md:px-8 max-w-5xl">
         <header className="mb-12">
-        <h1 className="text-4xl font-bold tracking-tight text-slate-900">Hope Aviation - Component Library</h1>
-        <p className="mt-2 text-lg text-slate-600">Development environment for UI components and brand identity.</p>
-      </header>
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900">Hope Aviation - Component Library</h1>
+          <p className="mt-2 text-lg text-slate-600">Development environment for UI components and brand identity.</p>
+        </header>
 
-      <Section title="Actualized Brand Colors">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          <div className="space-y-2">
-            <div className="h-24 w-full rounded-lg bg-[#00263e] shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #00263e</div>
-            <div>
-              <p className="font-semibold text-[#00263e]">Primary (Deep Blue)</p>
-              <p className="text-sm text-slate-500">bg-[#00263e] / #00263e</p>
+        <Section title="Actualized Brand Colors">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="space-y-2">
+              <div className="h-24 w-full rounded-lg bg-[#00263e] shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #00263e</div>
+              <div>
+                <p className="font-semibold text-[#00263e]">Primary (Deep Blue)</p>
+                <p className="text-sm text-slate-500">bg-[#00263e] / #00263e</p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="h-24 w-full rounded-lg bg-[#ffffff] shadow-sm border border-slate-200 flex items-end p-2 text-xs text-[#00263e] italic">HEX #ffffff</div>
+              <div>
+                <p className="font-semibold text-[#00263e]">Secondary (White)</p>
+                <p className="text-sm text-slate-500">bg-[#ffffff] / #ffffff</p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="h-24 w-full rounded-lg bg-[#1749ff] shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #1749ff</div>
+              <div>
+                <p className="font-semibold text-[#1749ff]">Accent (Vibrant Blue)</p>
+                <p className="text-sm text-slate-500">bg-[#1749ff] / #1749ff</p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="h-24 w-full rounded-lg bg-[#ffaa00] shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #ffaa00</div>
+              <div>
+                <p className="font-semibold text-[#ffaa00]">Aviation Orange</p>
+                <p className="text-sm text-slate-500">bg-[#ffaa00] / #ffaa00</p>
+              </div>
+            </div>
+            <div className="space-y-2 text-[#00263e]">
+              <div className="h-24 w-full rounded-lg bg-[#00263e] shadow-sm border border-slate-200"></div>
+              <div>
+                <p className="font-semibold">Current Text Color</p>
+                <p className="text-sm text-slate-500">Should be Deep Blue</p>
+              </div>
             </div>
           </div>
-          <div className="space-y-2">
-            <div className="h-24 w-full rounded-lg bg-[#ffffff] shadow-sm border border-slate-200 flex items-end p-2 text-xs text-[#00263e] italic">HEX #ffffff</div>
-            <div>
-              <p className="font-semibold text-[#00263e]">Secondary (White)</p>
-              <p className="text-sm text-slate-500">bg-[#ffffff] / #ffffff</p>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <div className="h-24 w-full rounded-lg bg-[#1749ff] shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #1749ff</div>
-            <div>
-              <p className="font-semibold text-[#1749ff]">Accent (Vibrant Blue)</p>
-              <p className="text-sm text-slate-500">bg-[#1749ff] / #1749ff</p>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <div className="h-24 w-full rounded-lg bg-[#ffaa00] shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #ffaa00</div>
-            <div>
-              <p className="font-semibold text-[#ffaa00]">Aviation Orange</p>
-              <p className="text-sm text-slate-500">bg-[#ffaa00] / #ffaa00</p>
-            </div>
-          </div>
-          <div className="space-y-2 text-[#00263e]">
-            <div className="h-24 w-full rounded-lg bg-[#00263e] shadow-sm border border-slate-200"></div>
-            <div>
-              <p className="font-semibold">Current Text Color</p>
-              <p className="text-sm text-slate-500">Should be Deep Blue</p>
-            </div>
-          </div>
-        </div>
-      </Section>
+        </Section>
         {/* UI COMPONENTS SECTION */}
         <div className="space-y-4 mb-8">
           <Title level="h3" className="uppercase tracking-widest text-slate-400 text-xs font-bold">Base UI Components</Title>
@@ -205,25 +231,80 @@ export default function ComponentsDevPage() {
           </div>
         </Section>
 
-        <Section title="Date Picker" description="Calendario interactivo dentro de un Popover.">
+        <Section title="Dropdown Menu" description="Menú desplegable con disparadores personalizados.">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Opciones de Vuelo</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+              <DropdownMenuItem>Programar Clase</DropdownMenuItem>
+              <DropdownMenuItem>Ver Plan de Vuelo</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-destructive">Cancelar Turno</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </Section>
+
+        <Section title="Pagination" description="Navegación entre múltiples páginas de resultados.">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious href="#" />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">1</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#" isActive>2</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">3</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext href="#" />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </Section>
+
+        <Section title="Sheet" description="Panel lateral deslizante para contenido secundario.">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline">Ver Notificaciones</Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Notificaciones</SheetTitle>
+                <SheetDescription>
+                  Revisa tus mensajes y alertas de vuelo recientes.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="py-4 space-y-4">
+                <div className="flex gap-3 text-sm border-b pb-4">
+                  <div className="size-2 rounded-full bg-accent mt-1" />
+                  <p>Nuevo material de estudio en Navegación I.</p>
+                </div>
+                <div className="flex gap-3 text-sm">
+                  <div className="size-2 rounded-full bg-accent mt-1" />
+                  <p>Tu examen ha sido calificado: 9.5</p>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </Section>
+
+        <Section title="Date Picker" description="Componente reutilizable de calendario estilo Apple.">
           <div className="max-w-sm space-y-2">
             <Label>Fecha de Inscripción</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full justify-start text-left font-normal">
-                  <Mail className="mr-2 size-4" />
-                  {date ? date.toLocaleDateString() : "Seleccionar fecha"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
+            <DatePicker
+              date={date}
+              setDate={setDate}
+              placeholder="Seleccionar fecha de vuelo"
+            />
           </div>
         </Section>
 
@@ -373,8 +454,8 @@ export default function ComponentsDevPage() {
         </Section>
 
         <Section title="Modal (Shared wrapper)" description="Componente reutilizable para diálogos y ventanas emergentes.">
-          <Modal 
-            title="Suscripción Premium" 
+          <Modal
+            title="Suscripción Premium"
             description="Obtén acceso ilimitado a todos los simuladores de vuelo."
             trigger={<Button>Abrir Suscripción</Button>}
           >
@@ -386,7 +467,7 @@ export default function ComponentsDevPage() {
         </Section>
 
         <Section title="Table (Shared)" description="Presentación estructurada de datos tabulares.">
-          <div className="rounded-md border">
+          <div className="rounded-2xl border border-slate-100 overflow-hidden bg-white shadow-sm">
             <Table>
               <TableCaption>Historial de Calificaciones</TableCaption>
               <TableHeader>
@@ -399,13 +480,13 @@ export default function ComponentsDevPage() {
               </TableHeader>
               <TableBody>
                 <TableRow>
-                  <TableCell className="font-medium">Aerodinámica</TableCell>
+                  <TableCell>Aerodinámica</TableCell>
                   <TableCell>Capt. Smith</TableCell>
                   <TableCell>12/03/26</TableCell>
                   <TableCell className="text-right font-bold text-green-600">9.5</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="font-medium">Comunicaciones</TableCell>
+                  <TableCell>Comunicaciones</TableCell>
                   <TableCell>Instr. Doe</TableCell>
                   <TableCell>08/03/26</TableCell>
                   <TableCell className="text-right font-bold text-green-600">8.0</TableCell>

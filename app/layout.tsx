@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   title: "Hope Aviation",
   description:
     "Hope Aviation — Virtual campus and aviation training platform.",
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 const inter = Inter({
@@ -39,7 +42,7 @@ export default function RootLayout({
         >
           <TooltipProvider>
             {children}
-            <Toaster position="top-right" richColors />
+            <Toaster position="top-right" />
           </TooltipProvider>
         </ThemeProvider>
       </body>
