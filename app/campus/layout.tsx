@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import { createClient } from "@/lib/supabase/server";
+import { signOut } from "./actions";
 
 /**
- * Campus Layout
- * Persistent shell for all /campus/* routes.
- * Includes a sidebar navigation and a top bar.
+ * Campus layout — shell for all /campus/* routes.
+ * Access is enforced globally via Supabase session refresh in `proxy.ts`.
  */
 export default function CampusLayout({
   children,
@@ -12,22 +14,16 @@ export default function CampusLayout({
 }>) {
   const navLinks = [
     { href: "/campus", label: "Dashboard" },
-    { href: "/campus/courses", label: "Courses" },
-    { href: "/campus/schedule", label: "Schedule" },
-    { href: "/campus/grades", label: "Grades" },
-    { href: "/campus/resources", label: "Resources" },
-    { href: "/campus/community", label: "Community" },
-    { href: "/campus/settings", label: "Settings" },
+    { href: "/campus/students", label: "Students" },
+    { href: "/campus/professors", label: "Professors" },
+    { href: "/campus/admin", label: "Admin" },
   ];
 
   return (
     <div className="min-h-screen flex bg-background text-foreground">
-      {/* ── Sidebar ── */}
       <aside className="hidden md:flex w-64 flex-col border-r border-border bg-card">
         <div className="flex items-center gap-2 px-6 py-5 border-b border-border">
-          <span className="text-lg font-bold tracking-tight">
-            Hope Campus
-          </span>
+          <span className="text-lg font-bold tracking-tight">Hope Campus</span>
         </div>
 
         <nav className="flex-1 flex flex-col gap-1 px-3 py-4">
@@ -52,24 +48,60 @@ export default function CampusLayout({
         </div>
       </aside>
 
-      {/* ── Main Content Area ── */}
       <div className="flex-1 flex flex-col">
-        {/* Top Bar */}
-        <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6 py-4">
-          <h2 className="text-sm font-semibold text-muted-foreground md:hidden">
-            Hope Campus
-          </h2>
-          <div className="ml-auto text-sm text-muted-foreground">
-            {/* Placeholder for user avatar / auth controls */}
-            <span className="rounded-full bg-muted px-3 py-1.5 text-xs font-medium">
-              Student
-            </span>
-          </div>
-        </header>
+        <Suspense fallback={<CampusHeaderFallback />}>
+          <CampusHeader />
+        </Suspense>
 
-        {/* Page Content */}
-        <main className="flex-1 p-6 md:p-8">{children}</main>
+        <main className="flex-1 p-6 md:p-8">
+          <Suspense
+            fallback={
+              <div className="text-sm text-muted-foreground">Loading…</div>
+            }
+          >
+            {children}
+          </Suspense>
+        </main>
       </div>
     </div>
+  );
+}
+
+function CampusHeaderFallback() {
+  return (
+    <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6 py-4">
+      <h2 className="text-sm font-semibold text-muted-foreground md:hidden">
+        Hope Campus
+      </h2>
+      <div className="ml-auto h-8 w-24 animate-pulse rounded-full bg-muted" />
+    </header>
+  );
+}
+
+async function CampusHeader() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return (
+    <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6 py-4">
+      <h2 className="text-sm font-semibold text-muted-foreground md:hidden">
+        Hope Campus
+      </h2>
+      <div className="ml-auto flex items-center gap-3 text-sm text-muted-foreground">
+        <span className="hidden sm:inline max-w-[200px] truncate text-xs">
+          {user?.email ?? "Signed in"}
+        </span>
+        <form action={signOut}>
+          <button
+            type="submit"
+            className="rounded-full border border-border bg-muted px-3 py-1.5 text-xs font-medium hover:bg-accent transition-colors"
+          >
+            Sign out
+          </button>
+        </form>
+      </div>
+    </header>
   );
 }

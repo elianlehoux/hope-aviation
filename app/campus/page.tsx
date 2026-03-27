@@ -1,66 +1,50 @@
 import Link from "next/link";
 
 /**
- * Campus Dashboard — Main hub after entering the virtual campus.
- * Shows a welcome message and quick-access cards to key sections.
+ * Campus hub — links into role-oriented areas (students, professors, admin).
+ * Fine-grained authorization by `roles` / `roles_users` can be added later.
  */
 export default function CampusDashboardPage() {
-  const quickLinks = [
+  const areas = [
     {
-      title: "My Courses",
-      description: "Continue where you left off or explore new modules.",
-      href: "/campus/courses",
+      title: "Students",
+      description:
+        "Enrollments, courses, subjects, classes, exams, and personal progress (profiles, enrollments, lesson_progress, exam_attempts).",
+      href: "/campus/students",
     },
     {
-      title: "Schedule",
-      description: "View upcoming classes, exams, and live sessions.",
-      href: "/campus/schedule",
+      title: "Professors",
+      description:
+        "Teaching workspace for course content, classes, exams, and rosters (courses, subjects, classes, exams, enrollments).",
+      href: "/campus/professors",
     },
     {
-      title: "Grades",
-      description: "Track your performance across all enrolled courses.",
-      href: "/campus/grades",
-    },
-    {
-      title: "Resources",
-      description: "Access study materials, manuals, and reference docs.",
-      href: "/campus/resources",
-    },
-    {
-      title: "Community",
-      description: "Join discussions with fellow students and instructors.",
-      href: "/campus/community",
-    },
-    {
-      title: "Settings",
-      description: "Manage your profile, preferences, and notifications.",
-      href: "/campus/settings",
+      title: "Admin",
+      description:
+        "Platform management: users, roles, catalog, and assessments (profiles, roles, roles_users, courses, exams).",
+      href: "/campus/admin",
     },
   ];
 
   return (
     <div className="space-y-8">
-      {/* Welcome */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">
-          Welcome to your Campus
-        </h1>
+        <h1 className="text-3xl font-bold tracking-tight">Campus</h1>
         <p className="mt-2 text-muted-foreground">
-          Pick up where you left off or explore what&apos;s new.
+          Choose an area. Route groups mirror your PostgreSQL domain model.
         </p>
       </div>
 
-      {/* Quick-Access Grid */}
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {quickLinks.map((item) => (
+        {areas.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             className="group rounded-xl border border-border bg-card p-6 shadow-sm hover:shadow-md hover:border-primary/30 transition-all"
           >
-            <h3 className="text-lg font-semibold group-hover:text-primary transition-colors">
+            <h2 className="text-lg font-semibold group-hover:text-primary transition-colors">
               {item.title}
-            </h3>
+            </h2>
             <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
               {item.description}
             </p>
