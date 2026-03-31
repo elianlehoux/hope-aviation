@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
-import { signOut } from "./actions";
+import { LogoutButton } from "@/components/auth/logout-button";
 
 /**
  * Campus layout — shell for all /campus/* routes.
@@ -93,14 +93,7 @@ async function CampusHeader() {
         <span className="hidden sm:inline max-w-[200px] truncate text-xs">
           {user?.email ?? "Signed in"}
         </span>
-        <form action={signOut}>
-          <button
-            type="submit"
-            className="rounded-full border border-border bg-muted px-3 py-1.5 text-xs font-medium hover:bg-accent transition-colors"
-          >
-            Sign out
-          </button>
-        </form>
+        <LogoutButton />
       </div>
     </header>
   );

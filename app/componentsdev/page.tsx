@@ -31,17 +31,9 @@ import { IconButton } from "@/components/ui/icon-button";
 import { Navbar } from "@/components/shared/navbar";
 import {
   Modal,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
 } from "@/components/shared/modal";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/shared/table";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, Bell, Mail, Settings, User, Plus, Trash, Edit, Check } from "lucide-react";
+import { Bell, Settings, Plus, Trash, Edit, Check } from "lucide-react";
 import { DatePicker } from "@/components/ui/date-picker";
 import {
   Select,

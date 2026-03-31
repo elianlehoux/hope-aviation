@@ -58,11 +58,20 @@ To maintain maximum order, any new code must be placed within its designated dir
   - `utils/`: Generic utility functions (e.g., Tailwind merge, formatting dates).
 - **`services/`**: Third-party API wrappers or complex standalone business logic decoupled from React.
 - **`types/`**: Global TypeScript definitions and interfaces.
+- **`supabase/`**: SQL migrations and database documentation (`migrations/`, `README.md`).
 
 ## 8. Project Context
 **Hope Aviation** is a virtual campus platform for aviation training and education. The root `/` serves a public-facing landing page. The `/campus` route group is the authenticated product area where students access courses, schedules, grades, resources, and community features. All campus-related components should live under `components/features/campus/` and campus-specific types under `types/`.
 
-## 9. UI & Design System (Custom) - PREMIUM APPLE STYLE
+## 9. Database & backend (Supabase)
+
+- **Migrations**: The canonical schema lives in `supabase/migrations/`. Tables use **JSONB** for multi-language strings (`title`, `description`, `content`) with keys such as `es` and `en`.
+- **Auth & profiles**: `profiles.id` references `auth.users.id`. A trigger on `auth.users` inserts a matching `profiles` row. Dynamic roles use `roles` + `roles_users` (seed slugs: `admin`, `instructor`, `student`).
+- **RLS**: Row Level Security is enabled on all `public` tables. Policies use `public.has_role(auth.uid(), '<slug>')` for staff checks. Do not rely on the client to enforce permissions; keep using validated server actions and API routes.
+- **Types**: `types/database.ts` mirrors the schema for application code. After remote schema changes, regenerate types with the Supabase CLI (`supabase gen types typescript --linked`) and align exports as needed.
+- **Agent context**: For database and backend work, follow `AGENTS.md` and `.cursor/rules/hope-aviation-database-backend.mdc`.
+
+## 10. UI & Design System (Custom) - PREMIUM APPLE STYLE
 To maintain the high-end, professional branding of Hope Aviation, all UI development **MUST** strictly adhere to the established "Premium Apple-style" design system:
 
 - **CRITICAL - REUSE CUSTOM COMPONENTS**: Never recreate base UI elements. Always use the refined versions in `components/ui/` and `components/shared/` (e.g., `Button`, `Badge`, `Navbar`, `Table`, `Modal`).
@@ -80,3 +89,4 @@ To maintain the high-end, professional branding of Hope Aviation, all UI develop
   - **Highlights**: Aviation Orange (`#ffaa00`).
 - **Airy Layouts**: Ensure generous vertical padding (`py-4` to `py-10`) to allow content to "breathe" and maintain a premium feel.
 - **Reference**: Always refer to the `/componentsdev` page to see the latest, correct implementation of every component and style.
+

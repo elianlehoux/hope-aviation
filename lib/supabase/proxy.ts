@@ -6,6 +6,12 @@ export async function updateSession(request: NextRequest) {
     request,
   });
 
+  // Never redirect or refresh sessions for API routes.
+  // API endpoints should return JSON status codes, not HTML redirects.
+  if (request.nextUrl.pathname.startsWith("/api")) {
+    return supabaseResponse;
+  }
+
   // With Fluid compute, don't put this client in a global environment
   // variable. Always create a new one on each request.
   const supabase = createServerClient(

@@ -1,0 +1,33 @@
+---
+description: Hope Aviation — Supabase Postgres schema, RLS, and Next.js backend patterns
+globs: supabase/**/*.sql,actions/**/*.ts,app/api/**/*.ts,lib/supabase/**/*.ts,types/database.ts
+alwaysApply: false
+---
+
+# Database & backend (Hope Aviation)
+
+## Source of truth
+
+- **Schema**: `supabase/migrations/*.sql` — apply migrations to the linked Supabase project (`supabase db push` or dashboard SQL).
+- **RLS**: Enabled on all `public` tables. Authorization uses `public.has_role(auth.uid(), 'admin' | 'instructor' | 'student')` (SECURITY DEFINER). Never bypass RLS from the browser; use the **service role** only in trusted server-only code when required.
+- **Types**: `types/database.ts` mirrors tables; prefer `supabase gen types typescript --linked` when the remote schema changes.
+
+## Data model (short)
+
+- **Auth**: `profiles.id` = `auth.users.id`. New user rows are created by `public.handle_new_user` on `auth.users` insert.
+- **Roles**: `roles` + `roles_users` (many-to-many). Seed slugs: `admin`, `instructor`, `student`.
+- **i18n**: `title`, `description`, `content` JSONB keys like `{ "es": "...", "en": "..." }`.
+- **Enums**: `courses.status` ∈ `draft|published|archived`; `enrollments.status` ∈ `active|completed|cancelled`.
+
+## Backend rules
+
+- Validate and type all inputs (Zod or similar) before writes.
+- Use the **server** Supabase client (`lib/supabase/server.ts`) for session-scoped queries; reserve `service_role` for admin scripts or exceptional server routes.
+- Do not leak Supabase errors or stack traces to the client; return safe messages.
+- Add indexes when introducing new filter/sort paths; avoid N+1 (batch joins or nested selects).
+
+## Changing the schema
+
+1. Add a new timestamped file under `supabase/migrations/`.
+2. Keep RLS policies updated when adding tables or columns.
+3. Regenerate TypeScript types after deploy.

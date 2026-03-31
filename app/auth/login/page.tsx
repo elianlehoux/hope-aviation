@@ -21,18 +21,25 @@ function LoginForm() {
     e.preventDefault();
     setLoading(true);
     setMessage(null);
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    setLoading(false);
-    if (error) {
-      setMessage(error.message);
-      return;
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) {
+        setMessage("Could not sign you in. Try again.");
+        return;
+      }
+
+      router.push("/campus");
+      router.refresh();
+    } catch {
+      setMessage("Could not sign you in. Try again.");
+    } finally {
+      setLoading(false);
     }
-    router.push("/campus");
-    router.refresh();
   }
 
   async function handleGoogleLogin() {
@@ -44,7 +51,7 @@ function LoginForm() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${origin}/auth/callback?next=/campus`,
+        redirectTo: `${origin}/api/auth/callback?next=/campus`,
       },
     });
     setLoading(false);
