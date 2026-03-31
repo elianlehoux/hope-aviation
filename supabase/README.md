@@ -7,6 +7,17 @@ This folder holds **SQL migrations** for the production PostgreSQL database (hos
 | Path | Purpose |
 |------|---------|
 | `migrations/` | Ordered SQL migrations (schema, RLS, triggers, seeds). |
+| `config.toml` | Local Supabase stack (ports, auth); required for `supabase start`. |
+
+## Local development
+
+Requires **Docker** and the [Supabase CLI](https://supabase.com/docs/guides/cli). From the repo root:
+
+- **`npm run db:start`** — start the local stack (Postgres, Auth, Studio, etc.).
+- **`npm run dev:local`** — start the local stack, then `next dev`; when you stop the dev server (e.g. Ctrl+C), the script runs `supabase stop` so containers shut down too.
+- **`npm run dev`** — Next.js only; use when Supabase is already running or you target a remote project via env.
+
+Other useful scripts: `db:stop`, `db:status`, `db:reset`, `db:push`, `db:diff`, `db:migration:new`, `db:types:linked` / `db:types:local` (see `package.json`).
 
 ## Apply migrations
 
@@ -19,8 +30,10 @@ This folder holds **SQL migrations** for the production PostgreSQL database (hos
 After the remote schema matches these migrations:
 
 ```bash
-supabase gen types typescript --linked > types/supabase.generated.ts
+npm run db:types:linked
 ```
+
+(equivalent to `supabase gen types typescript --linked > types/supabase.generated.ts`.)
 
 Then merge or re-export from `types/database.ts` as needed.
 

@@ -36,6 +36,7 @@ export interface Profile {
   updated_at: string | null;
 }
 
+/** Join table `roles_users`: at most one row per `user_id` (enforced in DB). */
 export interface RoleUser {
   id: string;
   user_id: string;
