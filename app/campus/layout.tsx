@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { LogoutButton } from "@/components/auth/logout-button";
+import { CampusMobileNav } from "@/components/features/campus/CampusMobileNav";
 
 /**
  * Campus layout — shell for all /campus/* routes.
@@ -13,17 +14,22 @@ export default function CampusLayout({
   children: React.ReactNode;
 }>) {
   const navLinks = [
-    { href: "/campus", label: "Dashboard" },
-    { href: "/campus/students", label: "Students" },
-    { href: "/campus/professors", label: "Professors" },
-    { href: "/campus/admin", label: "Admin" },
+    { href: "/campus", label: "Home" },
+    { href: "/campus/admin/users", label: "Users" },
+    { href: "/campus/admin/roles", label: "Roles" },
   ];
 
   return (
     <div className="min-h-screen flex bg-background text-foreground">
-      <aside className="hidden md:flex w-64 flex-col border-r border-border bg-card">
-        <div className="flex items-center gap-2 px-6 py-5 border-b border-border">
-          <span className="text-lg font-bold tracking-tight">Hope Campus</span>
+      <aside className="hidden xl:flex w-64 flex-col border-r border-border bg-card">
+        <div className="flex items-center px-6 h-20 border-b border-border">
+          <Link href="/" className="group flex items-center w-fit">
+            <img 
+              src="/logos/Hope Black.svg" 
+              alt="Hope Aviation" 
+              className="h-20 w-auto drop-shadow-sm scale-[1.5] origin-left transition-transform duration-300 group-hover:scale-[1.55]" 
+            />
+          </Link>
         </div>
 
         <nav className="flex-1 flex flex-col gap-1 px-3 py-4">
@@ -49,8 +55,8 @@ export default function CampusLayout({
       </aside>
 
       <div className="flex-1 flex flex-col">
-        <Suspense fallback={<CampusHeaderFallback />}>
-          <CampusHeader />
+        <Suspense fallback={<CampusHeaderFallback navLinks={navLinks} />}>
+          <CampusHeader navLinks={navLinks} />
         </Suspense>
 
         <main className="flex-1 p-6 md:p-8">
@@ -67,28 +73,28 @@ export default function CampusLayout({
   );
 }
 
-function CampusHeaderFallback() {
+function CampusHeaderFallback({ navLinks }: { navLinks: { href: string; label: string }[] }) {
   return (
-    <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6 py-4">
-      <h2 className="text-sm font-semibold text-muted-foreground md:hidden">
-        Hope Campus
-      </h2>
+    <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6">
+      <div className="xl:hidden">
+        <CampusMobileNav navLinks={navLinks} />
+      </div>
       <div className="ml-auto h-8 w-24 animate-pulse rounded-full bg-muted" />
     </header>
   );
 }
 
-async function CampusHeader() {
+async function CampusHeader({ navLinks }: { navLinks: { href: string; label: string }[] }) {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   return (
-    <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6 py-4">
-      <h2 className="text-sm font-semibold text-muted-foreground md:hidden">
-        Hope Campus
-      </h2>
+    <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6">
+      <div className="xl:hidden">
+        <CampusMobileNav navLinks={navLinks} />
+      </div>
       <div className="ml-auto flex items-center gap-3 text-sm text-muted-foreground">
         <span className="hidden sm:inline max-w-[200px] truncate text-xs">
           {user?.email ?? "Signed in"}
