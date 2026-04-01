@@ -199,6 +199,7 @@ export type Database = {
           description: Json | null
           id: string
           max_attempts: number
+          order_index: number | null
           passing_score: number
           subject_id: string
           time_limit_minutes: number | null
@@ -210,6 +211,7 @@ export type Database = {
           description?: Json | null
           id?: string
           max_attempts?: number
+          order_index?: number | null
           passing_score?: number
           subject_id: string
           time_limit_minutes?: number | null
@@ -221,6 +223,7 @@ export type Database = {
           description?: Json | null
           id?: string
           max_attempts?: number
+          order_index?: number | null
           passing_score?: number
           subject_id?: string
           time_limit_minutes?: number | null
@@ -485,7 +488,22 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      options_public: {
+        Row: {
+          content: Json
+          id: string
+          question_id: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "options_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       admin_set_user_role: {

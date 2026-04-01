@@ -84,6 +84,7 @@ export interface Exam {
   passing_score: number;
   time_limit_minutes: number | null;
   max_attempts: number;
+  order_index: number | null;
   created_at: string;
 }
 

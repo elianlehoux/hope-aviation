@@ -5,6 +5,42 @@ import type { ApiErrorBody } from "@/lib/api/json";
 
 const STAFF_SLUGS = ["admin", "instructor"] as const;
 
+async function roleSlugsForUser(
+  supabase: SupabaseClient,
+  userId: string,
+): Promise<{ ok: true; slugs: Set<string> } | { ok: false }> {
+  const { data: rows, error } = await supabase
+    .from("roles_users")
+    .select("roles(slug)")
+    .eq("user_id", userId);
+
+  if (error) {
+    return { ok: false };
+  }
+
+  const slugs = new Set(
+    (rows ?? [])
+      .map((r) => {
+        const rel = r.roles as { slug: string } | { slug: string }[] | null;
+        if (Array.isArray(rel)) return rel[0]?.slug;
+        return rel?.slug;
+      })
+      .filter((s): s is string => Boolean(s)),
+  );
+
+  return { ok: true, slugs };
+}
+
+/** True if the user has admin or instructor role. False if roles could not be loaded. */
+export async function userIsStaff(
+  supabase: SupabaseClient,
+  userId: string,
+): Promise<boolean> {
+  const r = await roleSlugsForUser(supabase, userId);
+  if (!r.ok) return false;
+  return STAFF_SLUGS.some((s) => r.slugs.has(s));
+}
+
 export type SessionResult =
   | { ok: true; user: User; supabase: SupabaseClient }
   | { ok: false; response: NextResponse<ApiErrorBody> };
@@ -40,29 +76,15 @@ export async function requireStaff(
   | { ok: true }
   | { ok: false; response: NextResponse<ApiErrorBody> }
 > {
-  const { data: rows, error } = await supabase
-    .from("roles_users")
-    .select("roles(slug)")
-    .eq("user_id", userId);
-
-  if (error) {
+  const r = await roleSlugsForUser(supabase, userId);
+  if (!r.ok) {
     return {
       ok: false,
       response: jsonError("forbidden", "Could not verify your role.", 403),
     };
   }
 
-  const slugs = new Set(
-    (rows ?? [])
-      .map((r) => {
-        const rel = r.roles as { slug: string } | { slug: string }[] | null;
-        if (Array.isArray(rel)) return rel[0]?.slug;
-        return rel?.slug;
-      })
-      .filter((s): s is string => Boolean(s)),
-  );
-
-  const isStaff = STAFF_SLUGS.some((s) => slugs.has(s));
+  const isStaff = STAFF_SLUGS.some((s) => r.slugs.has(s));
   if (!isStaff) {
     return {
       ok: false,
