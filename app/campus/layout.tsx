@@ -55,7 +55,7 @@ export default function CampusLayout({
       </aside>
 
       <div className="flex-1 flex flex-col">
-        <Suspense fallback={<CampusHeaderFallback navLinks={navLinks} />}>
+        <Suspense fallback={<CampusHeaderFallback />}>
           <CampusHeader navLinks={navLinks} />
         </Suspense>
 
@@ -73,14 +73,21 @@ export default function CampusLayout({
   );
 }
 
-function CampusHeaderFallback({ navLinks }: { navLinks: { href: string; label: string }[] }) {
+/** Must not render client hooks like `usePathname` — see Next.js cacheComponents + Suspense fallback rules. */
+function CampusHeaderFallback() {
   return (
     <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6">
-      <div className="xl:hidden">
-        <CampusMobileNav navLinks={navLinks} />
-      </div>
+      <MobileNavSlotSkeleton />
       <div className="ml-auto h-8 w-24 animate-pulse rounded-full bg-muted" />
     </header>
+  );
+}
+
+function MobileNavSlotSkeleton() {
+  return (
+    <div className="xl:hidden flex items-center" aria-hidden>
+      <div className="mr-3 h-10 w-10 animate-pulse rounded-md bg-muted" />
+    </div>
   );
 }
 
@@ -93,7 +100,9 @@ async function CampusHeader({ navLinks }: { navLinks: { href: string; label: str
   return (
     <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6">
       <div className="xl:hidden">
-        <CampusMobileNav navLinks={navLinks} />
+        <Suspense fallback={<MobileNavSlotSkeleton />}>
+          <CampusMobileNav navLinks={navLinks} />
+        </Suspense>
       </div>
       <div className="ml-auto flex items-center gap-3 text-sm text-muted-foreground">
         <span className="hidden sm:inline max-w-[200px] truncate text-xs">

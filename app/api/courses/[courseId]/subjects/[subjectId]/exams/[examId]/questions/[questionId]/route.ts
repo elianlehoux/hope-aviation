@@ -10,9 +10,8 @@ import { jsonError, jsonOk } from "@/lib/api/json";
 import { parseUuidParam } from "@/lib/api/params";
 import { responseFromPostgrestError } from "@/lib/api/supabase-errors";
 import {
-  examBelongsToSubject,
+  fetchCourseSubjectExamChain,
   questionBelongsToExam,
-  subjectBelongsToCourse,
 } from "@/lib/api/guards";
 import { questionUpdateSchema } from "@/lib/validation/exams";
 import type { Question } from "@/types/database";
@@ -45,13 +44,19 @@ export async function GET(_request: Request, context: RouteContext) {
   const session = await requireSession(supabase);
   if (!session.ok) return session.response;
 
-  const ok = await subjectBelongsToCourse(supabase, courseId, subjectId);
-  if (!ok) {
+  const chain = await fetchCourseSubjectExamChain(
+    supabase,
+    courseId,
+    subjectId,
+    examId,
+  );
+  if (!chain.ok) {
+    return responseFromPostgrestError(chain.postgrestError);
+  }
+  if (!chain.subjectOk) {
     return jsonError("not_found", "Subject not found.", 404);
   }
-
-  const examOk = await examBelongsToSubject(supabase, courseId, subjectId, examId);
-  if (!examOk) {
+  if (!chain.examOk) {
     return jsonError("not_found", "Exam not found.", 404);
   }
 
@@ -109,13 +114,19 @@ export async function PATCH(request: Request, context: RouteContext) {
   const staff = await requireStaff(supabase, session.user.id);
   if (!staff.ok) return staff.response;
 
-  const ok = await subjectBelongsToCourse(supabase, courseId, subjectId);
-  if (!ok) {
+  const chain = await fetchCourseSubjectExamChain(
+    supabase,
+    courseId,
+    subjectId,
+    examId,
+  );
+  if (!chain.ok) {
+    return responseFromPostgrestError(chain.postgrestError);
+  }
+  if (!chain.subjectOk) {
     return jsonError("not_found", "Subject not found.", 404);
   }
-
-  const examOk = await examBelongsToSubject(supabase, courseId, subjectId, examId);
-  if (!examOk) {
+  if (!chain.examOk) {
     return jsonError("not_found", "Exam not found.", 404);
   }
 
@@ -189,13 +200,19 @@ export async function DELETE(_request: Request, context: RouteContext) {
   const staff = await requireStaff(supabase, session.user.id);
   if (!staff.ok) return staff.response;
 
-  const ok = await subjectBelongsToCourse(supabase, courseId, subjectId);
-  if (!ok) {
+  const chain = await fetchCourseSubjectExamChain(
+    supabase,
+    courseId,
+    subjectId,
+    examId,
+  );
+  if (!chain.ok) {
+    return responseFromPostgrestError(chain.postgrestError);
+  }
+  if (!chain.subjectOk) {
     return jsonError("not_found", "Subject not found.", 404);
   }
-
-  const examOk = await examBelongsToSubject(supabase, courseId, subjectId, examId);
-  if (!examOk) {
+  if (!chain.examOk) {
     return jsonError("not_found", "Exam not found.", 404);
   }
 
