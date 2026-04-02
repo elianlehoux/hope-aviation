@@ -37,7 +37,7 @@ export async function GET(request: Request) {
 
   let query = supabase
     .from("courses")
-    .select("*")
+    .select("*, subjects(count)")
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
 
