@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { CampusMobileNav } from "@/components/features/campus/CampusMobileNav";
+import { CampusSidebar } from "@/components/features/campus/CampusSidebar";
 
 /**
  * Campus layout — shell for all /campus/* routes.
@@ -21,38 +22,7 @@ export default function CampusLayout({
 
   return (
     <div className="min-h-screen flex bg-background text-foreground">
-      <aside className="hidden xl:flex w-64 flex-col border-r border-border bg-card">
-        <div className="flex items-center px-6 h-20 border-b border-border">
-          <Link href="/" className="group flex items-center w-fit">
-            <img 
-              src="/logos/Hope Black.svg" 
-              alt="Hope Aviation" 
-              className="h-20 w-auto drop-shadow-sm scale-[1.5] origin-left transition-transform duration-300 group-hover:scale-[1.55]" 
-            />
-          </Link>
-        </div>
-
-        <nav className="flex-1 flex flex-col gap-1 px-3 py-4">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="border-t border-border px-6 py-4">
-          <Link
-            href="/"
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            ← Back to Home
-          </Link>
-        </div>
-      </aside>
+      <CampusSidebar navLinks={navLinks} />
 
       <div className="flex-1 flex flex-col">
         <Suspense fallback={<CampusHeaderFallback navLinks={navLinks} />}>
