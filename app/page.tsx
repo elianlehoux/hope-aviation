@@ -12,7 +12,8 @@ import {
   Users, 
   Award, 
   ArrowRight,
-  CheckCircle2
+  CheckCircle2,
+  Heart
 } from "lucide-react";
 
 /**
@@ -48,14 +49,17 @@ export default function LandingPage() {
           </p>
 
           <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="h-14 px-10 text-lg shadow-xl shadow-primary/20 group">
-              <Link href="/campus">
-                Ingresar al Campus
-                <ArrowRight className="ml-2 size-5 transition-transform group-hover:translate-x-1" />
+            <Button asChild size="lg" className="h-14 px-10 text-lg shadow-xl shadow-primary/20 group bg-accent hover:bg-accent/90 border-none">
+              <Link href="/donate" className="flex items-center gap-2">
+                <Heart className="size-5 fill-white/20" />
+                Donar ahora
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="h-14 px-10 text-lg border-slate-200 hover:bg-slate-50">
-              <a href="#features">Descubrir Más</a>
+            <Button asChild variant="outline" size="lg" className="h-14 px-10 text-lg border-slate-200 hover:bg-slate-50 group">
+              <Link href="/campus" className="flex items-center gap-2">
+                Ingresar al Campus
+                <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+              </Link>
             </Button>
           </div>
         </div>

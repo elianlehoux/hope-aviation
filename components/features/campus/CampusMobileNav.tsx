@@ -13,12 +13,17 @@ interface NavLink {
 
 export function CampusMobileNav({ navLinks }: { navLinks: NavLink[] }) {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
   const pathname = usePathname();
 
   // Close menu automatically if the route changes
   React.useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Prevent background scrolling when overlay is active
   React.useEffect(() => {
@@ -87,16 +92,16 @@ export function CampusMobileNav({ navLinks }: { navLinks: NavLink[] }) {
         <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
           {navLinks.map((link) => {
             // Simplified active path matching
-            const isActive = pathname === link.href || (pathname.startsWith(link.href) && link.href !== "/campus");
+            const isActive = mounted && (pathname === link.href || (pathname.startsWith(link.href) && link.href !== "/campus"));
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`block rounded-lg px-4 py-3 text-sm font-medium transition-colors
+                className={`block rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200
                   ${
                     isActive
-                      ? "bg-accent/10 text-accent font-semibold"
-                      : "text-muted-foreground hover:bg-accent/5 hover:text-foreground"
+                      ? "bg-accent text-white shadow-lg shadow-accent/20 font-semibold"
+                      : "text-muted-foreground hover:bg-accent hover:text-white"
                   }
                 `}
                 onClick={() => setIsOpen(false)}

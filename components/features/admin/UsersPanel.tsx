@@ -74,17 +74,22 @@ import type { Profile, Role } from "@/types/database";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
+interface RoleAssignment {
+  role_id: string;
+  assigned_at: string;
+  roles: {
+    id: string;
+    name: string;
+    slug: string;
+    description: string | null;
+  };
+}
+
+// PostgREST returns `roles_users` as a single object (one-to-one due to
+// UNIQUE(user_id) constraint) or as an array, depending on schema detection.
+// We handle both shapes defensively.
 interface UserWithRoles extends Profile {
-  roles_users: Array<{
-    role_id: string;
-    assigned_at: string;
-    roles: {
-      id: string;
-      name: string;
-      slug: string;
-      description: string | null;
-    };
-  }>;
+  roles_users: RoleAssignment | RoleAssignment[] | null;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -101,12 +106,19 @@ function getInitials(first: string, last: string) {
   return `${first?.[0] ?? ""}${last?.[0] ?? ""}`.toUpperCase();
 }
 
+function getRoleAssignment(user: UserWithRoles): RoleAssignment | null {
+  const ru = user.roles_users;
+  if (!ru) return null;
+  if (Array.isArray(ru)) return ru[0] ?? null;
+  return ru;
+}
+
 function getUserRole(user: UserWithRoles): string | null {
-  return user.roles_users?.[0]?.roles?.name ?? null;
+  return getRoleAssignment(user)?.roles?.name ?? null;
 }
 
 function getUserRoleSlug(user: UserWithRoles): string | null {
-  return user.roles_users?.[0]?.roles?.slug ?? null;
+  return getRoleAssignment(user)?.roles?.slug ?? null;
 }
 
 function getRoleBadgeVariant(slug: string | null) {
@@ -235,7 +247,7 @@ function UserDetailModal({
       setLastName(user.last_name);
       setPhone(user.phone ?? "");
       setIsActive(user.is_active);
-      setSelectedRoleId(user.roles_users?.[0]?.roles?.id ?? "");
+      setSelectedRoleId(getRoleAssignment(user)?.roles?.id ?? "");
     }
   }, [user, open]);
 
@@ -260,7 +272,7 @@ function UserDetailModal({
       }
 
       // Update role if changed
-      const currentRoleId = user.roles_users?.[0]?.roles?.id ?? "";
+      const currentRoleId = getRoleAssignment(user)?.roles?.id ?? "";
       if (selectedRoleId && selectedRoleId !== currentRoleId) {
         await assignRole(user.id, selectedRoleId);
       }
