@@ -11,21 +11,49 @@ export function responseFromPostgrestError(
 ): NextResponse<ApiErrorBody> {
   const code = err.code ?? "unknown";
 
+  const isProd = process.env.NODE_ENV === "production";
+  const pgExtras = isProd
+    ? undefined
+    : {
+        details: err.message,
+        db_code: err.code,
+        hint: err.hint ?? undefined,
+      };
+
+  if (isProd) {
+    console.error("[postgrest]", err.code, err.message, err.details, err.hint);
+  }
+
   if (code === "PGRST116") {
-    return jsonError("not_found", "Resource not found.", 404);
+    return jsonError("not_found", "Resource not found.", 404, pgExtras);
   }
 
   if (code === "23503") {
-    return jsonError("invalid_reference", "Related record is missing or invalid.", 400);
+    return jsonError(
+      "invalid_reference",
+      "Related record is missing or invalid.",
+      400,
+      pgExtras,
+    );
   }
 
   if (code === "23505") {
-    return jsonError("conflict", "A record with this data already exists.", 409);
+    return jsonError(
+      "conflict",
+      "A record with this data already exists.",
+      409,
+      pgExtras,
+    );
   }
 
   if (code === "42501" || err.message?.includes("permission denied")) {
-    return jsonError("forbidden", "You do not have permission for this action.", 403);
+    return jsonError("forbidden", "You do not have permission for this action.", 403, pgExtras);
   }
 
-  return jsonError("database_error", "Something went wrong. Please try again.", 500);
+  return jsonError(
+    "database_error",
+    "Something went wrong. Please try again.",
+    500,
+    pgExtras,
+  );
 }

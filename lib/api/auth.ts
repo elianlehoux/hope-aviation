@@ -31,7 +31,14 @@ async function roleSlugsForUser(
   return { ok: true, slugs };
 }
 
-/** True if the user has admin or instructor role. False if roles could not be loaded. */
+/**
+ * True if the user has admin or instructor role. False if roles could not be loaded.
+ *
+ * For read-only handlers that branch staff vs student (e.g. hide correct answers), use
+ * this — a failed role lookup is treated as non-staff so the user still gets a safe
+ * student view instead of an error. For mutations, use `requireStaff`, which returns
+ * 403 when role verification fails.
+ */
 export async function userIsStaff(
   supabase: SupabaseClient,
   userId: string,
@@ -68,6 +75,7 @@ export async function requireSession(
 
 /**
  * Requires admin or instructor role (403 otherwise). Use for mutating staff-only routes.
+ * Unlike `userIsStaff`, a failed role lookup yields 403 (do not silently treat as student).
  */
 export async function requireStaff(
   supabase: SupabaseClient,
@@ -101,6 +109,7 @@ export async function requireStaff(
 
 /**
  * Requires the `admin` role (403 otherwise). Use for admin-only routes (users, roles).
+ * Uses `public.has_role` (same source as RLS) so multiple `roles_users` rows never yield PGRST116.
  */
 export async function requireAdmin(
   supabase: SupabaseClient,
@@ -109,11 +118,10 @@ export async function requireAdmin(
   | { ok: true }
   | { ok: false; response: NextResponse<ApiErrorBody> }
 > {
-  const { data: row, error } = await supabase
-    .from("roles_users")
-    .select("roles(slug)")
-    .eq("user_id", userId)
-    .maybeSingle();
+  const { data: isAdmin, error } = await supabase.rpc("has_role", {
+    p_user_id: userId,
+    p_role_slug: "admin",
+  });
 
   if (error) {
     return {
@@ -122,9 +130,7 @@ export async function requireAdmin(
     };
   }
 
-  const rel = row?.roles as { slug: string } | { slug: string }[] | null;
-  const slug = Array.isArray(rel) ? rel[0]?.slug : rel?.slug;
-  if (slug !== "admin") {
+  if (!isAdmin) {
     return {
       ok: false,
       response: jsonError(

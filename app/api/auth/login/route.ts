@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { jsonError, jsonOk } from "@/lib/api/json";
 
-const LoginSchema = z.object({
+const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
 });
@@ -12,18 +12,12 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json(
-      { error: "Invalid JSON body." },
-      { status: 400 },
-    );
+    return jsonError("validation_error", "Invalid JSON body.", 400);
   }
 
-  const parsed = LoginSchema.safeParse(body);
+  const parsed = loginSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: "Invalid credentials." },
-      { status: 400 },
-    );
+    return jsonError("validation_error", "Invalid login payload.", 400);
   }
 
   const supabase = await createClient();
@@ -33,12 +27,10 @@ export async function POST(request: Request) {
   });
 
   if (error || !data.user) {
-    return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
+    return jsonError("unauthorized", "Invalid credentials.", 401);
   }
 
-  return NextResponse.json({
-    ok: true,
+  return jsonOk({
     user: { id: data.user.id, email: data.user.email },
   });
 }
-
