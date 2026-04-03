@@ -23,7 +23,9 @@ export default function CampusLayout({
 
   return (
     <div className="min-h-screen flex bg-background text-foreground">
-      <CampusSidebar navLinks={navLinks} />
+      <Suspense fallback={<div className="hidden xl:flex w-64 flex-col border-r border-border bg-card animate-pulse" />}>
+        <CampusSidebar navLinks={navLinks} />
+      </Suspense>
 
       <div className="flex-1 flex flex-col">
         <Suspense fallback={<CampusHeaderFallback />}>

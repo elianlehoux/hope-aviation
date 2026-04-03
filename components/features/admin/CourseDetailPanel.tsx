@@ -16,7 +16,9 @@ import {
   Clock,
   ArrowLeft,
   ChevronRight,
+  GripVertical
 } from "lucide-react";
+import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
 
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
@@ -154,6 +156,25 @@ async function deleteClass(courseId: string, subjectId: string, classId: string)
   if (!res.ok && res.status !== 204) throw new Error("Error deleting class");
 }
 
+// Reorder API
+async function reorderSubjects(courseId: string, orderedSubjectIds: string[]): Promise<void> {
+  const res = await fetch(`/api/courses/${courseId}/subjects/reorder`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ orderedSubjectIds }),
+  });
+  if (!res.ok) throw new Error("Error guardando el nuevo orden de módulos");
+}
+
+async function reorderClasses(courseId: string, subjectId: string, orderedClassIds: string[]): Promise<void> {
+  const res = await fetch(`/api/courses/${courseId}/subjects/${subjectId}/classes/reorder`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ orderedClassIds }),
+  });
+  if (!res.ok) throw new Error("Error guardando el nuevo orden de clases");
+}
+
 
 // ─── Subject Form Modal ───────────────────────────────────────────────────────
 
@@ -172,7 +193,6 @@ function SubjectFormModal({ courseId, subject, open, onOpenChange, onSaved }: Su
   const [titleEn, setTitleEn] = React.useState("");
   const [descEs, setDescEs] = React.useState("");
   const [descEn, setDescEn] = React.useState("");
-  const [orderIndex, setOrderIndex] = React.useState<string>("");
   const [saving, setSaving] = React.useState(false);
 
   React.useEffect(() => {
@@ -181,7 +201,6 @@ function SubjectFormModal({ courseId, subject, open, onOpenChange, onSaved }: Su
       setTitleEn(subject?.title?.en ?? "");
       setDescEs(subject?.description?.es ?? "");
       setDescEn(subject?.description?.en ?? "");
-      setOrderIndex(subject?.order_index?.toString() ?? "");
     }
   }, [subject, open]);
 
@@ -203,7 +222,6 @@ function SubjectFormModal({ courseId, subject, open, onOpenChange, onSaved }: Su
           ...(descEs.trim() ? { es: descEs.trim() } : {}),
           ...(descEn.trim() ? { en: descEn.trim() } : {}),
         },
-        order_index: orderIndex !== "" ? parseInt(orderIndex, 10) : null,
       };
 
       if (isEdit && subject) {
@@ -279,20 +297,6 @@ function SubjectFormModal({ courseId, subject, open, onOpenChange, onSaved }: Su
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="sub-order">Orden (Índice)</Label>
-            <Input
-              id="sub-order"
-              type="number"
-              placeholder="0, 10, 20..."
-              value={orderIndex}
-              onChange={(e) => setOrderIndex(e.target.value)}
-            />
-            <p className="text-xs text-muted-foreground mt-1 text-slate-400">
-               Define el orden de aparición (número menor aparece primero).
-            </p>
-          </div>
-
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="ghost">Cancelar</Button>
@@ -330,7 +334,6 @@ function ClassFormModal({ courseId, subjectId, cls, open, onOpenChange, onSaved 
   const [videoUrl, setVideoUrl] = React.useState("");
   const [resourceUrl, setResourceUrl] = React.useState("");
   const [duration, setDuration] = React.useState("");
-  const [orderIndex, setOrderIndex] = React.useState<string>("");
   const [saving, setSaving] = React.useState(false);
 
   React.useEffect(() => {
@@ -342,7 +345,6 @@ function ClassFormModal({ courseId, subjectId, cls, open, onOpenChange, onSaved 
       setVideoUrl(cls?.video_url ?? "");
       setResourceUrl(cls?.resource_url ?? "");
       setDuration(cls?.duration_minutes?.toString() ?? "");
-      setOrderIndex(cls?.order_index?.toString() ?? "");
     }
   }, [cls, open]);
 
@@ -375,7 +377,6 @@ function ClassFormModal({ courseId, subjectId, cls, open, onOpenChange, onSaved 
         video_url: videoUrl.trim() || null,
         resource_url: resourceUrl.trim() || null,
         duration_minutes: duration !== "" ? parseInt(duration, 10) : null,
-        order_index: orderIndex !== "" ? parseInt(orderIndex, 10) : null,
       };
 
       if (isEdit && cls) {
@@ -474,9 +475,9 @@ function ClassFormModal({ courseId, subjectId, cls, open, onOpenChange, onSaved 
              </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
              <div className="space-y-2">
-               <Label htmlFor="cls-duration">Duración Mínutos (Opcional)</Label>
+               <Label htmlFor="cls-duration">Duración Minutos (Opcional)</Label>
                <Input
                  id="cls-duration"
                  type="number"
@@ -485,16 +486,6 @@ function ClassFormModal({ courseId, subjectId, cls, open, onOpenChange, onSaved 
                  onChange={(e) => setDuration(e.target.value)}
                />
              </div>
-            <div className="space-y-2">
-              <Label htmlFor="cls-order">Orden (Índice)</Label>
-              <Input
-                id="cls-order"
-                type="number"
-                placeholder="0, 10, 20..."
-                value={orderIndex}
-                onChange={(e) => setOrderIndex(e.target.value)}
-              />
-            </div>
           </div>
 
           <DialogFooter>
@@ -598,6 +589,11 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
     setLoading(true);
     try {
       const data = await fetchCourseTree(courseId);
+      // Sort to ensure array ordering matches DB order_index
+      data.subjects.sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
+      for (const sub of data.subjects) {
+         sub.classes.sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
+      }
       setTree(data);
     } catch {
       toast.error("Error cargando el detalle del curso.");
@@ -609,6 +605,59 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
   React.useEffect(() => {
     loadData();
   }, [loadData]);
+
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
+
+  const handleDragEnd = async (result: DropResult) => {
+    if (!result.destination) return;
+
+    const sourceId = result.source.droppableId;
+    const destId = result.destination.droppableId;
+    
+    // Solo permitimos reordenar en la misma zona
+    if (sourceId !== destId) return;
+
+    if (sourceId === "subjects") {
+      // Reordenar módulos
+      if (!tree) return;
+      const newSubjects = Array.from(tree.subjects);
+      const [reorderedItem] = newSubjects.splice(result.source.index, 1);
+      newSubjects.splice(result.destination.index, 0, reorderedItem);
+      
+      setTree({ ...tree, subjects: newSubjects });
+      
+      const newOrderIds = newSubjects.map(s => s.id);
+      try {
+        await reorderSubjects(courseId, newOrderIds);
+      } catch {
+        toast.error("Error al guardar el nuevo orden.");
+        loadData(); // Revert
+      }
+    } else {
+      // Reordenar clases dentro de un módulo
+      if (!tree) return;
+      const subjectIndex = tree.subjects.findIndex(s => s.id === sourceId);
+      if (subjectIndex === -1) return;
+      
+      const subject = tree.subjects[subjectIndex];
+      const newClasses = Array.from(subject.classes);
+      const [reorderedItem] = newClasses.splice(result.source.index, 1);
+      newClasses.splice(result.destination.index, 0, reorderedItem);
+      
+      const newTreeSubjects = [...tree.subjects];
+      newTreeSubjects[subjectIndex] = { ...subject, classes: newClasses };
+      setTree({ ...tree, subjects: newTreeSubjects });
+      
+      const newOrderIds = newClasses.map(c => c.id);
+      try {
+        await reorderClasses(courseId, subject.id, newOrderIds);
+      } catch {
+        toast.error("Error al guardar el nuevo orden.");
+        loadData(); // Revert
+      }
+    }
+  };
 
 
   // Action handlers
@@ -708,134 +757,181 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
              Crear Primer Módulo
            </Button>
          </div>
-      ) : (
-         <div className="bg-white rounded-2xl border border-slate-100 p-2 shadow-sm space-y-1">
-             <Accordion type="multiple" className="w-full">
-               {tree.subjects.map((sub, index) => (
-                  <AccordionItem value={sub.id} key={sub.id} className="border-slate-100 px-4 group/item">
-                    <AccordionTrigger className="hover:no-underline py-5 lg:py-4">
-                       <div className="flex items-center gap-3 w-full justify-between">
-                          <div className="flex items-center gap-3 text-left">
-                             <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent/10">
-                                <span className="font-bold text-[10px] text-accent tracking-widest leading-none">M{index + 1}</span>
-                             </div>
-                             <div className="flex flex-col gap-0.5">
-                               <span className="font-bold text-primary tracking-tight">{getLocalizedText(sub.title)}</span>
-                               {sub.description && (
-                                  <span className="text-xs font-medium text-slate-500 line-clamp-1">{getLocalizedText(sub.description)}</span>
-                               )}
-                             </div>
-                          </div>
-
-                          {/* Subject Actions Wrapper */}
-                          <div className="flex items-center mr-4" onClick={(e) => e.stopPropagation()}>
-                             <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Button
-                                  variant="ghost"
-                                  size="icon-xs"
-                                  onClick={(e) => openEditSubject(e, sub)}
-                                >
-                                  <Pencil className="size-3.5" />
-                                </Button>
-                              </TooltipTrigger>
-                              <TooltipContent>Editar Módulo</TooltipContent>
-                            </Tooltip>
-                            
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Button
-                                  variant="ghost"
-                                  size="icon-xs"
-                                  className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-                                  onClick={(e) => triggerDeleteSubject(e, sub)}
-                                >
-                                  <Trash2 className="size-3.5" />
-                                </Button>
-                              </TooltipTrigger>
-                              <TooltipContent>Eliminar Módulo</TooltipContent>
-                            </Tooltip>
-                          </div>
-                       </div>
-                    </AccordionTrigger>
-                    
-                    <AccordionContent className="pb-5 pt-2">
-                       <div className="pl-11 space-y-3">
-                         {sub.classes.length === 0 ? (
-                           <div className="text-sm text-slate-400 font-medium py-3 px-4 border border-dashed rounded-xl flex items-center justify-between">
-                              <span>Este módulo no tiene clases aún.</span>
-                              <Button variant="secondary" size="xs" onClick={(e) => openNewClass(e, sub.id)}>
-                                <Plus className="size-3" /> Añadir Clase
-                              </Button>
-                           </div>
-                         ) : (
-                           <div className="space-y-2">
-                              {sub.classes.map((cls, cIndex) => (
-                                 <div 
-                                    key={cls.id}
-                                    className="flex items-center justify-between group/cls bg-slate-50/50 hover:bg-slate-100 border border-slate-100 rounded-xl px-4 py-3 transition-colors"
-                                 >
-                                    <div className="flex items-center gap-3">
-                                       {cls.video_url ? (
-                                         <div className="flex size-6 shrink-0 bg-brand-orange/20 text-brand-orange items-center justify-center rounded-md">
-                                            <Video className="size-3" />
-                                         </div>
-                                       ) : cls.resource_url ? (
-                                         <div className="flex size-6 shrink-0 bg-primary/10 text-primary items-center justify-center rounded-md">
-                                            <FileText className="size-3" />
-                                         </div>
-                                       ) : (
-                                         <div className="flex size-6 shrink-0 border border-slate-200 text-slate-400 items-center justify-center rounded-md">
-                                            <FileText className="size-3" />
-                                         </div>
-                                       )}
-                                       <div className="flex flex-col">
-                                          <span className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                                            {cIndex + 1}. {getLocalizedText(cls.title)}
-                                            {cls.duration_minutes && (
-                                              <Badge variant="secondary" className="px-1.5 py-0 h-4 rounded text-[10px] gap-1 font-semibold">
-                                                <Clock className="size-2.5" /> {cls.duration_minutes}m
-                                              </Badge>
-                                            )}
-                                          </span>
+      ) : mounted ? (
+         <DragDropContext onDragEnd={handleDragEnd}>
+           <Droppable droppableId="subjects" type="SUBJECT">
+             {(provided) => (
+               <div 
+                 {...provided.droppableProps} 
+                 ref={provided.innerRef} 
+                 className="bg-white rounded-2xl border border-slate-100 p-2 shadow-sm space-y-1"
+               >
+                 <Accordion type="multiple" className="w-full">
+                   {tree.subjects.map((sub, index) => (
+                      <Draggable key={sub.id} draggableId={sub.id} index={index}>
+                         {(subjProvided, subjSnapshot) => (
+                           <div 
+                              ref={subjProvided.innerRef}
+                              {...subjProvided.draggableProps}
+                              className={subjSnapshot.isDragging ? "opacity-90 z-50 bg-white rounded-xl outline outline-1 outline-primary/20 shadow-xl" : ""}
+                           >
+                             <AccordionItem value={sub.id} className="border-slate-100 px-4 group/item">
+                               <div className="relative group/trigger">
+                                 <AccordionTrigger className="hover:no-underline py-5 lg:py-4">
+                                    <div className="flex items-center gap-3 text-left pr-20">
+                                       <div 
+                                          {...subjProvided.dragHandleProps}
+                                          className="cursor-move text-slate-300 hover:text-slate-500 -ml-2 mr-1 opacity-100 sm:opacity-0 sm:group-hover/trigger:opacity-100 transition-opacity p-2"
+                                          onClick={(e) => e.stopPropagation()}
+                                       >
+                                          <GripVertical className="size-5" />
+                                       </div>
+                                       <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent/10">
+                                          <span className="font-bold text-[10px] text-accent tracking-widest leading-none">M{index + 1}</span>
+                                       </div>
+                                       <div className="flex flex-col gap-0.5">
+                                         <span className="font-bold text-primary tracking-tight">{getLocalizedText(sub.title)}</span>
+                                         {sub.description && (
+                                            <span className="text-xs font-medium text-slate-500 line-clamp-1">{getLocalizedText(sub.description)}</span>
+                                         )}
                                        </div>
                                     </div>
-                                    
-                                    <div className="flex items-center gap-1 opacity-100 sm:opacity-0 group-hover/cls:opacity-100 transition-opacity">
-                                       <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <Button variant="ghost" size="icon-xs" className="h-6 w-6" onClick={(e) => openEditClass(e, sub.id, cls)}>
-                                            <Pencil className="size-3" />
-                                          </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent>Editar Clase</TooltipContent>
-                                      </Tooltip>
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <Button variant="ghost" size="icon-xs" className="h-6 w-6 text-destructive hover:bg-destructive/10" onClick={(e) => triggerDeleteClass(e, sub.id, cls)}>
-                                            <Trash2 className="size-3" />
-                                          </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent>Eliminar Clase</TooltipContent>
-                                      </Tooltip>
-                                    </div>
+                                 </AccordionTrigger>
+
+                                 {/* Subject Actions Wrapper */}
+                                 <div className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center gap-1 z-10 opacity-100 sm:opacity-0 sm:group-hover/item:opacity-100 transition-opacity">
+                                    <Tooltip>
+                                     <TooltipTrigger asChild>
+                                       <Button
+                                         variant="ghost"
+                                         size="icon-xs"
+                                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); openEditSubject(e, sub); }}
+                                       >
+                                         <Pencil className="size-3.5" />
+                                       </Button>
+                                     </TooltipTrigger>
+                                     <TooltipContent>Editar Módulo</TooltipContent>
+                                   </Tooltip>
+                                   
+                                   <Tooltip>
+                                     <TooltipTrigger asChild>
+                                       <Button
+                                         variant="ghost"
+                                         size="icon-xs"
+                                         className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); triggerDeleteSubject(e, sub); }}
+                                       >
+                                         <Trash2 className="size-3.5" />
+                                       </Button>
+                                     </TooltipTrigger>
+                                     <TooltipContent>Eliminar Módulo</TooltipContent>
+                                   </Tooltip>
                                  </div>
-                              ))}
+                               </div>
                               
-                              <div className="pt-2 flex justify-end">
-                                 <Button variant="ghost" size="sm" className="text-slate-500 font-semibold text-xs py-1 h-8" onClick={(e) => openNewClass(e, sub.id)}>
-                                    <Plus className="size-3" /> Añadir siguiente clase
-                                 </Button>
-                              </div>
+                              <AccordionContent className="pb-5 pt-2">
+                                 <div className="pl-11 space-y-3">
+                                   {sub.classes.length === 0 ? (
+                                     <div className="text-sm text-slate-400 font-medium py-3 px-4 border border-dashed rounded-xl flex items-center justify-between">
+                                        <span>Este módulo no tiene clases aún.</span>
+                                        <Button variant="secondary" size="xs" onClick={(e) => openNewClass(e, sub.id)}>
+                                          <Plus className="size-3" /> Añadir Clase
+                                        </Button>
+                                     </div>
+                                   ) : (
+                                     <Droppable droppableId={sub.id} type="CLASS">
+                                       {(clsDroppable) => (
+                                         <div 
+                                           className="space-y-2"
+                                           ref={clsDroppable.innerRef}
+                                           {...clsDroppable.droppableProps}
+                                         >
+                                           {sub.classes.map((cls, cIndex) => (
+                                              <Draggable key={cls.id} draggableId={cls.id} index={cIndex}>
+                                                 {(clsProvided, clsSnapshot) => (
+                                                   <div 
+                                                      ref={clsProvided.innerRef}
+                                                      {...clsProvided.draggableProps}
+                                                      className={`flex items-center justify-between group/cls bg-slate-50/50 hover:bg-slate-100 border border-slate-100 rounded-xl px-4 py-3 transition-colors ${clsSnapshot.isDragging ? "shadow-md bg-white border-primary/20 opacity-90 z-50" : ""}`}
+                                                   >
+                                                      <div className="flex items-center gap-3">
+                                                         <div 
+                                                            {...clsProvided.dragHandleProps} 
+                                                            className="cursor-move text-slate-300 hover:text-slate-500 opacity-100 sm:opacity-0 sm:group-hover/cls:opacity-100 transition-opacity p-1 -ml-2"
+                                                         >
+                                                            <GripVertical className="size-4" />
+                                                         </div>
+                                                         {cls.video_url ? (
+                                                           <div className="flex size-6 shrink-0 bg-brand-orange/20 text-brand-orange items-center justify-center rounded-md">
+                                                              <Video className="size-3" />
+                                                           </div>
+                                                         ) : cls.resource_url ? (
+                                                           <div className="flex size-6 shrink-0 bg-primary/10 text-primary items-center justify-center rounded-md">
+                                                              <FileText className="size-3" />
+                                                           </div>
+                                                         ) : (
+                                                           <div className="flex size-6 shrink-0 border border-slate-200 text-slate-400 items-center justify-center rounded-md">
+                                                              <FileText className="size-3" />
+                                                           </div>
+                                                         )}
+                                                         <div className="flex flex-col">
+                                                            <span className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                                                              {cIndex + 1}. {getLocalizedText(cls.title)}
+                                                              {cls.duration_minutes && (
+                                                                <Badge variant="secondary" className="px-1.5 py-0 h-4 rounded text-[10px] gap-1 font-semibold">
+                                                                  <Clock className="size-2.5" /> {cls.duration_minutes}m
+                                                                </Badge>
+                                                              )}
+                                                            </span>
+                                                         </div>
+                                                      </div>
+                                                      
+                                                      <div className="flex items-center gap-1 opacity-100 sm:opacity-0 group-hover/cls:opacity-100 transition-opacity">
+                                                         <Tooltip>
+                                                          <TooltipTrigger asChild>
+                                                            <Button variant="ghost" size="icon-xs" className="h-6 w-6" onClick={(e) => openEditClass(e, sub.id, cls)}>
+                                                              <Pencil className="size-3" />
+                                                            </Button>
+                                                          </TooltipTrigger>
+                                                          <TooltipContent>Editar Clase</TooltipContent>
+                                                        </Tooltip>
+                                                        <Tooltip>
+                                                          <TooltipTrigger asChild>
+                                                            <Button variant="ghost" size="icon-xs" className="h-6 w-6 text-destructive hover:bg-destructive/10" onClick={(e) => triggerDeleteClass(e, sub.id, cls)}>
+                                                              <Trash2 className="size-3" />
+                                                            </Button>
+                                                          </TooltipTrigger>
+                                                          <TooltipContent>Eliminar Clase</TooltipContent>
+                                                        </Tooltip>
+                                                      </div>
+                                                   </div>
+                                                 )}
+                                              </Draggable>
+                                           ))}
+                                           {clsDroppable.placeholder}
+                                           <div className="pt-2 flex justify-end">
+                                              <Button variant="ghost" size="sm" className="text-slate-500 font-semibold text-xs py-1 h-8" onClick={(e) => openNewClass(e, sub.id)}>
+                                                 <Plus className="size-3" /> Añadir siguiente clase
+                                              </Button>
+                                           </div>
+                                         </div>
+                                       )}
+                                     </Droppable>
+                                   )}
+                                 </div>
+                              </AccordionContent>
+                            </AccordionItem>
                            </div>
                          )}
-                       </div>
-                    </AccordionContent>
-                  </AccordionItem>
-               ))}
-             </Accordion>
-         </div>
-      )}
+                      </Draggable>
+                   ))}
+                   {provided.placeholder}
+                 </Accordion>
+               </div>
+             )}
+           </Droppable>
+         </DragDropContext>
+      ) : null}
 
       {/* Cross-panel Modals */}
       <SubjectFormModal 
