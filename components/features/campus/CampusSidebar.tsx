@@ -18,7 +18,7 @@ export function CampusSidebar({ navLinks }: { navLinks: NavLink[] }) {
   }, []);
 
   return (
-    <aside className="hidden xl:flex w-64 flex-col border-r border-border bg-card">
+    <aside className="sticky top-0 h-screen hidden xl:flex w-64 flex-col border-r border-border bg-card">
       <div className="flex items-center px-6 h-20 border-b border-border">
         <Link href="/" className="group flex items-center w-fit">
           <img 

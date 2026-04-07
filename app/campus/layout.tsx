@@ -16,6 +16,7 @@ export default function CampusLayout({
 }>) {
   const navLinks = [
     { href: "/campus", label: "Home" },
+    { href: "/campus/courses", label: "My Learning" },
     { href: "/campus/admin/users", label: "Users" },
     { href: "/campus/admin/roles", label: "Roles" },
     { href: "/campus/admin/courses", label: "Courses" },
@@ -24,7 +25,7 @@ export default function CampusLayout({
 
   return (
     <div className="min-h-screen flex bg-background text-foreground">
-      <Suspense fallback={<div className="hidden xl:flex w-64 flex-col border-r border-border bg-card animate-pulse" />}>
+      <Suspense fallback={<div className="sticky top-0 h-screen hidden xl:flex w-64 flex-col border-r border-border bg-card animate-pulse" />}>
         <CampusSidebar navLinks={navLinks} />
       </Suspense>
 
