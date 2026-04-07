@@ -52,6 +52,11 @@ function LoginForm() {
       provider: "google",
       options: {
         redirectTo: `${origin}/api/auth/callback?next=/campus`,
+        scopes: "email profile",
+        queryParams: {
+          access_type: "offline",
+          prompt: "consent",
+        },
       },
     });
     setLoading(false);

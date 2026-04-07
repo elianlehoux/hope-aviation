@@ -65,6 +65,8 @@ function MobileNavSlotSkeleton() {
   );
 }
 
+import { UserMenu } from "@/components/features/campus/UserMenu";
+
 async function CampusHeader({ navLinks }: { navLinks: { href: string; label: string }[] }) {
   const supabase = await createClient();
   const {
@@ -78,11 +80,8 @@ async function CampusHeader({ navLinks }: { navLinks: { href: string; label: str
           <CampusMobileNav navLinks={navLinks} />
         </Suspense>
       </div>
-      <div className="ml-auto flex items-center gap-3 text-sm text-muted-foreground">
-        <span className="hidden sm:inline max-w-[200px] truncate text-xs">
-          {user?.email ?? "Signed in"}
-        </span>
-        <LogoutButton />
+      <div className="ml-auto flex items-center gap-4">
+        <UserMenu user={user as any} />
       </div>
     </header>
   );
