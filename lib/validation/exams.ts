@@ -67,6 +67,17 @@ export const optionUpdateSchema = z
     message: "at least one field required",
   });
 
+export const questionBatchCreateSchema = z.object({
+  questions: z.array(z.object({
+    content: translatedQuestionContentSchema,
+    points: z.number().positive().optional().default(1),
+    options: z.array(z.object({
+      content: translatedQuestionContentSchema,
+      is_correct: z.boolean().optional().default(false)
+    })).min(1, "Each question must have at least one option")
+  })).min(1, "Batch must contain at least one question")
+});
+
 export const reorderExamsSchema = z.object({
   orderedExamIds: z.array(z.string().uuid()).min(1),
 });

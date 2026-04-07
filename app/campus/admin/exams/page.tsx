@@ -1,18 +1,25 @@
-/**
- * All exams — cross-course management.
- */
-export default function AdminExamsPage() {
-  return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold tracking-tight">Exams</h1>
-      <p className="text-sm text-muted-foreground max-w-2xl">
-        List every <code className="text-xs">exams</code> row with course/subject references.
-        Drill into <code className="text-xs">/campus/admin/exams/[examId]</code> for question
-        maintenance.
-      </p>
-      <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
-        Global exam index here.
-      </div>
-    </div>
-  );
+import { createClient } from "@/lib/supabase/server";
+import { requireSession, requireStaff } from "@/lib/api/auth";
+import { redirect } from "next/navigation";
+import ExamsListPanel from "@/components/features/admin/ExamsListPanel";
+
+export const metadata = {
+  title: "Exámenes — Hope Aviation Admin",
+  description: "Global exam management for Hope Aviation.",
+};
+
+export default async function AdminExamsPage() {
+  const supabase = await createClient();
+  const session = await requireSession(supabase);
+  if (!session.ok) redirect("/");
+
+  const staff = await requireStaff(supabase, session.user.id);
+  if (!staff.ok) redirect("/");
+
+  const { data: coursesData } = await supabase
+    .from("courses")
+    .select("id, title, status, subjects(id, title)")
+    .order("created_at", { ascending: false });
+
+  return <ExamsListPanel coursesData={coursesData ?? []} />;
 }

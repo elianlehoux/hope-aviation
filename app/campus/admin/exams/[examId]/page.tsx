@@ -1,23 +1,37 @@
+import { createClient } from "@/lib/supabase/server";
+import { requireSession, requireStaff } from "@/lib/api/auth";
+import { redirect, notFound } from "next/navigation";
+import ExamEditorPanel from "@/components/features/admin/ExamEditorPanel";
+import { parseUuidParam } from "@/lib/api/params";
+
+export const metadata = {
+  title: "Editor de Examen — Hope Aviation Admin",
+  description: "Exam builder and question settings.",
+};
+
 type Props = { params: Promise<{ examId: string }> };
 
-/**
- * Admin exam detail — same question model as professor editor.
- */
-export default async function AdminExamPage({ params }: Props) {
-  const { examId } = await params;
+export default async function AdminExamEditorPage({ params }: Props) {
+  const { examId: rawExamId } = await params;
+  const examId = parseUuidParam(rawExamId);
 
-  return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold tracking-tight">Exam (admin)</h1>
-      <p className="font-mono text-xs text-muted-foreground">exam_id: {examId}</p>
-      <p className="text-sm text-muted-foreground max-w-2xl">
-        Full edit access to <code className="text-xs">exams</code>,{" "}
-        <code className="text-xs">questions</code>, <code className="text-xs">options</code>. Use
-        for support and content fixes.
-      </p>
-      <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
-        Reuse professor exam editor component when ready.
-      </div>
-    </div>
-  );
+  if (!examId) notFound();
+
+  const supabase = await createClient();
+  const session = await requireSession(supabase);
+  if (!session.ok) redirect("/");
+
+  const staff = await requireStaff(supabase, session.user.id);
+  if (!staff.ok) redirect("/");
+
+  // Fetch the exam details
+  const { data: exam, error } = await supabase
+    .from("exams")
+    .select("*, course:courses(title), subject:subjects(title)")
+    .eq("id", examId)
+    .single();
+
+  if (error || !exam) notFound();
+
+  return <ExamEditorPanel exam={exam} />;
 }

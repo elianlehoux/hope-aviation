@@ -19,6 +19,7 @@ export default function CampusLayout({
     { href: "/campus/admin/users", label: "Users" },
     { href: "/campus/admin/roles", label: "Roles" },
     { href: "/campus/admin/courses", label: "Courses" },
+    { href: "/campus/admin/exams", label: "Exams" },
   ];
 
   return (
