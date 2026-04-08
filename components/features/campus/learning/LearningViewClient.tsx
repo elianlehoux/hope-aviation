@@ -109,21 +109,26 @@ export function LearningViewClient({
               onEnded={handleAutoAdvance}
            />
 
-           {/* Resources & Info Wrap */}
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 pt-4">
-              <ResourceList resourceUrl={activeClass.resource_url} />
-              
+           {/* Resources & Info Wrap - Vertical Stack */}
+           <div className="flex flex-col gap-12 pt-8">
+              {/* Resources Section */}
               <div className="space-y-4">
-                 <div className="flex items-center justify-between px-1">
+                 <ResourceList resourceUrl={activeClass.resource_url} />
+              </div>
+
+              {/* Description Section */}
+              <div className="space-y-4">
+                 <div className="flex items-center px-1">
                     <h3 className="text-lg font-bold text-primary tracking-tight">About this lesson</h3>
                  </div>
-                 <p className="text-sm text-slate-500 leading-relaxed bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                 <p className="text-sm text-slate-500 leading-relaxed bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
                     {typeof activeClass.description === "string" 
                        ? activeClass.description 
                        : (activeClass.description?.[lang] || "No additional description for this lesson.")}
                  </p>
               </div>
            </div>
+
 
         </div>
 
