@@ -21,25 +21,63 @@ export default async function StudentCoursesPage() {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  // 1. Fetch Active & Completed Enrollments
+  // 1. Fetch Active & Completed Enrollments with full class structure for progress calculation
   const { data: enrollments } = await supabase
     .from("enrollments")
-    .select("*, courses (*, subjects(count))")
+    .select(`
+      *, 
+      courses (
+        *, 
+        subjects (
+          classes (
+            id,
+            lesson_progress!left (
+              is_completed
+            )
+          )
+        )
+      )
+    `)
     .eq("user_id", user?.id)
+    .eq("courses.subjects.classes.lesson_progress.user_id", user?.id || "")
     .order("enrolled_at", { ascending: false });
 
-  const activeEnrollments = enrollments?.filter(e => e.status === "active") || [];
-  const completedEnrollments = enrollments?.filter(e => e.status === "completed") || [];
+  // Map enrollments to calculate real-time progress
+  const enrichedEnrollments = (enrollments || []).map(enrollment => {
+    const course = enrollment.courses;
+    let totalClasses = 0;
+    let completedClasses = 0;
+
+    course?.subjects?.forEach((subject: any) => {
+      subject.classes?.forEach((cls: any) => {
+        totalClasses++;
+        if (cls.lesson_progress?.[0]?.is_completed) {
+          completedClasses++;
+        }
+      });
+    });
+
+    return {
+      ...enrollment,
+      progress: totalClasses > 0 ? Math.round((completedClasses / totalClasses) * 100) : 0,
+      total_classes: totalClasses,
+      completed_classes: completedClasses
+    };
+  });
+
+  const activeEnrollments = enrichedEnrollments.filter(e => e.status === "active");
+  const completedEnrollments = enrichedEnrollments.filter(e => e.status === "completed");
   
-  // 2. Fetch Catalog (Published)
+  // 2. Fetch Catalog (Published) - simplified for available classes
   const enrolledCourseIds = enrollments?.map(e => e.course_id) || [];
   
   const { data: catalogCourses } = await supabase
     .from("courses")
     .select("*, subjects(count)")
     .eq("status", "published")
-    .not("id", "in", `(${enrolledCourseIds.join(",") || "00000000-0000-0000-0000-000000000000"})`)
+    .not("id", "in", `(${enrolledCourseIds.length > 0 ? enrolledCourseIds.join(",") : "00000000-0000-0000-0000-000000000000"})`)
     .order("created_at", { ascending: false });
+
 
   return (
     <div className="space-y-16 pb-20 max-w-7xl mx-auto">

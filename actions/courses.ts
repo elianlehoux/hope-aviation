@@ -48,3 +48,69 @@ export async function enrollInCourse(courseId: string) {
 
   return { success: true };
 }
+
+/**
+ * Fetches all data needed for the learning interface.
+ */
+export async function getCourseLearningData(courseId: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Unauthorized");
+
+  // Fetch course with subjects and classes
+  const { data: course, error: courseError } = await supabase
+    .from("courses")
+    .select(`
+      *,
+      subjects (
+        *,
+        classes (
+          *,
+          lesson_progress!left (
+            is_completed
+          )
+        )
+      )
+    `)
+    .eq("id", courseId)
+    .eq("subjects.classes.lesson_progress.user_id", user.id)
+    .order("order_index", { foreignTable: "subjects" })
+    .order("order_index", { foreignTable: "subjects.classes" })
+    .maybeSingle();
+
+  if (courseError || !course) {
+    if (courseError) console.error("Error fetching learning data:", courseError);
+    return null;
+  }
+
+  return course;
+}
+
+/**
+ * Toggles the completion status of a lesson for the current user.
+ */
+export async function toggleLessonCompletion(courseId: string, classId: string, isCompleted: boolean) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) return { success: false, error: "Unauthorized" };
+
+  const { error } = await supabase
+    .from("lesson_progress")
+    .upsert({
+      user_id: user.id,
+      class_id: classId,
+      is_completed: isCompleted,
+      completed_at: isCompleted ? new Date().toISOString() : null
+    }, { onConflict: "user_id,class_id" });
+
+  if (error) {
+    console.error("Error toggling lesson completion:", error);
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath(`/campus/courses/${courseId}/learn`);
+  return { success: true };
+}
+
