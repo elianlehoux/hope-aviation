@@ -41,10 +41,7 @@ export function CourseCurriculum({ subjects }: CourseCurriculumProps) {
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-      <div className="flex items-center gap-3 px-1">
-        <div className="h-10 w-10 rounded-xl bg-primary/5 border border-primary/10 flex items-center justify-center">
-          <BookOpen className="size-5 text-primary" />
-        </div>
+      <div className="flex items-center gap-3 px-1 pt-4">
         <h2 className="text-2xl font-bold tracking-tight text-primary">Course Content</h2>
       </div>
 
@@ -60,9 +57,6 @@ export function CourseCurriculum({ subjects }: CourseCurriculumProps) {
             >
               <AccordionTrigger className="hover:no-underline py-6">
                 <div className="flex items-center gap-4 text-left">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-50 text-xs font-bold text-slate-400 border border-slate-100">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
                   <div>
                     <h4 className="text-lg font-bold tracking-tight text-primary leading-tight">
                       {subjectTitle}

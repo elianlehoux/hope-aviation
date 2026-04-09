@@ -100,7 +100,14 @@ export default async function CourseDetailPage({
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 py-4">
               <StatItem icon={<BookOpen className="size-5" />} label="Modules" value={course.subjects?.length || 0} />
               <StatItem icon={<Video className="size-5 text-brand-orange" />} label="Lessons" value={totalClasses} />
-              <StatItem icon={<Clock className="size-5" />} label="Duration" value={`${totalDuration}m`} />
+              <StatItem 
+                icon={<Clock className="size-5" />} 
+                label="Duration" 
+                value={totalDuration >= 60 
+                  ? `${Math.floor(totalDuration / 60)}h ${totalDuration % 60}m` 
+                  : `${totalDuration}m`
+                } 
+              />
             </div>
 
             {/* Main Action */}

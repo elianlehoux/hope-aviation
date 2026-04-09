@@ -1,0 +1,185 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import { ArrowRight, ChevronRight, Clock, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+
+interface ExamQuestionViewProps {
+  exam: any;
+  questions: any[];
+  onFinish: (attempt: any) => void;
+}
+
+export function ExamQuestionView({ exam, questions, onFinish }: ExamQuestionViewProps) {
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [timeLeft, setTimeLeft] = useState<number | null>(
+    exam.time_limit_minutes ? exam.time_limit_minutes * 60 : null
+  );
+
+  const lang = "en";
+  const currentQuestion = questions[currentIdx];
+  const progress = ((currentIdx + 1) / questions.length) * 100;
+
+  // Handle Finish/Submit
+  const handleSubmit = useCallback(async (finalAnswers?: Record<string, string>) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    const submissionAnswers = finalAnswers || answers;
+    
+    // Ensure all questions have an answer (even if empty/null, though UI prevents it)
+    // The backend requires an answer for every question
+    const completeAnswers: Record<string, string> = { ...submissionAnswers };
+    questions.forEach(q => {
+      if (!completeAnswers[q.id]) {
+        // Find first option as fallback if auto-submitting empty? 
+        // Or just let it fail validation if backend is strict.
+        // Backend says "Answer required for every question."
+        completeAnswers[q.id] = q.options[0]?.id; // Fallback to first option if forced
+      }
+    });
+
+    try {
+      const res = await fetch(`/api/exams/${exam.id}/attempts`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answers: completeAnswers }),
+      });
+
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json.error?.message || "Failed to submit exam");
+      }
+
+      onFinish(json.data);
+    } catch (error: any) {
+      toast.error(error.message);
+      setIsSubmitting(false);
+    }
+  }, [exam.id, answers, questions, onFinish, isSubmitting]);
+
+  // Timer logic
+  useEffect(() => {
+    if (timeLeft === null) return;
+    if (timeLeft <= 0) {
+      toast.warning("Time is up! Submitting your answers...");
+      handleSubmit();
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft(prev => (prev !== null ? prev - 1 : null));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft, handleSubmit]);
+
+  const handleSelectOption = (optionId: string) => {
+    setAnswers(prev => ({ ...prev, [currentQuestion.id]: optionId }));
+  };
+
+  const handleNext = () => {
+    if (currentIdx < questions.length - 1) {
+      setCurrentIdx(prev => prev + 1);
+    } else {
+      handleSubmit();
+    }
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
+  const selectedOptionId = answers[currentQuestion?.id];
+
+  if (!currentQuestion) return null;
+
+  return (
+    <div className="flex-1 flex flex-col space-y-8 animate-in fade-in duration-500">
+      {/* Header Info */}
+      <div className="bg-white rounded-[2rem] border border-slate-100 p-6 md:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+             <span className="text-[10px] font-bold text-accent uppercase tracking-[0.2em]">Progress</span>
+             <span className="text-xs font-bold text-slate-400">Question {currentIdx + 1} of {questions.length}</span>
+          </div>
+          <Progress value={progress} className="h-1.5 w-48 md:w-64 bg-slate-100" />
+        </div>
+
+        {timeLeft !== null && (
+          <div className={cn(
+            "flex items-center gap-3 px-6 py-3 rounded-2xl border font-bold h-fit transition-colors",
+            timeLeft < 60 ? "bg-rose-50 border-rose-100 text-rose-600 animate-pulse" : "bg-slate-50 border-slate-100 text-primary"
+          )}>
+            <Clock className="size-5" />
+            <span className="tabular-nums">{formatTime(timeLeft)}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Question Canvas */}
+      <div className="flex-1 bg-white rounded-[2.5rem] border border-slate-100 p-8 md:p-16 shadow-2xl shadow-primary/5 flex flex-col justify-between space-y-12">
+        <div className="space-y-8">
+           <h2 className="text-xl md:text-3xl font-bold text-primary leading-tight tracking-tight">
+             {typeof currentQuestion.content === "string" ? currentQuestion.content : (currentQuestion.content?.[lang] || "Untitled Question")}
+           </h2>
+
+           <div className="grid grid-cols-1 gap-4">
+              {currentQuestion.options.map((option: any, oIdx: number) => {
+                const isSelected = selectedOptionId === option.id;
+                const optionContent = typeof option.content === "string" ? option.content : (option.content?.[lang] || "Option text missing");
+                
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() => handleSelectOption(option.id)}
+                    className={cn(
+                      "flex items-start gap-4 p-6 rounded-2xl border-2 text-left transition-all duration-300 group",
+                      isSelected 
+                        ? "bg-primary/5 border-primary shadow-lg shadow-primary/5" 
+                        : "bg-white border-slate-50 hover:border-slate-200 hover:bg-slate-50/50"
+                    )}
+                  >
+                    <div className={cn(
+                      "size-6 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors",
+                      isSelected ? "bg-primary border-primary" : "border-slate-200 group-hover:border-slate-300"
+                    )}>
+                      {isSelected && <div className="size-2 rounded-full bg-white" />}
+                    </div>
+                    <span className={cn(
+                      "text-sm md:text-base font-bold transition-colors",
+                      isSelected ? "text-primary" : "text-slate-600 group-hover:text-primary"
+                    )}>
+                      {optionContent}
+                    </span>
+                  </button>
+                );
+              })}
+           </div>
+        </div>
+
+        <div className="flex items-center justify-between pt-8 border-t border-slate-50">
+           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest hidden md:block">
+             Select the correct option to continue
+           </p>
+           
+           <Button
+             disabled={!selectedOptionId || isSubmitting}
+             onClick={handleNext}
+             className="ms-auto h-14 px-10 rounded-2xl font-bold bg-primary hover:bg-primary/95 shadow-xl shadow-primary/10 group transition-all active:scale-95"
+           >
+             {isSubmitting ? "Submitting..." : currentIdx < questions.length - 1 ? "Next Question" : "Finish & Submit"}
+             <ArrowRight className="size-5 ml-2 transition-transform group-hover:translate-x-1" />
+           </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

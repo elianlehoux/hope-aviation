@@ -484,6 +484,9 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [deletingExam, setDeletingExam] = React.useState<ExamWithRelations | null>(null);
 
+  // Filter state
+  const [courseFilter, setCourseFilter] = React.useState<string>("all");
+
   const loadExams = React.useCallback(async () => {
     setLoading(true);
     try {
@@ -515,6 +518,12 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
     setDeleteOpen(true);
   }
 
+  // Derived filtered listing
+  const filteredExams = React.useMemo(() => {
+    if (courseFilter === "all") return exams;
+    return exams.filter((e) => e.course_id === courseFilter);
+  }, [exams, courseFilter]);
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -528,6 +537,21 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3">
+          <Select value={courseFilter} onValueChange={setCourseFilter}>
+            <SelectTrigger className="w-full sm:w-[240px] bg-white">
+              <BookOpen className="size-4 mr-2 text-slate-400" />
+              <SelectValue placeholder="Filtrar por curso..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos los Cursos</SelectItem>
+              {coursesData.map((course) => (
+                <SelectItem key={course.id} value={course.id}>
+                  {getLocalizedText(course.title)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
           <Button onClick={handleCreate} className="shrink-0 self-start sm:self-auto">
             <Plus className="size-4" />
             Crear Examen
@@ -540,6 +564,17 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
         <ExamsTableSkeleton />
       ) : exams.length === 0 ? (
         <ExamsEmpty onCreateClick={handleCreate} />
+      ) : filteredExams.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 text-center bg-white rounded-2xl border border-slate-100 shadow-sm">
+          <div className="flex size-12 items-center justify-center rounded-xl bg-slate-50 mb-4">
+             <BookOpen className="size-6 text-slate-300" />
+          </div>
+          <p className="text-base font-semibold text-primary">No se encontraron exámenes</p>
+          <p className="text-sm text-slate-500 mt-1">El curso seleccionado no tiene evaluaciones configuradas.</p>
+          <Button variant="ghost" className="mt-4 text-accent" onClick={() => setCourseFilter("all")}>
+            Ver todas las evaluaciones
+          </Button>
+        </div>
       ) : (
         <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden overflow-x-auto">
           <Table className="min-w-[800px]">
@@ -553,25 +588,17 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
               </TableRow>
             </TableHeader>
             <TableBody>
-              {exams.map((exam) => {
+              {filteredExams.map((exam) => {
                 return (
                   <TableRow key={exam.id}>
                     <TableCell>
-                      <div className="flex items-center gap-3">
-                        <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-accent/10 border border-slate-100">
-                          <FileQuestion className="size-4 text-accent" />
-                        </div>
-                        <div className="flex flex-col">
-                          <Link 
-                            href={`/campus/admin/exams/${exam.id}`}
-                            className="font-semibold text-primary tracking-tight hover:text-accent transition-colors"
-                          >
-                            {getLocalizedText(exam.title)}
-                          </Link>
-                          <span className="text-xs text-slate-400 font-mono">
-                            ID: {exam.id.split('-')[0]}
-                          </span>
-                        </div>
+                      <div className="flex flex-col">
+                        <Link 
+                          href={`/campus/admin/exams/${exam.id}`}
+                          className="font-semibold text-primary tracking-tight hover:text-accent transition-colors text-base"
+                        >
+                          {getLocalizedText(exam.title)}
+                        </Link>
                       </div>
                     </TableCell>
                     <TableCell>

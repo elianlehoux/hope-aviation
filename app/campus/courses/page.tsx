@@ -39,7 +39,6 @@ export default async function StudentCoursesPage() {
       )
     `)
     .eq("user_id", user?.id)
-    .eq("courses.subjects.classes.lesson_progress.user_id", user?.id || "")
     .order("enrolled_at", { ascending: false });
 
   // Map enrollments to calculate real-time progress
@@ -80,7 +79,7 @@ export default async function StudentCoursesPage() {
 
 
   return (
-    <div className="space-y-16 pb-20 max-w-7xl mx-auto">
+    <div className="space-y-16 pb-20">
       {/* Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-3 text-brand-orange">

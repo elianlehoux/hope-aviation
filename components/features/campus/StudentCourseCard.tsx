@@ -11,10 +11,10 @@ import { cn } from "@/lib/utils";
 interface StudentCourseCardProps {
   course: {
     id: string;
-    title: any; // JSONB translations { es, en }
+    title: any;
     description?: any;
     thumbnail_url?: string;
-    subjects?: { count: number };
+    subjects?: any[] | { count: number };
   };
   enrollment?: {
     status: "active" | "completed";
@@ -35,6 +35,23 @@ export function StudentCourseCard({ course, enrollment, variant = "available" }:
 
   // Mock progress for now if not provided
   const progress = enrollment?.progress ?? (isCompleted ? 100 : 0);
+
+  const getModuleCount = () => {
+    if (!course.subjects) return 0;
+    if (Array.isArray(course.subjects)) {
+      // Handle the case where Supabase returns [{ count: N }] for the catalog query
+      if (course.subjects.length === 1 && typeof (course.subjects[0] as any).count === 'number') {
+        return (course.subjects[0] as any).count;
+      }
+      return course.subjects.length;
+    }
+    if (typeof course.subjects === 'object') {
+      return (course.subjects as any).count || 0;
+    }
+    return 0;
+  };
+
+  const moduleCount = getModuleCount();
 
   return (
     <Card className="group relative flex flex-col h-full bg-white border-slate-100 shadow-xs hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 rounded-3xl overflow-hidden animate-in fade-in zoom-in-95 duration-700">
@@ -84,7 +101,7 @@ export function StudentCourseCard({ course, enrollment, variant = "available" }:
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-slate-400">
             <BookOpen className="size-3" />
-            {course.subjects?.count || 0} Modules
+            {moduleCount} Modules
           </div>
           <h3 className="text-xl font-bold tracking-tight text-primary leading-tight group-hover:text-accent transition-colors">
             {title}

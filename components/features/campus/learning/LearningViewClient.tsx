@@ -16,40 +16,45 @@ import { cn } from "@/lib/utils";
 interface LearningViewClientProps {
   course: any;
   activeClass: any;
-  flatClasses: any[];
+  flatItems: any[];
 }
 
 export function LearningViewClient({
   course,
   activeClass,
-  flatClasses,
+  flatItems,
 }: LearningViewClientProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   if (!activeClass || !course) return null;
 
-  const currentIndex = flatClasses.findIndex((c) => c?.id === activeClass.id);
-  const nextClass = flatClasses[currentIndex + 1];
-  const previousClass = flatClasses[currentIndex - 1];
+  const currentIndex = flatItems.findIndex((c) => c?.id === activeClass.id);
+  const nextItem = flatItems[currentIndex + 1];
+  const previousItem = flatItems[currentIndex - 1];
 
   const lang = "en";
   const courseTitle = typeof course.title === "string" ? course.title : (course.title?.[lang] || "Untitled Course");
   const classTitle = typeof activeClass.title === "string" ? activeClass.title : (activeClass.title?.[lang] || "Untitled Class");
 
-  const totalClasses = Math.max(flatClasses.length, 1);
-  const completedCount = flatClasses.filter(c => c?.lesson_progress?.[0]?.is_completed).length;
-  const progressPercentage = (completedCount / totalClasses) * 100;
-
+  // Calculate overall progress including exams
+  const totalItems = flatItems.length;
+  const completedLessons = flatItems.filter(item => item.itemType === 'class' && item.lesson_progress?.[0]?.is_completed).length;
+  const passedExams = flatItems.filter(item => item.itemType === 'exam' && item.exam_attempts?.some((a: any) => a.passed)).length;
+  
+  const progressPercentage = totalItems > 0 ? ((completedLessons + passedExams) / totalItems) * 100 : 0;
 
   const handleNext = () => {
     startTransition(async () => {
       // Automatically mark current as completed when clicking next
       await toggleLessonCompletion(course.id, activeClass.id, true);
       
-      if (nextClass) {
-        toast.info("Saving progress and moving to next class...", { duration: 2000 });
-        router.push(`/campus/courses/${course.id}/learn/${nextClass.id}`);
+      if (nextItem) {
+        toast.info("Saving progress and moving forward...", { duration: 2000 });
+        const route = nextItem.itemType === "exam" 
+          ? `/campus/courses/${course.id}/learn/exam/${nextItem.id}`
+          : `/campus/courses/${course.id}/learn/${nextItem.id}`;
+        router.push(route);
       } else {
         toast.success("Congratulations! You've reached the end of the course.");
       }
@@ -67,8 +72,11 @@ export function LearningViewClient({
   };
 
   const handlePrevious = () => {
-    if (previousClass) {
-      router.push(`/campus/courses/${course.id}/learn/${previousClass.id}`);
+    if (previousItem) {
+      const route = previousItem.itemType === "exam"
+        ? `/campus/courses/${course.id}/learn/exam/${previousItem.id}`
+        : `/campus/courses/${course.id}/learn/${previousItem.id}`;
+      router.push(route);
     }
   };
 
@@ -77,9 +85,9 @@ export function LearningViewClient({
       // Mark current as completed
       await toggleLessonCompletion(course.id, activeClass.id, true);
       
-      // Auto-advance if there's a next class
-      if (nextClass) {
-        toast.info("Lesson completed! Advancing to next...", { duration: 3000 });
+      // Auto-advance if there's a next item
+      if (nextItem) {
+        toast.info("Lesson completed! Advancing...", { duration: 3000 });
         handleNext();
       } else {
         toast.success("Course completed! Well done.");
@@ -139,12 +147,15 @@ export function LearningViewClient({
             <LearnSidebar
               courseId={course.id}
               subjects={course.subjects}
-              activeClassId={activeClass.id}
+              activeItemId={activeClass.id}
+              activeType="class"
               progressPercentage={progressPercentage}
               onPrevious={handlePrevious}
               onNext={handleNext}
-              hasPrevious={!!previousClass}
-              hasNext={!!nextClass}
+              hasPrevious={!!previousItem}
+              hasNext={!!nextItem}
+              nextClassId={nextItem?.itemType === 'class' ? nextItem.id : undefined}
+              onNextFromSidebar={handleNext}
             />
           </div>
         </aside>

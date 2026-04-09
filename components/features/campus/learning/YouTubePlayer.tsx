@@ -110,7 +110,7 @@ export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerPro
       )}
       
       {error && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-900 text-white p-6 text-center space-y-4">
+        <div className="absolute z-10 inset-0 flex flex-col items-center justify-center bg-slate-900 text-white p-6 text-center space-y-4">
           <AlertCircle className="size-12 text-rose-500" />
           <div className="space-y-1">
             <h3 className="font-bold text-lg">Playback Error</h3>
@@ -119,7 +119,10 @@ export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerPro
         </div>
       )}
       
-      <div ref={containerRef} className="absolute inset-0 h-full w-full" />
+      {/* Isolated mount point for YouTube API to prevent DOM mutation errors with React siblings */}
+      <div className="absolute inset-0 h-full w-full z-0">
+        <div ref={containerRef} />
+      </div>
     </div>
   );
 }

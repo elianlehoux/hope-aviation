@@ -201,6 +201,28 @@ export async function POST(request: Request, context: RouteContext) {
     return jsonError("database_error", "Something went wrong. Please try again.", 500);
   }
 
+  // If the student passed, auto-complete all classes in this module
+  if (passed) {
+    try {
+      const { data: examData } = await supabase
+        .from("exams")
+        .select("subject_id, subjects(course_id)")
+        .eq("id", examId)
+        .single();
+
+      if (examData?.subject_id && (examData as any).subjects?.course_id) {
+        const { markModuleCompleted } = await import("@/actions/courses");
+        await markModuleCompleted(
+          (examData as any).subjects.course_id,
+          examData.subject_id
+        );
+      }
+    } catch (e) {
+      // Non-blocking: log but don't fail the response
+      console.error("Auto-complete module after exam pass failed:", e);
+    }
+  }
+
   return jsonOk(
     {
       attempt: attemptRow,

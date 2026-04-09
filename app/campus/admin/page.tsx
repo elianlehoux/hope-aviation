@@ -5,7 +5,8 @@ import Link from "next/link";
  */
 export default function AdminHomePage() {
   const links = [
-    { href: "/campus/admin/users", label: "Users", note: "profiles, roles_users" },
+    { href: "/campus/admin/user-management", label: "User Management", note: "Academic progress, exam resets, enrollments" },
+    { href: "/campus/admin/users", label: "Users", note: "System-level profiles, roles_users" },
     { href: "/campus/admin/roles", label: "Roles", note: "roles" },
     { href: "/campus/admin/courses", label: "Courses", note: "courses, subjects, classes" },
     { href: "/campus/admin/exams", label: "Exams", note: "exams, questions, options" },

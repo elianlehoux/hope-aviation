@@ -50,7 +50,7 @@ export async function enrollInCourse(courseId: string) {
 }
 
 /**
- * Fetches all data needed for the learning interface.
+ * Fetches all data needed for the learning interface, including exams and progress.
  */
 export async function getCourseLearningData(courseId: string) {
   const supabase = await createClient();
@@ -58,7 +58,7 @@ export async function getCourseLearningData(courseId: string) {
 
   if (!user) throw new Error("Unauthorized");
 
-  // Fetch course with subjects and classes
+  // Fetch course with subjects, classes, and exams
   const { data: course, error: courseError } = await supabase
     .from("courses")
     .select(`
@@ -70,13 +70,23 @@ export async function getCourseLearningData(courseId: string) {
           lesson_progress!left (
             is_completed
           )
+        ),
+        exams (
+          *,
+          exam_attempts!left (
+            id,
+            score,
+            passed,
+            started_at,
+            finished_at
+          )
         )
       )
     `)
     .eq("id", courseId)
-    .eq("subjects.classes.lesson_progress.user_id", user.id)
     .order("order_index", { foreignTable: "subjects" })
     .order("order_index", { foreignTable: "subjects.classes" })
+    .order("order_index", { foreignTable: "subjects.exams" })
     .maybeSingle();
 
   if (courseError || !course) {
@@ -108,6 +118,50 @@ export async function toggleLessonCompletion(courseId: string, classId: string, 
   if (error) {
     console.error("Error toggling lesson completion:", error);
     return { success: false, error: error.message };
+  }
+
+  revalidatePath(`/campus/courses/${courseId}/learn`);
+  return { success: true };
+}
+
+/**
+ * Marks all classes in a module (subject) as completed for the current user.
+ * Called automatically when a student passes a module exam so they receive
+ * full credit for the module even if they skipped individual lessons.
+ */
+export async function markModuleCompleted(courseId: string, subjectId: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) return { success: false, error: "Unauthorized" };
+
+  // Fetch all class IDs in this subject
+  const { data: classes, error: fetchError } = await supabase
+    .from("classes")
+    .select("id")
+    .eq("subject_id", subjectId);
+
+  if (fetchError || !classes?.length) {
+    console.error("Error fetching classes for module completion:", fetchError);
+    return { success: false, error: fetchError?.message || "No classes found" };
+  }
+
+  // Bulk upsert completion records for every class in the module
+  const now = new Date().toISOString();
+  const records = classes.map((cls) => ({
+    user_id: user.id,
+    class_id: cls.id,
+    is_completed: true,
+    completed_at: now,
+  }));
+
+  const { error: upsertError } = await supabase
+    .from("lesson_progress")
+    .upsert(records, { onConflict: "user_id,class_id" });
+
+  if (upsertError) {
+    console.error("Error bulk-completing module:", upsertError);
+    return { success: false, error: upsertError.message };
   }
 
   revalidatePath(`/campus/courses/${courseId}/learn`);
