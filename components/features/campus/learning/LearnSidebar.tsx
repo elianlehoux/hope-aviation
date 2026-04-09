@@ -43,6 +43,10 @@ interface LearnSidebarProps {
   nextClassId?: string;
   /** Callback to trigger "next class" flow (marks current complete + navigates) */
   onNextFromSidebar?: () => void;
+  /** Enrollment status to determine final exam pass state */
+  enrollmentStatus?: string;
+  /** Final exam config */
+  finalExamConfig?: { enabled: boolean };
 }
 
 // Helper: check if a module's exam has been passed
@@ -65,6 +69,8 @@ export function LearnSidebar({
   hasNext,
   nextClassId,
   onNextFromSidebar,
+  enrollmentStatus,
+  finalExamConfig,
 }: LearnSidebarProps) {
   const lang = "en";
 
@@ -85,9 +91,11 @@ export function LearnSidebar({
   };
 
   return (
-    <aside className="w-full h-full flex flex-col bg-white border-l border-slate-100 overflow-hidden">
-      {/* Navigation Header */}
-      <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between gap-3">
+    <aside className="w-full h-full bg-white overflow-y-auto scrollbar-hide relative">
+      {/* Sticky Header Wrapper */}
+      <div className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-slate-100 shadow-sm flex flex-col">
+        {/* Navigation Header */}
+        <div className="p-4 border-b border-slate-100/50 flex items-center justify-between gap-3">
         <Button 
           variant="ghost" 
           size="sm" 
@@ -111,8 +119,8 @@ export function LearnSidebar({
         </Button>
       </div>
 
-      {/* Progress Header */}
-      <div className="p-6 border-b border-slate-100 bg-slate-50/20">
+        {/* Progress Header */}
+        <div className="px-6 py-4">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400">Course Progress</h3>
           <span className="text-xs font-bold text-primary">{Math.round(progressPercentage)}%</span>
@@ -120,8 +128,10 @@ export function LearnSidebar({
         <Progress value={progressPercentage} className="h-1.5 bg-slate-100" />
       </div>
 
+        </div>
+
       {/* Curriculum List */}
-      <div className="flex-1 overflow-y-auto scrollbar-hide py-4 px-2">
+      <div className="py-4 px-2">
         <Accordion type="multiple" defaultValue={subjects.map(s => s.id)} className="w-full space-y-4 relative">
           {/* Main Continuous Vertical Line Background */}
           <div className="absolute left-[30px] top-6 bottom-6 w-[1.5px] bg-slate-100 z-0" />
@@ -313,7 +323,11 @@ export function LearnSidebar({
                     const examTitle = typeof exam.title === "string" ? exam.title : (exam.title?.[lang] || "Assessment");
                     const isActive = activeType === "exam" && exam.id === activeItemId;
                     const attempts = exam.exam_attempts || [];
-                    const bestAttempt = attempts.length > 0 ? [...attempts].sort((a, b) => b.score - a.score)[0] : null;
+                    // Fix: Sort to prioritize passed attempt, then score
+                    const bestAttempt = attempts.length > 0 ? [...attempts].sort((a, b) => {
+                      if (b.passed !== a.passed) return b.passed ? 1 : -1;
+                      return b.score - a.score;
+                    })[0] : null;
                     const isPassed = bestAttempt?.passed || false;
                     const isAttempted = attempts.length > 0;
 
@@ -350,7 +364,14 @@ export function LearnSidebar({
                           <div className={cn(
                             "flex-1 transition-colors duration-500",
                             (() => {
-                              if (!isPassed || sIdx >= subjects.length - 1) return false;
+                              if (!isPassed) return false;
+                              if (sIdx >= subjects.length - 1) {
+                                // If this is the last module, check if final exam is enabled and started/passed
+                                if (finalExamConfig?.enabled) {
+                                  return enrollmentStatus === "completed" || activeItemId === "final-exam";
+                                }
+                                return false;
+                              }
                               const nextSubject = subjects[sIdx + 1];
                               const nextFirstClass = nextSubject.classes[0];
                               if (!nextFirstClass) return false;
@@ -415,6 +436,81 @@ export function LearnSidebar({
               </AccordionItem>
             );
           })}
+
+          {/* Final Exam Node */}
+          {finalExamConfig?.enabled && (
+             <div className="pt-4 mt-2">
+                {(() => {
+                   // Check if all module exams are passed to unlock final exam.
+                   const allModulesPassed = subjects.every(s => isModuleExamPassed(s));
+                   const isFinalLocked = !allModulesPassed;
+                   const isFinalActive = activeItemId === "final-exam";
+                   const isFinalPassed = enrollmentStatus === "completed";
+
+                   return (
+                     <Link
+                       href={isFinalLocked ? "#" : `/campus/courses/${courseId}/learn/final-exam`}
+                       onClick={(e) => { if (isFinalLocked) e.preventDefault(); }}
+                       aria-disabled={isFinalLocked}
+                       className={cn(
+                         "group relative flex items-center gap-4 py-3 px-4 transition-all z-10",
+                         isFinalActive && "bg-slate-50/50 rounded-2xl",
+                         isFinalLocked && "opacity-40 cursor-not-allowed"
+                       )}
+                     >
+                        {/* Connecting Line to last module */}
+                        <div className="absolute left-[29px] -top-12 bottom-1/2 w-[2px] flex flex-col z-0">
+                           <div className={cn(
+                             "flex-1 transition-colors duration-500",
+                             (isFinalPassed || isFinalActive) ? "bg-accent" : "bg-transparent"
+                           )} />
+                        </div>
+
+                        {/* Icon */}
+                        <div className="relative size-7 shrink-0 flex items-center justify-center z-10">
+                           <div className={cn(
+                              "relative size-full rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 shadow-sm border-2 border-white",
+                              isFinalLocked ? "bg-slate-200 text-slate-400" :
+                              isFinalPassed || isFinalActive
+                                 ? "bg-accent text-white shadow-accent/20"
+                                 : "bg-amber-100 text-amber-600 group-hover:bg-amber-200"
+                           )}>
+                              {isFinalLocked ? <Lock className="size-2.5" /> : <ClipboardCheck className="size-3.5" />}
+                           </div>
+                        </div>
+
+                        {/* Text Metadata */}
+                        <div className="min-w-0 flex-1">
+                           <h5 className={cn(
+                              "text-[12px] font-bold leading-snug transition-colors line-clamp-2",
+                              isFinalLocked ? "text-slate-400" :
+                              isFinalActive || isFinalPassed ? "text-primary" : "text-slate-500 group-hover:text-primary"
+                           )}>
+                              Final Test
+                           </h5>
+                           {(isFinalLocked || isFinalPassed || isFinalActive) && (
+                              <div className="flex items-center gap-2 mt-1">
+                                 {isFinalLocked ? (
+                                    <span className="flex items-center gap-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                                       <Lock className="size-2.5" /> Locked
+                                    </span>
+                                 ) : isFinalPassed ? (
+                                    <span className="flex items-center gap-1 text-[9px] font-bold text-emerald-500 uppercase tracking-widest opacity-80">
+                                       <CheckCircle2 className="size-2.5" /> Passed
+                                    </span>
+                                 ) : isFinalActive ? (
+                                    <span className="flex items-center gap-1.5 text-[9px] font-bold text-accent uppercase tracking-widest">
+                                       <Play className="size-2.5 fill-accent" /> Taking now
+                                    </span>
+                                 ) : null}
+                              </div>
+                           )}
+                        </div>
+                     </Link>
+                   );
+                })()}
+             </div>
+          )}
 
         </Accordion>
       </div>

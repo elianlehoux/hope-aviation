@@ -1,6 +1,6 @@
 "use client";
 
-import { ClipboardCheck, Clock, RefreshCcw, HelpCircle, ArrowRight, AlertTriangle } from "lucide-react";
+import { ClipboardCheck, Clock, RefreshCcw, PercentCircle, ArrowRight, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -15,11 +15,11 @@ export function ExamPreFlight({ exam, questionCount, onStart }: ExamPreFlightPro
   const lang = "en";
   const title = typeof exam.title === "string" ? exam.title : (exam.title?.[lang] || "Assessment");
   const description = typeof exam.description === "string" ? exam.description : (exam.description?.[lang] || "Please read the instructions carefully before starting.");
-  
+
   const attempts = exam.exam_attempts || [];
   const finishedAttempts = attempts.filter((a: any) => a.finished_at).length;
   const attemptsRemaining = Math.max(0, exam.max_attempts - finishedAttempts);
-  
+
   const isExhausted = attemptsRemaining <= 0;
   const lastScore = attempts.length > 0 ? attempts[0].score : null;
   const hasPassed = attempts.some((a: any) => a.passed);
@@ -62,25 +62,25 @@ export function ExamPreFlight({ exam, questionCount, onStart }: ExamPreFlightPro
 
           {!hasPassed && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <InfoItem 
+              <InfoItem
                 icon={<Clock className="size-5 text-accent" />}
                 label="Time Limit"
                 value={exam.time_limit_minutes ? `${exam.time_limit_minutes} minutes` : "No limit"}
               />
-              <InfoItem 
+              <InfoItem
                 icon={<RefreshCcw className="size-5 text-brand-orange" />}
                 label="Attempts"
-                value={`${finishedAttempts} of ${exam.max_attempts} used`}
-                description={isExhausted ? "No attempts remaining" : `${attemptsRemaining} attempts left`}
+                value={exam.max_attempts > 100 ? "Unlimited" : `${finishedAttempts} of ${exam.max_attempts} used`}
+                description={exam.max_attempts > 100 ? "You can retake this test as many times as needed" : (isExhausted ? "No attempts remaining" : `${attemptsRemaining} attempts left`)}
               />
-              <InfoItem 
-                icon={<HelpCircle className="size-5 text-primary" />}
+              <InfoItem
+                icon={<PercentCircle className="size-5 text-primary" />}
                 label="Passing Score"
                 value={`${exam.passing_score}%`}
               />
-              <InfoItem 
+              <InfoItem
                 icon={<AlertTriangle className="size-5 text-rose-500" />}
-                label="Proctoring"
+                label="Rules"
                 value="Once started, you cannot navigate away."
               />
             </div>
@@ -103,16 +103,14 @@ export function ExamPreFlight({ exam, questionCount, onStart }: ExamPreFlightPro
               </div>
             ) : (
               <div className="space-y-4">
-                <Button 
+                <Button
                   onClick={onStart}
                   className="w-full h-16 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/95 shadow-xl shadow-primary/10 group"
                 >
-                  Start Examination
+                  Start Test
                   <ArrowRight className="size-5 ml-2 transition-transform group-hover:translate-x-1" />
                 </Button>
-                <p className="text-center text-[11px] font-bold text-slate-400 uppercase tracking-widest">
-                  By clicking Start, you agree to follow the examination rules.
-                </p>
+
               </div>
             )}
           </div>

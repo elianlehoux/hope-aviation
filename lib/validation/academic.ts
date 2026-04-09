@@ -37,6 +37,9 @@ export const courseUpdateSchema = z
     description: translatedDescriptionSchema,
     thumbnail_url: z.string().url().nullable().optional(),
     status: courseStatusSchema.optional(),
+    final_exam_question_count: z.number().int().min(0).nullable().optional(),
+    final_exam_time_limit_minutes: z.number().int().min(1).nullable().optional(),
+    final_exam_passing_score: z.number().min(1).max(100).optional(),
   })
   .refine((o) => Object.keys(o).length > 0, {
     message: "at least one field required",

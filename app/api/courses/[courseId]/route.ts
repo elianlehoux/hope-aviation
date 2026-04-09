@@ -74,6 +74,9 @@ export async function PATCH(request: Request, context: RouteContext) {
         ? { thumbnail_url: payload.thumbnail_url }
         : {}),
       ...(payload.status !== undefined ? { status: payload.status } : {}),
+      ...(payload.final_exam_question_count !== undefined ? { final_exam_question_count: payload.final_exam_question_count } : {}),
+      ...(payload.final_exam_time_limit_minutes !== undefined ? { final_exam_time_limit_minutes: payload.final_exam_time_limit_minutes } : {}),
+      ...(payload.final_exam_passing_score !== undefined ? { final_exam_passing_score: payload.final_exam_passing_score } : {}),
     })
     .eq("id", courseId)
     .select("*")

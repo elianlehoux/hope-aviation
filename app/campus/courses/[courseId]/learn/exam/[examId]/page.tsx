@@ -37,7 +37,7 @@ export default async function ExamPage({ params }: ExamPageProps) {
     .eq("course_id", courseId)
     .maybeSingle();
 
-  if (!enrollment || enrollment.status !== "active") {
+  if (!enrollment || (enrollment.status !== "active" && enrollment.status !== "completed")) {
     return notFound();
   }
 
@@ -110,6 +110,7 @@ export default async function ExamPage({ params }: ExamPageProps) {
       exam={activeExam}
       questions={questions}
       flatItems={flatItems}
+      enrollmentStatus={enrollment.status}
     />
   );
 }

@@ -17,12 +17,14 @@ interface LearningViewClientProps {
   course: any;
   activeClass: any;
   flatItems: any[];
+  enrollmentStatus?: string;
 }
 
 export function LearningViewClient({
   course,
   activeClass,
   flatItems,
+  enrollmentStatus,
 }: LearningViewClientProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -30,8 +32,14 @@ export function LearningViewClient({
   if (!activeClass || !course) return null;
 
   const currentIndex = flatItems.findIndex((c) => c?.id === activeClass.id);
-  const nextItem = flatItems[currentIndex + 1];
+  let nextItem = flatItems[currentIndex + 1];
   const previousItem = flatItems[currentIndex - 1];
+
+  const hasFinalExam = (course.final_exam_question_count ?? 0) > 0;
+
+  if (!nextItem && hasFinalExam) {
+    nextItem = { itemType: "final-exam", id: "final-exam" };
+  }
 
   const lang = "en";
   const courseTitle = typeof course.title === "string" ? course.title : (course.title?.[lang] || "Untitled Course");
@@ -39,10 +47,13 @@ export function LearningViewClient({
 
   // Calculate overall progress including exams
   const totalItems = flatItems.length;
+  const progressTotalItems = totalItems + (hasFinalExam ? 1 : 0);
+
   const completedLessons = flatItems.filter(item => item.itemType === 'class' && item.lesson_progress?.[0]?.is_completed).length;
   const passedExams = flatItems.filter(item => item.itemType === 'exam' && item.exam_attempts?.some((a: any) => a.passed)).length;
+  const passedFinal = enrollmentStatus === "completed" ? 1 : 0;
   
-  const progressPercentage = totalItems > 0 ? ((completedLessons + passedExams) / totalItems) * 100 : 0;
+  const progressPercentage = progressTotalItems > 0 ? ((completedLessons + passedExams + passedFinal) / progressTotalItems) * 100 : 0;
 
   const handleNext = () => {
     startTransition(async () => {
@@ -51,9 +62,16 @@ export function LearningViewClient({
       
       if (nextItem) {
         toast.info("Saving progress and moving forward...", { duration: 2000 });
-        const route = nextItem.itemType === "exam" 
-          ? `/campus/courses/${course.id}/learn/exam/${nextItem.id}`
-          : `/campus/courses/${course.id}/learn/${nextItem.id}`;
+        
+        let route = "";
+        if (nextItem.itemType === "final-exam") {
+           route = `/campus/courses/${course.id}/learn/final-exam`;
+        } else if (nextItem.itemType === "exam") {
+           route = `/campus/courses/${course.id}/learn/exam/${nextItem.id}`;
+        } else {
+           route = `/campus/courses/${course.id}/learn/${nextItem.id}`;
+        }
+        
         router.push(route);
       } else {
         toast.success("Congratulations! You've reached the end of the course.");
@@ -142,8 +160,8 @@ export function LearningViewClient({
 
 
         {/* Sidebar Area */}
-        <aside className="xl:col-span-4 self-start">
-          <div className="sticky top-28 rounded-[2.5rem] bg-white border border-slate-100 shadow-2xl shadow-primary/5 overflow-hidden">
+        <aside className="xl:col-span-4 self-start sticky top-28 h-[calc(100vh-8rem)] min-h-[500px]">
+          <div className="h-full rounded-[2.5rem] bg-white border border-slate-100 shadow-2xl shadow-primary/5 overflow-hidden">
             <LearnSidebar
               courseId={course.id}
               subjects={course.subjects}
@@ -156,6 +174,8 @@ export function LearningViewClient({
               hasNext={!!nextItem}
               nextClassId={nextItem?.itemType === 'class' ? nextItem.id : undefined}
               onNextFromSidebar={handleNext}
+              enrollmentStatus={enrollmentStatus}
+              finalExamConfig={{ enabled: (course.final_exam_question_count ?? 0) > 0 }}
             />
           </div>
         </aside>

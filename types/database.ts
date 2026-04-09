@@ -50,6 +50,9 @@ export interface Course {
   description: TranslatedText | null;
   thumbnail_url: string | null;
   status: CourseStatus;
+  final_exam_question_count: number | null;
+  final_exam_passing_score: number;
+  final_exam_time_limit_minutes: number | null;
   created_at: string;
   updated_at: string | null;
 }

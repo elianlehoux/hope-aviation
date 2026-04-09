@@ -17,6 +17,7 @@ export default function CampusLayout({
   const navLinks = [
     { href: "/campus", label: "Home" },
     { href: "/campus/courses", label: "My Learning" },
+    { href: "/campus/certificates", label: "My Certificates" },
     { href: "/campus/admin/user-management", label: "User Management" },
     { href: "/campus/admin/users", label: "Users" },
     { href: "/campus/admin/roles", label: "Roles" },

@@ -10,6 +10,11 @@ type RouteContext = { params: Promise<{ courseId: string }> };
 
 type SubjectRow = Subject & { classes: Class[] | null };
 
+type CourseTreeData = Course & {
+  subjects: SubjectRow[] | null;
+  total_questions_count?: number;
+};
+
 export async function GET(_request: Request, context: RouteContext) {
   const { courseId: rawId } = await context.params;
   const courseId = parseUuidParam(rawId);
@@ -47,6 +52,29 @@ export async function GET(_request: Request, context: RouteContext) {
     subjects: SubjectRow[] | null;
   };
 
+  // Fetch total question count for the final exam validation
+  const { data: courseExams, error: examsErr } = await supabase
+    .from("exams")
+    .select("id")
+    .eq("course_id", courseId);
+
+  let totalQuestions = 0;
+  if (courseExams && courseExams.length > 0) {
+    const examIds = courseExams.map((e) => e.id);
+    const { count, error: qCountError } = await supabase
+      .from("questions")
+      .select("id", { count: "exact", head: true })
+      .in("exam_id", examIds);
+    
+    if (qCountError) {
+      console.error("Error fetching questions count:", qCountError);
+    } else {
+      totalQuestions = count || 0;
+    }
+  } else if (examsErr) {
+    console.error("Error fetching exams for count:", examsErr);
+  }
+
   const { subjects: rawSubjects, ...course } = row;
   const subjectsList = rawSubjects ?? [];
 
@@ -57,7 +85,10 @@ export async function GET(_request: Request, context: RouteContext) {
   });
 
   return jsonOk({
-    course,
+    course: {
+      ...course,
+      total_questions_count: totalQuestions || 0,
+    },
     subjects,
   });
 }

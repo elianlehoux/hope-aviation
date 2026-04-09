@@ -52,6 +52,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/shared/modal";
+import { PublishValidationModal } from "./PublishValidationModal";
 
 import type { Course, TranslatedText, CourseStatus } from "@/types/database";
 
@@ -169,6 +170,9 @@ function CourseFormModal({ course, open, onOpenChange, onSaved }: CourseFormProp
   const [status, setStatus] = React.useState<CourseStatus>("draft");
   const [saving, setSaving] = React.useState(false);
 
+  const [validationOpen, setValidationOpen] = React.useState(false);
+  const [availableQuestions, setAvailableQuestions] = React.useState(0);
+
   // Sync form state when course changes
   React.useEffect(() => {
     if (open) {
@@ -186,6 +190,28 @@ function CourseFormModal({ course, open, onOpenChange, onSaved }: CourseFormProp
     if (!titleEs.trim() && !titleEn.trim()) {
       toast.error("El curso debe tener un título (ES o EN).");
       return;
+    }
+
+    // Validation: if publishing, check final exam question availability
+    if (status === "published" && course?.final_exam_question_count) {
+      const configCount = course.final_exam_question_count;
+      
+      try {
+        // Fetch current tree to get question count (backend is already updated to return it)
+        const treeRes = await fetch(`/api/courses/${course.id}/tree`);
+        if (treeRes.ok) {
+          const treeData = await treeRes.json();
+          const totalAvailable = treeData.data.course.total_questions_count || 0;
+          
+          if (configCount > totalAvailable) {
+            setAvailableQuestions(totalAvailable);
+            setValidationOpen(true);
+            return;
+          }
+        }
+      } catch (err) {
+        console.error("Error validating course before publish:", err);
+      }
     }
 
     setSaving(true);
@@ -321,6 +347,14 @@ function CourseFormModal({ course, open, onOpenChange, onSaved }: CourseFormProp
             </Button>
           </DialogFooter>
         </form>
+
+        <PublishValidationModal 
+            open={validationOpen}
+            onOpenChange={setValidationOpen}
+            courseTitle={getLocalizedText(course?.title ?? null)}
+            configuredQuestions={course?.final_exam_question_count || 0}
+            availableQuestions={availableQuestions}
+        />
       </DialogContent>
     </Dialog>
   );

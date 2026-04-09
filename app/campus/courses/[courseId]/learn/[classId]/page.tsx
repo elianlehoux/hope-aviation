@@ -38,7 +38,7 @@ export default async function LearnClassPage({
     .eq("course_id", courseId)
     .maybeSingle();
 
-  if (!enrollment || enrollment.status !== "active") {
+  if (!enrollment || (enrollment.status !== "active" && enrollment.status !== "completed")) {
     return notFound();
   }
 
@@ -87,6 +87,7 @@ export default async function LearnClassPage({
        course={course}
        activeClass={activeClass}
        flatItems={flatItems}
+       enrollmentStatus={enrollment.status}
     />
   );
 }

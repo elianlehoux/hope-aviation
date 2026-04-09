@@ -16,9 +16,15 @@ import {
   Clock,
   ArrowLeft,
   ChevronRight,
-  GripVertical
+  GripVertical,
+  Settings
 } from "lucide-react";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
+import { 
+  Rocket,
+  CheckCircle2,
+  AlertCircle
+} from "lucide-react";
 
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
@@ -49,13 +55,14 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/shared/modal";
+import { PublishValidationModal } from "./PublishValidationModal";
 
 import type { Course, Subject, Class, TranslatedText, CourseStatus } from "@/types/database";
 
 // Define the shape that the `/tree` endpoint returns
 type SubjectWithClasses = Subject & { classes: Class[] };
 type CourseTree = {
-  course: Course;
+  course: Course & { total_questions_count?: number };
   subjects: SubjectWithClasses[];
 };
 
@@ -173,6 +180,108 @@ async function reorderClasses(courseId: string, subjectId: string, orderedClassI
     body: JSON.stringify({ orderedClassIds }),
   });
   if (!res.ok) throw new Error("Error guardando el nuevo orden de clases");
+}
+
+async function updateCourseConfig(courseId: string, payload: any): Promise<Course> {
+  const res = await fetch(`/api/courses/${courseId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error("Error actualizando la configuración del curso");
+  return (await res.json()).data.course;
+}
+
+
+// ─── Course Config Modal ────────────────────────────────────────────────────────
+
+interface CourseConfigProps {
+  courseId: string;
+  course: Course | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSaved: () => void;
+}
+
+function CourseConfigModal({ courseId, course, open, onOpenChange, onSaved }: CourseConfigProps) {
+  const [questionCount, setQuestionCount] = React.useState("");
+  const [timeLimit, setTimeLimit] = React.useState("");
+  const [saving, setSaving] = React.useState(false);
+
+  React.useEffect(() => {
+    if (open) {
+      setQuestionCount(course?.final_exam_question_count?.toString() ?? "");
+      setTimeLimit(course?.final_exam_time_limit_minutes?.toString() ?? "");
+    }
+  }, [course, open]);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      const payload = {
+        final_exam_question_count: questionCount !== "" ? parseInt(questionCount, 10) : null,
+        final_exam_time_limit_minutes: timeLimit !== "" ? parseInt(timeLimit, 10) : null,
+      };
+
+      await updateCourseConfig(courseId, payload);
+      toast.success("Configuración actualizada correctamente.");
+      onSaved();
+      onOpenChange(false);
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Ha ocurrido un error.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle>Configuración de Examen Final</DialogTitle>
+          <DialogDescription>
+             Establece la cantidad de preguntas y el tiempo límite para el examen final. Déjalos vacíos si el curso no tiene examen final.
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="cfg-qcount">Nº de Preguntas (Random)</Label>
+              <Input
+                id="cfg-qcount"
+                type="number"
+                placeholder="Ej. 15"
+                value={questionCount}
+                onChange={(e) => setQuestionCount(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="cfg-limit">Tiempo (Minutos)</Label>
+              <Input
+                id="cfg-limit"
+                type="number"
+                placeholder="Ej. 60"
+                value={timeLimit}
+                onChange={(e) => setTimeLimit(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="ghost">Cancelar</Button>
+            </DialogClose>
+            <Button type="submit" disabled={saving}>
+              {saving && <Loader2 className="size-4 animate-spin" />}
+              Guardar Cambios
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 
@@ -577,9 +686,14 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
   const [subFormOpen, setSubFormOpen] = React.useState(false);
   const [editingSub, setEditingSub] = React.useState<Subject | null>(null);
 
+  const [settingsOpen, setSettingsOpen] = React.useState(false);
+
   const [clsFormOpen, setClsFormOpen] = React.useState(false);
   const [targetSubId, setTargetSubId] = React.useState<string | null>(null);
   const [editingCls, setEditingCls] = React.useState<Class | null>(null);
+
+  const [publishValidationOpen, setPublishValidationOpen] = React.useState(false);
+  const [publishPending, setPublishPending] = React.useState(false);
 
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [deletingItem, setDeletingItem] = React.useState<{type: "subject" | "class", id: string, parentId?: string, name: string} | null>(null);
@@ -694,6 +808,38 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
      setDeleteOpen(true);
   };
 
+  const handlePublish = async () => {
+    if (!tree) return;
+    
+    const configCount = tree.course.final_exam_question_count || 0;
+    const availableCount = tree.course.total_questions_count || 0;
+
+    // Validation: if there is a final exam configured, check if we have enough questions
+    if (configCount > 0 && configCount > availableCount) {
+      setPublishValidationOpen(true);
+      return;
+    }
+
+    setPublishPending(true);
+    try {
+      const res = await fetch(`/api/courses/${courseId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "published" }),
+      });
+
+      if (!res.ok) throw new Error("Error al publicar el curso");
+
+      toast.success("¡Curso publicado con éxito!");
+      loadData();
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Error al publicar");
+    } finally {
+      setPublishPending(false);
+    }
+  };
+
+
 
   if (loading) {
     return (
@@ -731,13 +877,40 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                    <StatusBadge status={tree.course.status} />
                    <span>Creado el {formatDate(tree.course.created_at)}</span>
                    <span className="bg-slate-100 rounded-md px-2 py-0.5 border border-slate-200 text-xs font-mono">{tree.subjects.length} módulos</span>
+                   {!(tree.course.final_exam_question_count && tree.course.final_exam_question_count > 0) && (
+                      <span className="flex items-center gap-1.5 text-amber-600 font-semibold bg-amber-50 px-2.5 py-0.5 rounded-md border border-amber-200/50 text-xs">
+                         <AlertCircle className="size-3.5" />
+                         Examen final sin configurar
+                      </span>
+                   )}
                 </div>
              </div>
              
-             <Button onClick={openNewSubject}>
-                <Plus className="size-4" />
-                Nuevo Módulo
-             </Button>
+             <div className="flex items-center gap-2">
+                {tree.course.status !== "published" && (
+                   <Button 
+                      variant="default" 
+                      className="bg-accent hover:bg-accent/90 shadow-lg shadow-accent/20"
+                      onClick={handlePublish}
+                      disabled={publishPending}
+                   >
+                      {publishPending ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <Rocket className="size-4" />
+                      )}
+                      Publicar Curso
+                   </Button>
+                )}
+                <Button variant="outline" onClick={() => setSettingsOpen(true)}>
+                   <Settings className="size-4" />
+                   Examen Final
+                </Button>
+                <Button onClick={openNewSubject}>
+                   <Plus className="size-4" />
+                   Nuevo Módulo
+                </Button>
+             </div>
          </div>
       </div>
 
@@ -934,6 +1107,22 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
       ) : null}
 
       {/* Cross-panel Modals */}
+      <CourseConfigModal
+         courseId={courseId}
+         course={tree.course}
+         open={settingsOpen}
+         onOpenChange={setSettingsOpen}
+         onSaved={loadData}
+      />
+
+      <PublishValidationModal 
+         open={publishValidationOpen}
+         onOpenChange={setPublishValidationOpen}
+         courseTitle={getLocalizedText(tree.course.title)}
+         configuredQuestions={tree.course.final_exam_question_count || 0}
+         availableQuestions={tree.course.total_questions_count || 0}
+      />
+
       <SubjectFormModal 
          courseId={courseId}
          subject={editingSub}

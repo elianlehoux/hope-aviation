@@ -9,11 +9,11 @@ import { toast } from "sonner";
 
 interface ExamQuestionViewProps {
   exam: any;
-  questions: any[];
   onFinish: (attempt: any) => void;
+  submitUrl?: string;
 }
 
-export function ExamQuestionView({ exam, questions, onFinish }: ExamQuestionViewProps) {
+export function ExamQuestionView({ exam, questions, onFinish, submitUrl }: ExamQuestionViewProps) {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,7 +45,8 @@ export function ExamQuestionView({ exam, questions, onFinish }: ExamQuestionView
     });
 
     try {
-      const res = await fetch(`/api/exams/${exam.id}/attempts`, {
+      const url = submitUrl || `/api/exams/${exam.id}/attempts`;
+      const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answers: completeAnswers }),
@@ -104,7 +105,7 @@ export function ExamQuestionView({ exam, questions, onFinish }: ExamQuestionView
   return (
     <div className="flex-1 flex flex-col space-y-8 animate-in fade-in duration-500">
       {/* Header Info */}
-      <div className="bg-white rounded-[2rem] border border-slate-100 p-6 md:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="bg-white rounded-3xl border border-slate-100 p-4 md:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
              <span className="text-[10px] font-bold text-accent uppercase tracking-[0.2em]">Progress</span>
@@ -125,9 +126,9 @@ export function ExamQuestionView({ exam, questions, onFinish }: ExamQuestionView
       </div>
 
       {/* Question Canvas */}
-      <div className="flex-1 bg-white rounded-[2.5rem] border border-slate-100 p-8 md:p-16 shadow-2xl shadow-primary/5 flex flex-col justify-between space-y-12">
-        <div className="space-y-8">
-           <h2 className="text-xl md:text-3xl font-bold text-primary leading-tight tracking-tight">
+      <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-10 shadow-2xl shadow-primary/5 space-y-8">
+        <div className="space-y-6">
+           <h2 className="text-lg md:text-2xl font-bold text-primary leading-tight tracking-tight">
              {typeof currentQuestion.content === "string" ? currentQuestion.content : (currentQuestion.content?.[lang] || "Untitled Question")}
            </h2>
 
@@ -141,20 +142,20 @@ export function ExamQuestionView({ exam, questions, onFinish }: ExamQuestionView
                     key={option.id}
                     onClick={() => handleSelectOption(option.id)}
                     className={cn(
-                      "flex items-start gap-4 p-6 rounded-2xl border-2 text-left transition-all duration-300 group",
+                      "flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all duration-300 group",
                       isSelected 
-                        ? "bg-primary/5 border-primary shadow-lg shadow-primary/5" 
+                        ? "bg-primary/5 border-primary shadow-sm shadow-primary/5" 
                         : "bg-white border-slate-50 hover:border-slate-200 hover:bg-slate-50/50"
                     )}
                   >
                     <div className={cn(
-                      "size-6 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors",
+                      "size-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors",
                       isSelected ? "bg-primary border-primary" : "border-slate-200 group-hover:border-slate-300"
                     )}>
-                      {isSelected && <div className="size-2 rounded-full bg-white" />}
+                      {isSelected && <div className="size-1.5 rounded-full bg-white" />}
                     </div>
                     <span className={cn(
-                      "text-sm md:text-base font-bold transition-colors",
+                      "text-sm font-bold transition-colors leading-tight",
                       isSelected ? "text-primary" : "text-slate-600 group-hover:text-primary"
                     )}>
                       {optionContent}
@@ -165,7 +166,7 @@ export function ExamQuestionView({ exam, questions, onFinish }: ExamQuestionView
            </div>
         </div>
 
-        <div className="flex items-center justify-between pt-8 border-t border-slate-50">
+        <div className="flex items-center justify-between pt-6 border-t border-slate-50">
            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest hidden md:block">
              Select the correct option to continue
            </p>
@@ -173,10 +174,10 @@ export function ExamQuestionView({ exam, questions, onFinish }: ExamQuestionView
            <Button
              disabled={!selectedOptionId || isSubmitting}
              onClick={handleNext}
-             className="ms-auto h-14 px-10 rounded-2xl font-bold bg-primary hover:bg-primary/95 shadow-xl shadow-primary/10 group transition-all active:scale-95"
+             className="ms-auto h-12 px-8 rounded-xl font-bold bg-primary hover:bg-primary/95 shadow-md shadow-primary/10 group transition-all active:scale-95"
            >
              {isSubmitting ? "Submitting..." : currentIdx < questions.length - 1 ? "Next Question" : "Finish & Submit"}
-             <ArrowRight className="size-5 ml-2 transition-transform group-hover:translate-x-1" />
+             <ArrowRight className="size-4 ml-2 transition-transform group-hover:translate-x-1" />
            </Button>
         </div>
       </div>
