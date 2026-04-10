@@ -1,22 +1,26 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 /**
  * Professor (instructor) area — content and roster management.
  */
 export default function ProfessorsHomePage() {
+  const { t } = useTranslation();
+
   const links = [
-    { href: "/campus/professors/courses", label: "Courses", note: "courses, subjects, classes" },
-    { href: "/campus/professors/exams", label: "Exams", note: "exams, questions, options" },
-    { href: "/campus/professors/roster", label: "Roster", note: "enrollments → profiles" },
+    { href: "/campus/professors/courses", labelKey: "professors.courses", note: "courses, subjects, classes" },
+    { href: "/campus/professors/exams", labelKey: "professors.exams", note: "exams, questions, options" },
+    { href: "/campus/professors/roster", labelKey: "professors.roster", note: "enrollments → profiles" },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Professors</h1>
+        <h1 className="text-2xl font-bold tracking-tight">{t("professors.title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          UI for the <code className="text-xs">instructor</code> role. When you add an
-          instructor–course link in the schema, filter lists by that mapping.
+          {t("professors.description")}
         </p>
       </div>
       <ul className="flex flex-col gap-2">
@@ -26,7 +30,7 @@ export default function ProfessorsHomePage() {
               href={l.href}
               className="flex flex-col rounded-lg border border-border bg-card px-4 py-3 hover:bg-accent/50 transition-colors"
             >
-              <span className="font-medium">{l.label}</span>
+              <span className="font-medium">{t(l.labelKey)}</span>
               <span className="text-xs text-muted-foreground">{l.note}</span>
             </Link>
           </li>

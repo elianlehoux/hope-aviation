@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface ExamQuestionViewProps {
   exam: any;
@@ -21,7 +22,7 @@ export function ExamQuestionView({ exam, questions, onFinish, submitUrl }: ExamQ
     exam.time_limit_minutes ? exam.time_limit_minutes * 60 : null
   );
 
-  const lang = "en";
+  const { t, lang } = useTranslation();
   const currentQuestion = questions[currentIdx];
   const progress = ((currentIdx + 1) / questions.length) * 100;
 
@@ -68,7 +69,7 @@ export function ExamQuestionView({ exam, questions, onFinish, submitUrl }: ExamQ
   useEffect(() => {
     if (timeLeft === null) return;
     if (timeLeft <= 0) {
-      toast.warning("Time is up! Submitting your answers...");
+      toast.warning(t("examQuestion.timeUp"));
       handleSubmit();
       return;
     }
@@ -108,8 +109,8 @@ export function ExamQuestionView({ exam, questions, onFinish, submitUrl }: ExamQ
       <div className="bg-white rounded-3xl border border-slate-100 p-4 md:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-             <span className="text-[10px] font-bold text-accent uppercase tracking-[0.2em]">Progress</span>
-             <span className="text-xs font-bold text-slate-400">Question {currentIdx + 1} of {questions.length}</span>
+             <span className="text-[10px] font-bold text-accent uppercase tracking-[0.2em]">{t("examQuestion.progress")}</span>
+             <span className="text-xs font-bold text-slate-400">{t("examQuestion.question")} {currentIdx + 1} {t("examQuestion.questionOf")} {questions.length}</span>
           </div>
           <Progress value={progress} className="h-1.5 w-48 md:w-64 bg-slate-100" />
         </div>
@@ -129,7 +130,7 @@ export function ExamQuestionView({ exam, questions, onFinish, submitUrl }: ExamQ
       <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-10 shadow-2xl shadow-primary/5 space-y-8">
         <div className="space-y-6">
            <h2 className="text-lg md:text-2xl font-bold text-primary leading-tight tracking-tight">
-             {typeof currentQuestion.content === "string" ? currentQuestion.content : (currentQuestion.content?.[lang] || "Untitled Question")}
+             {typeof currentQuestion.content === "string" ? currentQuestion.content : (currentQuestion.content?.[lang] || t("examQuestion.untitledQuestion"))}
            </h2>
 
            <div className="grid grid-cols-1 gap-4">
@@ -168,7 +169,7 @@ export function ExamQuestionView({ exam, questions, onFinish, submitUrl }: ExamQ
 
         <div className="flex items-center justify-between pt-6 border-t border-slate-50">
            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest hidden md:block">
-             Select the correct option to continue
+             {t("examQuestion.selectCorrectOption")}
            </p>
            
            <Button
@@ -176,7 +177,7 @@ export function ExamQuestionView({ exam, questions, onFinish, submitUrl }: ExamQ
              onClick={handleNext}
              className="ms-auto h-12 px-8 rounded-xl font-bold bg-primary hover:bg-primary/95 shadow-md shadow-primary/10 group transition-all active:scale-95"
            >
-             {isSubmitting ? "Submitting..." : currentIdx < questions.length - 1 ? "Next Question" : "Finish & Submit"}
+             {isSubmitting ? t("examQuestion.submitting") : currentIdx < questions.length - 1 ? t("examQuestion.nextQuestion") : t("examQuestion.finishSubmit")}
              <ArrowRight className="size-4 ml-2 transition-transform group-hover:translate-x-1" />
            </Button>
         </div>

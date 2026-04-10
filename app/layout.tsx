@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
+import { LanguageProvider } from "@/lib/i18n/context";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -41,8 +42,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TooltipProvider>
-            {children}
-            <Toaster position="top-right" />
+            <LanguageProvider>
+              {children}
+              <Toaster position="top-right" />
+            </LanguageProvider>
           </TooltipProvider>
         </ThemeProvider>
       </body>

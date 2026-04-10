@@ -3,15 +3,17 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface NavLink {
   href: string;
-  label: string;
+  labelKey: string;
 }
 
 export function CampusSidebar({ navLinks }: { navLinks: NavLink[] }) {
   const pathname = usePathname();
   const [mounted, setMounted] = React.useState(false);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     setMounted(true);
@@ -44,7 +46,7 @@ export function CampusSidebar({ navLinks }: { navLinks: NavLink[] }) {
                 }
               `}
             >
-              {link.label}
+              {t(link.labelKey)}
             </Link>
           );
         })}
@@ -55,7 +57,7 @@ export function CampusSidebar({ navLinks }: { navLinks: NavLink[] }) {
           href="/"
           className="text-xs text-muted-foreground hover:text-accent transition-colors font-medium"
         >
-          ← Back to Home
+          {t("campus.backToHome")}
         </Link>
       </div>
     </aside>

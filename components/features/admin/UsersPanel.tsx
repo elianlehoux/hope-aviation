@@ -19,6 +19,7 @@ import {
   UserCheck,
   Pencil,
 } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/context";
 
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
@@ -94,8 +95,8 @@ interface UserWithRoles extends Profile {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-US", {
+function formatDate(iso: string, locale: string = "en-US") {
+  return new Date(iso).toLocaleDateString(locale, {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -240,6 +241,7 @@ function UserDetailModal({
   const [isActive, setIsActive] = React.useState(true);
   const [selectedRoleId, setSelectedRoleId] = React.useState<string>("");
   const [saving, setSaving] = React.useState(false);
+  const { t, lang } = useTranslation();
 
   React.useEffect(() => {
     if (open && user) {
@@ -277,11 +279,11 @@ function UserDetailModal({
         await assignRole(user.id, selectedRoleId);
       }
 
-      toast.success("User updated successfully.");
+      toast.success(t("adminDetail.userUpdated"));
       onSaved();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "An error occurred.");
+      toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
       setSaving(false);
     }
@@ -315,7 +317,7 @@ function UserDetailModal({
           {/* Name fields */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="user-first-name">First Name</Label>
+              <Label htmlFor="user-first-name">{t("profile.firstName")}</Label>
               <Input
                 id="user-first-name"
                 value={firstName}
@@ -324,7 +326,7 @@ function UserDetailModal({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="user-last-name">Last Name</Label>
+              <Label htmlFor="user-last-name">{t("profile.lastName")}</Label>
               <Input
                 id="user-last-name"
                 value={lastName}
@@ -337,8 +339,8 @@ function UserDetailModal({
           {/* Phone */}
           <div className="space-y-2">
             <Label htmlFor="user-phone">
-              Phone{" "}
-              <span className="text-slate-400 font-normal">(optional)</span>
+              {t("profile.phoneNumber")}{" "}
+              <span className="text-slate-400 font-normal">({t("common.comingSoon").toLowerCase() === "coming soon" ? "optional" : "opcional"})</span>
             </Label>
             <Input
               id="user-phone"
@@ -350,10 +352,10 @@ function UserDetailModal({
 
           {/* Role assignment */}
           <div className="space-y-2">
-            <Label htmlFor="user-role">Role</Label>
+            <Label htmlFor="user-role">{t("adminDetail.columnRole")}</Label>
             <Select value={selectedRoleId} onValueChange={setSelectedRoleId}>
               <SelectTrigger id="user-role">
-                <SelectValue placeholder="Select a role..." />
+                <SelectValue placeholder={t("adminDetail.roleSelectPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
                 {roles.map((r) => (
@@ -369,10 +371,10 @@ function UserDetailModal({
           <div className="flex items-center justify-between rounded-xl border border-slate-200 p-4">
             <div>
               <p className="text-sm font-semibold text-primary">
-                Account Active
+                {t("adminDetail.accountActive")}
               </p>
               <p className="text-xs text-slate-500 mt-0.5">
-                Inactive accounts are locked out of the platform.
+                {t("adminDetail.accountActiveNote")}
               </p>
             </div>
             <Switch
@@ -393,24 +395,24 @@ function UserDetailModal({
             {user.birth_date && (
               <span className="flex items-center gap-1">
                 <Calendar className="size-3" />
-                {formatDate(user.birth_date)}
+                {formatDate(user.birth_date, lang === "es" ? "es-ES" : "en-US")}
               </span>
             )}
             <span className="flex items-center gap-1">
               <Calendar className="size-3" />
-              Joined {formatDate(user.created_at)}
+              {t("adminDetail.joinedOn").replace("{date}", formatDate(user.created_at, lang === "es" ? "es-ES" : "en-US"))}
             </span>
           </div>
 
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="ghost">
-                Cancel
+                {t("common.cancel")}
               </Button>
             </DialogClose>
             <Button type="submit" disabled={saving}>
               {saving && <Loader2 className="size-4 animate-spin" />}
-              Save Changes
+              {t("adminDetail.saveChanges")}
             </Button>
           </DialogFooter>
         </form>
@@ -435,6 +437,7 @@ function DeactivateUserModal({
   onDeactivated,
 }: DeactivateModalProps) {
   const [processing, setProcessing] = React.useState(false);
+  const { t } = useTranslation();
 
   async function handleDeactivate() {
     if (!user) return;
@@ -442,13 +445,13 @@ function DeactivateUserModal({
     try {
       await deactivateUser(user.id);
       toast.success(
-        `${user.first_name} ${user.last_name} has been deactivated.`,
+        t("adminDetail.deactivatedSuccess").replace("{name}", `${user.first_name} ${user.last_name}`),
       );
       onDeactivated();
       onOpenChange(false);
     } catch (err: unknown) {
       toast.error(
-        err instanceof Error ? err.message : "Failed to deactivate user.",
+        err instanceof Error ? err.message : t("adminDetail.deactivateTitle"),
       );
     } finally {
       setProcessing(false);
@@ -459,19 +462,14 @@ function DeactivateUserModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Deactivate User</DialogTitle>
+          <DialogTitle>{t("adminDetail.deactivateTitle")}</DialogTitle>
           <DialogDescription>
-            This will deactivate{" "}
-            <strong className="text-primary">
-              {user?.first_name} {user?.last_name}
-            </strong>
-            . They will lose access to the platform. You can reactivate them
-            later from the user edit panel.
+            {t("adminDetail.deactivateDescription").replace("{name}", `${user?.first_name} ${user?.last_name}`)}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="ghost">Cancel</Button>
+            <Button variant="ghost">{t("common.cancel")}</Button>
           </DialogClose>
           <Button
             variant="destructive"
@@ -479,7 +477,7 @@ function DeactivateUserModal({
             disabled={processing}
           >
             {processing && <Loader2 className="size-4 animate-spin" />}
-            Deactivate
+            {t("adminDetail.deactivate")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -527,6 +525,7 @@ interface MobileUserCardProps {
 }
 
 function MobileUserCard({ user, onEdit, onDeactivate }: MobileUserCardProps) {
+  const { t } = useTranslation();
   const roleName = getUserRole(user);
   const roleSlug = getUserRoleSlug(user);
 
@@ -549,7 +548,7 @@ function MobileUserCard({ user, onEdit, onDeactivate }: MobileUserCardProps) {
             </p>
             {!user.is_active && (
               <Badge variant="destructive" className="text-[10px] shrink-0">
-                Inactive
+                {t("adminDetail.inactive")}
               </Badge>
             )}
           </div>
@@ -573,10 +572,10 @@ function MobileUserCard({ user, onEdit, onDeactivate }: MobileUserCardProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>{t("adminDetail.columnActions")}</DropdownMenuLabel>
             <DropdownMenuItem onClick={() => onEdit(user)}>
               <Pencil className="size-4" />
-              Edit User
+              {t("adminDetail.editUser")}
             </DropdownMenuItem>
             {user.is_active && (
               <>
@@ -586,7 +585,7 @@ function MobileUserCard({ user, onEdit, onDeactivate }: MobileUserCardProps) {
                   className="text-destructive focus:text-destructive"
                 >
                   <UserX className="size-4" />
-                  Deactivate
+                  {t("adminDetail.deactivate")}
                 </DropdownMenuItem>
               </>
             )}
@@ -600,6 +599,7 @@ function MobileUserCard({ user, onEdit, onDeactivate }: MobileUserCardProps) {
 // ─── Main Panel ───────────────────────────────────────────────────────────────
 
 export default function UsersPanel() {
+  const { t, lang } = useTranslation();
   const [users, setUsers] = React.useState<UserWithRoles[]>([]);
   const [roles, setRoles] = React.useState<Role[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -624,7 +624,7 @@ export default function UsersPanel() {
   React.useEffect(() => {
     fetchRoles()
       .then(setRoles)
-      .catch(() => toast.error("Could not load roles."));
+      .catch(() => toast.error(t("profile.errorLoading")));
   }, []);
 
   const loadUsers = React.useCallback(
@@ -640,7 +640,7 @@ export default function UsersPanel() {
         setHasMore(result.users.length === PAGE_SIZE);
       } catch (e: any) {
         console.error("loadUsers catch block:", e);
-        toast.error("Could not load users: " + e.message);
+        toast.error(t("profile.errorLoading") + ": " + e.message);
       } finally {
         setLoading(false);
       }
@@ -692,10 +692,10 @@ export default function UsersPanel() {
       {/* Header */}
       <div>
         <Title level="h3" as="h1">
-          Users
+          {t("adminDetail.usersTitle")}
         </Title>
         <p className="mt-1 text-sm text-slate-500 font-medium">
-          Manage user profiles, account status, and role assignments.
+          {t("adminDetail.usersSubtitle")}
         </p>
       </div>
 
@@ -705,7 +705,7 @@ export default function UsersPanel() {
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
           <Input
             id="users-search"
-            placeholder="Search by name or email..."
+            placeholder={t("adminDetail.searchPlaceholder")}
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
             className="pl-10"
@@ -714,12 +714,12 @@ export default function UsersPanel() {
 
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <SelectTrigger className="w-full sm:w-44" id="users-status-filter">
-            <SelectValue placeholder="Filter by status" />
+            <SelectValue placeholder={t("adminDetail.filterStatus")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Users</SelectItem>
-            <SelectItem value="true">Active Only</SelectItem>
-            <SelectItem value="false">Inactive Only</SelectItem>
+            <SelectItem value="all">{t("adminDetail.allUsers")}</SelectItem>
+            <SelectItem value="true">{t("adminDetail.activeOnly")}</SelectItem>
+            <SelectItem value="false">{t("adminDetail.inactiveOnly")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -736,12 +736,12 @@ export default function UsersPanel() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead className="hidden 2xl:table-cell">Email</TableHead>
-                  <TableHead className="hidden xl:table-cell">Role</TableHead>
-                  <TableHead className="hidden sm:table-cell">Status</TableHead>
-                  <TableHead className="hidden 2xl:table-cell">Joined</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t("adminDetail.columnUser")}</TableHead>
+                  <TableHead className="hidden 2xl:table-cell">{t("adminDetail.columnEmail")}</TableHead>
+                  <TableHead className="hidden xl:table-cell">{t("adminDetail.columnRole")}</TableHead>
+                  <TableHead className="hidden sm:table-cell">{t("adminDetail.columnStatus")}</TableHead>
+                  <TableHead className="hidden 2xl:table-cell">{t("adminDetail.columnJoined")}</TableHead>
+                  <TableHead className="text-right">{t("adminDetail.columnActions")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -799,7 +799,7 @@ export default function UsersPanel() {
                           </Badge>
                         ) : (
                           <span className="text-slate-400 text-xs">
-                            No role
+                            {t("common.noResults")}
                           </span>
                         )}
                       </TableCell>
@@ -810,19 +810,19 @@ export default function UsersPanel() {
                             className="text-[10px] bg-emerald-50 text-emerald-700 border-emerald-200"
                           >
                             <UserCheck className="size-3" />
-                            Active
+                            {t("adminDetail.active")}
                           </Badge>
                         ) : (
                           <Badge variant="destructive" className="text-[10px]">
                             <UserX className="size-3" />
-                            Inactive
+                            {t("adminDetail.inactive")}
                           </Badge>
                         )}
                       </TableCell>
                       <TableCell className="hidden 2xl:table-cell">
                         <div className="flex items-center gap-1.5 text-slate-500 text-sm">
                           <Calendar className="size-3.5" />
-                          {formatDate(user.created_at)}
+                          {formatDate(user.created_at, lang === "es" ? "es-ES" : "en-US")}
                         </div>
                       </TableCell>
                       <TableCell>
@@ -832,18 +832,18 @@ export default function UsersPanel() {
                               <Button
                                 variant="ghost"
                                 size="icon-xs"
-                                aria-label={`Actions for ${user.first_name}`}
+                                aria-label={t("adminDetail.columnActions")}
                               >
                                 <MoreHorizontal className="size-4" />
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuLabel>{t("adminDetail.columnActions")}</DropdownMenuLabel>
                               <DropdownMenuItem
                                 onClick={() => handleEdit(user)}
                               >
                                 <Pencil className="size-4" />
-                                Edit User
+                                {t("adminDetail.editUser")}
                               </DropdownMenuItem>
                               {user.is_active && (
                                 <>
@@ -855,7 +855,7 @@ export default function UsersPanel() {
                                     className="text-destructive focus:text-destructive"
                                   >
                                     <UserX className="size-4" />
-                                    Deactivate
+                                    {t("adminDetail.deactivate")}
                                   </DropdownMenuItem>
                                 </>
                               )}
@@ -885,8 +885,7 @@ export default function UsersPanel() {
           {/* Pagination */}
           <div className="flex items-center justify-between pt-2">
             <p className="text-xs text-slate-500 font-medium">
-              Page {currentPage} · Showing {users.length} user
-              {users.length !== 1 ? "s" : ""}
+              {t("adminDetail.pageInfo").replace("{page}", String(currentPage)).replace("{count}", String(users.length))}
             </p>
             <div className="flex items-center gap-2">
               <Button
@@ -896,7 +895,7 @@ export default function UsersPanel() {
                 disabled={offset === 0}
               >
                 <ChevronLeft className="size-4" />
-                <span className="hidden sm:inline">Previous</span>
+                <span className="hidden sm:inline">{t("common.previous")}</span>
               </Button>
               <Button
                 variant="outline"
@@ -904,7 +903,7 @@ export default function UsersPanel() {
                 onClick={handleNext}
                 disabled={!hasMore}
               >
-                <span className="hidden sm:inline">Next</span>
+                <span className="hidden sm:inline">{t("common.next")}</span>
                 <ChevronRight className="size-4" />
               </Button>
             </div>

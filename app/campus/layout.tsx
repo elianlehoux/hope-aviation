@@ -8,6 +8,8 @@ import { CampusSidebar } from "@/components/features/campus/CampusSidebar";
 /**
  * Campus layout — shell for all /campus/* routes.
  * Access is enforced globally via Supabase session refresh in `proxy.ts`.
+ * 
+ * Nav link labels use translation keys that are resolved in client components.
  */
 export default function CampusLayout({
   children,
@@ -15,14 +17,14 @@ export default function CampusLayout({
   children: React.ReactNode;
 }>) {
   const navLinks = [
-    { href: "/campus", label: "Home" },
-    { href: "/campus/courses", label: "My Learning" },
-    { href: "/campus/certificates", label: "My Certificates" },
-    { href: "/campus/admin/user-management", label: "User Management" },
-    { href: "/campus/admin/users", label: "Users" },
-    { href: "/campus/admin/roles", label: "Roles" },
-    { href: "/campus/admin/courses", label: "Courses" },
-    { href: "/campus/admin/exams", label: "Exams" },
+    { href: "/campus", labelKey: "campus.home" },
+    { href: "/campus/courses", labelKey: "campus.myLearning" },
+    { href: "/campus/certificates", labelKey: "campus.myCertificates" },
+    { href: "/campus/admin/user-management", labelKey: "campus.userManagement" },
+    { href: "/campus/admin/users", labelKey: "campus.users" },
+    { href: "/campus/admin/roles", labelKey: "campus.roles" },
+    { href: "/campus/admin/courses", labelKey: "campus.courses" },
+    { href: "/campus/admin/exams", labelKey: "campus.exams" },
   ];
 
   return (
@@ -69,8 +71,9 @@ function MobileNavSlotSkeleton() {
 }
 
 import { UserMenu } from "@/components/features/campus/UserMenu";
+import { LanguageToggle } from "@/components/shared/language-toggle";
 
-async function CampusHeader({ navLinks }: { navLinks: { href: string; label: string }[] }) {
+async function CampusHeader({ navLinks }: { navLinks: { href: string; labelKey: string }[] }) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -84,6 +87,7 @@ async function CampusHeader({ navLinks }: { navLinks: { href: string; label: str
         </Suspense>
       </div>
       <div className="ml-auto flex items-center gap-4">
+        <LanguageToggle />
         <UserMenu user={user as any} />
       </div>
     </header>

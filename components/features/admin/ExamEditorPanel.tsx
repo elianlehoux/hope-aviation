@@ -17,6 +17,8 @@ import {
   Copy,
   Info
 } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/context";
+import { getLocalizedText } from "@/lib/utils/i18n-helpers";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
 
 import { Title } from "@/components/ui/title";
@@ -54,11 +56,7 @@ type QuestionWithOptions = Question & {
   options: Option[];
 };
 
-function getLocalizedText(text: TranslatedText | null, primaryLocale: "es" | "en" = "es"): string {
-  if (!text) return "—";
-  const fallbackLocale = primaryLocale === "es" ? "en" : "es";
-  return text[primaryLocale] || text[fallbackLocale] || "—";
-}
+// -- State & Types --
 
 // ─── API Helpers ────────────────────────────────────────────────────────────────
 
@@ -157,6 +155,7 @@ interface QuestionFormProps {
 }
 
 function QuestionFormModal({ exam, question, open, onOpenChange, onSaved }: QuestionFormProps) {
+  const { t } = useTranslation();
   const isEdit = !!question;
 
   const [contentEs, setContentEs] = React.useState("");
@@ -175,7 +174,7 @@ function QuestionFormModal({ exam, question, open, onOpenChange, onSaved }: Ques
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!contentEs.trim() && !contentEn.trim()) {
-      toast.error("El temario debe ser establecido en algún idioma.");
+      toast.error(t("adminDetail.questionTextRequired"));
       return;
     }
     setSaving(true);
@@ -190,15 +189,15 @@ function QuestionFormModal({ exam, question, open, onOpenChange, onSaved }: Ques
 
       if (isEdit && question) {
         await updateQuestion(exam.course_id, exam.subject_id, exam.id, question.id, payload);
-        toast.success("Pregunta actualizada.");
+        toast.success(t("adminDetail.questionUpdated"));
       } else {
         await createQuestion(exam.course_id, exam.subject_id, exam.id, payload);
-        toast.success("Pregunta agregada.");
+        toast.success(t("adminDetail.questionCreated"));
       }
       onSaved();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Error al guardar pregunta");
+      toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
       setSaving(false);
     }
@@ -208,18 +207,18 @@ function QuestionFormModal({ exam, question, open, onOpenChange, onSaved }: Ques
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Editar Pregunta" : "Nueva Pregunta"}</DialogTitle>
+          <DialogTitle>{isEdit ? t("adminDetail.editQuestion") : t("adminDetail.newQuestion")}</DialogTitle>
           <DialogDescription>
-            Define el encabezado o enunciado de la pregunta.
+            {t("adminDetail.questionDesc")}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-             <Label htmlFor="q-content-es">Enunciado (ES) <span className="text-red-500">*</span></Label>
+             <Label htmlFor="q-content-es">{t("adminDetail.contentEs")} <span className="text-red-500">*</span></Label>
              <Textarea
                id="q-content-es"
-               placeholder="¿Cuál es la función principal de...?"
+               placeholder={t("adminDetail.contentEsPlaceholder")}
                value={contentEs}
                onChange={(e) => setContentEs(e.target.value)}
                required={!contentEn}
@@ -227,10 +226,10 @@ function QuestionFormModal({ exam, question, open, onOpenChange, onSaved }: Ques
              />
           </div>
           <div className="space-y-2">
-             <Label htmlFor="q-content-en">Enunciado (EN)</Label>
+             <Label htmlFor="q-content-en">{t("adminDetail.contentEn")}</Label>
              <Textarea
                id="q-content-en"
-               placeholder="What is the main function of...?"
+               placeholder={t("adminDetail.contentEnPlaceholder")}
                value={contentEn}
                onChange={(e) => setContentEn(e.target.value)}
                required={!contentEs}
@@ -238,7 +237,7 @@ function QuestionFormModal({ exam, question, open, onOpenChange, onSaved }: Ques
              />
           </div>
           <div className="space-y-2">
-             <Label htmlFor="q-points">Puntaje / Valor de la pregunta</Label>
+             <Label htmlFor="q-points">{t("adminDetail.points")}</Label>
              <Input
                id="q-points"
                type="number"
@@ -251,11 +250,11 @@ function QuestionFormModal({ exam, question, open, onOpenChange, onSaved }: Ques
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="ghost">Cancelar</Button>
+              <Button type="button" variant="ghost">{t("common.cancel")}</Button>
             </DialogClose>
             <Button type="submit" disabled={saving}>
               {saving && <Loader2 className="size-4 animate-spin" />}
-              {isEdit ? "Guardar Pregunta" : "Añadir Pregunta"}
+              {isEdit ? t("adminDetail.saveQuestion") : t("adminDetail.newQuestion")}
             </Button>
           </DialogFooter>
         </form>
@@ -276,6 +275,7 @@ interface OptionFormProps {
 }
 
 function OptionFormModal({ exam, question, option, open, onOpenChange, onSaved }: OptionFormProps) {
+  const { t } = useTranslation();
   const isEdit = !!option;
 
   const [contentEs, setContentEs] = React.useState("");
@@ -295,7 +295,7 @@ function OptionFormModal({ exam, question, option, open, onOpenChange, onSaved }
     e.preventDefault();
     if (!question) return;
     if (!contentEs.trim() && !contentEn.trim()) {
-      toast.error("La opción debe tener texto.");
+      toast.error(t("adminDetail.optionTextRequired"));
       return;
     }
     setSaving(true);
@@ -310,15 +310,15 @@ function OptionFormModal({ exam, question, option, open, onOpenChange, onSaved }
 
       if (isEdit && option) {
         await updateOption(exam.course_id, exam.subject_id, exam.id, question.id, option.id, payload);
-        toast.success("Opción actualizada.");
+        toast.success(t("adminDetail.optionUpdated"));
       } else {
         await createOption(exam.course_id, exam.subject_id, exam.id, question.id, payload);
-        toast.success("Opción añadida.");
+        toast.success(t("adminDetail.optionCreated"));
       }
       onSaved();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Error al guardar opción");
+      toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
       setSaving(false);
     }
@@ -328,7 +328,7 @@ function OptionFormModal({ exam, question, option, open, onOpenChange, onSaved }
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Editar Opción" : "Nueva Opción"}</DialogTitle>
+          <DialogTitle>{isEdit ? t("adminDetail.editOption") : t("adminDetail.newOption")}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -342,31 +342,31 @@ function OptionFormModal({ exam, question, option, open, onOpenChange, onSaved }
                   className="size-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-600"
                 />
                 <Label htmlFor="opt-correct" className="text-base font-medium cursor-pointer">
-                  Marcar como la respuesta CORRECTA
+                  {t("adminDetail.markCorrect")}
                 </Label>
              </div>
              {isCorrect && (
-               <div className="bg-emerald-100/50 text-emerald-800 text-xs px-3 py-2 rounded-md">
-                 Los estudiantes recibirán puntos si seleccionan esta opción.
-               </div>
+                <div className="bg-emerald-100/50 text-emerald-800 text-xs px-3 py-2 rounded-md">
+                  {t("adminDetail.correctNote")}
+                </div>
              )}
           </div>
 
           <div className="space-y-2">
-             <Label htmlFor="o-content-es">Texto de la Opción (ES)</Label>
+             <Label htmlFor="o-content-es">{t("adminDetail.descEs")}</Label>
              <Input
                id="o-content-es"
-               placeholder="Ej. Alternativa A..."
+               placeholder={t("adminDetail.optionEsPlaceholder")}
                value={contentEs}
                onChange={(e) => setContentEs(e.target.value)}
                required={!contentEn}
              />
           </div>
           <div className="space-y-2">
-             <Label htmlFor="o-content-en">Texto de la Opción (EN)</Label>
+             <Label htmlFor="o-content-en">{t("adminDetail.descEn")}</Label>
              <Input
                id="o-content-en"
-               placeholder="e.g. Alternative A..."
+               placeholder={t("adminDetail.optionEnPlaceholder")}
                value={contentEn}
                onChange={(e) => setContentEn(e.target.value)}
                required={!contentEs}
@@ -375,11 +375,11 @@ function OptionFormModal({ exam, question, option, open, onOpenChange, onSaved }
 
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="ghost">Cancelar</Button>
+              <Button type="button" variant="ghost">{t("common.cancel")}</Button>
             </DialogClose>
             <Button type="submit" disabled={saving} variant={isCorrect ? "default" : "secondary"}>
               {saving && <Loader2 className="size-4 animate-spin" />}
-              {isEdit ? "Guardar" : "Añadir Opción"}
+              {isEdit ? t("common.save") : t("adminDetail.newOption")}
             </Button>
           </DialogFooter>
         </form>
@@ -398,6 +398,7 @@ interface ImportJsonModalProps {
 }
 
 function ImportJsonModal({ exam, open, onOpenChange, onSaved }: ImportJsonModalProps) {
+  const { t } = useTranslation();
   const [jsonText, setJsonText] = React.useState("");
   const [saving, setSaving] = React.useState(false);
 
@@ -410,7 +411,7 @@ function ImportJsonModal({ exam, open, onOpenChange, onSaved }: ImportJsonModalP
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!jsonText.trim()) {
-      toast.error("El JSON no puede estar vacío.");
+      toast.error(t("adminDetail.jsonRequired"));
       return;
     }
 
@@ -418,7 +419,7 @@ function ImportJsonModal({ exam, open, onOpenChange, onSaved }: ImportJsonModalP
     try {
       parsed = JSON.parse(jsonText);
     } catch {
-      toast.error("Formato JSON inválido.");
+      toast.error(t("adminDetail.invalidJson"));
       return;
     }
 
@@ -426,18 +427,18 @@ function ImportJsonModal({ exam, open, onOpenChange, onSaved }: ImportJsonModalP
     const payload = Array.isArray(parsed) ? { questions: parsed } : parsed;
 
     if (!payload.questions || !Array.isArray(payload.questions)) {
-      toast.error("El JSON debe contener un arreglo de 'questions'.");
+      toast.error(t("adminDetail.invalidJsonArray"));
       return;
     }
 
     setSaving(true);
     try {
       const result = await importQuestionsBatch(exam.course_id, exam.subject_id, exam.id, payload);
-      toast.success(`Importación exitosa (${result.data?.count || payload.questions.length} preguntas añadidas).`);
+      toast.success(t("adminDetail.importSuccess").replace("{count}", (result.data?.count || payload.questions.length).toString()));
       onSaved();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Error al importar preguntas");
+      toast.error(err instanceof Error ? err.message : t("adminDetail.errorImporting"));
     } finally {
       setSaving(false);
     }
@@ -454,33 +455,20 @@ function ImportJsonModal({ exam, open, onOpenChange, onSaved }: ImportJsonModalP
   }
 ]`;
 
-  const aiPrompt = `Actúa como un asistente experto. Tengo una lista de preguntas de examen y necesito que las conviertas EXACTAMENTE al siguiente formato JSON para importarlas en mi sistema:
-
-Formato de ejemplo:
-${exampleJson}
-
-Reglas:
-1. El resultado debe ser un arreglo de objetos JSON.
-2. Cada pregunta debe tener "content" con la clave "es" (o "en" si es inglés).
-3. Cada pregunta debe tener "points" (generalmente 1).
-4. El campo "options" debe ser un arreglo con las alternativas.
-5. "is_correct" debe ser true para la respuesta correcta y false para las demás.
-
-Aquí tienes mis preguntas:
-[PEGA AQUÍ TUS PREGUNTAS]`;
+  const aiPrompt = t("adminDetail.aiPromptText").replace("{example}", exampleJson);
 
   const copyPrompt = () => {
     navigator.clipboard.writeText(aiPrompt);
-    toast.success("Instrucciones para IA copiadas al portapapeles.");
+    toast.success(t("adminDetail.promptCopied"));
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[700px]">
         <DialogHeader>
-          <DialogTitle>Importar Preguntas (JSON)</DialogTitle>
+          <DialogTitle>{t("adminDetail.importJson")}</DialogTitle>
           <DialogDescription>
-            Pega un arreglo de preguntas en formato JSON para añadirlas en lote al examen.
+            {t("adminDetail.importJsonDesc")}
           </DialogDescription>
         </DialogHeader>
 
@@ -488,9 +476,9 @@ Aquí tienes mis preguntas:
           <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3">
              <Info className="size-5 text-blue-600 shrink-0 mt-0.5" />
              <div className="space-y-2">
-               <p className="text-sm text-blue-900 font-medium">¿No sabes cómo formatear el JSON?</p>
+               <p className="text-sm text-blue-900 font-medium">{t("adminDetail.dontKnowFormat")}</p>
                <p className="text-xs text-blue-700 leading-relaxed">
-                 Puedes pedirle a una IA (como ChatGPT) que convierta tus preguntas por ti. Haz clic en el botón de abajo para copiar las instrucciones exactas que debes pegarle.
+                 {t("adminDetail.askAiNote")}
                </p>
                <Button 
                 type="button" 
@@ -500,17 +488,17 @@ Aquí tienes mis preguntas:
                 onClick={copyPrompt}
                >
                  <Copy className="size-3.5 mr-2" />
-                 Copiar Prompt para IA
+                 {t("adminDetail.copyPrompt")}
                </Button>
              </div>
           </div>
 
           <div className="space-y-2">
              <div className="flex justify-between items-center">
-               <Label htmlFor="json-input">Cuerpo JSON <span className="text-red-500">*</span></Label>
+               <Label htmlFor="json-input">{t("adminDetail.jsonBody")} <span className="text-red-500">*</span></Label>
                <Tooltip>
                  <TooltipTrigger type="button" className="text-xs text-primary hover:underline">
-                    Ver Esquema de Ejemplo
+                    {t("adminDetail.seeExampleSchema")}
                  </TooltipTrigger>
                  <TooltipContent side="left" className="w-[450px] p-0 overflow-hidden rounded-xl border border-slate-100 bg-white">
                     <div className="bg-slate-800 text-slate-50 p-4 text-xs font-mono whitespace-pre overflow-x-auto">
@@ -530,11 +518,11 @@ Aquí tienes mis preguntas:
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="ghost">Cancelar</Button>
+              <Button type="button" variant="ghost">{t("common.cancel")}</Button>
             </DialogClose>
             <Button type="submit" disabled={saving}>
               {saving && <Loader2 className="size-4 animate-spin" />}
-              Importar JSON
+              {t("adminDetail.importJson")}
             </Button>
           </DialogFooter>
         </form>
@@ -546,6 +534,7 @@ Aquí tienes mis preguntas:
 // ─── Main Editor Component ──────────────────────────────────────────────────
 
 export default function ExamEditorPanel({ exam }: { exam: ExamWithRelations }) {
+  const { t, lang } = useTranslation();
   const [questions, setQuestions] = React.useState<QuestionWithOptions[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [mounted, setMounted] = React.useState(false);
@@ -572,11 +561,11 @@ export default function ExamEditorPanel({ exam }: { exam: ExamWithRelations }) {
       const raw = await fetchQuestions(exam.course_id, exam.subject_id, exam.id);
       setQuestions(raw);
     } catch {
-      toast.error("Error al cargar las preguntas.");
+      toast.error(t("profile.errorLoading"));
     } finally {
       setLoading(false);
     }
-  }, [exam.course_id, exam.subject_id, exam.id]);
+  }, [exam.course_id, exam.subject_id, exam.id, t]);
 
   React.useEffect(() => {
     loadData();
@@ -593,13 +582,13 @@ export default function ExamEditorPanel({ exam }: { exam: ExamWithRelations }) {
     setQFormOpen(true);
   }
   async function handleDeleteQuestion(q: QuestionWithOptions) {
-    if (!confirm("¿Eliminar pregunta y todas sus opciones?")) return;
+    if (!confirm(t("adminDetail.deleteQuestionConfirm"))) return;
     try {
       await deleteQuestion(exam.course_id, exam.subject_id, exam.id, q.id);
-      toast.success("Pregunta eliminada");
+      toast.success(t("adminDetail.questionDeleted"));
       loadData();
     } catch {
-      toast.error("Falló la eliminación.");
+      toast.error(t("adminDetail.errorDeleting"));
     }
   }
 
@@ -615,13 +604,50 @@ export default function ExamEditorPanel({ exam }: { exam: ExamWithRelations }) {
     setOFormOpen(true);
   }
   async function handleDeleteOption(q: QuestionWithOptions, o: Option) {
-    if (!confirm("¿Eliminar opción?")) return;
+    if (!confirm(t("adminDetail.deleteOptionConfirm"))) return;
     try {
       await deleteOption(exam.course_id, exam.subject_id, exam.id, q.id, o.id);
-      toast.success("Opción eliminada");
+      toast.success(t("adminDetail.optionDeleted"));
       loadData();
     } catch {
-      toast.error("Falló la eliminación.");
+      toast.error(t("adminDetail.errorDeleting"));
+    }
+  }
+
+  // Quick correct selection
+  async function handleToggleCorrect(q: QuestionWithOptions, opt: Option) {
+    // If it's already correct, we might want to toggle it off (optional, but keep it for flexibility)
+    const isNowCorrect = !opt.is_correct;
+    const currentCorrect = q.options.find(o => o.is_correct);
+
+    // Optimistic Update
+    const previousQuestions = [...questions];
+    setQuestions(prev => prev.map(question => {
+      if (question.id !== q.id) return question;
+      return {
+        ...question,
+        options: question.options.map(o => {
+          if (o.id === opt.id) return { ...o, is_correct: isNowCorrect };
+          // If we are setting a new correct one, unset the old one
+          if (isNowCorrect && o.id === currentCorrect?.id) return { ...o, is_correct: false };
+          return o;
+        })
+      };
+    }));
+
+    try {
+      // 1. Unset previous (if any and if we are setting a new one)
+      if (isNowCorrect && currentCorrect && currentCorrect.id !== opt.id) {
+        await updateOption(exam.course_id, exam.subject_id, exam.id, q.id, currentCorrect.id, { is_correct: false });
+      }
+      
+      // 2. Set new status
+      await updateOption(exam.course_id, exam.subject_id, exam.id, q.id, opt.id, { is_correct: isNowCorrect });
+      
+      // No need to reload data if everything went well (optimistic UI holds)
+    } catch (err) {
+      toast.error(t("profile.errorUpdating"));
+      setQuestions(previousQuestions); // Revert
     }
   }
 
@@ -643,7 +669,7 @@ export default function ExamEditorPanel({ exam }: { exam: ExamWithRelations }) {
     try {
       await reorderQuestions(exam.course_id, exam.subject_id, exam.id, orderedIds);
     } catch {
-      toast.error("Error al guardar el nuevo orden. Revirtiendo.");
+      toast.error(t("adminDetail.errorUpdating"));
       loadData();
     }
   };
@@ -657,43 +683,45 @@ export default function ExamEditorPanel({ exam }: { exam: ExamWithRelations }) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
           <Link href="/campus/admin/exams" className="text-sm font-medium text-slate-500 hover:text-primary flex items-center gap-1 mb-2 transition-colors">
-             <ArrowLeft className="size-4" /> Volver a Exámenes
+             <ArrowLeft className="size-4" /> {t("adminDetail.backToExams")}
           </Link>
           <Title level="h2" as="h1" className="flex items-center gap-3">
-             {getLocalizedText(exam.title)}
-             <Badge variant="outline" className="bg-white">Configuración</Badge>
+             {getLocalizedText(exam.title, lang)}
+             <Badge variant="outline" className="bg-white">{t("adminDetail.configuration")}</Badge>
           </Title>
           <p className="mt-1 text-sm text-slate-500 font-medium">
-             Gestión del temario y opciones verdaderas/falsas.
+             {t("adminDetail.examSubtitle")}
           </p>
         </div>
         <div className="flex gap-3 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
            <div className="flex flex-col items-center px-4 border-r border-slate-100">
              <span className="text-xl font-bold text-primary">{exam.passing_score}%</span>
-             <span className="text-[10px] uppercase text-slate-400 font-bold tracking-wider">Mínimo</span>
+             <span className="text-[10px] uppercase text-slate-400 font-bold tracking-wider">{t("adminDetail.minimum")}</span>
            </div>
            <div className="flex flex-col items-center px-4 border-r border-slate-100">
              <span className="text-xl font-bold text-accent">{totalPoints}</span>
-             <span className="text-[10px] uppercase text-slate-400 font-bold tracking-wider">Pts Tolal</span>
+             <span className="text-[10px] uppercase text-slate-400 font-bold tracking-wider">{t("adminDetail.totalPoints")}</span>
            </div>
            <div className="flex flex-col items-center px-4">
              <span className="text-xl font-bold text-primary">{questions.length}</span>
-             <span className="text-[10px] uppercase text-slate-400 font-bold tracking-wider">Preguntas</span>
+             <span className="text-[10px] uppercase text-slate-400 font-bold tracking-wider">{t("adminDetail.examsTitle")}</span>
            </div>
         </div>
       </div>
 
       <div className="flex justify-between items-center bg-accent/5 p-4 rounded-xl border border-accent/10 gap-4">
         <span className="text-sm text-slate-600">
-           Generando preguntas para el módulo <strong>{getLocalizedText(exam.subject?.title ?? null)}</strong> del curso <strong>{getLocalizedText(exam.course?.title ?? null)}</strong>.
+           {t("adminDetail.generatingForMod")
+              .replace("{module}", getLocalizedText(exam.subject?.title ?? null, lang))
+              .replace("{course}", getLocalizedText(exam.course?.title ?? null, lang))}
         </span>
         <div className="flex items-center gap-2 flex-shrink-0">
           <Button variant="outline" className="bg-white" onClick={() => setImportFormOpen(true)}>
-            Importar JSON
+            {t("adminDetail.importJson")}
           </Button>
           <Button onClick={handleCreateQuestion}>
             <Plus className="size-4" />
-            Añadir Pregunta
+            {t("adminDetail.newQuestion")}
           </Button>
         </div>
       </div>
@@ -705,11 +733,11 @@ export default function ExamEditorPanel({ exam }: { exam: ExamWithRelations }) {
       ) : questions.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-center border-2 border-dashed border-slate-200 rounded-3xl bg-white/50 backdrop-blur-sm">
           <HelpCircle className="size-16 text-slate-300 mb-5" />
-          <h3 className="text-xl font-semibold text-primary tracking-tight">Cuestionario Vacío</h3>
+          <h3 className="text-xl font-semibold text-primary tracking-tight">{t("adminDetail.emptyQuiz")}</h3>
           <p className="mt-2 text-sm text-slate-500 max-w-sm">
-             Añade tu primera pregunta para empezar a armar el test. Podrás asignar puntaje individual a cada una.
+             {t("adminDetail.emptyQuizDesc")}
           </p>
-          <Button onClick={handleCreateQuestion} className="mt-6">Añadir Primera Pregunta</Button>
+          <Button onClick={handleCreateQuestion} className="mt-6">{t("adminDetail.addFirstQuestion")}</Button>
         </div>
       ) : mounted ? (
         <DragDropContext onDragEnd={handleDragEnd}>
@@ -742,7 +770,7 @@ export default function ExamEditorPanel({ exam }: { exam: ExamWithRelations }) {
                            <div className="flex-1 space-y-1">
                              <div className="flex justify-between items-center">
                                 <h3 className="text-lg font-bold text-primary tracking-tight leading-snug">
-                                   {index + 1}. {getLocalizedText(q.content)}
+                                   {index + 1}. {getLocalizedText(q.content, lang)}
                                 </h3>
                                 <Badge variant="secondary" className="font-mono bg-white shadow-sm border-slate-200">
                                    {q.points} Pts
@@ -770,7 +798,7 @@ export default function ExamEditorPanel({ exam }: { exam: ExamWithRelations }) {
                              <div className="absolute left-[-1.5rem] top-0 bottom-0 w-[2px] bg-slate-100 rounded-full" />
                              
                              {q.options.length === 0 ? (
-                               <p className="text-sm text-slate-400 italic">No hay opciones formuladas todavía.</p>
+                               <p className="text-sm text-slate-400 italic">{t("adminDetail.noOptions")}</p>
                              ) : (
                                q.options.map((opt) => (
                                  <div 
@@ -780,13 +808,20 @@ export default function ExamEditorPanel({ exam }: { exam: ExamWithRelations }) {
                                    `}
                                  >
                                     <div className="flex items-center gap-3">
-                                      {opt.is_correct ? (
-                                        <CheckCircle2 className="size-5 text-emerald-600" />
-                                      ) : (
-                                        <Circle className="size-5 text-slate-300" />
-                                      )}
+                                      <button 
+                                        type="button"
+                                        onClick={() => handleToggleCorrect(q, opt)}
+                                        className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full transition-transform active:scale-95"
+                                        title={opt.is_correct ? t("adminDetail.markCorrect") : t("adminDetail.markCorrect")}
+                                      >
+                                        {opt.is_correct ? (
+                                          <CheckCircle2 className="size-5 text-emerald-600" />
+                                        ) : (
+                                          <Circle className="size-5 text-slate-300 hover:text-emerald-500 transition-colors" />
+                                        )}
+                                      </button>
                                       <span className={`text-sm font-medium ${opt.is_correct ? "text-emerald-900" : "text-slate-700"}`}>
-                                         {getLocalizedText(opt.content)}
+                                         {getLocalizedText(opt.content, lang)}
                                       </span>
                                     </div>
 
@@ -805,12 +840,12 @@ export default function ExamEditorPanel({ exam }: { exam: ExamWithRelations }) {
                              {!hasCorrect && q.options.length > 0 && (
                                <div className="flex items-center gap-2 text-xs font-semibold text-amber-600 bg-amber-50 p-2 rounded-lg border border-amber-200">
                                  <AlertCircle className="size-4" />
-                                 Cuidado: Esta pregunta no tiene marcada ninguna opción correcta.
+                                 {t("adminDetail.noCorrectWarning")}
                                </div>
                              )}
 
                              <Button variant="outline" size="sm" onClick={() => handleCreateOption(q)} className="mt-4 border-dashed bg-transparent hover:bg-slate-50">
-                               <Plus className="size-3.5 mr-1" /> Añadir Opción
+                               <Plus className="size-3.5 mr-1" /> {t("adminDetail.addOption")}
                              </Button>
                            </div>
                         </div>

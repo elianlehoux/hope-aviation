@@ -4,17 +4,19 @@ import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useTranslation } from "@/lib/i18n/context";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const authError = searchParams.get("error");
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(
-    authError ? "Could not sign you in. Try again." : null,
+    authError ? t("auth.errorGeneric") : null,
   );
 
   async function handleEmailLogin(e: React.FormEvent) {
@@ -29,14 +31,14 @@ function LoginForm() {
       });
 
       if (!res.ok) {
-        setMessage("Could not sign you in. Try again.");
+        setMessage(t("auth.errorGeneric"));
         return;
       }
 
       router.push("/campus");
       router.refresh();
     } catch {
-      setMessage("Could not sign you in. Try again.");
+      setMessage(t("auth.errorGeneric"));
     } finally {
       setLoading(false);
     }
@@ -66,16 +68,16 @@ function LoginForm() {
   return (
     <div className="mx-auto flex w-full max-w-sm flex-col gap-8">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Sign in</h1>
+        <h1 className="text-2xl font-bold tracking-tight">{t("auth.signIn")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Access the Hope Aviation campus with your account.
+          {t("auth.signInDescription")}
         </p>
       </div>
 
       <form onSubmit={handleEmailLogin} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="email" className="text-sm font-medium">
-            Email
+            {t("auth.email")}
           </label>
           <input
             id="email"
@@ -90,7 +92,7 @@ function LoginForm() {
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="password" className="text-sm font-medium">
-            Password
+            {t("auth.password")}
           </label>
           <input
             id="password"
@@ -113,7 +115,7 @@ function LoginForm() {
           disabled={loading}
           className="rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50"
         >
-          {loading ? "Signing in…" : "Sign in with email"}
+          {loading ? t("auth.signingIn") : t("auth.signInWithEmail")}
         </button>
       </form>
 
@@ -122,7 +124,7 @@ function LoginForm() {
           <span className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-2 text-muted-foreground">Or</span>
+          <span className="bg-card px-2 text-muted-foreground">{t("common.or")}</span>
         </div>
       </div>
 
@@ -132,12 +134,12 @@ function LoginForm() {
         disabled={loading}
         className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-medium hover:bg-accent disabled:opacity-50"
       >
-        Continue with Google
+        {t("auth.continueWithGoogle")}
       </button>
 
       <p className="text-center text-xs text-muted-foreground">
         <Link href="/" className="underline hover:text-foreground">
-          Back to home
+          {t("auth.backToHome")}
         </Link>
       </p>
     </div>
@@ -145,10 +147,12 @@ function LoginForm() {
 }
 
 export default function LoginPage() {
+  const { t } = useTranslation();
+  
   return (
     <Suspense
       fallback={
-        <p className="text-sm text-muted-foreground">Loading sign-in…</p>
+        <p className="text-sm text-muted-foreground">{t("auth.loadingSignIn")}</p>
       }
     >
       <LoginForm />

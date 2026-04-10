@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslation } from "@/lib/i18n/context";
 import { toast } from "sonner";
 import { 
   Loader2, 
@@ -39,6 +40,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { Profile } from "@/types/database";
 
 export function ProfileForm() {
+  const { t } = useTranslation();
   const [profile, setProfile] = React.useState<Profile | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [saving, setSaving] = React.useState(false);
@@ -86,7 +88,7 @@ export function ProfileForm() {
         setBirthDate(new Date(p.birth_date));
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Error loading profile");
+      toast.error(err instanceof Error ? err.message : t("profile.errorLoading"));
     } finally {
       setLoading(false);
     }
@@ -122,10 +124,10 @@ export function ProfileForm() {
         throw new Error(errorData.error?.message || "Failed to update profile");
       }
 
-      toast.success("Profile updated successfully");
+      toast.success(t("profile.profileUpdated"));
       fetchProfile();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Error updating profile");
+      toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
       setSaving(false);
     }
@@ -184,7 +186,7 @@ export function ProfileForm() {
             </Badge>
             {isGoogleUser && (
               <Badge variant="outline" className="border-primary/20 text-primary bg-primary/5 py-1 px-3">
-                Google Account
+                {t("userMenu.googleAccount")}
               </Badge>
             )}
           </div>
@@ -196,35 +198,35 @@ export function ProfileForm() {
         <section className="space-y-4">
           <div className="flex items-center gap-2 text-primary pl-1">
             <UserIcon className="size-4 opacity-70" />
-            <h3 className="text-sm font-bold uppercase tracking-widest opacity-60">Personal Details</h3>
+            <h3 className="text-sm font-bold uppercase tracking-widest opacity-60">{t("profile.personalDetails")}</h3>
           </div>
           
           <Card className="p-6 md:p-10 bg-white border-slate-100 shadow-xs overflow-visible rounded-3xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
               <div className="space-y-2">
-                <Label htmlFor="firstName" className="text-sm font-semibold text-slate-600 pl-1">First Name</Label>
+                <Label htmlFor="firstName" className="text-sm font-semibold text-slate-600 pl-1">{t("profile.firstName")}</Label>
                 <Input
                   id="firstName"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="Official first name"
+                  placeholder={t("profile.firstNamePlaceholder")}
                   className="rounded-xl border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all h-12"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName" className="text-sm font-semibold text-slate-600 pl-1">Last Name</Label>
+                <Label htmlFor="lastName" className="text-sm font-semibold text-slate-600 pl-1">{t("profile.lastName")}</Label>
                 <Input
                   id="lastName"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Official last names"
+                  placeholder={t("profile.lastNamePlaceholder")}
                   className="rounded-xl border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all h-12"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone" className="text-sm font-semibold text-slate-600 pl-1">Phone Number</Label>
+                <Label htmlFor="phone" className="text-sm font-semibold text-slate-600 pl-1">{t("profile.phoneNumber")}</Label>
                 <div className="relative group">
                   <Phone className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400 transition-colors group-focus-within:text-primary" />
                   <Input
@@ -237,14 +239,14 @@ export function ProfileForm() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="birthDate" className="text-sm font-semibold text-slate-600 pl-1">Birth Date</Label>
+                <Label htmlFor="birthDate" className="text-sm font-semibold text-slate-600 pl-1">{t("profile.birthDate")}</Label>
                 <DatePicker 
                   date={birthDate} 
                   setDate={setBirthDate} 
-                  placeholder="Select birth date"
+                  placeholder={t("profile.selectBirthDate")}
                   className="rounded-xl border-slate-200 focus:border-primary h-12"
                 />
-                <p className="text-[10px] text-slate-400 font-medium pl-2 italic">Strictly required for official certifications.</p>
+                <p className="text-[10px] text-slate-400 font-medium pl-2 italic">{t("profile.birthDateNote")}</p>
               </div>
             </div>
           </Card>
@@ -254,13 +256,13 @@ export function ProfileForm() {
         <section className="space-y-4">
           <div className="flex items-center gap-2 text-primary pl-1">
             <Globe className="size-4 opacity-70" />
-            <h3 className="text-sm font-bold uppercase tracking-widest opacity-60">Location</h3>
+            <h3 className="text-sm font-bold uppercase tracking-widest opacity-60">{t("profile.location")}</h3>
           </div>
           
           <Card className="p-6 md:p-10 bg-white border-slate-100 shadow-xs overflow-visible rounded-3xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
-                <Label className="text-sm font-semibold text-slate-600 pl-1">Country / Region</Label>
+                <Label className="text-sm font-semibold text-slate-600 pl-1">{t("profile.countryRegion")}</Label>
                 <Popover open={isCountryOpen} onOpenChange={setIsCountryOpen}>
                   <PopoverTrigger asChild>
                     <Button
@@ -275,7 +277,7 @@ export function ProfileForm() {
                           <span className="font-bold text-primary tracking-tight">{selectedCountry.name}</span>
                         </span>
                       ) : (
-                        <span className="text-slate-400">Search and select country...</span>
+                        <span className="text-slate-400">{t("profile.searchCountry")}</span>
                       )}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -285,14 +287,14 @@ export function ProfileForm() {
                       <Search className="mr-3 h-4 w-4 shrink-0 text-slate-400" />
                       <Input
                         className="border-none bg-transparent focus-visible:ring-0 shadow-none h-full placeholder:text-slate-400 text-sm font-medium"
-                        placeholder="Search for your country..."
+                        placeholder={t("profile.searchCountryPlaceholder")}
                         value={countrySearch}
                         onChange={(e) => setCountrySearch(e.target.value)}
                       />
                     </div>
                     <div className="max-h-[300px] overflow-y-auto p-2 custom-scrollbar">
                       {filteredCountries.length === 0 ? (
-                        <div className="py-10 text-center text-sm text-slate-400 font-medium">No results found.</div>
+                        <div className="py-10 text-center text-sm text-slate-400 font-medium">{t("common.noResults")}</div>
                       ) : (
                         filteredCountries.map((c) => (
                           <button
@@ -325,23 +327,23 @@ export function ProfileForm() {
         <section className="space-y-4">
           <div className="flex items-center gap-2 text-primary pl-1">
             <FileText className="size-4 opacity-70" />
-            <h3 className="text-sm font-bold uppercase tracking-widest opacity-60">Internal Information</h3>
+            <h3 className="text-sm font-bold uppercase tracking-widest opacity-60">{t("profile.internalInfo")}</h3>
           </div>
           
           <Card className="p-6 md:p-10 bg-white border-slate-100 shadow-xs rounded-3xl">
             <div className="space-y-4">
-              <Label htmlFor="description" className="text-sm font-semibold text-slate-600 pl-1">Personal Description</Label>
+              <Label htmlFor="description" className="text-sm font-semibold text-slate-600 pl-1">{t("profile.personalDescription")}</Label>
               <Textarea
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Share your aviation background, experience, or any relevant information for the administration..."
+                placeholder={t("profile.personalDescriptionPlaceholder")}
                 className="min-h-[220px] rounded-2xl border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all p-6 text-base leading-relaxed font-medium"
               />
               <div className="flex items-start gap-3 text-xs text-slate-400 font-medium bg-slate-50/50 p-4 rounded-2xl border border-slate-100/50">
                 <AlertCircle className="size-4 mt-0.5 shrink-0 text-slate-400" />
                 <p className="leading-relaxed">
-                  This description is used exclusively for administrative purposes by Hope Aviation. It allows us to better understand your profile and is **never visible** to other students.
+                  {t("profile.personalDescriptionNote")}
                 </p>
               </div>
             </div>
@@ -358,12 +360,12 @@ export function ProfileForm() {
             {saving ? (
               <>
                 <Loader2 className="mr-3 h-6 w-6 animate-spin" />
-                Updating Records...
+                {t("profile.updatingRecords")}
               </>
             ) : (
               <>
                 <Save className="mr-3 h-6 w-6" />
-                Save Profile
+                {t("profile.saveProfile")}
               </>
             )}
           </Button>

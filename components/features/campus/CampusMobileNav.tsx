@@ -5,16 +5,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface NavLink {
   href: string;
-  label: string;
+  labelKey: string;
 }
 
 export function CampusMobileNav({ navLinks }: { navLinks: NavLink[] }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   // Close menu automatically if the route changes
   React.useEffect(() => {
@@ -106,7 +108,7 @@ export function CampusMobileNav({ navLinks }: { navLinks: NavLink[] }) {
                 `}
                 onClick={() => setIsOpen(false)}
               >
-                {link.label}
+                {t(link.labelKey)}
               </Link>
             );
           })}
@@ -118,7 +120,7 @@ export function CampusMobileNav({ navLinks }: { navLinks: NavLink[] }) {
             className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
             onClick={() => setIsOpen(false)}
           >
-            ← Back to Home
+            {t("campus.backToHome")}
           </Link>
         </div>
       </div>

@@ -17,6 +17,8 @@ import {
   AlertCircle
 } from "lucide-react";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
+import { getLocalizedText } from "@/lib/utils/i18n-helpers";
 import { toast } from "sonner";
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
@@ -54,6 +56,7 @@ interface UserAcademicDetailProps {
 }
 
 export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) {
+  const { t, lang } = useTranslation();
   const [data, setData] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
   const [examSearch, setExamSearch] = React.useState("");
@@ -71,7 +74,7 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
     setLoading(true);
     try {
       const res = await fetch(`/api/admin/user-management/${userId}/academic`);
-      if (!res.ok) throw new Error("Failed to load student data");
+      if (!res.ok) throw new Error(t("profile.errorLoading"));
       const json = await res.json();
       setData(json.data);
     } catch (e: any) {
@@ -94,8 +97,8 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ examId: resetModal.examId })
       });
-      if (!res.ok) throw new Error("Failed to reset attempts");
-      toast.success("Attempts reset successfully");
+      if (!res.ok) throw new Error(t("adminDetail.attemptsResetError"));
+      toast.success(t("adminDetail.attemptsResetSuccess")); 
       setResetModal(prev => ({ ...prev, open: false }));
       loadData(); // Refresh data
     } catch (e: any) {
@@ -106,7 +109,7 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
   };
 
   if (loading) return <div className="p-8 space-y-8 animate-pulse"><div className="h-32 bg-slate-100 rounded-3xl" /><div className="h-64 bg-slate-50 rounded-3xl" /></div>;
-  if (!data) return <div className="p-8 text-center text-slate-500">Student not found.</div>;
+  if (!data) return <div className="p-8 text-center text-slate-500">{t("adminDetail.studentNotFound")}</div>;
 
   const { user, enrollments, attempts } = data;
 
@@ -154,8 +157,8 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
           </Button>
         </Link>
         <div>
-          <Title level="h3" as="h1">Student Profile</Title>
-          <p className="text-sm text-slate-500 font-medium">Academic monitoring and management.</p>
+          <Title level="h3" as="h1">{t("adminDetail.studentProfile")}</Title>
+          <p className="text-sm text-slate-500 font-medium">{t("adminDetail.studentProfileSubtitle")}</p>
         </div>
       </div>
 
@@ -170,8 +173,8 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
                 {user.first_name} {user.last_name}
             </h2>
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm text-slate-500">
-                <span className="flex items-center gap-1.5"><Clock className="size-3.5" /> Joined {new Date(user.created_at).toLocaleDateString()}</span>
-                <span className="flex items-center gap-1.5"><BookOpen className="size-3.5" /> Enrolled in {enrollments.length} Courses</span>
+                <span className="flex items-center gap-1.5"><Clock className="size-3.5" /> {t("adminDetail.joined")} {new Date(user.created_at).toLocaleDateString(lang === "es" ? "es-ES" : "en-US")}</span>
+                <span className="flex items-center gap-1.5"><BookOpen className="size-3.5" /> {t("adminDetail.enrolledIn").replace("{count}", enrollments.length.toString())}</span>
             </div>
         </div>
       </div>
@@ -179,7 +182,7 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
       {/* Courses Section */}
       <div className="space-y-4">
           <div className="px-2 text-black">
-            <h3 className="text-lg font-bold tracking-tight">Course Enrollments</h3>
+            <h3 className="text-lg font-bold tracking-tight">{t("adminDetail.courseEnrollments")}</h3>
           </div>
           <div className="flex flex-col gap-3">
             {enrollments.map((enr: any) => (
@@ -189,10 +192,10 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
                             <div className="size-10 rounded-xl bg-slate-50 overflow-hidden flex-shrink-0">
                                 {enr.courses.thumbnail_url && <img src={enr.courses.thumbnail_url} className="size-full object-cover" />}
                             </div>
-                            <h4 className="font-bold text-sm text-primary">{enr.courses.title?.en}</h4>
+                            <h4 className="font-bold text-sm text-primary">{getLocalizedText(enr.courses.title, lang)}</h4>
                         </div>
                         <Badge variant={enr.status === 'active' ? 'secondary' : 'default'} className="text-[10px] bg-emerald-50 text-emerald-600 border-none">
-                            {enr.status.toUpperCase()}
+                            {enr.status === 'active' ? t("adminDetail.statusActive") : enr.status.toUpperCase()}
                         </Badge>
                     </div>
                 </div>
@@ -204,14 +207,14 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
       <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-2">
               <div>
-                <h3 className="text-lg font-bold tracking-tight text-primary">Exam Performance</h3>
+                <h3 className="text-lg font-bold tracking-tight text-primary">{t("adminDetail.examPerformance")}</h3>
               </div>
 
               <div className="flex items-center gap-3">
                   <div className="relative w-48">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-slate-400" />
                     <Input 
-                      placeholder="Search exam..." 
+                      placeholder={t("adminDetail.searchPlaceholder")} 
                       className="pl-9 h-9 text-xs" 
                       value={examSearch}
                       onChange={e => setExamSearch(e.target.value)}
@@ -219,12 +222,12 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
                   </div>
                   <Select value={courseFilter} onValueChange={setCourseFilter}>
                       <SelectTrigger className="w-40 h-9 text-xs">
-                          <SelectValue placeholder="All Courses" />
+                          <SelectValue placeholder={t("adminDetail.allCourses")} />
                       </SelectTrigger>
                       <SelectContent>
-                          <SelectItem value="all">All Courses</SelectItem>
+                          <SelectItem value="all">{t("adminDetail.allCourses")}</SelectItem>
                           {enrollments.map((e: any) => (
-                              <SelectItem key={e.courses.id} value={e.courses.id}>{e.courses.title?.en}</SelectItem>
+                              <SelectItem key={e.courses.id} value={e.courses.id}>{getLocalizedText(e.courses.title, lang)}</SelectItem>
                           ))}
                       </SelectContent>
                   </Select>
@@ -235,22 +238,22 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
               <Table>
                   <TableHeader>
                       <TableRow>
-                          <TableHead>Exam / Subject</TableHead>
-                          <TableHead>Score</TableHead>
-                          <TableHead>Attempts</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
+                          <TableHead>{t("adminDetail.columnExam")}</TableHead>
+                          <TableHead>{t("adminDetail.score")}</TableHead>
+                          <TableHead>{t("adminDetail.columnAttempts")}</TableHead>
+                          <TableHead>{t("adminDetail.columnStatus")}</TableHead>
+                          <TableHead className="text-right">{t("common.actions")}</TableHead>
                       </TableRow>
                   </TableHeader>
                   <TableBody>
                       {examDisplayList.length === 0 ? (
-                        <TableRow><TableCell colSpan={5} className="text-center py-10 text-slate-400">No exam records found</TableCell></TableRow>
+                        <TableRow><TableCell colSpan={5} className="text-center py-10 text-slate-400">{t("adminDetail.noExamRecords")}</TableCell></TableRow>
                       ) : examDisplayList.map((item: any) => (
                         <TableRow key={item.exam.id}>
                             <TableCell>
                                 <div className="space-y-0.5">
-                                    <div className="font-bold text-sm text-primary">{item.exam.title?.en}</div>
-                                    <div className="text-[10px] text-slate-400 uppercase tracking-widest">{item.exam.subjects?.title?.en}</div>
+                                    <div className="font-bold text-sm text-primary">{getLocalizedText(item.exam.title, lang)}</div>
+                                    <div className="text-[10px] text-slate-400 uppercase tracking-widest">{getLocalizedText(item.exam.subjects?.title, lang)}</div>
                                 </div>
                             </TableCell>
                             <TableCell>
@@ -268,20 +271,20 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
                             </TableCell>
                             <TableCell>
                                 {item.passed ? (
-                                    <Badge className="bg-emerald-50 text-emerald-600 border-none text-[10px]"><CheckCircle2 className="size-3 mr-1" /> PASSED</Badge>
+                                    <Badge className="bg-emerald-50 text-emerald-600 border-none text-[10px]"><CheckCircle2 className="size-3 mr-1" /> {t("adminDetail.statusPassed")}</Badge>
                                 ) : (
-                                    <Badge className="bg-rose-50 text-rose-600 border-none text-[10px]"><XCircle className="size-3 mr-1" /> FAILED</Badge>
+                                    <Badge className="bg-rose-50 text-rose-600 border-none text-[10px]"><XCircle className="size-3 mr-1" /> {t("adminDetail.statusFailed")}</Badge>
                                 )}
                             </TableCell>
                             <TableCell className="text-right">
                                 <Button 
                                   variant="outline" 
                                   size="sm" 
-                                  onClick={() => setResetModal({ open: true, examId: item.exam.id, examTitle: item.exam.title?.en || "Exam" })}
+                                  onClick={() => setResetModal({ open: true, examId: item.exam.id, examTitle: getLocalizedText(item.exam.title, lang) || "Exam" })}
                                   className="h-8 group hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 transition-all"
                                 >
                                     <RefreshCcw className="size-3.5 mr-1.5 group-hover:rotate-180 duration-500" />
-                                    Reset
+                                    {t("adminDetail.reset")}
                                 </Button>
                             </TableCell>
                         </TableRow>
@@ -298,21 +301,20 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
                   <div className="size-12 rounded-full bg-rose-50 flex items-center justify-center mb-4">
                       <AlertCircle className="size-6 text-rose-500" />
                   </div>
-                  <DialogTitle>Reset Exam Attempts?</DialogTitle>
+                  <DialogTitle>{t("adminDetail.resetAttemptsTitle")}</DialogTitle>
                   <DialogDescription>
-                      You are about to delete all previous attempts for <span className="font-bold text-primary">"{resetModal.examTitle}"</span>. 
-                      This will allow the student to retake the exam from scratch.
+                      {t("adminDetail.resetAttemptsConfirm").replace("{name}", resetModal.examTitle)} 
                   </DialogDescription>
               </DialogHeader>
               <DialogFooter className="mt-6">
-                  <DialogClose asChild><Button variant="ghost">Cancel</Button></DialogClose>
+                  <DialogClose asChild><Button variant="ghost">{t("common.cancel")}</Button></DialogClose>
                   <Button 
                     variant="destructive" 
                     onClick={handleResetAttempts}
                     disabled={isResetting}
                   >
                       {isResetting && <Loader2 className="size-4 animate-spin" />}
-                      Reset Attempts
+                      {t("adminDetail.resetAttempts")}
                   </Button>
               </DialogFooter>
           </DialogContent>

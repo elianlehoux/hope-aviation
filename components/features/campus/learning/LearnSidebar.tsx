@@ -2,6 +2,7 @@ import { CheckCircle2, Play, Lock, ChevronDown, Clock, ClipboardCheck, AlertCirc
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/lib/i18n/context";
 import {
   Accordion,
   AccordionContent,
@@ -72,7 +73,7 @@ export function LearnSidebar({
   enrollmentStatus,
   finalExamConfig,
 }: LearnSidebarProps) {
-  const lang = "en";
+  const { t, lang } = useTranslation();
 
   let globalClassIdx = 0;
 
@@ -104,7 +105,7 @@ export function LearnSidebar({
           className="flex-1 h-10 rounded-xl gap-1.5 font-bold text-[11px] text-slate-500 hover:text-primary transition-all uppercase tracking-wider"
         >
           <ChevronLeft className="size-3.5" />
-          Prev
+          {t("learning.prev")}
         </Button>
 
         <Button 
@@ -114,7 +115,7 @@ export function LearnSidebar({
           disabled={!hasNext}
           className="flex-1 h-10 rounded-xl gap-1.5 font-bold text-[11px] shadow-lg shadow-primary/10 transition-all active:scale-95 disabled:bg-slate-100 disabled:text-slate-400 uppercase tracking-wider"
         >
-          {hasNext ? "Next" : "Finish"}
+          {hasNext ? t("learning.next") : t("learning.finish")}
           <ChevronRight className="size-3.5" />
         </Button>
       </div>
@@ -122,7 +123,7 @@ export function LearnSidebar({
         {/* Progress Header */}
         <div className="px-6 py-4">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400">Course Progress</h3>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400">{t("learning.courseProgress")}</h3>
           <span className="text-xs font-bold text-primary">{Math.round(progressPercentage)}%</span>
         </div>
         <Progress value={progressPercentage} className="h-1.5 bg-slate-100" />
@@ -294,17 +295,17 @@ export function LearnSidebar({
                            <div className="flex items-center gap-2 mt-1">
                               {isModuleLocked ? (
                                  <span className="flex items-center gap-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
-                                    <Lock className="size-2.5" /> Locked
+                                    <Lock className="size-2.5" /> {t("learning.locked")}
                                  </span>
                               ) : isCompleted ? (
                                  <span className="flex items-center gap-1 text-[9px] font-bold text-emerald-500 uppercase tracking-widest opacity-80">
                                     <CheckCircle2 className="size-2.5" /> 
-                                    Completed
+                                    {t("learning.completed")}
                                  </span>
                               ) : isActive ? (
                                  <span className="flex items-center gap-1.5 text-[9px] font-bold text-accent uppercase tracking-widest">
                                     <Play className="size-2.5 fill-accent" /> 
-                                    Watching now
+                                    {t("learning.watchingNow")}
                                  </span>
                               ) : (
                                  <span className="flex items-center gap-1.5 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
@@ -408,22 +409,22 @@ export function LearnSidebar({
                              <div className="flex items-center gap-2 mt-1">
                                 {isModuleLocked ? (
                                    <span className="flex items-center gap-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
-                                      <Lock className="size-2.5" /> Locked
+                                      <Lock className="size-2.5" /> {t("learning.locked")}
                                    </span>
                                 ) : isPassed ? (
                                    <span className="flex items-center gap-1 text-[9px] font-bold text-emerald-500 uppercase tracking-widest opacity-80">
                                       <CheckCircle2 className="size-2.5" /> 
-                                      Passed ({Math.round(bestAttempt?.score || 0)}%)
+                                      {t("learning.passed")} ({Math.round(bestAttempt?.score || 0)}%)
                                    </span>
                                 ) : isActive ? (
                                    <span className="flex items-center gap-1.5 text-[9px] font-bold text-accent uppercase tracking-widest">
                                       <Play className="size-2.5 fill-accent" /> 
-                                      Taking now
+                                      {t("learning.takingNow")}
                                    </span>
                                 ) : isAttempted ? (
                                    <span className="flex items-center gap-1.5 text-[9px] font-bold text-rose-500 uppercase tracking-widest">
                                       <AlertCircle className="size-2.5" />
-                                      Failed ({bestAttempt?.score}%)
+                                      {t("learning.failed")} ({bestAttempt?.score}%)
                                    </span>
                                 ) : null}
                              </div>
@@ -486,21 +487,21 @@ export function LearnSidebar({
                               isFinalLocked ? "text-slate-400" :
                               isFinalActive || isFinalPassed ? "text-primary" : "text-slate-500 group-hover:text-primary"
                            )}>
-                              Final Test
+                              {t("learning.finalTest")}
                            </h5>
                            {(isFinalLocked || isFinalPassed || isFinalActive) && (
                               <div className="flex items-center gap-2 mt-1">
                                  {isFinalLocked ? (
                                     <span className="flex items-center gap-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
-                                       <Lock className="size-2.5" /> Locked
+                                       <Lock className="size-2.5" /> {t("learning.locked")}
                                     </span>
                                  ) : isFinalPassed ? (
                                     <span className="flex items-center gap-1 text-[9px] font-bold text-emerald-500 uppercase tracking-widest opacity-80">
-                                       <CheckCircle2 className="size-2.5" /> Passed
+                                       <CheckCircle2 className="size-2.5" /> {t("learning.passed")}
                                     </span>
                                  ) : isFinalActive ? (
                                     <span className="flex items-center gap-1.5 text-[9px] font-bold text-accent uppercase tracking-widest">
-                                       <Play className="size-2.5 fill-accent" /> Taking now
+                                       <Play className="size-2.5 fill-accent" /> {t("learning.takingNow")}
                                     </span>
                                  ) : null}
                               </div>

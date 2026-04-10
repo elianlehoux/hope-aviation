@@ -7,17 +7,6 @@ import {
   User, 
   Settings, 
   LogOut, 
-  Cloud,
-  CreditCard,
-  Github,
-  Keyboard,
-  LifeBuoy,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
-  UserPlus,
-  Users
 } from "lucide-react";
 
 import {
@@ -35,6 +24,7 @@ import {
   AvatarFallback,
 } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface UserMenuProps {
   user: {
@@ -53,6 +43,7 @@ interface UserMenuProps {
 export function UserMenu({ user }: UserMenuProps) {
   const router = useRouter();
   const [loading, setLoading] = React.useState(false);
+  const { t } = useTranslation();
 
   const fullName = user.user_metadata?.full_name || 
     `${user.user_metadata?.first_name || ""} ${user.user_metadata?.last_name || ""}`.trim() || 
@@ -104,12 +95,12 @@ export function UserMenu({ user }: UserMenuProps) {
           <Link href="/campus/profile">
             <DropdownMenuItem className="cursor-pointer">
               <User className="mr-2 h-4 w-4" />
-              <span>My Profile</span>
+              <span>{t("userMenu.myProfile")}</span>
             </DropdownMenuItem>
           </Link>
           <DropdownMenuItem disabled className="opacity-50">
             <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
+            <span>{t("userMenu.settings")}</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
@@ -119,7 +110,7 @@ export function UserMenu({ user }: UserMenuProps) {
           className="text-destructive focus:text-destructive focus:bg-destructive/5 cursor-pointer"
         >
           <LogOut className="mr-2 h-4 w-4" />
-          <span>{loading ? "Signing out..." : "Log out"}</span>
+          <span>{loading ? t("userMenu.signingOut") : t("userMenu.logOut")}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

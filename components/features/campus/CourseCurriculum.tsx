@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { BookOpen, Video, FileText, Clock, PlayCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface Class {
   id: string;
@@ -29,12 +30,12 @@ interface CourseCurriculumProps {
 }
 
 export function CourseCurriculum({ subjects }: CourseCurriculumProps) {
-  const lang = "en"; // Default to English for now
+  const { t, lang } = useTranslation();
 
   if (!subjects?.length) {
     return (
       <div className="py-12 text-center rounded-3xl border-2 border-dashed border-slate-100 bg-slate-50/50">
-        <p className="text-slate-400 font-medium italic">Curriculum details coming soon.</p>
+        <p className="text-slate-400 font-medium italic">{t("curriculum.comingSoon")}</p>
       </div>
     );
   }
@@ -42,12 +43,12 @@ export function CourseCurriculum({ subjects }: CourseCurriculumProps) {
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
       <div className="flex items-center gap-3 px-1 pt-4">
-        <h2 className="text-2xl font-bold tracking-tight text-primary">Course Content</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-primary">{t("curriculum.courseContent")}</h2>
       </div>
 
       <Accordion type="multiple" defaultValue={[subjects[0]?.id]} className="w-full space-y-4">
         {subjects.map((subject, index) => {
-          const subjectTitle = typeof subject.title === "string" ? subject.title : (subject.title?.[lang] || "Untitled Module");
+          const subjectTitle = typeof subject.title === "string" ? subject.title : (subject.title?.[lang] || t("curriculum.untitledModule"));
           
           return (
             <AccordionItem 
@@ -62,7 +63,7 @@ export function CourseCurriculum({ subjects }: CourseCurriculumProps) {
                       {subjectTitle}
                     </h4>
                     <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mt-1">
-                      {subject.classes?.length || 0} Lessons • {subject.classes?.reduce((acc, curr) => acc + (curr.duration_minutes || 0), 0) || 0} Minutes
+                      {subject.classes?.length || 0} {t("curriculum.lessons")} • {subject.classes?.reduce((acc, curr) => acc + (curr.duration_minutes || 0), 0) || 0} {t("curriculum.minutes")}
                     </p>
                   </div>
                 </div>
@@ -71,7 +72,7 @@ export function CourseCurriculum({ subjects }: CourseCurriculumProps) {
                 <div className="space-y-2">
                   {subject.classes?.length > 0 ? (
                     subject.classes.map((cls) => {
-                      const classTitle = typeof cls.title === "string" ? cls.title : (cls.title?.[lang] || "Untitled Lesson");
+                      const classTitle = typeof cls.title === "string" ? cls.title : (cls.title?.[lang] || t("curriculum.untitledLesson"));
                       return (
                         <div 
                           key={cls.id} 
@@ -95,7 +96,7 @@ export function CourseCurriculum({ subjects }: CourseCurriculumProps) {
                       );
                     })
                   ) : (
-                    <p className="px-4 py-2 text-xs text-slate-400 italic">No lessons in this module yet.</p>
+                    <p className="px-4 py-2 text-xs text-slate-400 italic">{t("curriculum.noLessons")}</p>
                   )}
                 </div>
               </AccordionContent>

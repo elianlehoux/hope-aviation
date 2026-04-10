@@ -1,10 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import { Navbar } from "@/components/shared/navbar";
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
 import { Heart, ArrowLeft, Send } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/context";
 
 export default function DonatePage() {
+  const { t } = useTranslation();
+
   return (
     <main className="relative min-h-screen flex flex-col bg-white text-slate-900 font-inter">
       <Navbar />
@@ -24,10 +29,10 @@ export default function DonatePage() {
 
           <div className="space-y-4">
             <Title level="h1" className="text-4xl md:text-6xl font-extrabold tracking-tight text-primary">
-              Ayúdanos a Despegar
+              {t("donate.title")}
             </Title>
             <p className="max-w-lg mx-auto text-lg md:text-xl text-slate-500 font-medium leading-relaxed">
-              Estamos trabajando en una plataforma de donaciones segura para que puedas ser parte del futuro de la aviación.
+              {t("donate.description")}
             </p>
           </div>
 
@@ -39,13 +44,13 @@ export default function DonatePage() {
                      <Send className="size-5 text-slate-400" />
                   </div>
                   <div className="space-y-2">
-                    <h3 className="text-xl font-bold text-primary">Próximamente</h3>
-                    <p className="text-slate-400 font-medium">Suscríbete para ser el primero en saber cuándo esté disponible.</p>
+                    <h3 className="text-xl font-bold text-primary">{t("donate.comingSoon")}</h3>
+                    <p className="text-slate-400 font-medium">{t("donate.subscribeText")}</p>
                   </div>
                   <div className="w-full max-w-sm flex gap-2">
                     <input 
                       type="email" 
-                      placeholder="tu@email.com" 
+                      placeholder={t("donate.emailPlaceholder")} 
                       className="flex-1 h-12 px-4 rounded-xl border border-slate-100 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all font-medium"
                     />
                     <Button size="icon" className="h-12 w-12 rounded-xl bg-primary">
@@ -60,7 +65,7 @@ export default function DonatePage() {
             <Button asChild variant="ghost" className="text-slate-500 hover:text-primary transition-colors cursor-pointer group">
               <Link href="/" className="flex items-center gap-2">
                 <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-1" />
-                Volver al inicio
+                {t("donate.backToHome")}
               </Link>
             </Button>
           </div>

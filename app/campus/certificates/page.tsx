@@ -1,4 +1,10 @@
+"use client";
+
+import { useTranslation } from "@/lib/i18n/context";
+
 export default function CertificatesPage() {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6 text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="size-24 rounded-[2rem] bg-primary flex items-center justify-center shadow-2xl shadow-primary/20 bg-gradient-to-br from-primary to-primary/80">
@@ -29,15 +35,15 @@ export default function CertificatesPage() {
 
       <div className="space-y-2 max-w-md">
         <h1 className="text-4xl font-extrabold tracking-tight text-primary">
-          My Certificates
+          {t("certificates.title")}
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          This section is currently under construction. Soon, you will be able to view and download all your earned certificates from completed courses here.
+          {t("certificates.description")}
         </p>
       </div>
       
       <div className="inline-flex py-2 px-4 rounded-full bg-accent/10 border border-accent/20">
-        <span className="text-xs font-bold text-accent uppercase tracking-widest">Coming Soon</span>
+        <span className="text-xs font-bold text-accent uppercase tracking-widest">{t("certificates.comingSoon")}</span>
       </div>
     </div>
   );

@@ -13,6 +13,8 @@ import {
   Image as ImageIcon,
   LayoutList,
 } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/context";
+import { getLocalizedText } from "@/lib/utils/i18n-helpers";
 
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
@@ -62,28 +64,23 @@ type CourseWithCount = Course & {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("es-ES", {
+function formatDate(iso: string, locale: string = "es-ES") {
+  return new Date(iso).toLocaleDateString(locale, {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
 }
 
-function getLocalizedText(text: TranslatedText | null, primaryLocale: "es" | "en" = "es"): string {
-  if (!text) return "—";
-  const fallbackLocale = primaryLocale === "es" ? "en" : "es";
-  return text[primaryLocale] || text[fallbackLocale] || "—";
-}
-
 function StatusBadge({ status }: { status: CourseStatus }) {
+  const { t } = useTranslation();
   switch (status) {
     case "published":
-      return <Badge variant="default">Publicado</Badge>;
+      return <Badge variant="default">{t("adminDetail.published")}</Badge>;
     case "draft":
-      return <Badge variant="secondary">Borrador</Badge>;
+      return <Badge variant="secondary">{t("adminDetail.draft")}</Badge>;
     case "archived":
-      return <Badge variant="outline" className="text-slate-500 border-slate-200">Archivado</Badge>;
+      return <Badge variant="outline" className="text-slate-500 border-slate-200">{t("adminDetail.archived")}</Badge>;
     default:
       return <Badge variant="outline">{status}</Badge>;
   }
@@ -172,6 +169,7 @@ function CourseFormModal({ course, open, onOpenChange, onSaved }: CourseFormProp
 
   const [validationOpen, setValidationOpen] = React.useState(false);
   const [availableQuestions, setAvailableQuestions] = React.useState(0);
+  const { t, lang } = useTranslation();
 
   // Sync form state when course changes
   React.useEffect(() => {
@@ -188,7 +186,7 @@ function CourseFormModal({ course, open, onOpenChange, onSaved }: CourseFormProp
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!titleEs.trim() && !titleEn.trim()) {
-      toast.error("El curso debe tener un título (ES o EN).");
+      toast.error(t("adminDetail.courseTitleRequired"));
       return;
     }
 
@@ -231,15 +229,15 @@ function CourseFormModal({ course, open, onOpenChange, onSaved }: CourseFormProp
 
       if (isEdit && course) {
         await updateCourse(course.id, payload);
-        toast.success("Curso actualizado correctamente.");
+        toast.success(t("adminDetail.courseUpdated")); 
       } else {
         await createCourse(payload);
-        toast.success("Curso creado correctamente.");
+        toast.success(t("adminDetail.courseCreated"));
       }
       onSaved();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Ha ocurrido un error.");
+      toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
       setSaving(false);
     }
@@ -249,31 +247,31 @@ function CourseFormModal({ course, open, onOpenChange, onSaved }: CourseFormProp
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Editar Curso" : "Nuevo Curso"}</DialogTitle>
+          <DialogTitle>{isEdit ? t("adminDetail.editCourse") : t("adminDetail.newCourse")}</DialogTitle>
           <DialogDescription>
             {isEdit
-              ? "Actualiza los detalles del curso."
-              : "Completa la información para crear un nuevo curso."}
+              ? t("adminDetail.courseUpdateNote")
+              : t("adminDetail.courseDetailsNote")}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="course-title-es">Título (ES) <span className="text-red-500">*</span></Label>
+              <Label htmlFor="course-title-es">{t("adminDetail.titleEs")} <span className="text-red-500">*</span></Label>
               <Input
                 id="course-title-es"
-                placeholder="Ej. Introducción a la Aviación"
+                placeholder={lang === "es" ? "Ej. Introducción a la Aviación" : "e.g. Introduction to Aviation"}
                 value={titleEs}
                 onChange={(e) => setTitleEs(e.target.value)}
                 required={!titleEn}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="course-title-en">Título (EN)</Label>
+              <Label htmlFor="course-title-en">{t("adminDetail.titleEn")}</Label>
               <Input
                 id="course-title-en"
-                placeholder="e.g. Introduction to Aviation"
+                placeholder={lang === "en" ? "e.g. Introduction to Aviation" : "Ej. Introducción a la Aviación"}
                 value={titleEn}
                 onChange={(e) => setTitleEn(e.target.value)}
                 required={!titleEs}
@@ -283,20 +281,20 @@ function CourseFormModal({ course, open, onOpenChange, onSaved }: CourseFormProp
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="course-desc-es">Descripción (ES)</Label>
+              <Label htmlFor="course-desc-es">{t("adminDetail.descEs")}</Label>
               <Textarea
                 id="course-desc-es"
-                placeholder="Descripción en español..."
+                placeholder={lang === "es" ? "Descripción en español..." : "Description in Spanish..."}
                 value={descEs}
                 onChange={(e) => setDescEs(e.target.value)}
                 rows={3}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="course-desc-en">Descripción (EN)</Label>
+              <Label htmlFor="course-desc-en">{t("adminDetail.descEn")}</Label>
               <Textarea
                 id="course-desc-en"
-                placeholder="Description in English..."
+                placeholder={lang === "en" ? "Description in English..." : "Descripción..."}
                 value={descEn}
                 onChange={(e) => setDescEn(e.target.value)}
                 rows={3}
@@ -305,32 +303,32 @@ function CourseFormModal({ course, open, onOpenChange, onSaved }: CourseFormProp
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="course-thumbnail">URL de Portada</Label>
+            <Label htmlFor="course-thumbnail">{t("adminDetail.thumbnailUrl")}</Label>
             <Input
               id="course-thumbnail"
               type="url"
-              placeholder="https://ejemplo.com/imagen.jpg"
+              placeholder="https://example.com/image.jpg"
               value={thumbnailUrl}
               onChange={(e) => setThumbnailUrl(e.target.value)}
             />
             {thumbnailUrl && (
               <div className="mt-2 text-sm text-muted-foreground flex items-center gap-2">
                  <ImageIcon className="size-4" />
-                 Vista previa disponible
+                 {t("adminDetail.previewAvailable")}
               </div>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="course-status">Estado</Label>
+            <Label htmlFor="course-status">{t("adminDetail.columnStatus")}</Label>
             <Select value={status} onValueChange={(val) => setStatus(val as CourseStatus)}>
               <SelectTrigger id="course-status">
-                <SelectValue placeholder="Selecciona un estado" />
+                <SelectValue placeholder={t("adminDetail.filterStatus")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="draft">Borrador</SelectItem>
-                <SelectItem value="published">Publicado</SelectItem>
-                <SelectItem value="archived">Archivado</SelectItem>
+                <SelectItem value="draft">{t("adminDetail.draft")}</SelectItem>
+                <SelectItem value="published">{t("adminDetail.published")}</SelectItem>
+                <SelectItem value="archived">{t("adminDetail.archived")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -338,12 +336,12 @@ function CourseFormModal({ course, open, onOpenChange, onSaved }: CourseFormProp
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="ghost">
-                Cancelar
+                {t("common.cancel")}
               </Button>
             </DialogClose>
             <Button type="submit" disabled={saving}>
               {saving && <Loader2 className="size-4 animate-spin" />}
-              {isEdit ? "Guardar Cambios" : "Crear Curso"}
+              {isEdit ? t("adminDetail.saveChanges") : t("adminDetail.newCourse")}
             </Button>
           </DialogFooter>
         </form>
@@ -351,7 +349,7 @@ function CourseFormModal({ course, open, onOpenChange, onSaved }: CourseFormProp
         <PublishValidationModal 
             open={validationOpen}
             onOpenChange={setValidationOpen}
-            courseTitle={getLocalizedText(course?.title ?? null)}
+            courseTitle={getLocalizedText(course?.title ?? null, lang)}
             configuredQuestions={course?.final_exam_question_count || 0}
             availableQuestions={availableQuestions}
         />
@@ -376,17 +374,18 @@ function DeleteCourseModal({
   onDeleted,
 }: DeleteConfirmProps) {
   const [deleting, setDeleting] = React.useState(false);
+  const { t, lang } = useTranslation();
 
   async function handleDelete() {
     if (!course) return;
     setDeleting(true);
     try {
       await deleteCourse(course.id);
-      toast.success(`Curso eliminado.`);
+      toast.success(t("adminDetail.courseDeleted")); // I'll add this key if not present
       onDeleted();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Error al eliminar el curso.");
+      toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
       setDeleting(false);
     }
@@ -396,16 +395,14 @@ function DeleteCourseModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Eliminar Curso</DialogTitle>
+          <DialogTitle>{t("adminDetail.deleteWithName").replace("{name}", t("adminDetail.courseTitle"))}</DialogTitle>
           <DialogDescription>
-            ¿Estás seguro de que deseas eliminar el curso{" "}
-            <strong className="text-primary">{getLocalizedText(course?.title ?? null)}</strong>? Esta acción
-            no se puede deshacer.
+            {t("adminDetail.courseDeleteConfirm").replace("{name}", getLocalizedText(course?.title ?? null, lang))}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="ghost">Cancelar</Button>
+            <Button variant="ghost">{t("common.cancel")}</Button>
           </DialogClose>
           <Button
             variant="destructive"
@@ -413,7 +410,7 @@ function DeleteCourseModal({
             disabled={deleting}
           >
             {deleting && <Loader2 className="size-4 animate-spin" />}
-            Eliminar Curso
+            {t("adminDetail.deleteWithName").replace("{name}", t("adminDetail.courseTitle"))}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -436,20 +433,21 @@ function CoursesTableSkeleton() {
 // ─── Empty State ──────────────────────────────────────────────────────────────
 
 function CoursesEmpty({ onCreateClick }: { onCreateClick: () => void }) {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       <div className="flex size-16 items-center justify-center rounded-2xl bg-accent/10 mb-5">
         <BookOpen className="size-8 text-accent" />
       </div>
       <p className="text-lg font-semibold text-primary tracking-tight">
-        No se encontraron cursos
+        {t("adminDetail.noUsersFound").replace(t("adminDetail.usersTitle"), t("adminDetail.coursesTitle"))} 
       </p>
       <p className="mt-1 text-sm text-slate-500 max-w-xs">
-        Crea tu primer curso para empezar a construir el catálogo de Hope Aviation.
+        {t("adminDetail.createRoleNote").replace(t("adminDetail.rolesTitle"), t("adminDetail.coursesTitle"))} 
       </p>
       <Button className="mt-6" onClick={onCreateClick}>
         <Plus className="size-4" />
-        Crear Curso
+        {t("adminDetail.newCourse")}
       </Button>
     </div>
   );
@@ -458,6 +456,7 @@ function CoursesEmpty({ onCreateClick }: { onCreateClick: () => void }) {
 // ─── Main Panel ───────────────────────────────────────────────────────────────
 
 export default function CoursesPanel() {
+  const { t, lang } = useTranslation();
   const [courses, setCourses] = React.useState<CourseWithCount[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [filterStatus, setFilterStatus] = React.useState("all");
@@ -474,11 +473,11 @@ export default function CoursesPanel() {
       const data = await fetchCourses(filterStatus);
       setCourses(data);
     } catch {
-      toast.error("No se pudieron cargar los cursos.");
+      toast.error(t("profile.errorLoading"));
     } finally {
       setLoading(false);
     }
-  }, [filterStatus]);
+  }, [filterStatus, t]);
 
   React.useEffect(() => {
     loadCourses();
@@ -505,29 +504,29 @@ export default function CoursesPanel() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <Title level="h3" as="h1">
-            Cursos
+            {t("adminDetail.coursesTitle")}
           </Title>
           <p className="mt-1 text-sm text-slate-500 font-medium">
-            Gestiona el catálogo de cursos, estados de publicación y traducciones.
+            {t("adminDetail.coursesSubtitle")}
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="w-[180px]">
             <Select value={filterStatus} onValueChange={setFilterStatus}>
               <SelectTrigger>
-                <SelectValue placeholder="Filtrar por estado" />
+                <SelectValue placeholder={t("adminDetail.filterStatus")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos los estados</SelectItem>
-                <SelectItem value="published">Publicados</SelectItem>
-                <SelectItem value="draft">Borradores</SelectItem>
-                <SelectItem value="archived">Archivados</SelectItem>
+                <SelectItem value="all">{t("adminDetail.allStates")}</SelectItem>
+                <SelectItem value="published">{t("adminDetail.publishedPlural")}</SelectItem>
+                <SelectItem value="draft">{t("adminDetail.draftPlural")}</SelectItem>
+                <SelectItem value="archived">{t("adminDetail.archivedPlural")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <Button onClick={handleCreate} className="shrink-0 self-start sm:self-auto">
             <Plus className="size-4" />
-            Nuevo Curso
+            {t("adminDetail.newCourse")}
           </Button>
         </div>
       </div>
@@ -542,14 +541,14 @@ export default function CoursesPanel() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Curso</TableHead>
-                <TableHead>Estado</TableHead>
-                <TableHead>Módulos</TableHead>
+                <TableHead>{t("adminDetail.courseTitle")}</TableHead>
+                <TableHead>{t("adminDetail.columnStatus")}</TableHead>
+                <TableHead>{t("adminDetail.columnModules")}</TableHead>
                 <TableHead className="hidden sm:table-cell">
-                  Descripción
+                  {t("adminDetail.columnDescription")}
                 </TableHead>
-                <TableHead className="hidden md:table-cell">Creado</TableHead>
-                <TableHead className="text-right">Acciones</TableHead>
+                <TableHead className="hidden md:table-cell">{t("adminDetail.columnJoined")}</TableHead>
+                <TableHead className="text-right">{t("adminDetail.columnActions")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -562,7 +561,7 @@ export default function CoursesPanel() {
                           // eslint-disable-next-line @next/next/no-img-element
                           <img 
                             src={course.thumbnail_url} 
-                            alt={getLocalizedText(course.title)}
+                            alt={getLocalizedText(course.title, lang)}
                             className="size-10 rounded-md object-cover border border-slate-100" 
                           />
                         ) : (
@@ -574,7 +573,7 @@ export default function CoursesPanel() {
                           href={`/campus/admin/courses/${course.id}`}
                           className="font-semibold text-primary tracking-tight hover:text-accent transition-colors"
                         >
-                          {getLocalizedText(course.title)}
+                          {getLocalizedText(course.title, lang)}
                         </Link>
                       </div>
                     </TableCell>
@@ -583,18 +582,18 @@ export default function CoursesPanel() {
                     </TableCell>
                     <TableCell>
                       <Badge variant="secondary" className="px-2 font-mono">
-                        {(course as any).subjects?.[0]?.count ?? 0}
+                         {(course as any).subjects?.[0]?.count ?? 0}
                       </Badge>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
                       <span className="text-slate-500 text-sm line-clamp-1 max-w-xs">
-                        {getLocalizedText(course.description) || "—"}
+                        {getLocalizedText(course.description, lang) || "—"}
                       </span>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
                       <div className="flex items-center gap-1.5 text-slate-500 text-sm">
                         <Calendar className="size-3.5" />
-                        {formatDate(course.created_at)}
+                        {formatDate(course.created_at, lang === "es" ? "es-ES" : "en-US")}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -607,41 +606,41 @@ export default function CoursesPanel() {
                               asChild
                               className="mr-1"
                             >
-                              <Link href={`/campus/admin/courses/${course.id}`} aria-label={`Administrar Módulos de ${getLocalizedText(course.title)}`}>
+                               <Link href={`/campus/admin/courses/${course.id}`} aria-label={t("adminDetail.adminModules").replace("{name}", getLocalizedText(course.title, lang))}>
                                 <LayoutList className="size-3.5 text-accent" />
                               </Link>
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent>Administrar Módulos</TooltipContent>
+                          <TooltipContent>{t("adminDetail.manageModules")}</TooltipContent>
                         </Tooltip>
 
                         <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon-xs"
-                              onClick={() => handleEdit(course)}
-                              aria-label={`Editar ${getLocalizedText(course.title)}`}
-                            >
-                              <Pencil className="size-3.5" />
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>Editar</TooltipContent>
+                            <TooltipTrigger asChild>
+                              <Button 
+                                variant="ghost" 
+                                size="icon-xs" 
+                                onClick={() => handleEdit(course)}
+                                aria-label={t("adminDetail.editWithName").replace("{name}", getLocalizedText(course.title, lang))}
+                              >
+                                <Pencil className="size-3.5" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>{t("common.edit")}</TooltipContent>
                         </Tooltip>
 
                         <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon-xs"
-                              onClick={() => handleDeleteClick(course)}
-                              aria-label={`Eliminar ${getLocalizedText(course.title)}`}
-                              className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-                            >
-                              <Trash2 className="size-3.5" />
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>Eliminar</TooltipContent>
+                            <TooltipTrigger asChild>
+                              <Button 
+                                variant="ghost" 
+                                size="icon-xs" 
+                                onClick={() => handleDeleteClick(course)}
+                                aria-label={t("adminDetail.deleteWithName").replace("{name}", getLocalizedText(course.title, lang))}
+                                className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                              >
+                                <Trash2 className="size-3.5" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>{t("common.delete")}</TooltipContent>
                         </Tooltip>
                       </div>
                     </TableCell>

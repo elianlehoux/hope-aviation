@@ -5,9 +5,12 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/hooks/use-user";
 import { ArrowRight, Heart } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/context";
+import { LanguageToggle } from "@/components/shared/language-toggle";
 
 const Navbar = () => {
   const { user, loading } = useUser();
+  const { t } = useTranslation();
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-slate-100 bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60">
@@ -29,31 +32,33 @@ const Navbar = () => {
             href="/courses"
             className="flex items-center text-sm font-semibold text-slate-600 transition-colors hover:text-primary relative group"
           >
-            Cursos
+            {t("navbar.courses")}
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full" />
           </Link>
           <Link
             href="/about"
             className="flex items-center text-sm font-semibold text-slate-600 transition-colors hover:text-primary relative group"
           >
-             Nosotros
+             {t("navbar.about")}
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full" />
           </Link>
         </div>
 
         {/* Action Buttons Section */}
         <div className="flex-1 flex items-center justify-end gap-3">
+          <LanguageToggle />
+          
           <Button asChild variant="ghost" size="sm" className="hidden sm:flex font-bold text-primary hover:bg-accent/5 transition-colors">
             <Link href="/donate" className="flex items-center gap-2">
               <Heart className="size-4 text-accent fill-accent/10" />
-              Donar
+              {t("navbar.donate")}
             </Link>
           </Button>
           
           <Button asChild size="sm" className="shadow-lg shadow-primary/20 font-bold px-6 group">
             <Link href={user ? "/campus" : "/auth/login"} className="flex items-center gap-1.5">
-              {!loading && (user ? "Ir al Campus" : "Ingresar")}
-              {loading && "Cargando..."}
+              {!loading && (user ? t("navbar.goToCampus") : t("navbar.signIn"))}
+              {loading && t("navbar.loading")}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>

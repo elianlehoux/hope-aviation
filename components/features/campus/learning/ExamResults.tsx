@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface ExamResultsProps {
   exam: any;
@@ -15,7 +16,7 @@ interface ExamResultsProps {
 }
 
 export function ExamResults({ exam, lastAttempt, onRetry, isFinalExam, nextItemUrl }: ExamResultsProps) {
-  const lang = "en";
+  const { t, lang } = useTranslation();
   const { score, passed, attempt } = lastAttempt;
   const isPassed = passed;
 
@@ -44,12 +45,12 @@ export function ExamResults({ exam, lastAttempt, onRetry, isFinalExam, nextItemU
           </div>
           <div className="space-y-2">
             <h2 className="text-4xl font-extrabold tracking-tight text-white leading-tight">
-              {isPassed ? (isFinalExam ? "Course Completed! 🎓" : "Congratulations!") : "Keep Practicing!"}
+              {isPassed ? (isFinalExam ? t("examResults.courseCompleted") : t("examResults.congratulations")) : t("examResults.keepPracticing")}
             </h2>
             <p className="text-white/80 font-medium">
               {isPassed
-                ? (isFinalExam ? "You have successfully passed the final examination." : "You have successfully passed this examination.")
-                : "You did not reach the passing score this time."}
+                ? (isFinalExam ? t("examResults.passedFinalMessage") : t("examResults.passedMessage"))
+                : t("examResults.failedMessage")}
             </p>
           </div>
         </div>
@@ -61,13 +62,13 @@ export function ExamResults({ exam, lastAttempt, onRetry, isFinalExam, nextItemU
               <div className="text-5xl font-black text-primary tracking-tighter">
                 {Math.round(score || 0)}%
               </div>
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Your Score</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t("examResults.yourScore")}</label>
             </div>
             <div className="text-center space-y-1 border-l border-slate-100">
               <div className="text-5xl font-black text-slate-300 tracking-tighter">
                 {exam?.passing_score || 70}%
               </div>
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Passing Score</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t("examResults.passingScore")}</label>
             </div>
           </div>
 
@@ -75,7 +76,7 @@ export function ExamResults({ exam, lastAttempt, onRetry, isFinalExam, nextItemU
           {(!isPassed && !isFinalExam) && (
             <div className="flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-slate-50 border border-slate-100/50 w-fit mx-auto">
               <RefreshCcw className="size-4 text-brand-orange" />
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Attempts Left:</span>
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t("examResults.attemptsLeft")}</span>
               <span className={cn(
                 "text-sm font-bold",
                 attemptsRemaining === 0 ? "text-brand-orange" : "text-primary"
@@ -91,8 +92,8 @@ export function ExamResults({ exam, lastAttempt, onRetry, isFinalExam, nextItemU
                 onClick={onRetry}
                 className="w-full h-16 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/95 shadow-xl shadow-primary/10 group"
               >
-                <RefreshCcw className="size-5 mr-2 transition-transform group-hover:rotate-180 duration-500" />
-                Try Again
+              <RefreshCcw className="size-5 mr-2 transition-transform group-hover:rotate-180 duration-500" />
+              {t("examResults.tryAgain")}
               </Button>
             ) : (isPassed && isFinalExam) ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -102,14 +103,14 @@ export function ExamResults({ exam, lastAttempt, onRetry, isFinalExam, nextItemU
                     className="w-full h-16 rounded-2xl text-lg font-bold border-2 border-primary/10 text-primary hover:bg-slate-50 shadow-sm"
                   >
                     <ArrowLeft className="size-5 mr-2" />
-                    Back to Campus
+                    {t("examResults.backToCampus")}
                   </Button>
                 </Link>
                 <Link href="/campus/certificates" className="block">
                   <Button
                     className="w-full h-16 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/95 shadow-xl shadow-primary/10 group"
                   >
-                    Generate Certificate
+                    {t("examResults.generateCertificate")}
                     <ArrowRight className="size-5 ml-2 transition-transform group-hover:translate-x-1" />
                   </Button>
                 </Link>
@@ -121,13 +122,13 @@ export function ExamResults({ exam, lastAttempt, onRetry, isFinalExam, nextItemU
                 >
                   {nextItemUrl ? (
                     <>
-                      Continue
+                      {t("examResults.continue")}
                       <ArrowRight className="size-5 ml-2 transition-transform group-hover:translate-x-1" />
                     </>
                   ) : (
                     <>
                       <ArrowLeft className="size-5 mr-2 transition-transform group-hover:-translate-x-1" />
-                      Back to Course
+                      {t("examResults.backToCourse")}
                     </>
                   )}
                 </Button>

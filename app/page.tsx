@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Navbar } from "@/components/shared/navbar";
 import { Title } from "@/components/ui/title";
@@ -15,6 +17,7 @@ import {
   CheckCircle2,
   Heart
 } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/context";
 
 /**
  * Landing Page — Public-facing homepage for Hope Aviation.
@@ -22,6 +25,41 @@ import {
  * providing navigation to the virtual campus.
  */
 export default function LandingPage() {
+  const { t } = useTranslation();
+
+  const features = [
+    {
+      titleKey: "landing.featureInteractiveCourses",
+      descKey: "landing.featureInteractiveCoursesDesc",
+      icon: <BookOpen className="size-6 text-accent" />,
+    },
+    {
+      titleKey: "landing.featureLiveSessions",
+      descKey: "landing.featureLiveSessionsDesc",
+      icon: <Video className="size-6 text-accent" />,
+    },
+    {
+      titleKey: "landing.featureProgressTracking",
+      descKey: "landing.featureProgressTrackingDesc",
+      icon: <BarChart3 className="size-6 text-accent" />,
+    },
+    {
+      titleKey: "landing.featureResourceLibrary",
+      descKey: "landing.featureResourceLibraryDesc",
+      icon: <Library className="size-6 text-accent" />,
+    },
+    {
+      titleKey: "landing.featureCommunity",
+      descKey: "landing.featureCommunityDesc",
+      icon: <Users className="size-6 text-accent" />,
+    },
+    {
+      titleKey: "landing.featureCertifications",
+      descKey: "landing.featureCertificationsDesc",
+      icon: <Award className="size-6 text-accent" />,
+    },
+  ];
+
   return (
     <main className="relative min-h-screen flex flex-col bg-white text-slate-900 overflow-hidden font-inter">
       <Navbar />
@@ -34,30 +72,29 @@ export default function LandingPage() {
 
         <div className="space-y-6 max-w-4xl mx-auto">
           <Badge variant="secondary" className="px-4 py-1.5 text-xs font-bold tracking-wider uppercase bg-accent/5 text-accent border-accent/10 mb-4 cursor-default">
-            Bienvenido a la Nueva Era de la Aviación
+            {t("landing.heroBadge")}
           </Badge>
           
           <Title level="h1" className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1] text-primary">
-            Tu Viaje en la Aviación
+            {t("landing.heroTitle1")}
             <br />
-            <span className="text-accent">Comienza Aquí</span>
+            <span className="text-accent">{t("landing.heroTitle2")}</span>
           </Title>
 
           <p className="mt-8 max-w-2xl mx-auto text-lg md:text-xl text-slate-500 font-medium leading-relaxed">
-            Un campus virtual de última generación diseñado para estudiantes y profesionales de la aviación. 
-            Aprende, crece y despega — todo desde un solo lugar.
+            {t("landing.heroDescription")}
           </p>
 
           <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button asChild size="lg" className="h-14 px-10 text-lg shadow-xl shadow-primary/20 group bg-accent hover:bg-accent/90 border-none">
               <Link href="/donate" className="flex items-center gap-2">
                 <Heart className="size-5 fill-white/20" />
-                Donar ahora
+                {t("landing.donateNow")}
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="h-14 px-10 text-lg border-slate-200 hover:bg-slate-50 group">
               <Link href="/campus" className="flex items-center gap-2">
-                Ingresar al Campus
+                {t("landing.enterCampus")}
                 <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
@@ -72,55 +109,23 @@ export default function LandingPage() {
       >
         <div className="mx-auto max-w-5xl text-center mb-16">
           <Title level="h2" className="text-3xl md:text-4xl font-extrabold text-primary">
-            Todo lo que necesitas para triunfar
+            {t("landing.featuresTitle")}
           </Title>
           <p className="mt-4 text-slate-500 max-w-2xl mx-auto text-lg font-medium">
-            Nuestra plataforma ofrece una suite completa de herramientas diseñadas 
-            específicamente para la formación y educación aeronáutica.
+            {t("landing.featuresDescription")}
           </p>
         </div>
 
         <div className="mx-auto mt-14 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              title: "Cursos Interactivos",
-              description: "Módulos estructurados que cubren teoría, regulaciones y conocimientos prácticos.",
-              icon: <BookOpen className="size-6 text-accent" />,
-            },
-            {
-              title: "Sesiones en Vivo",
-              description: "Clases en tiempo real con instructores expertos de la industria de la aviación.",
-              icon: <Video className="size-6 text-accent" />,
-            },
-            {
-              title: "Seguimiento de Progreso",
-              description: "Monitorea tu avance con analíticas detalladas y seguimiento de hitos.",
-              icon: <BarChart3 className="size-6 text-accent" />,
-            },
-            {
-              title: "Biblioteca de Recursos",
-              description: "Accede a manuales, guías de estudio y materiales de referencia en cualquier momento.",
-              icon: <Library className="size-6 text-accent" />,
-            },
-            {
-              title: "Comunidad",
-              description: "Conéctate con otros estudiantes y profesionales de la aviación en todo el mundo.",
-              icon: <Users className="size-6 text-accent" />,
-            },
-            {
-              title: "Certificaciones",
-              description: "Obtén certificados reconocidos al completar cada programa de capacitación.",
-              icon: <Award className="size-6 text-accent" />,
-            },
-          ].map((feature) => (
-            <Card key={feature.title} className="border-none shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white group">
+          {features.map((feature) => (
+            <Card key={feature.titleKey} className="border-none shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white group">
               <CardHeader>
                 <div className="size-12 rounded-2xl bg-accent/5 flex items-center justify-center mb-4 group-hover:bg-accent group-hover:text-white transition-colors duration-300">
                   {feature.icon}
                 </div>
-                <CardTitle className="text-xl font-bold text-primary">{feature.title}</CardTitle>
+                <CardTitle className="text-xl font-bold text-primary">{t(feature.titleKey)}</CardTitle>
                 <CardDescription className="text-slate-500 pt-2 font-medium">
-                  {feature.description}
+                  {t(feature.descKey)}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -132,27 +137,24 @@ export default function LandingPage() {
       <section id="about" className="w-full py-32 px-6 relative overflow-hidden">
         <div className="mx-auto max-w-4xl text-center relative z-10">
           <Title level="h2" className="text-3xl md:text-4xl font-extrabold text-primary mb-8">
-            Sobre Hope Aviation
+            {t("landing.aboutTitle")}
           </Title>
           <div className="relative p-8 md:p-12 rounded-3xl bg-white border border-slate-100 shadow-2xl shadow-slate-200/50">
             <p className="text-xl text-slate-600 leading-relaxed font-medium">
-              Hope Aviation es un campus virtual de próxima generación comprometido 
-              con la entrega de educación aeronáutica de clase mundial. Nuestra misión es hacer 
-              que la formación profesional en aviación sea accesible, moderna y efectiva 
-              para todos — sin importar su ubicación.
+              {t("landing.aboutDescription")}
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-8">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="size-5 text-accent" />
-                <span className="font-bold text-sm text-primary">Innovación</span>
+                <span className="font-bold text-sm text-primary">{t("landing.aboutInnovation")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="size-5 text-accent" />
-                <span className="font-bold text-sm text-primary">Excelencia</span>
+                <span className="font-bold text-sm text-primary">{t("landing.aboutExcellence")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="size-5 text-accent" />
-                <span className="font-bold text-sm text-primary">Compromiso</span>
+                <span className="font-bold text-sm text-primary">{t("landing.aboutCommitment")}</span>
               </div>
             </div>
           </div>
@@ -174,18 +176,18 @@ export default function LandingPage() {
                  className="h-12 w-auto scale-125 origin-left" 
                />
                <p className="text-slate-400 font-medium text-sm mt-2">
-                 Formando el futuro de la aviación global.
+                 {t("landing.footerTagline")}
                </p>
             </div>
             
             <div className="flex gap-8 md:gap-12 font-bold text-primary text-sm">
-              <a href="#features" className="hover:text-accent transition-colors">Características</a>
-              <a href="#about" className="hover:text-accent transition-colors">Nosotros</a>
-              <Link href="/campus" className="hover:text-accent transition-colors">Campus</Link>
+              <a href="#features" className="hover:text-accent transition-colors">{t("landing.footerFeatures")}</a>
+              <a href="#about" className="hover:text-accent transition-colors">{t("landing.footerAbout")}</a>
+              <Link href="/campus" className="hover:text-accent transition-colors">{t("landing.footerCampus")}</Link>
             </div>
 
             <div className="text-slate-400 font-medium text-sm">
-              <p>&copy; 2026 Hope Aviation. Todos los derechos reservados.</p>
+              <p>{t("landing.footerCopyright")}</p>
             </div>
           </div>
         </div>

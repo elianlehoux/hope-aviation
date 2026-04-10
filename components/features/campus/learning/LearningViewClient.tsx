@@ -11,6 +11,7 @@ import { ChevronLeft, ChevronRight, GraduationCap, CheckCircle2 } from "lucide-r
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/lib/i18n/context";
 
 
 interface LearningViewClientProps {
@@ -41,8 +42,8 @@ export function LearningViewClient({
     nextItem = { itemType: "final-exam", id: "final-exam" };
   }
 
-  const lang = "en";
-  const courseTitle = typeof course.title === "string" ? course.title : (course.title?.[lang] || "Untitled Course");
+  const { t, lang } = useTranslation();
+  const courseTitle = typeof course.title === "string" ? course.title : (course.title?.[lang] || t("courseCard.untitledCourse"));
   const classTitle = typeof activeClass.title === "string" ? activeClass.title : (activeClass.title?.[lang] || "Untitled Class");
 
   // Calculate overall progress including exams
@@ -61,7 +62,7 @@ export function LearningViewClient({
       await toggleLessonCompletion(course.id, activeClass.id, true);
       
       if (nextItem) {
-        toast.info("Saving progress and moving forward...", { duration: 2000 });
+        toast.info(t("learning.savingProgress"), { duration: 2000 });
         
         let route = "";
         if (nextItem.itemType === "final-exam") {
@@ -74,7 +75,7 @@ export function LearningViewClient({
         
         router.push(route);
       } else {
-        toast.success("Congratulations! You've reached the end of the course.");
+        toast.success(t("learning.endOfCourse"));
       }
     });
   };
@@ -84,7 +85,7 @@ export function LearningViewClient({
     startTransition(async () => {
       const res = await toggleLessonCompletion(course.id, activeClass.id, !isCompleted);
       if (res.success) {
-        toast.success(!isCompleted ? "Marked as completed!" : "Lesson marked as incomplete.");
+        toast.success(!isCompleted ? t("learning.markedCompleted") : t("learning.markedIncomplete"));
       }
     });
   };
@@ -105,10 +106,10 @@ export function LearningViewClient({
       
       // Auto-advance if there's a next item
       if (nextItem) {
-        toast.info("Lesson completed! Advancing...", { duration: 3000 });
+        toast.info(t("learning.lessonCompleted"), { duration: 3000 });
         handleNext();
       } else {
-        toast.success("Course completed! Well done.");
+        toast.success(t("learning.courseCompleted"));
       }
     });
   };
@@ -145,12 +146,12 @@ export function LearningViewClient({
               {/* Description Section */}
               <div className="space-y-4">
                  <div className="flex items-center px-1">
-                    <h3 className="text-lg font-bold text-primary tracking-tight">About this lesson</h3>
+                    <h3 className="text-lg font-bold text-primary tracking-tight">{t("learning.aboutThisLesson")}</h3>
                  </div>
                  <p className="text-sm text-slate-500 leading-relaxed bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
                     {typeof activeClass.description === "string" 
                        ? activeClass.description 
-                       : (activeClass.description?.[lang] || "No additional description for this lesson.")}
+                       : (activeClass.description?.[lang] || t("learning.noDescription"))}
                  </p>
               </div>
            </div>

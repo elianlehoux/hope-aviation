@@ -4,6 +4,7 @@ import { ClipboardCheck, Clock, RefreshCcw, PercentCircle, ArrowRight, AlertTria
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface ExamPreFlightProps {
   exam: any;
@@ -12,9 +13,9 @@ interface ExamPreFlightProps {
 }
 
 export function ExamPreFlight({ exam, questionCount, onStart }: ExamPreFlightProps) {
-  const lang = "en";
+  const { t, lang } = useTranslation();
   const title = typeof exam.title === "string" ? exam.title : (exam.title?.[lang] || "Assessment");
-  const description = typeof exam.description === "string" ? exam.description : (exam.description?.[lang] || "Please read the instructions carefully before starting.");
+  const description = typeof exam.description === "string" ? exam.description : (exam.description?.[lang] || "");
 
   const attempts = exam.exam_attempts || [];
   const finishedAttempts = attempts.filter((a: any) => a.finished_at).length;
@@ -39,11 +40,11 @@ export function ExamPreFlight({ exam, questionCount, onStart }: ExamPreFlightPro
             <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
               {hasPassed && (
                 <Badge className="bg-emerald-500 text-white border-none px-4 py-1 text-[10px] uppercase tracking-widest font-bold">
-                  Passed
+                  {t("learning.passed")}
                 </Badge>
               )}
               <Badge className="bg-white/10 text-white border-white/20 px-4 py-1 text-[10px] uppercase tracking-widest font-bold">
-                {questionCount} Questions
+                {questionCount} {t("examPreflight.questions")}
               </Badge>
             </div>
           </div>
@@ -53,7 +54,7 @@ export function ExamPreFlight({ exam, questionCount, onStart }: ExamPreFlightPro
         <div className="p-8 md:p-12 space-y-10">
           {!hasPassed && (
             <div className="space-y-4">
-              <h3 className="text-lg font-bold text-primary tracking-tight">Instructions</h3>
+              <h3 className="text-lg font-bold text-primary tracking-tight">{t("examPreflight.instructions")}</h3>
               <p className="text-slate-500 leading-relaxed">
                 {description}
               </p>
@@ -64,24 +65,24 @@ export function ExamPreFlight({ exam, questionCount, onStart }: ExamPreFlightPro
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <InfoItem
                 icon={<Clock className="size-5 text-accent" />}
-                label="Time Limit"
-                value={exam.time_limit_minutes ? `${exam.time_limit_minutes} minutes` : "No limit"}
+                label={t("examPreflight.timeLimit")}
+                value={exam.time_limit_minutes ? `${exam.time_limit_minutes} ${t("examPreflight.minutes")}` : t("examPreflight.timeLimitNone")}
               />
               <InfoItem
                 icon={<RefreshCcw className="size-5 text-brand-orange" />}
-                label="Attempts"
-                value={exam.max_attempts > 100 ? "Unlimited" : `${finishedAttempts} of ${exam.max_attempts} used`}
-                description={exam.max_attempts > 100 ? "You can retake this test as many times as needed" : (isExhausted ? "No attempts remaining" : `${attemptsRemaining} attempts left`)}
+                label={t("examPreflight.attempts")}
+                value={exam.max_attempts > 100 ? t("examPreflight.attemptsUnlimited") : `${finishedAttempts} ${t("examPreflight.attemptsOf")} ${exam.max_attempts} ${t("examPreflight.attemptsUsed")}`}
+                description={exam.max_attempts > 100 ? t("examPreflight.attemptsUnlimitedDesc") : (isExhausted ? t("examPreflight.noAttemptsRemaining") : `${attemptsRemaining} ${t("examPreflight.attemptsLeft")}`)}
               />
               <InfoItem
                 icon={<PercentCircle className="size-5 text-primary" />}
-                label="Passing Score"
+                label={t("examPreflight.passingScore")}
                 value={`${exam.passing_score}%`}
               />
               <InfoItem
                 icon={<AlertTriangle className="size-5 text-rose-500" />}
-                label="Rules"
-                value="Once started, you cannot navigate away."
+                label={t("examPreflight.rules")}
+                value={t("examPreflight.rulesText")}
               />
             </div>
           )}
@@ -91,14 +92,14 @@ export function ExamPreFlight({ exam, questionCount, onStart }: ExamPreFlightPro
               <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center gap-4 text-emerald-600">
                 <ClipboardCheck className="size-5 shrink-0" />
                 <p className="text-sm font-bold">
-                  You have successfully passed this exam and it cannot be retaken.
+                  {t("examPreflight.alreadyPassed")}
                 </p>
               </div>
             ) : isExhausted ? (
               <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 flex items-center gap-4 text-rose-600">
                 <AlertTriangle className="size-5 shrink-0" />
                 <p className="text-sm font-bold">
-                  You have reached the maximum number of attempts for this exam.
+                  {t("examPreflight.maxAttemptsReached")}
                 </p>
               </div>
             ) : (
@@ -107,7 +108,7 @@ export function ExamPreFlight({ exam, questionCount, onStart }: ExamPreFlightPro
                   onClick={onStart}
                   className="w-full h-16 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/95 shadow-xl shadow-primary/10 group"
                 >
-                  Start Test
+                  {t("examPreflight.startTest")}
                   <ArrowRight className="size-5 ml-2 transition-transform group-hover:translate-x-1" />
                 </Button>
 

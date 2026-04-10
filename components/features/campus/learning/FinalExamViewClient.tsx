@@ -7,6 +7,7 @@ import { ExamPreFlight } from "@/components/features/campus/learning/ExamPreFlig
 import { ExamQuestionView } from "@/components/features/campus/learning/ExamQuestionView";
 import { ExamResults } from "@/components/features/campus/learning/ExamResults";
 import { toast } from "sonner";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface FinalExamViewClientProps {
   course: any;
@@ -22,6 +23,7 @@ export function FinalExamViewClient({
   enrollmentStatus,
 }: FinalExamViewClientProps) {
   const router = useRouter();
+  const { t } = useTranslation();
   
   // If the user already passed, they can see the finished state directly.
   const [state, setState] = useState<ExamState>(
@@ -82,7 +84,7 @@ export function FinalExamViewClient({
 
     if (attemptData?.passed) {
       router.refresh();
-      toast.success("Course Completed! Congratulations!");
+      toast.success(t("examResults.courseCompletedToast"));
     }
   };
 

@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface StudentCourseCardProps {
   course: {
@@ -25,8 +26,8 @@ interface StudentCourseCardProps {
 }
 
 export function StudentCourseCard({ course, enrollment, variant = "available" }: StudentCourseCardProps) {
-  const lang = "en"; // Default to English for now as requested
-  const title = typeof course.title === "string" ? course.title : (course.title?.[lang] || "Untitled Course");
+  const { t, lang } = useTranslation();
+  const title = typeof course.title === "string" ? course.title : (course.title?.[lang] || t("courseCard.untitledCourse"));
   const description = typeof course.description === "string" ? course.description : (course.description?.[lang] || "");
   
   const isCompleted = variant === "completed";
@@ -71,13 +72,13 @@ export function StudentCourseCard({ course, enrollment, variant = "available" }:
           {isActive && (
             <Badge className="bg-brand-orange text-white border-none shadow-lg animate-pulse">
               <Clock className="size-3 mr-1.5" />
-              In Progress
+              {t("courseCard.inProgress")}
             </Badge>
           )}
           {isCompleted && (
             <Badge className="bg-emerald-500 text-white border-none shadow-lg">
               <CheckCircle2 className="size-3 mr-1.5" />
-              Completed
+              {t("courseCard.completed")}
             </Badge>
           )}
         </div>
@@ -101,7 +102,7 @@ export function StudentCourseCard({ course, enrollment, variant = "available" }:
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-slate-400">
             <BookOpen className="size-3" />
-            {moduleCount} Modules
+            {moduleCount} {t("courseCard.modules")}
           </div>
           <h3 className="text-xl font-bold tracking-tight text-primary leading-tight group-hover:text-accent transition-colors">
             {title}
@@ -116,7 +117,7 @@ export function StudentCourseCard({ course, enrollment, variant = "available" }:
         {!isAvailable && (
           <div className="space-y-3 pt-2">
             <div className="flex justify-between items-end text-xs font-bold text-slate-500">
-              <span>Your Progress</span>
+              <span>{t("courseCard.yourProgress")}</span>
               <span className={cn(isCompleted ? "text-emerald-600" : "text-brand-orange")}>{progress}%</span>
             </div>
             <Progress value={progress} className="h-2 bg-slate-50" />
@@ -130,7 +131,7 @@ export function StudentCourseCard({ course, enrollment, variant = "available" }:
             className="flex items-center justify-between w-full group/btn"
           >
             <span className="text-sm font-bold text-primary group-hover/btn:translate-x-2 transition-transform duration-300">
-              {isActive ? "Continue Learning" : isCompleted ? "Review Content" : "Explore Course"}
+              {isActive ? t("courseCard.continueLearning") : isCompleted ? t("courseCard.reviewContent") : t("courseCard.exploreCourse")}
             </span>
             <div className="h-8 w-8 rounded-full bg-slate-50 flex items-center justify-center group-hover/btn:bg-primary group-hover/btn:text-white transition-all duration-300">
               <ChevronRight className="size-4" />

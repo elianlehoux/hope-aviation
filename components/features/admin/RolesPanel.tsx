@@ -11,6 +11,7 @@ import {
   Lock,
   Calendar,
 } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/context";
 
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
@@ -50,8 +51,8 @@ const PROTECTED_SLUGS = ["admin", "instructor", "student"];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-US", {
+function formatDate(iso: string, locale: string = "es-ES") {
+  return new Date(iso).toLocaleDateString(locale, {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -122,6 +123,7 @@ interface RoleFormProps {
 }
 
 function RoleFormModal({ role, open, onOpenChange, onSaved }: RoleFormProps) {
+  const { t } = useTranslation();
   const isEdit = !!role;
   const isProtected = role ? PROTECTED_SLUGS.includes(role.slug) : false;
 
@@ -155,7 +157,7 @@ function RoleFormModal({ role, open, onOpenChange, onSaved }: RoleFormProps) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim() || !slug.trim()) {
-      toast.error("Name and slug are required.");
+      toast.error(t("adminDetail.roleTitleRequired"));
       return;
     }
 
@@ -167,19 +169,19 @@ function RoleFormModal({ role, open, onOpenChange, onSaved }: RoleFormProps) {
           ...(isProtected ? {} : { slug: slug.trim() }),
           description: description.trim() || null,
         });
-        toast.success("Role updated successfully.");
+        toast.success(t("adminDetail.roleUpdated"));
       } else {
         await createRole({
           name: name.trim(),
           slug: slug.trim(),
           description: description.trim() || null,
         });
-        toast.success("Role created successfully.");
+        toast.success(t("adminDetail.roleCreated"));
       }
       onSaved();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "An error occurred.");
+      toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
       setSaving(false);
     }
@@ -189,17 +191,17 @@ function RoleFormModal({ role, open, onOpenChange, onSaved }: RoleFormProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit Role" : "New Role"}</DialogTitle>
+          <DialogTitle>{isEdit ? t("adminDetail.editRole") : t("adminDetail.newRole")}</DialogTitle>
           <DialogDescription>
             {isEdit
-              ? "Update the role details below."
-              : "Fill in the details to create a new role."}
+              ? t("adminDetail.editRoleDesc")
+              : t("adminDetail.createRoleDesc")}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="role-name">Name</Label>
+            <Label htmlFor="role-name">{t("adminDetail.columnName")}</Label>
             <Input
               id="role-name"
               placeholder="e.g. Content Manager"
@@ -211,10 +213,10 @@ function RoleFormModal({ role, open, onOpenChange, onSaved }: RoleFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="role-slug">
-              Slug
+              {t("adminDetail.columnSlug")}
               {isProtected && (
                 <span className="ml-2 text-xs text-brand-orange font-medium">
-                  (protected — cannot be changed)
+                  ({t("adminDetail.protected")})
                 </span>
               )}
             </Label>
@@ -231,12 +233,12 @@ function RoleFormModal({ role, open, onOpenChange, onSaved }: RoleFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="role-description">
-              Description{" "}
-              <span className="text-slate-400 font-normal">(optional)</span>
+              {t("adminDetail.columnDescription")}{" "}
+              <span className="text-slate-400 font-normal">({t("common.optional").toLowerCase()})</span>
             </Label>
             <Textarea
               id="role-description"
-              placeholder="Brief description of this role's purpose..."
+              placeholder={t("adminDetail.descPlaceholder")}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
@@ -246,12 +248,12 @@ function RoleFormModal({ role, open, onOpenChange, onSaved }: RoleFormProps) {
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="ghost">
-                Cancel
+                {t("common.cancel")}
               </Button>
             </DialogClose>
             <Button type="submit" disabled={saving}>
               {saving && <Loader2 className="size-4 animate-spin" />}
-              {isEdit ? "Save Changes" : "Create Role"}
+              {isEdit ? t("adminDetail.saveChanges") : t("adminDetail.newRole")}
             </Button>
           </DialogFooter>
         </form>
@@ -275,6 +277,7 @@ function DeleteRoleModal({
   onOpenChange,
   onDeleted,
 }: DeleteConfirmProps) {
+  const { t } = useTranslation();
   const [deleting, setDeleting] = React.useState(false);
 
   async function handleDelete() {
@@ -282,11 +285,11 @@ function DeleteRoleModal({
     setDeleting(true);
     try {
       await deleteRole(role.id);
-      toast.success(`Role "${role.name}" deleted.`);
+      toast.success(t("adminDetail.roleDeleted"));
       onDeleted();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Failed to delete.");
+      toast.error(err instanceof Error ? err.message : t("adminDetail.errorDeleting"));
     } finally {
       setDeleting(false);
     }
@@ -296,17 +299,15 @@ function DeleteRoleModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Role</DialogTitle>
+          <DialogTitle>{t("adminDetail.deleteRoleTitle")}</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete the role{" "}
-            <strong className="text-primary">{role?.name}</strong>? This action
-            cannot be undone. If the role is assigned to users, deletion will
-            fail.
+            {t("adminDetail.deleteConfirm").replace("{name}", role?.name || "")}
+            {" "}{t("adminDetail.deleteRoleWarning")}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="ghost">Cancel</Button>
+            <Button variant="ghost">{t("common.cancel")}</Button>
           </DialogClose>
           <Button
             variant="destructive"
@@ -314,7 +315,7 @@ function DeleteRoleModal({
             disabled={deleting}
           >
             {deleting && <Loader2 className="size-4 animate-spin" />}
-            Delete Role
+            {t("common.delete")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -337,21 +338,21 @@ function RolesTableSkeleton() {
 // ─── Empty State ──────────────────────────────────────────────────────────────
 
 function RolesEmpty({ onCreateClick }: { onCreateClick: () => void }) {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       <div className="flex size-16 items-center justify-center rounded-2xl bg-accent/10 mb-5">
         <ShieldCheck className="size-8 text-accent" />
       </div>
       <p className="text-lg font-semibold text-primary tracking-tight">
-        No roles found
+        {t("adminDetail.roleNotFound")}
       </p>
       <p className="mt-1 text-sm text-slate-500 max-w-xs">
-        Create your first role to start managing user permissions across the
-        platform.
+        {t("adminDetail.createRoleNote")}
       </p>
       <Button className="mt-6" onClick={onCreateClick}>
         <Plus className="size-4" />
-        Create Role
+        {t("adminDetail.newRole")}
       </Button>
     </div>
   );
@@ -360,6 +361,7 @@ function RolesEmpty({ onCreateClick }: { onCreateClick: () => void }) {
 // ─── Main Panel ───────────────────────────────────────────────────────────────
 
 export default function RolesPanel() {
+  const { t, lang } = useTranslation();
   const [roles, setRoles] = React.useState<Role[]>([]);
   const [loading, setLoading] = React.useState(true);
 
@@ -375,11 +377,11 @@ export default function RolesPanel() {
       const data = await fetchRoles();
       setRoles(data);
     } catch {
-      toast.error("Could not load roles.");
+      toast.error(t("profile.errorLoading"));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   React.useEffect(() => {
     loadRoles();
@@ -406,16 +408,15 @@ export default function RolesPanel() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <Title level="h3" as="h1">
-            Roles
+            {t("adminDetail.rolesTitle")}
           </Title>
           <p className="mt-1 text-sm text-slate-500 font-medium">
-            Manage platform roles and their permissions. Built-in roles (admin,
-            instructor, student) are protected.
+            {t("adminDetail.rolesSubtitle")}
           </p>
         </div>
         <Button onClick={handleCreate} className="shrink-0 self-start sm:self-auto">
           <Plus className="size-4" />
-          New Role
+          {t("adminDetail.newRole")}
         </Button>
       </div>
 
@@ -429,13 +430,13 @@ export default function RolesPanel() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Slug</TableHead>
+                <TableHead>{t("adminDetail.columnName")}</TableHead>
+                <TableHead>{t("adminDetail.columnSlug")}</TableHead>
                 <TableHead className="hidden sm:table-cell">
-                  Description
+                  {t("adminDetail.columnDescription")}
                 </TableHead>
-                <TableHead className="hidden md:table-cell">Created</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="hidden md:table-cell">{t("adminDetail.columnCreated")}</TableHead>
+                <TableHead className="text-right">{t("common.actions")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -457,7 +458,7 @@ export default function RolesPanel() {
                               <Lock className="size-3.5 text-brand-orange" />
                             </TooltipTrigger>
                             <TooltipContent>
-                              Built-in role — slug cannot be changed or deleted
+                               {t("adminDetail.protectedDesc")}
                             </TooltipContent>
                           </Tooltip>
                         )}
@@ -474,7 +475,7 @@ export default function RolesPanel() {
                     <TableCell className="hidden md:table-cell">
                       <div className="flex items-center gap-1.5 text-slate-500 text-sm">
                         <Calendar className="size-3.5" />
-                        {formatDate(role.created_at)}
+                        {formatDate(role.created_at, lang === "es" ? "es-ES" : "en-US")}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -490,7 +491,7 @@ export default function RolesPanel() {
                               <Pencil className="size-3.5" />
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent>Edit</TooltipContent>
+                          <TooltipContent>{t("common.edit")}</TooltipContent>
                         </Tooltip>
 
                         {!isProtected && (
@@ -506,7 +507,7 @@ export default function RolesPanel() {
                                 <Trash2 className="size-3.5" />
                               </Button>
                             </TooltipTrigger>
-                            <TooltipContent>Delete</TooltipContent>
+                            <TooltipContent>{t("common.delete")}</TooltipContent>
                           </Tooltip>
                         )}
                       </div>

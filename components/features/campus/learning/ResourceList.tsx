@@ -2,16 +2,19 @@
 
 import { FileText, Download, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface ResourceListProps {
   resourceUrl?: string | null;
 }
 
 export function ResourceList({ resourceUrl }: ResourceListProps) {
+  const { t } = useTranslation();
+
   if (!resourceUrl) {
     return (
       <div className="p-8 text-center rounded-3xl border-2 border-dashed border-slate-100 bg-slate-50/50">
-        <p className="text-slate-400 font-medium italic text-sm">No additional resources for this class.</p>
+        <p className="text-slate-400 font-medium italic text-sm">{t("learning.noResources")}</p>
       </div>
     );
   }
@@ -23,8 +26,8 @@ export function ResourceList({ resourceUrl }: ResourceListProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between px-1">
-        <h3 className="text-lg font-bold text-primary tracking-tight">Class Files</h3>
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">1 Item</span>
+        <h3 className="text-lg font-bold text-primary tracking-tight">{t("learning.classFiles")}</h3>
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">1 {t("learning.item")}</span>
       </div>
 
       <div 
@@ -39,7 +42,7 @@ export function ResourceList({ resourceUrl }: ResourceListProps) {
               {filename}
             </h4>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-              {isPdf ? "PDF Document" : "Downloadable Resource"}
+              {isPdf ? t("learning.pdfDocument") : t("learning.downloadable")}
             </p>
           </div>
         </div>

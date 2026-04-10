@@ -14,6 +14,7 @@ import {
   GraduationCap,
 } from "lucide-react";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
@@ -46,6 +47,7 @@ interface UserSummary {
 }
 
 export default function UserManagementPanel() {
+  const { t, lang } = useTranslation();
   const [users, setUsers] = React.useState<UserSummary[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [offset, setOffset] = React.useState(0);
@@ -69,7 +71,7 @@ export default function UserManagementPanel() {
         setUsers(json.data.users);
         setHasMore(json.data.users.length === PAGE_SIZE);
       } catch (e: any) {
-        toast.error("Could not load users: " + e.message);
+        toast.error(t("profile.errorLoading") + ": " + e.message);
       } finally {
         setLoading(false);
       }
@@ -108,17 +110,17 @@ export default function UserManagementPanel() {
     <div className="space-y-6">
       <div>
         <Title level="h3" as="h1">
-          User Management
+          {t("adminDetail.usersTitle")}
         </Title>
         <p className="mt-1 text-sm text-slate-500 font-medium">
-          View student progress and manage academic history.
+          {t("adminDetail.usersSubtitle")}
         </p>
       </div>
 
       <div className="relative flex-1 max-w-md">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
         <Input
-          placeholder="Search students..."
+          placeholder={t("adminDetail.searchPlaceholder")}
           value={search}
           onChange={(e) => handleSearchChange(e.target.value)}
           className="pl-10"
@@ -134,7 +136,7 @@ export default function UserManagementPanel() {
       ) : users.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center">
           <UsersIcon className="size-12 text-slate-200 mb-4" />
-          <p className="text-lg font-semibold text-primary">No students found</p>
+          <p className="text-lg font-semibold text-primary">{t("adminDetail.studentNotFound").split(".")[0]}</p>
         </div>
       ) : (
         <>
@@ -142,10 +144,10 @@ export default function UserManagementPanel() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Student</TableHead>
-                  <TableHead className="hidden md:table-cell">Email</TableHead>
-                  <TableHead className="hidden lg:table-cell">Joined</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t("adminDetail.columnStudent")}</TableHead>
+                  <TableHead className="hidden md:table-cell">{t("adminDetail.columnEmail")}</TableHead>
+                  <TableHead className="hidden lg:table-cell">{t("adminDetail.columnJoined")}</TableHead>
+                  <TableHead className="text-right">{t("common.actions")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -173,14 +175,14 @@ export default function UserManagementPanel() {
                     <TableCell className="hidden lg:table-cell text-slate-500 text-sm">
                       <div className="flex items-center gap-1.5">
                         <Calendar className="size-3.5" />
-                        {new Date(user.created_at).toLocaleDateString()}
+                        {new Date(user.created_at).toLocaleDateString(lang === "es" ? "es-ES" : "en-US")}
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
                       <Link href={`/campus/admin/user-management/${user.id}`}>
                         <Button variant="outline" size="sm" className="gap-2">
                           <GraduationCap className="size-4" />
-                          View Progress
+                          {t("adminDetail.viewProgress")}
                         </Button>
                       </Link>
                     </TableCell>
@@ -192,7 +194,7 @@ export default function UserManagementPanel() {
 
           <div className="flex items-center justify-between">
             <p className="text-xs text-slate-500 font-medium">
-              Page {currentPage} · {users.length} Students
+              {t("adminDetail.pageLabel").replace("{current}", currentPage.toString())} · {users.length} {t("adminDetail.usersTitle")}
             </p>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={handlePrev} disabled={offset === 0}>

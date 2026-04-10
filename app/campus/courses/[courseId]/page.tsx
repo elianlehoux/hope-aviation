@@ -8,6 +8,8 @@ import { Clock, BookOpen, GraduationCap, ShieldCheck, ChevronLeft, Calendar } fr
 import { parseUuidParam } from "@/lib/api/params";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { T } from "@/lib/i18n/context";
+import { getServerLang } from "@/lib/i18n/server";
 
 /**
  * Detailed course landing page for students to explore curriculum 
@@ -52,7 +54,7 @@ export default async function CourseDetailPage({
     .maybeSingle();
 
   const isEnrolled = !!enrollment;
-  const lang = "en"; // Default session lang or profile lang
+  const lang = await getServerLang();
   const title = typeof course.title === "string" ? course.title : (course.title?.[lang] || "Untitled Course");
   const description = typeof course.description === "string" ? course.description : (course.description?.[lang] || "");
   
@@ -71,7 +73,7 @@ export default async function CourseDetailPage({
           <div className="h-8 w-8 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-primary/5 group-hover:text-primary">
             <ChevronLeft className="size-4" />
           </div>
-          Back to My Academy
+          <T k="courseDetail.backToCatalog" />
         </Link>
       </div>
 
@@ -84,7 +86,7 @@ export default async function CourseDetailPage({
               <div className="flex flex-wrap gap-2">
                 {isEnrolled && (
                   <Badge className="px-4 py-1 text-xs uppercase tracking-widest font-bold bg-emerald-500 text-white border-none">
-                    Currently Enrolled
+                    <T k="courseDetail.currentlyEnrolled" />
                   </Badge>
                 )}
               </div>
@@ -98,11 +100,11 @@ export default async function CourseDetailPage({
 
             {/* Quick Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 py-4">
-              <StatItem icon={<BookOpen className="size-5" />} label="Modules" value={course.subjects?.length || 0} />
-              <StatItem icon={<Video className="size-5 text-brand-orange" />} label="Lessons" value={totalClasses} />
+              <StatItem icon={<BookOpen className="size-5" />} label={<T k="courseDetail.modules" />} value={course.subjects?.length || 0} />
+              <StatItem icon={<Video className="size-5 text-brand-orange" />} label={<T k="courseDetail.lessons" />} value={totalClasses} />
               <StatItem 
                 icon={<Clock className="size-5" />} 
-                label="Duration" 
+                label={<T k="courseDetail.duration" />} 
                 value={totalDuration >= 60 
                   ? `${Math.floor(totalDuration / 60)}h ${totalDuration % 60}m` 
                   : `${totalDuration}m`
@@ -142,13 +144,13 @@ export default async function CourseDetailPage({
               <div className="grid grid-cols-2 lg:grid-cols-1 gap-6">
                  <StatItem 
                     icon={<ShieldCheck className="size-5 text-emerald-500" />} 
-                    label="Certificate" 
-                    value="Included" 
+                    label={<T k="courseDetail.certificate" />} 
+                    value={<T k="courseDetail.included" />} 
                  />
                  <StatItem 
                     icon={<Calendar className="size-5 text-brand-orange" />} 
-                    label="Access" 
-                    value="Lifetime" 
+                    label={<T k="courseDetail.access" />} 
+                    value={<T k="courseDetail.lifetime" />} 
                  />
               </div>
            </div>
@@ -158,7 +160,7 @@ export default async function CourseDetailPage({
   );
 }
 
-function StatItem({ icon, label, value }: { icon: React.ReactNode, label: string, value: string | number }) {
+function StatItem({ icon, label, value }: { icon: React.ReactNode, label: React.ReactNode, value: React.ReactNode }) {
   return (
     <div className="space-y-1">
       <div className="flex items-center gap-2 text-slate-400">

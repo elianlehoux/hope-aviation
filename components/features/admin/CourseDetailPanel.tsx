@@ -14,11 +14,14 @@ import {
   Video,
   FileText,
   Clock,
+  Settings,
+  Save,
   ArrowLeft,
   ChevronRight,
-  GripVertical,
-  Settings
+  GripVertical
 } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/context";
+import { getLocalizedText } from "@/lib/utils/i18n-helpers";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
 import { 
   Rocket,
@@ -68,28 +71,23 @@ type CourseTree = {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("es-ES", {
+function formatDate(iso: string, locale: string = "es-ES") {
+  return new Date(iso).toLocaleDateString(locale, {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
 }
 
-function getLocalizedText(text: TranslatedText | null, primaryLocale: "es" | "en" = "es"): string {
-  if (!text) return "—";
-  const fallbackLocale = primaryLocale === "es" ? "en" : "es";
-  return text[primaryLocale] || text[fallbackLocale] || "—";
-}
-
 function StatusBadge({ status }: { status: CourseStatus }) {
+  const { t } = useTranslation();
   switch (status) {
     case "published":
-      return <Badge variant="default">Publicado</Badge>;
+      return <Badge variant="default">{t("adminDetail.published")}</Badge>;
     case "draft":
-      return <Badge variant="secondary">Borrador</Badge>;
+      return <Badge variant="secondary">{t("adminDetail.draft")}</Badge>;
     case "archived":
-      return <Badge variant="outline" className="text-slate-500 border-slate-200">Archivado</Badge>;
+      return <Badge variant="outline" className="text-slate-500 border-slate-200">{t("adminDetail.archived")}</Badge>;
     default:
       return <Badge variant="outline">{status}</Badge>;
   }
@@ -204,6 +202,7 @@ interface CourseConfigProps {
 }
 
 function CourseConfigModal({ courseId, course, open, onOpenChange, onSaved }: CourseConfigProps) {
+  const { t } = useTranslation();
   const [questionCount, setQuestionCount] = React.useState("");
   const [timeLimit, setTimeLimit] = React.useState("");
   const [saving, setSaving] = React.useState(false);
@@ -225,11 +224,11 @@ function CourseConfigModal({ courseId, course, open, onOpenChange, onSaved }: Co
       };
 
       await updateCourseConfig(courseId, payload);
-      toast.success("Configuración actualizada correctamente.");
+      toast.success(t("adminDetail.configUpdated"));
       onSaved();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Ha ocurrido un error.");
+      toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
       setSaving(false);
     }
@@ -239,16 +238,16 @@ function CourseConfigModal({ courseId, course, open, onOpenChange, onSaved }: Co
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Configuración de Examen Final</DialogTitle>
+          <DialogTitle>{t("adminDetail.finalExamConfig")}</DialogTitle>
           <DialogDescription>
-             Establece la cantidad de preguntas y el tiempo límite para el examen final. Déjalos vacíos si el curso no tiene examen final.
+             {t("adminDetail.finalExamDesc")}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="cfg-qcount">Nº de Preguntas (Random)</Label>
+              <Label htmlFor="cfg-qcount">{t("adminDetail.questionCountRandom")}</Label>
               <Input
                 id="cfg-qcount"
                 type="number"
@@ -258,7 +257,7 @@ function CourseConfigModal({ courseId, course, open, onOpenChange, onSaved }: Co
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="cfg-limit">Tiempo (Minutos)</Label>
+              <Label htmlFor="cfg-limit">{t("adminDetail.durationMinutes")}</Label>
               <Input
                 id="cfg-limit"
                 type="number"
@@ -271,11 +270,11 @@ function CourseConfigModal({ courseId, course, open, onOpenChange, onSaved }: Co
 
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="ghost">Cancelar</Button>
+              <Button type="button" variant="ghost">{t("common.cancel")}</Button>
             </DialogClose>
             <Button type="submit" disabled={saving}>
               {saving && <Loader2 className="size-4 animate-spin" />}
-              Guardar Cambios
+              {t("adminDetail.saveChanges")}
             </Button>
           </DialogFooter>
         </form>
@@ -296,6 +295,7 @@ interface SubjectFormProps {
 }
 
 function SubjectFormModal({ courseId, subject, open, onOpenChange, onSaved }: SubjectFormProps) {
+  const { t, lang } = useTranslation();
   const isEdit = !!subject;
 
   const [titleEs, setTitleEs] = React.useState("");
@@ -316,7 +316,7 @@ function SubjectFormModal({ courseId, subject, open, onOpenChange, onSaved }: Su
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!titleEs.trim() && !titleEn.trim()) {
-      toast.error("El módulo debe tener un título (ES o EN).");
+      toast.error(t("adminDetail.moduleTitleRequired"));
       return;
     }
 
@@ -335,15 +335,15 @@ function SubjectFormModal({ courseId, subject, open, onOpenChange, onSaved }: Su
 
       if (isEdit && subject) {
         await updateSubject(courseId, subject.id, payload);
-        toast.success("Módulo actualizado correctamente.");
+        toast.success(t("adminDetail.moduleUpdated"));
       } else {
         await createSubject(courseId, payload);
-        toast.success("Módulo creado correctamente.");
+        toast.success(t("adminDetail.moduleCreated"));
       }
       onSaved();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Ha ocurrido un error.");
+      toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
       setSaving(false);
     }
@@ -353,29 +353,29 @@ function SubjectFormModal({ courseId, subject, open, onOpenChange, onSaved }: Su
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Editar Módulo" : "Nuevo Módulo"}</DialogTitle>
+          <DialogTitle>{isEdit ? t("adminDetail.editModule") : t("adminDetail.newModule")}</DialogTitle>
           <DialogDescription>
-             Este módulo agrupará un listado de clases.
+             {t("adminDetail.moduleDesc")}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="sub-title-es">Título (ES) <span className="text-red-500">*</span></Label>
+              <Label htmlFor="sub-title-es">{t("adminDetail.titleEs")} <span className="text-red-500">*</span></Label>
               <Input
                 id="sub-title-es"
-                placeholder="Ej. Introducción"
+                placeholder={lang === "es" ? "Ej. Introducción" : "e.g. Introduction"}
                 value={titleEs}
                 onChange={(e) => setTitleEs(e.target.value)}
                 required={!titleEn}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="sub-title-en">Título (EN)</Label>
+              <Label htmlFor="sub-title-en">{t("adminDetail.titleEn")}</Label>
               <Input
                 id="sub-title-en"
-                placeholder="e.g. Introduction"
+                placeholder={lang === "en" ? "e.g. Introduction" : "Ej. Introducción"}
                 value={titleEn}
                 onChange={(e) => setTitleEn(e.target.value)}
                 required={!titleEs}
@@ -385,20 +385,20 @@ function SubjectFormModal({ courseId, subject, open, onOpenChange, onSaved }: Su
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="sub-desc-es">Descripción (ES)</Label>
+              <Label htmlFor="sub-desc-es">{t("adminDetail.descEs")}</Label>
               <Textarea
                 id="sub-desc-es"
-                placeholder="Descripción en español..."
+                placeholder={lang === "es" ? "Descripción en español..." : "Description in Spanish..."}
                 value={descEs}
                 onChange={(e) => setDescEs(e.target.value)}
                 rows={3}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="sub-desc-en">Descripción (EN)</Label>
+              <Label htmlFor="sub-desc-en">{t("adminDetail.descEn")}</Label>
               <Textarea
                 id="sub-desc-en"
-                placeholder="Description in English..."
+                placeholder={lang === "en" ? "Description in English..." : "Descripción..."}
                 value={descEn}
                 onChange={(e) => setDescEn(e.target.value)}
                 rows={3}
@@ -408,11 +408,11 @@ function SubjectFormModal({ courseId, subject, open, onOpenChange, onSaved }: Su
 
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="ghost">Cancelar</Button>
+              <Button type="button" variant="ghost">{t("common.cancel")}</Button>
             </DialogClose>
             <Button type="submit" disabled={saving}>
               {saving && <Loader2 className="size-4 animate-spin" />}
-              {isEdit ? "Guardar Cambios" : "Crear Módulo"}
+              {isEdit ? t("adminDetail.saveChanges") : t("adminDetail.newModule")}
             </Button>
           </DialogFooter>
         </form>
@@ -434,6 +434,7 @@ interface ClassFormProps {
 }
 
 function ClassFormModal({ courseId, subjectId, cls, open, onOpenChange, onSaved }: ClassFormProps) {
+  const { t, lang } = useTranslation();
   const isEdit = !!cls;
 
   const [titleEs, setTitleEs] = React.useState("");
@@ -460,13 +461,13 @@ function ClassFormModal({ courseId, subjectId, cls, open, onOpenChange, onSaved 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!titleEs.trim() && !titleEn.trim()) {
-      toast.error("La clase debe tener un título (ES o EN).");
+      toast.error(t("adminDetail.classTitleRequired"));
       return;
     }
     
     // Fallback to ensuring subjectId is present (it shouldn't be null but typescript)
     if (!subjectId && !cls?.subject_id) {
-       toast.error("Referencia al módulo perdida.");
+       toast.error(t("adminDetail.moduleRefError"));
        return;
     }
 
@@ -490,15 +491,15 @@ function ClassFormModal({ courseId, subjectId, cls, open, onOpenChange, onSaved 
 
       if (isEdit && cls) {
         await updateClass(courseId, tSubjectId, cls.id, payload);
-        toast.success("Clase actualizada correctamente.");
+        toast.success(t("adminDetail.classUpdated"));
       } else {
         await createClass(courseId, tSubjectId, payload);
-        toast.success("Clase creada correctamente.");
+        toast.success(t("adminDetail.classCreated"));
       }
       onSaved();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Ha ocurrido un error.");
+      toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
       setSaving(false);
     }
@@ -508,29 +509,29 @@ function ClassFormModal({ courseId, subjectId, cls, open, onOpenChange, onSaved 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Editar Clase" : "Nueva Clase"}</DialogTitle>
+          <DialogTitle>{isEdit ? t("adminDetail.editClass") : t("adminDetail.newClass")}</DialogTitle>
           <DialogDescription>
-             Define la lección, videos enlazados y archivos a descargar.
+             {t("adminDetail.classDesc")}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="cls-title-es">Título (ES) <span className="text-red-500">*</span></Label>
+              <Label htmlFor="cls-title-es">{t("adminDetail.titleEs")} <span className="text-red-500">*</span></Label>
               <Input
                 id="cls-title-es"
-                placeholder="Ej. Conceptos Básicos"
+                placeholder={lang === "es" ? "Ej. Conceptos Básicos" : "e.g. Core Concepts"}
                 value={titleEs}
                 onChange={(e) => setTitleEs(e.target.value)}
                 required={!titleEn}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="cls-title-en">Título (EN)</Label>
+              <Label htmlFor="cls-title-en">{t("adminDetail.titleEn")}</Label>
               <Input
                 id="cls-title-en"
-                placeholder="e.g. Core Concepts"
+                placeholder={lang === "en" ? "e.g. Core Concepts" : "Ej. Conceptos..."}
                 value={titleEn}
                 onChange={(e) => setTitleEn(e.target.value)}
                 required={!titleEs}
@@ -540,20 +541,20 @@ function ClassFormModal({ courseId, subjectId, cls, open, onOpenChange, onSaved 
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="cls-desc-es">Descripción (ES)</Label>
+              <Label htmlFor="cls-desc-es">{t("adminDetail.descEs")}</Label>
               <Textarea
                 id="cls-desc-es"
-                placeholder="Descripción en español..."
+                placeholder={lang === "es" ? "Descripción en español..." : "Description in Spanish..."}
                 value={descEs}
                 onChange={(e) => setDescEs(e.target.value)}
                 rows={2}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="cls-desc-en">Descripción (EN)</Label>
+              <Label htmlFor="cls-desc-en">{t("adminDetail.descEn")}</Label>
               <Textarea
                 id="cls-desc-en"
-                placeholder="Description in English..."
+                placeholder={lang === "en" ? "Description in English..." : "Descripción..."}
                 value={descEn}
                 onChange={(e) => setDescEn(e.target.value)}
                 rows={2}
@@ -563,47 +564,47 @@ function ClassFormModal({ courseId, subjectId, cls, open, onOpenChange, onSaved 
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
              <div className="space-y-2">
-               <Label htmlFor="cls-video">Video URL (Opcional)</Label>
-               <Input
-                 id="cls-video"
-                 type="url"
-                 placeholder="Enlace a Vimeo o YouTube"
-                 value={videoUrl}
-                 onChange={(e) => setVideoUrl(e.target.value)}
-               />
+                <Label htmlFor="cls-video">{t("adminDetail.videoUrl")}</Label>
+                <Input
+                  id="cls-video"
+                  type="url"
+                  placeholder={t("adminDetail.videoPlaceholder")}
+                  value={videoUrl}
+                  onChange={(e) => setVideoUrl(e.target.value)}
+                />
              </div>
              <div className="space-y-2">
-               <Label htmlFor="cls-resource">Recurso URL (Opcional)</Label>
-               <Input
-                 id="cls-resource"
-                 type="url"
-                 placeholder="PDF o Material de apoyo"
-                 value={resourceUrl}
-                 onChange={(e) => setResourceUrl(e.target.value)}
-               />
+                <Label htmlFor="cls-resource">{t("adminDetail.resourceUrl")}</Label>
+                <Input
+                  id="cls-resource"
+                  type="url"
+                  placeholder={t("adminDetail.resourcePlaceholder")}
+                  value={resourceUrl}
+                  onChange={(e) => setResourceUrl(e.target.value)}
+                />
              </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4">
              <div className="space-y-2">
-               <Label htmlFor="cls-duration">Duración Minutos (Opcional)</Label>
-               <Input
-                 id="cls-duration"
-                 type="number"
-                 placeholder="e.g. 45"
-                 value={duration}
-                 onChange={(e) => setDuration(e.target.value)}
-               />
+                <Label htmlFor="cls-duration">{t("adminDetail.durationMinutes")}</Label>
+                <Input
+                  id="cls-duration"
+                  type="number"
+                  placeholder="e.g. 45"
+                  value={duration}
+                  onChange={(e) => setDuration(e.target.value)}
+                />
              </div>
           </div>
 
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="ghost">Cancelar</Button>
+              <Button type="button" variant="ghost">{t("common.cancel")}</Button>
             </DialogClose>
             <Button type="submit" disabled={saving}>
               {saving && <Loader2 className="size-4 animate-spin" />}
-              {isEdit ? "Guardar Cambios" : "Crear Clase"}
+              {isEdit ? t("adminDetail.saveChanges") : t("adminDetail.newClass")}
             </Button>
           </DialogFooter>
         </form>
@@ -624,6 +625,7 @@ interface DeleteConfirmProps {
 }
 
 function DeleteConfirmationModal({ courseId, item, open, onOpenChange, onDeleted }: DeleteConfirmProps) {
+  const { t } = useTranslation();
   const [deleting, setDeleting] = React.useState(false);
 
   async function handleDelete() {
@@ -632,16 +634,16 @@ function DeleteConfirmationModal({ courseId, item, open, onOpenChange, onDeleted
     try {
       if (item.type === "subject") {
         await deleteSubject(courseId, item.id);
-        toast.success(`Módulo eliminado.`);
+        toast.success(t("adminDetail.moduleDeleted"));
       } else {
-         if (!item.parentId) throw new Error("Referencia al módulo pérdida para poder eliminar.");
+         if (!item.parentId) throw new Error(t("adminDetail.moduleRefError"));
          await deleteClass(courseId, item.parentId, item.id);
-         toast.success("Clase eliminada.");
+         toast.success(t("adminDetail.classDeleted"));
       }
       onDeleted();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Error al eliminar.");
+      toast.error(err instanceof Error ? err.message : t("adminDetail.errorDeleting"));
     } finally {
       setDeleting(false);
     }
@@ -651,15 +653,17 @@ function DeleteConfirmationModal({ courseId, item, open, onOpenChange, onDeleted
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Eliminar {item?.type === "subject" ? "Módulo" : "Clase"}</DialogTitle>
+          <DialogTitle>
+            {t("common.delete")} {item?.type === "subject" ? t("adminDetail.moduleTitle") : t("adminDetail.classTitle")}
+          </DialogTitle>
           <DialogDescription>
-            ¿Estás seguro de que deseas eliminar <strong className="text-primary">{item?.name}</strong>? Esta acción
-            no se puede deshacer. {item?.type === "subject" ? "Si el módulo contiene clases, no se podrá borrar." : ""}
+            {t("adminDetail.deleteConfirm").replace("{name}", item?.name || "")}
+            {" "}{item?.type === "subject" ? t("adminDetail.deleteModuleWarning") : ""}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="ghost">Cancelar</Button>
+            <Button variant="ghost">{t("common.cancel")}</Button>
           </DialogClose>
           <Button
             variant="destructive"
@@ -667,7 +671,7 @@ function DeleteConfirmationModal({ courseId, item, open, onOpenChange, onDeleted
             disabled={deleting}
           >
             {deleting && <Loader2 className="size-4 animate-spin" />}
-            Eliminar
+            {t("common.delete")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -679,6 +683,7 @@ function DeleteConfirmationModal({ courseId, item, open, onOpenChange, onDeleted
 // ─── Main Panel Component ──────────────────────────────────────────────────────
 
 export default function CourseDetailPanel({ courseId }: { courseId: string }) {
+  const { t, lang } = useTranslation();
   const [tree, setTree] = React.useState<CourseTree | null>(null);
   const [loading, setLoading] = React.useState(true);
 
@@ -710,11 +715,11 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
       }
       setTree(data);
     } catch {
-      toast.error("Error cargando el detalle del curso.");
+      toast.error(t("profile.errorLoading"));
     } finally {
       setLoading(false);
     }
-  }, [courseId]);
+  }, [courseId, t]);
 
   React.useEffect(() => {
     loadData();
@@ -745,7 +750,7 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
       try {
         await reorderSubjects(courseId, newOrderIds);
       } catch {
-        toast.error("Error al guardar el nuevo orden.");
+        toast.error(t("adminDetail.reorderError"));
         loadData(); // Revert
       }
     } else {
@@ -767,7 +772,7 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
       try {
         await reorderClasses(courseId, subject.id, newOrderIds);
       } catch {
-        toast.error("Error al guardar el nuevo orden.");
+        toast.error(t("adminDetail.reorderError"));
         loadData(); // Revert
       }
     }
@@ -828,12 +833,12 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
         body: JSON.stringify({ status: "published" }),
       });
 
-      if (!res.ok) throw new Error("Error al publicar el curso");
+      if (!res.ok) throw new Error(t("adminDetail.importError")); // Generic error if not specific one
 
-      toast.success("¡Curso publicado con éxito!");
+      toast.success(t("common.success")); 
       loadData();
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Error al publicar");
+      toast.error(err instanceof Error ? err.message : t("adminDetail.importError"));
     } finally {
       setPublishPending(false);
     }
@@ -853,7 +858,7 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
   if (!tree) {
     return (
       <div className="rounded-lg border border-dashed text-center p-8 text-muted-foreground">
-        No se pudo cargar la información del curso.
+        {t("adminDetail.studentNotFound").replace(t("adminDetail.usersTitle"), t("adminDetail.coursesTitle"))}
       </div>
     );
   }
@@ -867,20 +872,20 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
             className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary mb-4 transition-colors"
          >
             <ArrowLeft className="size-4 mr-2" />
-            Volver a Cursos
+            {t("adminDetail.backToExams").replace(t("adminDetail.examsTitle"), t("adminDetail.coursesTitle"))}
          </Link>
          
          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
              <div>
-                <Title level="h2">{getLocalizedText(tree.course.title)}</Title>
+                <Title level="h2">{getLocalizedText(tree.course.title, lang)}</Title>
                 <div className="flex items-center mt-2 text-sm text-slate-500 gap-3">
                    <StatusBadge status={tree.course.status} />
-                   <span>Creado el {formatDate(tree.course.created_at)}</span>
-                   <span className="bg-slate-100 rounded-md px-2 py-0.5 border border-slate-200 text-xs font-mono">{tree.subjects.length} módulos</span>
+                   <span>{t("adminDetail.columnJoined")}: {formatDate(tree.course.created_at, lang === "es" ? "es-ES" : "en-US")}</span>
+                   <span className="bg-slate-100 rounded-md px-2 py-0.5 border border-slate-200 text-xs font-mono">{tree.subjects.length} {t("adminDetail.columnModules").toLowerCase()}</span>
                    {!(tree.course.final_exam_question_count && tree.course.final_exam_question_count > 0) && (
                       <span className="flex items-center gap-1.5 text-amber-600 font-semibold bg-amber-50 px-2.5 py-0.5 rounded-md border border-amber-200/50 text-xs">
                          <AlertCircle className="size-3.5" />
-                         Examen final sin configurar
+                         {t("adminDetail.examConfigWarning")}
                       </span>
                    )}
                 </div>
@@ -899,16 +904,16 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                       ) : (
                         <Rocket className="size-4" />
                       )}
-                      Publicar Curso
+                      {t("adminDetail.published").split("/")[0]}
                    </Button>
                 )}
                 <Button variant="outline" onClick={() => setSettingsOpen(true)}>
                    <Settings className="size-4" />
-                   Examen Final
+                   {t("adminDetail.finalExamConfig")}
                 </Button>
                 <Button onClick={openNewSubject}>
                    <Plus className="size-4" />
-                   Nuevo Módulo
+                   {t("adminDetail.newModule")}
                 </Button>
              </div>
          </div>
@@ -920,14 +925,14 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
              <LayoutList className="size-8 text-accent" />
            </div>
            <p className="text-lg font-semibold text-primary tracking-tight">
-             El curso está vacío
+             {t("adminDetail.noExamRecords").replace(t("adminDetail.examsTitle"), t("adminDetail.coursesTitle"))}
            </p>
            <p className="mt-1 text-sm text-slate-500 max-w-xs">
-             Añade tu primer módulo para comenzar a estructurar el contenido de las clases.
+             {t("adminDetail.createRoleNote").replace(t("adminDetail.rolesTitle"), t("adminDetail.moduleTitle"))}
            </p>
            <Button className="mt-6 border border-primary/20" variant="secondary" onClick={openNewSubject}>
              <Plus className="size-4" />
-             Crear Primer Módulo
+             {t("adminDetail.newModule")}
            </Button>
          </div>
       ) : mounted ? (
@@ -963,9 +968,9 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                                           <span className="font-bold text-[10px] text-accent tracking-widest leading-none">M{index + 1}</span>
                                        </div>
                                        <div className="flex flex-col gap-0.5">
-                                         <span className="font-bold text-primary tracking-tight">{getLocalizedText(sub.title)}</span>
+                                         <span className="font-bold text-primary tracking-tight">{getLocalizedText(sub.title, lang)}</span>
                                          {sub.description && (
-                                            <span className="text-xs font-medium text-slate-500 line-clamp-1">{getLocalizedText(sub.description)}</span>
+                                            <span className="text-xs font-medium text-slate-500 line-clamp-1">{getLocalizedText(sub.description, lang)}</span>
                                          )}
                                        </div>
                                     </div>
@@ -979,11 +984,12 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                                          variant="ghost"
                                          size="icon-xs"
                                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); openEditSubject(e, sub); }}
+                                         aria-label={t("adminDetail.editWithName").replace("{name}", t("adminDetail.moduleTitle"))}
                                        >
                                          <Pencil className="size-3.5" />
                                        </Button>
                                      </TooltipTrigger>
-                                     <TooltipContent>Editar Módulo</TooltipContent>
+                                     <TooltipContent>{t("common.edit")}</TooltipContent>
                                    </Tooltip>
                                    
                                    <Tooltip>
@@ -993,11 +999,12 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                                          size="icon-xs"
                                          className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); triggerDeleteSubject(e, sub); }}
+                                         aria-label={t("adminDetail.deleteWithName").replace("{name}", t("adminDetail.moduleTitle"))}
                                        >
                                          <Trash2 className="size-3.5" />
                                        </Button>
                                      </TooltipTrigger>
-                                     <TooltipContent>Eliminar Módulo</TooltipContent>
+                                     <TooltipContent>{t("common.delete")}</TooltipContent>
                                    </Tooltip>
                                  </div>
                                </div>
@@ -1006,9 +1013,9 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                                  <div className="pl-11 space-y-3">
                                    {sub.classes.length === 0 ? (
                                      <div className="text-sm text-slate-400 font-medium py-3 px-4 border border-dashed rounded-xl flex items-center justify-between">
-                                        <span>Este módulo no tiene clases aún.</span>
+                                        <span>{t("adminDetail.noExamRecords").replace(t("adminDetail.examsTitle"), t("adminDetail.classTitle") + "es")}</span>
                                         <Button variant="secondary" size="xs" onClick={(e) => openNewClass(e, sub.id)}>
-                                          <Plus className="size-3" /> Añadir Clase
+                                          <Plus className="size-3" /> {t("adminDetail.newClass")}
                                         </Button>
                                      </div>
                                    ) : (
@@ -1049,7 +1056,7 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                                                          )}
                                                          <div className="flex flex-col">
                                                             <span className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                                                              {cIndex + 1}. {getLocalizedText(cls.title)}
+                                                              {cIndex + 1}. {getLocalizedText(cls.title, lang)}
                                                               {cls.duration_minutes && (
                                                                 <Badge variant="secondary" className="px-1.5 py-0 h-4 rounded text-[10px] gap-1 font-semibold">
                                                                   <Clock className="size-2.5" /> {cls.duration_minutes}m
@@ -1066,7 +1073,7 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                                                               <Pencil className="size-3" />
                                                             </Button>
                                                           </TooltipTrigger>
-                                                          <TooltipContent>Editar Clase</TooltipContent>
+                                                          <TooltipContent>{t("common.edit")}</TooltipContent>
                                                         </Tooltip>
                                                         <Tooltip>
                                                           <TooltipTrigger asChild>
@@ -1074,7 +1081,7 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                                                               <Trash2 className="size-3" />
                                                             </Button>
                                                           </TooltipTrigger>
-                                                          <TooltipContent>Eliminar Clase</TooltipContent>
+                                                          <TooltipContent>{t("common.delete")}</TooltipContent>
                                                         </Tooltip>
                                                       </div>
                                                    </div>
@@ -1084,7 +1091,7 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                                            {clsDroppable.placeholder}
                                            <div className="pt-2 flex justify-end">
                                               <Button variant="ghost" size="sm" className="text-slate-500 font-semibold text-xs py-1 h-8" onClick={(e) => openNewClass(e, sub.id)}>
-                                                 <Plus className="size-3" /> Añadir siguiente clase
+                                                 <Plus className="size-3" /> {t("adminDetail.newClass")}
                                               </Button>
                                            </div>
                                          </div>
@@ -1118,7 +1125,7 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
       <PublishValidationModal 
          open={publishValidationOpen}
          onOpenChange={setPublishValidationOpen}
-         courseTitle={getLocalizedText(tree.course.title)}
+         courseTitle={getLocalizedText(tree.course.title, lang)}
          configuredQuestions={tree.course.final_exam_question_count || 0}
          availableQuestions={tree.course.total_questions_count || 0}
       />

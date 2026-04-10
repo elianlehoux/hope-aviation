@@ -13,6 +13,8 @@ import {
   LayoutList,
   FileQuestion,
 } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/context";
+import { getLocalizedText } from "@/lib/utils/i18n-helpers";
 
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
@@ -65,18 +67,12 @@ type ExamWithRelations = Exam & {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("es-ES", {
+function formatDate(iso: string, locale: string = "es-ES") {
+  return new Date(iso).toLocaleDateString(locale, {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
-}
-
-function getLocalizedText(text: TranslatedText | null, primaryLocale: "es" | "en" = "es"): string {
-  if (!text) return "—";
-  const fallbackLocale = primaryLocale === "es" ? "en" : "es";
-  return text[primaryLocale] || text[fallbackLocale] || "—";
 }
 
 // ─── API helpers ──────────────────────────────────────────────────────────────
@@ -140,6 +136,7 @@ function ExamFormModal({ exam, coursesData, open, onOpenChange, onSaved }: ExamF
   const [maxAttempts, setMaxAttempts] = React.useState<number>(1);
   
   const [saving, setSaving] = React.useState(false);
+  const { t, lang } = useTranslation();
 
   // Derive available subjects based on selected course
   const availableSubjects = React.useMemo(() => {
@@ -186,11 +183,11 @@ function ExamFormModal({ exam, coursesData, open, onOpenChange, onSaved }: ExamF
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!titleEs.trim() && !titleEn.trim()) {
-      toast.error("El examen debe tener un título (ES o EN).");
+      toast.error(t("adminDetail.examTitleRequired"));
       return;
     }
     if (!selectedCourseId || !selectedSubjectId) {
-      toast.error("Debes asociar el examen a un Curso y un Módulo.");
+      toast.error(t("adminDetail.courseSubjectRequired"));
       return;
     }
 
@@ -212,15 +209,15 @@ function ExamFormModal({ exam, coursesData, open, onOpenChange, onSaved }: ExamF
 
       if (isEdit && exam) {
         await updateExam(exam.course_id, exam.subject_id, exam.id, payload);
-        toast.success("Examen actualizado correctamente.");
+        toast.success(t("adminDetail.examUpdated"));
       } else {
         await createExam(selectedCourseId, selectedSubjectId, payload);
-        toast.success("Examen creado correctamente.");
+        toast.success(t("adminDetail.examCreated"));
       }
       onSaved();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Ha ocurrido un error.");
+      toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
       setSaving(false);
     }
@@ -230,11 +227,11 @@ function ExamFormModal({ exam, coursesData, open, onOpenChange, onSaved }: ExamF
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Editar Configuración del Examen" : "Nuevo Examen"}</DialogTitle>
+          <DialogTitle>{isEdit ? t("adminDetail.editExamConfig") : t("adminDetail.newExam")}</DialogTitle>
           <DialogDescription>
             {isEdit
-              ? "Actualiza los detalles y reglas principales de evaluación."
-              : "Crea un nuevo examen y asócialo a un módulo específico."}
+              ? t("adminDetail.updateExamDetails")
+              : t("adminDetail.createExamNote")}
           </DialogDescription>
         </DialogHeader>
 
@@ -242,15 +239,15 @@ function ExamFormModal({ exam, coursesData, open, onOpenChange, onSaved }: ExamF
           {!isEdit && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-slate-50/50 rounded-xl border border-slate-100">
               <div className="space-y-2">
-                <Label htmlFor="exam-course">Curso Padre <span className="text-red-500">*</span></Label>
+                <Label htmlFor="exam-course">{t("adminDetail.parentCourse")} <span className="text-red-500">*</span></Label>
                 <Select value={selectedCourseId} onValueChange={setSelectedCourseId}>
                   <SelectTrigger id="exam-course" className="bg-white">
-                    <SelectValue placeholder="Selecciona un curso..." />
+                    <SelectValue placeholder={t("adminDetail.selectCourse")} />
                   </SelectTrigger>
                   <SelectContent>
                     {coursesData.map(course => (
                       <SelectItem key={course.id} value={course.id}>
-                        {getLocalizedText(course.title)}
+                        {getLocalizedText(course.title, lang)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -258,7 +255,7 @@ function ExamFormModal({ exam, coursesData, open, onOpenChange, onSaved }: ExamF
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="exam-subject">Módulo (Subject) <span className="text-red-500">*</span></Label>
+                <Label htmlFor="exam-subject">{t("adminDetail.subjectModule")} <span className="text-red-500">*</span></Label>
                 <Select 
                   value={selectedSubjectId} 
                   onValueChange={setSelectedSubjectId}
@@ -266,15 +263,15 @@ function ExamFormModal({ exam, coursesData, open, onOpenChange, onSaved }: ExamF
                 >
                   <SelectTrigger id="exam-subject" className="bg-white">
                     <SelectValue placeholder={
-                      !selectedCourseId ? "Primero elige un curso" : 
-                      availableSubjects.length === 0 ? "El curso no tiene módulos" : 
-                      "Selecciona un módulo..."
+                      !selectedCourseId ? t("adminDetail.firstChooseCourse") : 
+                      availableSubjects.length === 0 ? t("adminDetail.courseNoModules") : 
+                      t("adminDetail.selectModule")
                     } />
                   </SelectTrigger>
                   <SelectContent>
                     {availableSubjects.map(sub => (
                       <SelectItem key={sub.id} value={sub.id}>
-                        {getLocalizedText(sub.title)}
+                        {getLocalizedText(sub.title, lang)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -285,20 +282,20 @@ function ExamFormModal({ exam, coursesData, open, onOpenChange, onSaved }: ExamF
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="exam-title-es">Título (ES) <span className="text-red-500">*</span></Label>
+              <Label htmlFor="exam-title-es">{t("adminDetail.titleEs")} <span className="text-red-500">*</span></Label>
               <Input
                 id="exam-title-es"
-                placeholder="Ej. Evaluación Final"
+                placeholder={lang === "es" ? "Ej. Evaluación Final" : "e.g. Final Assessment"}
                 value={titleEs}
                 onChange={(e) => setTitleEs(e.target.value)}
                 required={!titleEn}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="exam-title-en">Título (EN)</Label>
+              <Label htmlFor="exam-title-en">{t("adminDetail.titleEn")}</Label>
               <Input
                 id="exam-title-en"
-                placeholder="e.g. Final Assessment"
+                placeholder={lang === "en" ? "e.g. Final Assessment" : "Ej. Evaluación Final"}
                 value={titleEn}
                 onChange={(e) => setTitleEn(e.target.value)}
                 required={!titleEs}
@@ -308,20 +305,20 @@ function ExamFormModal({ exam, coursesData, open, onOpenChange, onSaved }: ExamF
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="exam-desc-es">Instrucciones (ES)</Label>
+              <Label htmlFor="exam-desc-es">{t("adminDetail.instructionsEs")}</Label>
               <Textarea
                 id="exam-desc-es"
-                placeholder="Instrucciones previas al examen..."
+                placeholder={lang === "es" ? "Instrucciones previas al examen..." : "Exam instructions..."}
                 value={descEs}
                 onChange={(e) => setDescEs(e.target.value)}
                 rows={3}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="exam-desc-en">Instrucciones (EN)</Label>
+              <Label htmlFor="exam-desc-en">{t("adminDetail.instructionsEn")}</Label>
               <Textarea
                 id="exam-desc-en"
-                placeholder="Pre-flight instructions..."
+                placeholder={lang === "en" ? "Pre-flight instructions..." : "Instrucciones..."}
                 value={descEn}
                 onChange={(e) => setDescEn(e.target.value)}
                 rows={3}
@@ -331,7 +328,7 @@ function ExamFormModal({ exam, coursesData, open, onOpenChange, onSaved }: ExamF
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 border border-slate-100 rounded-xl bg-white shadow-sm">
             <div className="space-y-2">
-              <Label htmlFor="exam-score">Nota para Aprobar (0-100)</Label>
+              <Label htmlFor="exam-score">{t("adminDetail.passingScore")}</Label>
               <Input
                 id="exam-score"
                 type="number"
@@ -342,19 +339,19 @@ function ExamFormModal({ exam, coursesData, open, onOpenChange, onSaved }: ExamF
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="exam-limit">Tiempo Límite (Minutos)</Label>
+              <Label htmlFor="exam-limit">{t("adminDetail.timeLimit")}</Label>
               <Input
                 id="exam-limit"
                 type="number"
                 min="1"
-                placeholder="Ilimitado"
+                placeholder={t("adminDetail.unlimited")}
                 value={timeLimit}
                 onChange={(e) => setTimeLimit(e.target.value)}
               />
-              <p className="text-[10px] text-muted-foreground leading-tight">Dejar vacío para tiempo prudencial ilimitado.</p>
+              <p className="text-[10px] text-muted-foreground leading-tight">{t("adminDetail.unlimitedTimeNote")}</p>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="exam-attempts">Intentos Máximos</Label>
+              <Label htmlFor="exam-attempts">{t("adminDetail.maxAttemptsLabel")}</Label>
               <Input
                 id="exam-attempts"
                 type="number"
@@ -368,12 +365,12 @@ function ExamFormModal({ exam, coursesData, open, onOpenChange, onSaved }: ExamF
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="ghost">
-                Cancelar
+                {t("common.cancel")}
               </Button>
             </DialogClose>
             <Button type="submit" disabled={saving}>
               {saving && <Loader2 className="size-4 animate-spin" />}
-              {isEdit ? "Guardar Configuración" : "Crear Examen"}
+              {isEdit ? t("adminDetail.saveChanges") : t("adminDetail.newExam")}
             </Button>
           </DialogFooter>
         </form>
@@ -393,17 +390,18 @@ interface DeleteConfirmProps {
 
 function DeleteExamModal({ exam, open, onOpenChange, onDeleted }: DeleteConfirmProps) {
   const [deleting, setDeleting] = React.useState(false);
+  const { t, lang } = useTranslation();
 
   async function handleDelete() {
     if (!exam) return;
     setDeleting(true);
     try {
       await deleteExam(exam.course_id, exam.subject_id, exam.id);
-      toast.success(`Examen eliminado.`);
+      toast.success(t("adminDetail.examDeleted"));
       onDeleted();
       onOpenChange(false);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Error al eliminar.");
+      toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
       setDeleting(false);
     }
@@ -413,16 +411,14 @@ function DeleteExamModal({ exam, open, onOpenChange, onDeleted }: DeleteConfirmP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Eliminar Examen</DialogTitle>
+          <DialogTitle>{t("adminDetail.deleteExam")}</DialogTitle>
           <DialogDescription>
-            ¿Estás seguro de que deseas eliminar el examen{" "}
-            <strong className="text-primary">{getLocalizedText(exam?.title ?? null)}</strong>? 
-            Esta acción borrará todas sus preguntas y opciones para siempre.
+            {t("adminDetail.deleteExamConfirm").replace("{name}", getLocalizedText(exam?.title ?? null, lang))}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="ghost">Cancelar</Button>
+            <Button variant="ghost">{t("common.cancel")}</Button>
           </DialogClose>
           <Button
             variant="destructive"
@@ -430,7 +426,7 @@ function DeleteExamModal({ exam, open, onOpenChange, onDeleted }: DeleteConfirmP
             disabled={deleting}
           >
             {deleting && <Loader2 className="size-4 animate-spin" />}
-            Eliminar Examen
+            {t("adminDetail.deleteExam")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -453,20 +449,21 @@ function ExamsTableSkeleton() {
 // ─── Empty State ──────────────────────────────────────────────────────────────
 
 function ExamsEmpty({ onCreateClick }: { onCreateClick: () => void }) {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       <div className="flex size-16 items-center justify-center rounded-2xl bg-accent/10 mb-5">
         <FileQuestion className="size-8 text-accent" />
       </div>
       <p className="text-lg font-semibold text-primary tracking-tight">
-        No hay exámenes todavía
+        {t("adminDetail.noExamsYet")}
       </p>
       <p className="mt-1 text-sm text-slate-500 max-w-sm">
-        Crea evaluaciones enlazadas a módulos de cursos para medir el desempeño de los estudiantes.
+        {t("adminDetail.createExamsNote")}
       </p>
       <Button className="mt-6" onClick={onCreateClick}>
         <Plus className="size-4" />
-        Nuevo Examen
+        {t("adminDetail.newExam")}
       </Button>
     </div>
   );
@@ -475,6 +472,7 @@ function ExamsEmpty({ onCreateClick }: { onCreateClick: () => void }) {
 // ─── Main Panel ───────────────────────────────────────────────────────────────
 
 export default function ExamsListPanel({ coursesData }: { coursesData: CourseItem[] }) {
+  const { t, lang } = useTranslation();
   const [exams, setExams] = React.useState<ExamWithRelations[]>([]);
   const [loading, setLoading] = React.useState(true);
 
@@ -493,11 +491,11 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
       const data = await fetchExams();
       setExams(data);
     } catch {
-      toast.error("No se pudieron cargar los exámenes.");
+      toast.error(t("profile.errorLoading"));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   React.useEffect(() => {
     loadExams();
@@ -530,23 +528,23 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <Title level="h3" as="h1">
-            Gestor de Exámenes
+            {t("adminDetail.examsTitle")}
           </Title>
           <p className="mt-1 text-sm text-slate-500 font-medium">
-            Central de evaluaciones. Monitorea y edita cualquier examen del campus.
+            {t("adminDetail.examsSubtitle")}
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3">
           <Select value={courseFilter} onValueChange={setCourseFilter}>
             <SelectTrigger className="w-full sm:w-[240px] bg-white">
               <BookOpen className="size-4 mr-2 text-slate-400" />
-              <SelectValue placeholder="Filtrar por curso..." />
+              <SelectValue placeholder={t("adminDetail.filterCourse")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Todos los Cursos</SelectItem>
+              <SelectItem value="all">{t("adminDetail.allCourses")}</SelectItem>
               {coursesData.map((course) => (
                 <SelectItem key={course.id} value={course.id}>
-                  {getLocalizedText(course.title)}
+                  {getLocalizedText(course.title, lang)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -554,7 +552,7 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
 
           <Button onClick={handleCreate} className="shrink-0 self-start sm:self-auto">
             <Plus className="size-4" />
-            Crear Examen
+            {t("adminDetail.newExam")}
           </Button>
         </div>
       </div>
@@ -569,10 +567,10 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
           <div className="flex size-12 items-center justify-center rounded-xl bg-slate-50 mb-4">
              <BookOpen className="size-6 text-slate-300" />
           </div>
-          <p className="text-base font-semibold text-primary">No se encontraron exámenes</p>
-          <p className="text-sm text-slate-500 mt-1">El curso seleccionado no tiene evaluaciones configuradas.</p>
+          <p className="text-base font-semibold text-primary">{t("adminDetail.noExamsFound")}</p>
+          <p className="text-sm text-slate-500 mt-1">{t("adminDetail.courseNoExams")}</p>
           <Button variant="ghost" className="mt-4 text-accent" onClick={() => setCourseFilter("all")}>
-            Ver todas las evaluaciones
+            {t("adminDetail.viewAllExams")}
           </Button>
         </div>
       ) : (
@@ -580,11 +578,11 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
           <Table className="min-w-[800px]">
             <TableHeader>
               <TableRow>
-                <TableHead>Examen</TableHead>
-                <TableHead>Curso y Módulo</TableHead>
-                <TableHead>Puntuación</TableHead>
-                <TableHead className="hidden md:table-cell">Límite</TableHead>
-                <TableHead className="text-right">Acciones</TableHead>
+                <TableHead>{t("adminDetail.columnExam")}</TableHead>
+                <TableHead>{t("adminDetail.columnCourseSubject")}</TableHead>
+                <TableHead>{t("adminDetail.columnScore")}</TableHead>
+                <TableHead className="hidden md:table-cell">{t("adminDetail.columnLimit")}</TableHead>
+                <TableHead className="text-right">{t("adminDetail.columnActions")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -597,7 +595,7 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
                           href={`/campus/admin/exams/${exam.id}`}
                           className="font-semibold text-primary tracking-tight hover:text-accent transition-colors text-base"
                         >
-                          {getLocalizedText(exam.title)}
+                          {getLocalizedText(exam.title, lang)}
                         </Link>
                       </div>
                     </TableCell>
@@ -616,15 +614,15 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
                     <TableCell>
                       <div className="flex flex-col gap-1">
                         <Badge variant="outline" className="w-fit text-xs font-mono text-emerald-600 bg-emerald-50 border-emerald-200">
-                          Min. {exam.passing_score}%
+                          {t("adminDetail.minScore").replace("{score}", String(exam.passing_score))}
                         </Badge>
-                        <span className="text-[11px] text-slate-400 ml-1">{exam.max_attempts} Intentos permitidos</span>
+                        <span className="text-[11px] text-slate-400 ml-1">{t("adminDetail.maxAttempts").replace("{count}", String(exam.max_attempts))}</span>
                       </div>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
                       <div className="flex flex-col justify-center">
                          <span className="text-sm font-medium text-slate-700">
-                           {exam.time_limit_minutes ? `${exam.time_limit_minutes} Minutos` : "Ilimitado"}
+                           {exam.time_limit_minutes ? t("adminDetail.minutes").replace("{count}", String(exam.time_limit_minutes)) : t("adminDetail.unlimited")}
                          </span>
                       </div>
                     </TableCell>
@@ -638,12 +636,12 @@ export default function ExamsListPanel({ coursesData }: { coursesData: CourseIte
                               asChild
                               className="mr-2"
                             >
-                              <Link href={`/campus/admin/exams/${exam.id}`} aria-label={`Diseñar Preguntas`}>
+                              <Link href={`/campus/admin/exams/${exam.id}`} aria-label={t("adminDetail.designQuestions")}>
                                 <LayoutList className="size-3.5 text-accent" />
                               </Link>
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent>Diseñar Preguntas</TooltipContent>
+                          <TooltipContent>{t("adminDetail.designQuestions")}</TooltipContent>
                         </Tooltip>
 
                         <Tooltip>

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, ArrowRight, PlayCircle } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface EnrollmentActionProps {
   courseId: string;
@@ -17,20 +18,21 @@ interface EnrollmentActionProps {
 export function EnrollmentAction({ courseId, isEnrolled }: EnrollmentActionProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleEnroll = () => {
     startTransition(async () => {
       try {
         const res = await enrollInCourse(courseId);
         if (res.success) {
-          toast.success("Enrolled successfully! Redirecting...");
+          toast.success(t("enrollment.enrolledSuccess"));
           router.push(`/campus/courses/${courseId}/learn`);
           router.refresh();
         } else {
-          toast.error(res.error || "Failed to enroll. Please try again.");
+          toast.error(res.error || t("enrollment.enrollFailed"));
         }
       } catch (err) {
-        toast.error("Internal connection error. Please try again.");
+        toast.error(t("enrollment.connectionError"));
       }
     });
   };
@@ -39,7 +41,7 @@ export function EnrollmentAction({ courseId, isEnrolled }: EnrollmentActionProps
     return (
       <Button asChild className="w-full md:w-auto h-14 px-10 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold text-lg shadow-xl shadow-primary/20 transition-all active:scale-95 group">
         <Link href={`/campus/courses/${courseId}/learn`} className="flex items-center gap-3">
-          Continue Learning
+          {t("enrollment.continueLearning")}
           <PlayCircle className="size-5 group-hover:translate-x-1 transition-transform" />
         </Link>
       </Button>
@@ -55,11 +57,11 @@ export function EnrollmentAction({ courseId, isEnrolled }: EnrollmentActionProps
       {isPending ? (
         <>
           <Loader2 className="size-5 animate-spin mr-2" />
-          Processing...
+          {t("enrollment.processing")}
         </>
       ) : (
         <>
-          Enroll Now
+          {t("enrollment.enrollNow")}
           <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform ml-2" />
         </>
       )}
