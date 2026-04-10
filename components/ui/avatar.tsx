@@ -10,14 +10,14 @@ function Avatar({
   size = "default",
   ...props
 }: React.ComponentProps<typeof AvatarPrimitive.Root> & {
-  size?: "default" | "sm" | "lg"
+  size?: "default" | "sm" | "lg" | "xl"
 }) {
   return (
     <AvatarPrimitive.Root
       data-slot="avatar"
       data-size={size}
       className={cn(
-        "group/avatar relative flex size-10 shrink-0 overflow-hidden rounded-full border border-slate-100 bg-white ring-1 ring-slate-100/50 shadow-xs select-none data-[size=lg]:size-12 data-[size=sm]:size-8",
+        "group/avatar relative flex size-10 shrink-0 overflow-hidden rounded-full border border-slate-100 bg-white ring-1 ring-slate-100/50 shadow-xs select-none data-[size=xl]:size-24 data-[size=lg]:size-12 data-[size=sm]:size-8",
         className
       )}
       {...props}
@@ -46,7 +46,7 @@ function AvatarFallback({
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
       className={cn(
-        "flex size-full items-center justify-center rounded-full bg-primary/5 font-semibold text-primary group-data-[size=sm]/avatar:text-sm",
+        "flex size-full items-center justify-center rounded-full bg-primary/5 font-semibold text-primary group-data-[size=xl]/avatar:text-4xl group-data-[size=lg]/avatar:text-xl group-data-[size=sm]/avatar:text-sm",
         className
       )}
       {...props}
@@ -62,6 +62,7 @@ function AvatarBadge({ className, ...props }: React.ComponentProps<"span">) {
         "absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-accent text-white ring-2 ring-white select-none shadow-xs",
         "group-data-[size=sm]/avatar:size-2.5 group-data-[size=sm]/avatar:[&>svg]:hidden",
         "group-data-[size=default]/avatar:size-3 group-data-[size=default]/avatar:[&>svg]:size-2.5",
+        "group-data-[size=xl]/avatar:size-6 group-data-[size=xl]/avatar:[&>svg]:size-4",
         "group-data-[size=lg]/avatar:size-3.5 group-data-[size=lg]/avatar:[&>svg]:size-3",
         className
       )}
