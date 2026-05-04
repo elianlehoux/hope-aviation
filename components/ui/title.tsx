@@ -2,15 +2,17 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
-const titleVariants = cva("font-bold tracking-tight text-primary", {
+const titleVariants = cva("text-[#00263e] font-sans tracking-tight", {
   variants: {
     level: {
-      h1: "text-4xl lg:text-5xl font-extrabold tracking-tighter",
-      h2: "text-3xl font-extrabold tracking-tight",
-      h3: "text-2xl font-bold tracking-tight",
-      h4: "text-xl font-bold leading-tight",
-      h5: "text-lg font-semibold",
-      h6: "text-base font-semibold",
+      display1: "text-[64px] font-medium leading-[1.16]",
+      display2: "text-[48px] font-medium leading-[1.17]",
+      h1: "text-[36px] font-medium leading-[1.28]",
+      h2: "text-[28px] font-light leading-[1.21]",
+      h3: "text-[18px] font-bold leading-[1.44]",
+      h4: "text-[16px] font-medium leading-[1.50]",
+      h5: "text-[14px] font-bold leading-[1.43]",
+      h6: "text-[14px] font-regular leading-[1.43]",
     },
   },
   defaultVariants: {

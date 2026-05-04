@@ -5,30 +5,31 @@ import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all duration-200 active:scale-[0.98] outline-hidden focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-sm whitespace-nowrap transition-all duration-200 focus-visible:outline-hidden focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none disabled:bg-[#DEE3E9] disabled:text-[#8595A4] aria-invalid:border-destructive aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md",
+        default: "bg-accent text-accent-foreground font-normal tracking-[-0.14px] hover:bg-[#1541e6] hover:scale-110 active:bg-[#1238c7] active:scale-90 active:opacity-50 border-none",
         destructive:
-          "bg-destructive text-white shadow-sm hover:bg-destructive/90 hover:shadow-md focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40",
-        outline:
-          "border border-primary bg-transparent text-primary shadow-xs hover:bg-primary hover:text-primary-foreground dark:border-primary/50",
+          "bg-destructive text-white hover:opacity-90",
+        outline: // Map outline to Secondary (Outlined Pill)
+          "bg-transparent text-[#00263e]/50 border-2 border-[#00263e]/12 font-normal tracking-[-0.14px] hover:bg-[#1749ff]/70 hover:text-white hover:border-transparent active:scale-95",
         secondary:
-          "bg-accent/10 text-accent border border-accent/20 shadow-xs hover:bg-accent/20 transition-colors",
-        ghost:
-          "text-primary hover:bg-primary/5 hover:text-primary",
-        link: "text-primary underline-offset-4 hover:underline",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: // Ghost/Link Button
+          "bg-transparent text-[#1749ff] rounded-[24px] hover:bg-black/5 active:scale-95",
+        link: "text-accent underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-11 px-6 py-2 has-[>svg]:px-4",
-        xs: "h-7 gap-1 px-3 text-xs has-[>svg]:px-2.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-9 gap-1.5 px-4 has-[>svg]:px-3",
-        lg: "h-12 px-8 text-base has-[>svg]:px-5",
+        default: "px-[22px] py-[10px]",
+        xs: "h-7 gap-1 px-3 text-xs",
+        sm: "h-9 gap-1.5 px-4",
+        lg: "h-12 px-8 text-base",
         icon: "size-11",
-        "icon-xs": "size-7 [&_svg:not([class*='size-'])]:size-3",
+        "icon-xs": "size-7",
         "icon-sm": "size-9",
         "icon-lg": "size-12",
+        ghost: "px-[12px] py-[4px]",
       },
     },
     defaultVariants: {

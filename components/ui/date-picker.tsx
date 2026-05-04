@@ -30,9 +30,10 @@ export function DatePicker({
     <Popover>
       <PopoverTrigger asChild>
         <Button
+          variant="outline"
           className={cn(
-            "h-11 w-full justify-start rounded-xl border border-slate-200 bg-white px-4 text-left font-normal text-primary shadow-sm transition-all hover:border-slate-300 hover:bg-white focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-primary/10 focus-visible:border-primary",
-            !date && "text-slate-400",
+            "flex h-11 w-full items-center justify-start rounded-[8px] border border-[#CED0D4] bg-white px-4 text-left font-normal text-[#00263e] transition-all duration-200 outline-hidden hover:border-[#909396] hover:bg-white focus-visible:outline-hidden focus-visible:border-[#1749ff] focus-visible:ring-[3px] focus-visible:ring-[#1749ff]/20",
+            !date && "text-[#65676B]",
             className
           )}
         >

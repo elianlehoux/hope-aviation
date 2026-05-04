@@ -15,26 +15,26 @@ const Toaster = ({ ...props }: ToasterProps) => {
       theme="light"
       className="toaster group"
       icons={{
-        success: <CircleCheckIcon className="size-4 text-accent" />,
-        info: <InfoIcon className="size-4 text-accent" />,
-        warning: <TriangleAlertIcon className="size-4 text-brand-orange" />,
-        error: <OctagonXIcon className="size-4 text-brand-orange" />,
-        loading: <Loader2Icon className="size-4 animate-spin text-primary" />,
+        success: <CircleCheckIcon className="size-4 text-[#1749ff]" />,
+        info: <InfoIcon className="size-4 text-[#1749ff]" />,
+        warning: <TriangleAlertIcon className="size-4 text-[#ffaa00]" />,
+        error: <OctagonXIcon className="size-4 text-[#E41E3F]" />,
+        loading: <Loader2Icon className="size-4 animate-spin text-[#1749ff]" />,
       }}
       toastOptions={{
         classNames: {
-          toast: "group-[.toaster]:bg-white group-[.toaster]:text-primary group-[.toaster]:border-slate-200 group-[.toaster]:shadow-2xl group-[.toaster]:rounded-2xl flex items-center gap-3",
-          description: "group-[.toast]:text-slate-500",
-          actionButton: "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
-          cancelButton: "group-[.toast]:bg-slate-100 group-[.toast]:text-primary",
+          toast: "group-[.toaster]:bg-white group-[.toaster]:text-[#00263e] group-[.toaster]:border-[#CED0D4] group-[.toaster]:shadow-[0_12px_28px_0_rgba(0,0,0,0.2),0_2px_4px_0_rgba(0,0,0,0.1)] group-[.toaster]:rounded-[20px] flex items-center gap-3",
+          description: "group-[.toast]:text-[#65676B]",
+          actionButton: "group-[.toast]:bg-[#1749ff] group-[.toast]:text-white group-[.toast]:rounded-full",
+          cancelButton: "group-[.toast]:bg-[#F0F2F5] group-[.toast]:text-[#00263e] group-[.toast]:rounded-full",
         },
       }}
       style={
         {
           "--normal-bg": "white",
-          "--normal-text": "var(--primary)",
-          "--normal-border": "var(--slate-200)",
-          "--border-radius": "1rem",
+          "--normal-text": "#00263e",
+          "--normal-border": "#CED0D4",
+          "--border-radius": "20px",
         } as React.CSSProperties
       }
       {...props}
