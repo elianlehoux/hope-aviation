@@ -14,7 +14,7 @@ export default async function LearnRedirectPage({
 
   const supabase = await createClient();
   const session = await requireSession(supabase);
-  if (!session.ok) return session.response;
+  if (!session.ok) redirect("/");
 
   // Fetch the first class of the first subject
   const { data: course, error } = await supabase

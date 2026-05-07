@@ -6,10 +6,13 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 cleanup() {
-  npx supabase stop || true
+  echo "Stopping Supabase..."
+  pnpm exec supabase stop || true
 }
 
 trap cleanup EXIT INT TERM
 
-npx supabase start
-npm run dev
+echo "Starting Supabase..."
+pnpm exec supabase start
+echo "Starting Next.js..."
+pnpm dev

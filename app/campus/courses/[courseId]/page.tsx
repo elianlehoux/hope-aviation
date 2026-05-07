@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireSession } from "@/lib/api/auth";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { CourseCurriculum } from "@/components/features/campus/CourseCurriculum";
 import { EnrollmentAction } from "@/components/features/campus/EnrollmentAction";
 import { Badge } from "@/components/ui/badge";
@@ -26,7 +26,7 @@ export default async function CourseDetailPage({
 
   const supabase = await createClient();
   const session = await requireSession(supabase);
-  if (!session.ok) return session.response;
+  if (!session.ok) redirect("/");
 
   // 1. Fetch Course with Ordered Subjects and Classes
   const { data: course, error } = await supabase

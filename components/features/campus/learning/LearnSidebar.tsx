@@ -12,6 +12,16 @@ import {
 import Link from "next/link";
 import { getYoutubeId } from "@/lib/utils/youtube";
 
+interface Class {
+  id: string;
+  title: any;
+  video_url?: string;
+  duration_minutes?: number;
+  lesson_progress?: {
+    is_completed: boolean;
+  }[];
+}
+
 interface Exam {
   id: string;
   title: any;

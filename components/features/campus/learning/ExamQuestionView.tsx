@@ -10,6 +10,7 @@ import { useTranslation } from "@/lib/i18n/context";
 
 interface ExamQuestionViewProps {
   exam: any;
+  questions: any[];
   onFinish: (attempt: any) => void;
   submitUrl?: string;
 }

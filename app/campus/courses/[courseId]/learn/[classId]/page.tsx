@@ -23,7 +23,7 @@ export default async function LearnClassPage({
 
   const supabase = await createClient();
   const session = await requireSession(supabase);
-  if (!session.ok) return session.response;
+  if (!session.ok) redirect("/");
 
   // 1. Fetch all data for this learning session
   const course = await getCourseLearningData(courseId);

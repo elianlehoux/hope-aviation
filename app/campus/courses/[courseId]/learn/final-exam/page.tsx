@@ -17,7 +17,7 @@ export default async function FinalExamPage({
 
   const supabase = await createClient();
   const session = await requireSession(supabase);
-  if (!session.ok) return session.response;
+  if (!session.ok) redirect("/");
 
   // 1. Fetch course data
   const course = await getCourseLearningData(courseId);
