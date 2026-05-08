@@ -14,7 +14,9 @@ import {
  * Switches between English and Spanish.
  * Shows the 文A icon (Languages from lucide) matching the reference design.
  */
-export function LanguageToggle() {
+import { cn } from "@/lib/utils";
+
+export function LanguageToggle({ className }: { className?: string }) {
   const { lang, setLang, t } = useTranslation();
 
   const handleToggle = () => {
@@ -28,7 +30,10 @@ export function LanguageToggle() {
           variant="ghost"
           size="icon"
           onClick={handleToggle}
-          className="relative size-10 rounded-full text-slate-500 hover:text-primary hover:bg-slate-50 transition-all"
+          className={cn(
+            "relative size-10 rounded-full transition-all",
+            className ? className : "text-slate-500 hover:text-primary hover:bg-slate-50"
+          )}
           aria-label={t("langToggle.switchLang")}
         >
           <Languages className="size-[18px]" />

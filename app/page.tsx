@@ -1,197 +1,279 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/shared/navbar";
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  BookOpen, 
-  Video, 
-  BarChart3, 
-  Library, 
-  Users, 
-  Award, 
+import { BackToTop } from "@/components/shared/back-to-top";
+import {
   ArrowRight,
-  CheckCircle2,
-  Heart
+  Heart,
+  BookOpen,
+  Award,
+  Users,
+  Star,
+  Clock
 } from "lucide-react";
 import { useTranslation } from "@/lib/i18n/context";
 
 /**
  * Landing Page — Public-facing homepage for Hope Aviation.
- * Serves as the entry point showcasing the platform and
- * providing navigation to the virtual campus.
  */
 export default function LandingPage() {
   const { t } = useTranslation();
+  const [mounted, setMounted] = useState(false);
+  const [year, setYear] = useState<number>(2026);
 
-  const features = [
+  useEffect(() => {
+    setMounted(true);
+    setYear(new Date().getFullYear());
+  }, []);
+
+  const courses = [
     {
-      titleKey: "landing.featureInteractiveCourses",
-      descKey: "landing.featureInteractiveCoursesDesc",
-      icon: <BookOpen className="size-6 text-accent" />,
+      id: 1,
+      title: "Introducción a la Aviación",
+      description: "Conceptos básicos para futuros pilotos y entusiastas del aire.",
+      duration: "4 semanas",
+      level: "Principiante",
+      image: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800&auto=format&fit=crop"
     },
     {
-      titleKey: "landing.featureLiveSessions",
-      descKey: "landing.featureLiveSessionsDesc",
-      icon: <Video className="size-6 text-accent" />,
+      id: 2,
+      title: "Sistemas de Aeronaves",
+      description: "Explora la ingeniería detrás de los aviones modernos.",
+      duration: "6 semanas",
+      level: "Intermedio",
+      image: "https://images.unsplash.com/photo-1534433010376-79354005e8e8?q=80&w=800&auto=format&fit=crop"
     },
     {
-      titleKey: "landing.featureProgressTracking",
-      descKey: "landing.featureProgressTrackingDesc",
-      icon: <BarChart3 className="size-6 text-accent" />,
+      id: 3,
+      title: "Meteorología Aeronáutica",
+      description: "Entiende el clima y su impacto en la seguridad del vuelo.",
+      duration: "5 semanas",
+      level: "Avanzado",
+      image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop"
     },
     {
-      titleKey: "landing.featureResourceLibrary",
-      descKey: "landing.featureResourceLibraryDesc",
-      icon: <Library className="size-6 text-accent" />,
+      id: 4,
+      title: "Navegación VFR",
+      description: "Técnicas de navegación por referencia visual para vuelo diurno.",
+      duration: "4 semanas",
+      level: "Intermedio",
+      image: "https://images.unsplash.com/photo-1496661415325-ef852f9e8e7c?q=80&w=800&auto=format&fit=crop"
     },
     {
-      titleKey: "landing.featureCommunity",
-      descKey: "landing.featureCommunityDesc",
-      icon: <Users className="size-6 text-accent" />,
-    },
-    {
-      titleKey: "landing.featureCertifications",
-      descKey: "landing.featureCertificationsDesc",
-      icon: <Award className="size-6 text-accent" />,
-    },
+      id: 5,
+      title: "Comunicaciones ATC",
+      description: "Domina el lenguaje de la radio y la interacción con controladores.",
+      duration: "3 semanas",
+      level: "Principiante",
+      image: "https://images.unsplash.com/photo-1444464666168-49d633b867ad?q=80&w=800&auto=format&fit=crop"
+    }
   ];
 
   return (
-    <main className="relative min-h-screen flex flex-col bg-white text-slate-900 overflow-hidden font-inter">
+    <main className="relative min-h-screen flex flex-col bg-white text-slate-900 overflow-hidden font-sans">
       <Navbar />
 
       {/* ── Hero Section ── */}
-      <section className="relative flex-1 flex flex-col items-center justify-center text-center px-6 py-24 md:py-32 lg:py-40">
-        {/* Apple-style background effect */}
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(23,73,255,0.08),transparent)]" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[conic-gradient(from_180deg_at_50%_50%,rgba(0,38,62,0.03)_0deg,transparent_360deg)] blur-3xl -z-10" />
+      <div style={{ transformStyle: "preserve-3d" }}>
+        <section className="section-container relative flex h-screen min-h-fit w-full flex-col items-center justify-between overflow-hidden bg-[#0B0F15] px-0!">
+          {/* Background Image */}
+          <picture className="pointer-events-none absolute inset-0 z-0">
+            <img
+              src="/Fondo HERO.svg"
+              alt="Hope Aviation Hero"
+              className="h-full w-full object-cover object-[center_25%]"
+            />
+          </picture>
 
-        <div className="space-y-6 max-w-4xl mx-auto">
-          <Badge variant="secondary" className="px-4 py-1.5 text-xs font-bold tracking-wider uppercase bg-accent/5 text-accent border-accent/10 mb-4 cursor-default">
-            {t("landing.heroBadge")}
-          </Badge>
-          
-          <Title level="h1" className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1] text-primary">
-            {t("landing.heroTitle1")}
-            <br />
-            <span className="text-accent">{t("landing.heroTitle2")}</span>
-          </Title>
+          {/* Dark Overlay Gradient */}
+          <div className="absolute inset-0 z-[5] bg-gradient-to-b from-black via-black via-[35%] to-transparent" />
 
-          <p className="mt-8 max-w-2xl mx-auto text-lg md:text-xl text-slate-500 font-medium leading-relaxed">
-            {t("landing.heroDescription")}
-          </p>
+          {/* Content with Gradient Overlay */}
+          <div className="relative z-10 flex w-full flex-col items-center px-6 py-[18vh]">
+            <Title level="h1" className="max-w-[950px] text-center leading-[1.05] text-white font-bold tracking-tight">
+              <span className="text-6xl sm:text-8xl md:text-9xl block mb-2">Learning</span>
+              <span className="text-accent italic font-semibold text-3xl sm:text-5xl md:text-6xl block">to reach</span>
+            </Title>
 
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="h-14 px-10 text-lg shadow-xl shadow-primary/20 group bg-accent hover:bg-accent/90 border-none">
-              <Link href="/donate" className="flex items-center gap-2">
-                <Heart className="size-5 fill-white/20" />
-                {t("landing.donateNow")}
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="h-14 px-10 text-lg border-slate-200 hover:bg-slate-50 group">
-              <Link href="/campus" className="flex items-center gap-2">
-                {t("landing.enterCampus")}
-                <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
+            <p className="mt-6 max-w-[80%] text-center text-lg md:text-xl text-white/80 font-medium leading-relaxed">
+              Building skills. Bridging gaps. Changing lives.
+            </p>
+
+            {/* <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button asChild className="rounded-full bg-white text-black hover:bg-white/90 h-14 px-12 w-52 text-lg font-bold transition-all duration-200 ease-out sm:hover:scale-105 active:scale-95 border-none">
+                <Link href="/about" className="flex items-center gap-2">
+                  Who we are
+                </Link>
+              </Button>
+
+              <Button asChild variant="outline" className="rounded-full border-white text-white hover:bg-white/10 backdrop-blur-xl h-14 px-12 w-52 text-lg font-bold transition-all duration-200 ease-out sm:hover:scale-105 active:scale-95">
+                <Link href="/courses" className="flex items-center gap-2">
+                  Learn more
+                  <ArrowRight className="size-5 transition-transform group-hover:translate-x-2" />
+                </Link>
+              </Button>
+            </div> */}
           </div>
-        </div>
-      </section>
 
-      {/* ── Features Section ── */}
-      <section
-        id="features"
-        className="w-full bg-slate-50/50 border-y border-slate-100 py-24 px-6 relative"
-      >
-        <div className="mx-auto max-w-5xl text-center mb-16">
-          <Title level="h2" className="text-3xl md:text-4xl font-extrabold text-primary">
-            {t("landing.featuresTitle")}
-          </Title>
-          <p className="mt-4 text-slate-500 max-w-2xl mx-auto text-lg font-medium">
-            {t("landing.featuresDescription")}
-          </p>
-        </div>
-
-        <div className="mx-auto mt-14 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <Card key={feature.titleKey} className="border-none shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white group">
-              <CardHeader>
-                <div className="size-12 rounded-2xl bg-accent/5 flex items-center justify-center mb-4 group-hover:bg-accent group-hover:text-white transition-colors duration-300">
-                  {feature.icon}
-                </div>
-                <CardTitle className="text-xl font-bold text-primary">{t(feature.titleKey)}</CardTitle>
-                <CardDescription className="text-slate-500 pt-2 font-medium">
-                  {t(feature.descKey)}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* ── About Section ── */}
-      <section id="about" className="w-full py-32 px-6 relative overflow-hidden">
+      <section id="about" className="w-full py-32 px-6 bg-white relative overflow-hidden border-b border-slate-100">
         <div className="mx-auto max-w-4xl text-center relative z-10">
-          <Title level="h2" className="text-3xl md:text-4xl font-extrabold text-primary mb-8">
+          <Badge variant="outline" className="mb-6 border-accent/20 text-accent bg-accent/5">
             {t("landing.aboutTitle")}
+          </Badge>
+          <Title level="h2" className="text-4xl md:text-5xl font-extrabold text-primary mb-12 tracking-tight">
+            Elevando el estándar de la formación aeronáutica.
           </Title>
-          <div className="relative p-8 md:p-12 rounded-3xl bg-white border border-slate-100 shadow-2xl shadow-slate-200/50">
-            <p className="text-xl text-slate-600 leading-relaxed font-medium">
-              {t("landing.aboutDescription")}
+          <div className="relative max-w-3xl mx-auto text-center">
+            <p className="text-xl md:text-2xl text-slate-600 leading-relaxed font-medium">
+              Hope Aviation es un campus virtual diseñado para romper las barreras del conocimiento. Nuestra misión es proporcionar una plataforma educativa moderna, interactiva y accesible que prepare a los profesionales de la aviación para los desafíos del mañana, integrando tecnología de vanguardia con un enfoque humanitario y de excelencia.
             </p>
-            <div className="mt-10 flex flex-wrap justify-center gap-8">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-5 text-accent" />
-                <span className="font-bold text-sm text-primary">{t("landing.aboutInnovation")}</span>
+            <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-8">
+              <div className="flex flex-col items-center gap-3 group cursor-default">
+                <div className="size-14 rounded-2xl bg-accent/5 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-300">
+                  <BookOpen className="size-7" />
+                </div>
+                <span className="font-bold text-sm text-primary uppercase tracking-wider">{t("landing.aboutInnovation")}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-5 text-accent" />
-                <span className="font-bold text-sm text-primary">{t("landing.aboutExcellence")}</span>
+              <div className="flex flex-col items-center gap-3 group cursor-default">
+                <div className="size-14 rounded-2xl bg-accent/5 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-300">
+                  <Award className="size-7" />
+                </div>
+                <span className="font-bold text-sm text-primary uppercase tracking-wider">{t("landing.aboutExcellence")}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-5 text-accent" />
-                <span className="font-bold text-sm text-primary">{t("landing.aboutCommitment")}</span>
+              <div className="flex flex-col items-center gap-3 group cursor-default">
+                <div className="size-14 rounded-2xl bg-accent/5 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-300">
+                  <Users className="size-7" />
+                </div>
+                <span className="font-bold text-sm text-primary uppercase tracking-wider">{t("landing.aboutCommitment")}</span>
               </div>
             </div>
           </div>
         </div>
-        
-        {/* Subtly decorative circles */}
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-accent/5 rounded-full blur-3xl -z-10" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10" />
+      </section>
+
+      {/* ── Courses Gallery Section ── */}
+      <section id="courses" className="w-full bg-slate-50/50 py-32 relative overflow-hidden">
+        <div className="px-6 mb-16">
+          <div className="mx-auto max-w-7xl flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="max-w-2xl">
+              <Badge variant="outline" className="mb-4 border-accent/20 text-accent">{t("studentCourses.exploreCatalog")}</Badge>
+              <Title level="h2" className="text-4xl md:text-5xl font-extrabold text-primary tracking-tight">
+                {t("navbar.courses")}
+              </Title>
+              <p className="mt-6 text-slate-500 text-xl font-medium">
+                {t("landing.featuresDescription")}
+              </p>
+            </div>
+            <Button asChild variant="ghost" className="group text-accent font-bold">
+              <Link href="/courses" className="flex items-center gap-2">
+                {t("studentCourses.exploreCatalog")}
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* Horizontal Scroll Gallery */}
+        <div className="relative">
+          <div className="flex overflow-x-auto gap-8 px-[max(1.5rem,calc((100vw-80rem)/2))] pb-12 scrollbar-hide snap-x">
+            {courses.map((course) => (
+              <Card
+                key={course.id}
+                className="min-w-[320px] md:min-w-[400px] border-none shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 bg-white group snap-start overflow-hidden rounded-[24px]"
+              >
+                <div className="relative h-56 overflow-hidden">
+                  <img
+                    src={course.image}
+                    alt={course.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <Badge className="bg-white/90 text-primary backdrop-blur-sm border-none shadow-sm">
+                      {course.level}
+                    </Badge>
+                  </div>
+                </div>
+                <CardHeader className="p-8">
+                  <div className="flex items-center gap-4 text-slate-400 mb-4 font-bold text-xs uppercase tracking-widest">
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="size-3.5" />
+                      {course.duration}
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Star className="size-3.5 fill-aviation-orange text-aviation-orange border-none" />
+                      4.9
+                    </div>
+                  </div>
+                  <CardTitle className="text-2xl font-extrabold text-primary leading-tight group-hover:text-accent transition-colors duration-300">
+                    {course.title}
+                  </CardTitle>
+                  <CardDescription className="text-slate-500 pt-4 text-[16px] font-medium leading-relaxed line-clamp-2">
+                    {course.description}
+                  </CardDescription>
+                  <Button asChild className="w-full mt-8 bg-slate-50 text-primary hover:bg-accent hover:text-white border-none font-bold py-6 rounded-xl transition-all duration-300">
+                    <Link href={`/courses/${course.id}`}>Inscribirme ahora</Link>
+                  </Button>
+                </CardHeader>
+              </Card>
+            ))}
+            {/* End of list spacer */}
+            <div className="min-w-[20px] md:min-w-[40px]" />
+          </div>
+        </div>
       </section>
 
       {/* ── Footer ── */}
-      <footer className="w-full border-t border-slate-100 py-16 px-6 bg-white overflow-hidden">
-        <div className="mx-auto max-w-7xl relative">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-12">
-            <div className="flex flex-col items-center md:items-start gap-4">
-               <img 
-                 src="/logos/Hope Black.svg" 
-                 alt="Hope Aviation" 
-                 className="h-12 w-auto scale-125 origin-left" 
-               />
-               <p className="text-slate-400 font-medium text-sm mt-2">
-                 {t("landing.footerTagline")}
-               </p>
-            </div>
-            
-            <div className="flex gap-8 md:gap-12 font-bold text-primary text-sm">
-              <a href="#features" className="hover:text-accent transition-colors">{t("landing.footerFeatures")}</a>
-              <a href="#about" className="hover:text-accent transition-colors">{t("landing.footerAbout")}</a>
-              <Link href="/campus" className="hover:text-accent transition-colors">{t("landing.footerCampus")}</Link>
+      <footer className="w-full border-t border-slate-100 py-16 px-6 bg-white">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center md:items-start text-center md:text-left">
+            <div className="flex flex-col items-center md:items-start gap-6">
+              <img
+                src="/logos/Hope Black.svg"
+                alt="Hope Aviation"
+                className="h-10 w-auto scale-[2.1] origin-left"
+              />
+              <p className="text-slate-400 font-medium text-sm">
+                Transformando la educación aeronáutica a través de la tecnología y la pasión por el vuelo.
+              </p>
             </div>
 
-            <div className="text-slate-400 font-medium text-sm">
-              <p>{t("landing.footerCopyright")}</p>
+            <div className="flex flex-col gap-4">
+              <h4 className="font-bold text-primary text-sm uppercase tracking-widest">{t("landing.footerFeatures")}</h4>
+              <div className="flex flex-wrap justify-center md:justify-start gap-x-8 gap-y-3 font-bold text-slate-500 text-sm">
+                <Link href="/courses" className="hover:text-accent transition-colors">{t("navbar.courses")}</Link>
+                <a href="#about" className="hover:text-accent transition-colors">{t("navbar.about")}</a>
+                <Link href="/campus" className="hover:text-accent transition-colors">{t("landing.enterCampus")}</Link>
+                <Link href="/donate" className="hover:text-accent transition-colors">{t("navbar.donate")}</Link>
+              </div>
             </div>
+
+            <div className="flex flex-col gap-4">
+              <h4 className="font-bold text-primary text-sm uppercase tracking-widest">Legal</h4>
+              <div className="flex flex-wrap justify-center md:justify-start gap-x-8 gap-y-3 font-bold text-slate-500 text-sm">
+                <Link href="/privacy" className="hover:text-accent transition-colors">Privacidad</Link>
+                <Link href="/terms" className="hover:text-accent transition-colors">Términos</Link>
+                <Link href="/contact" className="hover:text-accent transition-colors">Contacto</Link>
+              </div>
+            </div>
+          </div>
+          <div className="mt-16 pt-8 border-t border-slate-50 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em]">
+            <p suppressHydrationWarning>© {year} Hope Aviation. {t("landing.footerCopyright").split(".")[1]?.trim() || "All rights reserved."}</p>
+            <p>Designed for excellence</p>
           </div>
         </div>
       </footer>
+
+      <BackToTop />
     </main>
   );
 }
