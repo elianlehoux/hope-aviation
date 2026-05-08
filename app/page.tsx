@@ -105,20 +105,14 @@ export default function LandingPage() {
               Building skills. Bridging gaps. Changing lives.
             </p>
 
-            {/* <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button asChild className="rounded-full bg-white text-black hover:bg-white/90 h-14 px-12 w-52 text-lg font-bold transition-all duration-200 ease-out sm:hover:scale-105 active:scale-95 border-none">
-                <Link href="/about" className="flex items-center gap-2">
-                  Who we are
-                </Link>
-              </Button>
-
-              <Button asChild variant="outline" className="rounded-full border-white text-white hover:bg-white/10 backdrop-blur-xl h-14 px-12 w-52 text-lg font-bold transition-all duration-200 ease-out sm:hover:scale-105 active:scale-95">
-                <Link href="/courses" className="flex items-center gap-2">
-                  Learn more
+            <div className="mt-10 flex md:hidden items-center justify-center">
+              <Button asChild variant="outline" className="rounded-full border-white text-white hover:bg-white/10 backdrop-blur-xl h-14 px-12 w-52 text-lg font-bold transition-all duration-200 ease-out active:scale-95 group">
+                <Link href="/campus" className="flex items-center gap-2">
+                  Learn
                   <ArrowRight className="size-5 transition-transform group-hover:translate-x-2" />
                 </Link>
               </Button>
-            </div> */}
+            </div>
           </div>
 
         </section>

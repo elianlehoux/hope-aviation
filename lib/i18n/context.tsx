@@ -55,6 +55,8 @@ function resolveKey(key: string, lang: Lang): string {
 }
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
+  // Always start with "en" to match server-rendered HTML and avoid hydration mismatch.
+  // The useEffect below will correct to the user's preferred language after mount.
   const [lang, setLangState] = React.useState<Lang>("en");
   const [mounted, setMounted] = React.useState(false);
 

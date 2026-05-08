@@ -66,7 +66,7 @@ function SheetContent({
           side === "left" &&
             "inset-y-0 left-0 h-full w-3/4 border-r border-[#CED0D4] rounded-r-[20px] data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-md",
           side === "top" &&
-            "inset-x-0 top-0 h-auto border-b border-[#CED0D4] rounded-b-[20px] data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top",
+            "inset-x-0 top-0 h-auto -translate-y-full data-[state=open]:translate-y-0 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
           side === "bottom" &&
             "inset-x-0 bottom-0 h-auto border-t border-[#CED0D4] rounded-t-[20px] data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
           className
@@ -75,8 +75,8 @@ function SheetContent({
       >
         {children}
         {showCloseButton && (
-          <SheetPrimitive.Close className="absolute top-4 right-4 rounded-[100px] opacity-70 transition-opacity hover:opacity-100 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-secondary">
-            <XIcon className="size-4" />
+          <SheetPrimitive.Close className="absolute top-6 right-6 rounded-[100px] p-2 opacity-70 transition-opacity hover:opacity-100 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-secondary">
+            <XIcon className="size-6" />
             <span className="sr-only">Close</span>
           </SheetPrimitive.Close>
         )}
