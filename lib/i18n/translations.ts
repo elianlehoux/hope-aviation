@@ -89,21 +89,26 @@ export const translations = {
     },
 
     // About section
-    aboutTitle: { en: "About Hope Aviation", es: "Sobre Hope Aviation" },
+    aboutTitle: { en: "Building bridges to new global opportunities.", es: "Construyendo puentes hacia nuevas oportunidades globales." },
     aboutDescription: {
-      en: "Hope Aviation is a next-generation virtual campus committed to delivering world-class aeronautical education. Our mission is to make professional aviation training accessible, modern, and effective for everyone — regardless of their location.",
-      es: "Hope Aviation es un campus virtual de próxima generación comprometido con la entrega de educación aeronáutica de clase mundial. Nuestra misión es hacer que la formación profesional en aviación sea accesible, moderna y efectiva para todos — sin importar su ubicación.",
+      en: "We focus on connecting strategic projects with the right talent. Our goal is to provide the necessary tools to form truly useful and versatile professionals, enabling excellence in every mission.",
+      es: "Nos enfocamos en conectar proyectos estratégicos con el talento adecuado. Nuestro objetivo es proveer las herramientas necesarias para formar profesionales verdaderamente útiles y versátiles, permitiendo la excelencia en cada misión.",
     },
     aboutInnovation: { en: "Innovation", es: "Innovación" },
     aboutExcellence: { en: "Excellence", es: "Excelencia" },
     aboutCommitment: { en: "Commitment", es: "Compromiso" },
 
     // Footer
-    footerTagline: { en: "Shaping the future of global aviation.", es: "Formando el futuro de la aviación global." },
+    footerTagline: { en: "Transforming aeronautical education through technology and a passion for flight.", es: "Transformando la educación aeronáutica a través de la tecnología y la pasión por el vuelo." },
     footerFeatures: { en: "Features", es: "Características" },
     footerAbout: { en: "About Us", es: "Nosotros" },
     footerCampus: { en: "Campus", es: "Campus" },
+    footerPrivacy: { en: "Privacy", es: "Privacidad" },
+    footerTerms: { en: "Terms", es: "Términos" },
+    footerContact: { en: "Contact", es: "Contacto" },
+    footerDesigned: { en: "Designed for excellence", es: "Diseñado para la excelencia" },
     footerCopyright: { en: "© 2026 Hope Aviation. All rights reserved.", es: "© 2026 Hope Aviation. Todos los derechos reservados." },
+    footerRightsReserved: { en: "All rights reserved.", es: "Todos los derechos reservados." },
   },
 
   // ── Donate Page ──

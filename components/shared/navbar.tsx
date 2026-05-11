@@ -102,7 +102,7 @@ const Navbar = () => {
         activeIsHidden ? "-translate-y-full" : "translate-y-0"
       } ${
         activeIsScrolled
-          ? "bg-white/80 backdrop-blur-xl border-slate-100 py-1"
+          ? "bg-[#00263E]/90 backdrop-blur-xl border-white/10 py-1"
           : "bg-transparent border-transparent py-2"
       }`}
     >
@@ -113,8 +113,7 @@ const Navbar = () => {
             <img
               src="/logos/Hope Black.svg"
               alt="Hope Aviation"
-              className={`h-16 w-auto drop-shadow-sm scale-[2.1] origin-left transition-all duration-300 group-hover:scale-[2.15] ${activeIsScrolled ? "" : "brightness-0 invert"
-                }`}
+              className={`h-16 w-auto drop-shadow-sm scale-[2.1] origin-left transition-all duration-300 group-hover:scale-[2.15] brightness-0 invert`}
             />
           </Link>
         </div>
@@ -123,16 +122,14 @@ const Navbar = () => {
         <div className="hidden flex-1 justify-center gap-8 md:flex">
           <Link
             href="/courses"
-            className={`flex items-center text-sm font-semibold transition-colors relative group ${activeIsScrolled ? "text-slate-600 hover:text-primary" : "text-white/80 hover:text-white"
-              }`}
+            className={`flex items-center text-sm font-semibold transition-colors relative group text-white/80 hover:text-white`}
           >
             {t("navbar.courses")}
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full" />
           </Link>
           <Link
             href="/#about"
-            className={`flex items-center text-sm font-semibold transition-colors relative group ${activeIsScrolled ? "text-slate-600 hover:text-primary" : "text-white/80 hover:text-white"
-              }`}
+            className={`flex items-center text-sm font-semibold transition-colors relative group text-white/80 hover:text-white`}
           >
             {t("navbar.about")}
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full" />
@@ -146,8 +143,7 @@ const Navbar = () => {
             <DropdownMenu modal={false} open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
               <DropdownMenuTrigger asChild>
                 <button
-                  className={`flex items-center text-sm font-semibold transition-colors relative group outline-none cursor-pointer ${activeIsScrolled ? "text-slate-600 hover:text-primary" : "text-white/80 hover:text-white"
-                    }`}
+                  className={`flex items-center text-sm font-semibold transition-colors relative group outline-none cursor-pointer text-white/80 hover:text-white`}
                 >
                   Get involved
                   <ChevronDown className="ml-1 size-4 transition-transform group-data-[state=open]:rotate-180" />
@@ -157,8 +153,7 @@ const Navbar = () => {
                 align="center"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                className={`w-56 border border-white/10 ${activeIsScrolled ? "bg-white text-slate-900" : "bg-black text-white"
-                  }`}
+                className={`w-56 border border-white/10 bg-[#00263E] text-white`}
               >
                 <DropdownMenuItem asChild className="cursor-pointer focus:bg-accent/10">
                   <Link href="/get-involved/church">Connect your church</Link>
@@ -191,8 +186,7 @@ const Navbar = () => {
               asChild
               variant="ghost"
               size="sm"
-              className={`font-bold transition-colors ${activeIsScrolled ? "text-primary hover:bg-accent/5" : "text-white hover:bg-white/10"
-                }`}
+              className={`font-bold transition-colors text-white hover:bg-white/10`}
             >
               <Link href="/donate" className="flex items-center gap-2">
                 <HandHeart className="size-4 text-accent fill-accent/10" />
@@ -208,7 +202,7 @@ const Navbar = () => {
             </Button>
 
             <LanguageToggle
-              className={activeIsScrolled ? "text-slate-500 hover:text-primary hover:bg-slate-50" : "text-white/80 hover:text-white hover:bg-white/10"}
+              className="text-white/80 hover:text-white hover:bg-white/10"
             />
           </div>
 
@@ -219,7 +213,7 @@ const Navbar = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className={activeIsScrolled ? "text-slate-900" : "text-white"}
+                  className="text-white"
                 >
                   <Menu className="size-6" />
                 </Button>
