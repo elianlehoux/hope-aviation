@@ -125,7 +125,7 @@ export const translations = {
       en: "To be the bridge that connects passionate volunteers with global projects that need hands and wings. We seek to form a global network of trained professionals, with integrity and ready to serve, ensuring that every volunteer we send is a valuable asset to the organizations operating in the field.",
       es: "Ser el puente que conecta a voluntarios apasionados con proyectos globales que necesitan manos y alas. Buscamos formar una red global de profesionales capacitados, íntegros y listos para servir, asegurando que cada voluntario que enviamos sea un activo valioso para las organizaciones que operan en el terreno."
     },
-    pillarsTitle: { en: "Our Pillars of Action", es: "Nuestros Pilares de Acción" },
+    pillarsTitle: { en: "What we do", es: "Qué hacemos" },
     pillar1Title: { en: "1. Virtual Campus: Comprehensive Training", es: "1. Campus Virtual: Formación Integral" },
     pillar1Desc: {
       en: "Our heart is our Virtual Campus. We understand that our job is not to teach how to fly, but to teach how to serve. At HOPE, we offer the complementary training that is often missing in traditional instruction:",

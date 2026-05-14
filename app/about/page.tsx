@@ -6,6 +6,7 @@ import { useRef, useEffect, useState, type ReactNode } from "react";
 import { Navbar } from "@/components/shared/navbar";
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
+import { LazyGlobe } from "@/components/ui/globe-lazy";
 import { T } from "@/lib/i18n/context";
 import {
   ArrowLeft,
@@ -57,11 +58,10 @@ function Reveal({
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        visible
+      className={`transition-all duration-700 ease-out ${visible
           ? "opacity-100 translate-y-0"
           : "opacity-0 translate-y-8"
-      } ${className}`}
+        } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -90,7 +90,7 @@ function Bullet({
       >
         <Icon className="size-5" />
       </span>
-      <p className="text-[17px] leading-relaxed text-slate-600">
+      <p className="text-[17px] leading-relaxed text-white/60">
         <T k={translationKey} />
       </p>
     </li>
@@ -101,34 +101,25 @@ function Bullet({
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-white overflow-hidden">
+    <main className="min-h-screen bg-[#1C1E21] overflow-hidden">
       <Navbar />
 
       {/* ═══════════════════════ HERO ═══════════════════════════════════════ */}
-      <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-[#00263E]">
+      <section className="relative min-h-[90vh] flex flex-col items-center justify-start overflow-hidden bg-[#00263E]">
         {/* Background photo */}
         <Image
           src="/Untitled-1 copy.webp"
           alt="Kids watching an airplane"
           fill
           priority
-          className="object-cover object-center opacity-40"
+          className="object-cover object-center opacity-30"
         />
         {/* Gradient scrims */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#00263E] via-transparent to-[#00263E]/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#00263E] via-transparent to-[#1C1E21]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#00263E]/80 to-transparent" />
 
-        <div className="relative z-10 mx-auto max-w-4xl px-6 text-center flex flex-col items-center gap-6 py-32">
-          <Reveal>
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-white/50 hover:text-white font-bold text-xs uppercase tracking-widest mb-4 transition-colors group"
-            >
-              <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-1" />
-              <T k="common.back" />
-            </Link>
-          </Reveal>
-
+        {/* Text Content - Positioned at the top to clear the background airplane */}
+        <div className="relative z-10 mx-auto max-w-4xl px-6 text-center flex flex-col items-center gap-6 pt-32 sm:pt-40">
           <Reveal delay={100}>
             <Title
               level="h1"
@@ -139,67 +130,73 @@ export default function AboutPage() {
           </Reveal>
 
           <Reveal delay={200}>
-            <p className="text-xl md:text-2xl text-white/70 font-medium leading-relaxed max-w-2xl">
+            <p className="text-xl md:text-2xl text-white/60 font-medium leading-relaxed max-w-2xl mt-6">
               <T k="aboutPage.subtitle" />
             </p>
           </Reveal>
+        </div>
 
+        {/* Floating Arrow - Positioned at bottom to avoid background interference */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
           <Reveal delay={350}>
-            <ChevronDown className="size-6 text-white/30 animate-bounce mt-6" />
+            <ChevronDown className="size-6 text-white/30 animate-bounce" />
           </Reveal>
         </div>
       </section>
 
-      {/* ═══════════════════ CHALLENGE TEXT (white) ═════════════════════════ */}
-      <section className="py-24 md:py-32 px-6 bg-white">
+      {/* ═══════════════════ CHALLENGE TEXT ═════════════════════════════════ */}
+      <section className="py-24 md:py-32 px-6 bg-[#1C1E21]">
         <div className="mx-auto max-w-3xl text-center">
-          <Reveal>
-            <Sparkles className="size-10 text-accent/40 mx-auto mb-8" />
-          </Reveal>
           <Reveal delay={100}>
-            <p className="text-xl md:text-2xl text-slate-600 leading-relaxed font-medium">
+            <p className="text-xl md:text-2xl text-white/60 leading-relaxed font-medium">
               <T k="aboutPage.challengeText" />
             </p>
           </Reveal>
         </div>
       </section>
 
-      {/* ═══════════════════ VISION (dark immersive) ════════════════════════ */}
+      {/* ═══════════════════ VISION (deeper dark + globe) ═══════════════════ */}
       <section className="relative py-32 md:py-40 px-6 bg-[#0B0F15] overflow-hidden">
         {/* Ambient glow */}
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent/10 rounded-full blur-[160px] -mr-96 -mt-96 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#ffaa00]/8 rounded-full blur-[120px] -ml-64 -mb-64 pointer-events-none" />
 
-        <div className="mx-auto max-w-4xl text-center relative z-10">
+        <div className="mx-auto max-w-7xl relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Text side */}
+          <div>
+            <Reveal delay={100}>
+              <Title
+                level="h2"
+                className="!text-4xl md:!text-5xl font-bold !text-white mb-8 tracking-tight"
+              >
+                <T k="aboutPage.visionTitle" />
+              </Title>
+            </Reveal>
+            <Reveal delay={200}>
+              <p className="text-xl md:text-2xl text-white/60 leading-relaxed font-medium">
+                <T k="aboutPage.visionText" />
+              </p>
+            </Reveal>
+          </div>
+
+          {/* Globe side */}
           <Reveal>
-            <div className="size-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center mx-auto mb-8">
-              <Globe className="size-8 text-white" />
+            <div className="relative flex items-center justify-center min-h-[400px] md:min-h-[500px]">
+              <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent rounded-full blur-3xl opacity-30" />
+              <LazyGlobe className="w-full max-w-[500px] z-10" />
             </div>
-          </Reveal>
-          <Reveal delay={100}>
-            <Title
-              level="h2"
-              className="!text-4xl md:!text-5xl font-bold !text-white mb-8 tracking-tight"
-            >
-              <T k="aboutPage.visionTitle" />
-            </Title>
-          </Reveal>
-          <Reveal delay={200}>
-            <p className="text-xl md:text-2xl text-white/70 leading-relaxed font-medium max-w-3xl mx-auto">
-              <T k="aboutPage.visionText" />
-            </p>
           </Reveal>
         </div>
       </section>
 
-      {/* ═══════════════════ PILLARS (soft gray, gallery) ═══════════════════ */}
-      <section className="py-32 px-6 bg-[#F1F4F7]">
+      {/* ═══════════════════ PILLARS (dark gallery) ═════════════════════════ */}
+      <section className="py-32 px-6 bg-[#1C1E21]">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <div className="text-center mb-20 md:mb-28">
               <Title
                 level="h2"
-                className="!text-4xl md:!text-6xl font-extrabold tracking-tight"
+                className="!text-4xl md:!text-6xl font-extrabold tracking-tight !text-white"
               >
                 <T k="aboutPage.pillarsTitle" />
               </Title>
@@ -210,9 +207,9 @@ export default function AboutPage() {
             {/* ──── Pillar 1 ──── */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               <Reveal>
-                <div className="aspect-[4/3] bg-white rounded-[24px] overflow-hidden relative shadow-[0_12px_28px_0_rgba(0,0,0,0.08),0_2px_4px_0_rgba(0,0,0,0.04)] flex items-center justify-center p-12 group">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent" />
-                  <BookOpen className="size-40 text-accent/15 relative z-10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-3" />
+                <div className="aspect-[4/3] bg-white/5 rounded-[24px] overflow-hidden relative border border-white/10 flex items-center justify-center p-12 group">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-transparent" />
+                  <BookOpen className="size-40 text-accent/20 relative z-10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-3" />
                 </div>
               </Reveal>
               <Reveal delay={150}>
@@ -222,11 +219,11 @@ export default function AboutPage() {
                   </span>
                   <Title
                     level="h3"
-                    className="!text-3xl md:!text-4xl font-bold mb-6"
+                    className="!text-3xl md:!text-4xl font-bold mb-6 !text-white"
                   >
                     <T k="aboutPage.pillar1Title" />
                   </Title>
-                  <p className="text-lg text-slate-500 leading-relaxed mb-8">
+                  <p className="text-lg text-white/50 leading-relaxed mb-8">
                     <T k="aboutPage.pillar1Desc" />
                   </p>
                   <ul className="space-y-5 mb-8">
@@ -234,7 +231,7 @@ export default function AboutPage() {
                     <Bullet icon={Target} translationKey="aboutPage.pillar1Technical" />
                     <Bullet icon={Users} translationKey="aboutPage.pillar1Humanitarian" />
                   </ul>
-                  <p className="text-slate-400 font-medium italic text-[15px]">
+                  <p className="text-white/30 font-medium italic text-[15px]">
                     <T k="aboutPage.pillar1Conclusion" />
                   </p>
                 </div>
@@ -250,11 +247,11 @@ export default function AboutPage() {
                   </span>
                   <Title
                     level="h3"
-                    className="!text-3xl md:!text-4xl font-bold mb-6"
+                    className="!text-3xl md:!text-4xl font-bold mb-6 !text-white"
                   >
                     <T k="aboutPage.pillar2Title" />
                   </Title>
-                  <p className="text-lg text-slate-500 leading-relaxed mb-8">
+                  <p className="text-lg text-white/50 leading-relaxed mb-8">
                     <T k="aboutPage.pillar2Desc" />
                   </p>
                   <ul className="space-y-5">
@@ -265,9 +262,9 @@ export default function AboutPage() {
                 </div>
               </Reveal>
               <Reveal className="order-1 lg:order-2">
-                <div className="aspect-[4/3] bg-white rounded-[24px] overflow-hidden relative shadow-[0_12px_28px_0_rgba(0,0,0,0.08),0_2px_4px_0_rgba(0,0,0,0.04)] flex items-center justify-center p-12 group">
-                  <div className="absolute inset-0 bg-gradient-to-bl from-[#ffaa00]/5 to-transparent" />
-                  <Network className="size-40 text-[#ffaa00]/15 relative z-10 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3" />
+                <div className="aspect-[4/3] bg-white/5 rounded-[24px] overflow-hidden relative border border-white/10 flex items-center justify-center p-12 group">
+                  <div className="absolute inset-0 bg-gradient-to-bl from-[#ffaa00]/10 to-transparent" />
+                  <Network className="size-40 text-[#ffaa00]/20 relative z-10 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3" />
                 </div>
               </Reveal>
             </div>
@@ -275,7 +272,7 @@ export default function AboutPage() {
             {/* ──── Pillar 3 ──── */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               <Reveal>
-                <div className="aspect-[4/3] rounded-[24px] overflow-hidden relative shadow-[0_12px_28px_0_rgba(0,0,0,0.08),0_2px_4px_0_rgba(0,0,0,0.04)] group">
+                <div className="aspect-[4/3] rounded-[24px] overflow-hidden relative border border-white/10 bg-white/5 group">
                   {/* Real airplane image */}
                   <Image
                     src="/avion.svg"
@@ -283,7 +280,7 @@ export default function AboutPage() {
                     fill
                     className="object-contain p-8 transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-transparent pointer-events-none" />
                 </div>
               </Reveal>
               <Reveal delay={150}>
@@ -293,11 +290,11 @@ export default function AboutPage() {
                   </span>
                   <Title
                     level="h3"
-                    className="!text-3xl md:!text-4xl font-bold mb-6"
+                    className="!text-3xl md:!text-4xl font-bold mb-6 !text-white"
                   >
                     <T k="aboutPage.pillar3Title" />
                   </Title>
-                  <p className="text-lg text-slate-500 leading-relaxed">
+                  <p className="text-lg text-white/50 leading-relaxed">
                     <T k="aboutPage.pillar3Desc" />
                   </p>
                 </div>
@@ -307,19 +304,19 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══════════════════ MEASUREMENT (white) ═══════════════════════════ */}
-      <section className="py-32 px-6 bg-white">
+      {/* ═══════════════════ MEASUREMENT ═══════════════════════════════════ */}
+      <section className="py-32 px-6 bg-[#0B0F15]">
         <div className="mx-auto max-w-5xl">
           <Reveal>
             <div className="text-center mb-16">
-              <Target className="size-12 text-slate-200 mx-auto mb-6" />
+              <Target className="size-12 text-white/15 mx-auto mb-6" />
               <Title
                 level="h2"
-                className="!text-4xl md:!text-5xl font-bold mb-6 tracking-tight"
+                className="!text-4xl md:!text-5xl font-bold mb-6 tracking-tight !text-white"
               >
                 <T k="aboutPage.measureTitle" />
               </Title>
-              <p className="text-xl text-slate-500 leading-relaxed max-w-2xl mx-auto">
+              <p className="text-xl text-white/50 leading-relaxed max-w-2xl mx-auto">
                 <T k="aboutPage.measureDesc" />
               </p>
             </div>
@@ -332,9 +329,9 @@ export default function AboutPage() {
               { icon: Heart, key: "aboutPage.measureIntegrity", color: "text-accent" },
             ].map((item, i) => (
               <Reveal key={item.key} delay={i * 120}>
-                <div className="bg-[#F7F8FA] rounded-[20px] p-8 border border-[#DEE3E9] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full">
+                <div className="bg-white/5 rounded-[20px] p-8 border border-white/10 hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 h-full">
                   <item.icon className={`size-8 ${item.color} mb-6`} />
-                  <p className="text-[17px] text-[#1C2B33] font-medium leading-relaxed">
+                  <p className="text-[17px] text-white/70 font-medium leading-relaxed">
                     <T k={item.key} />
                   </p>
                 </div>
@@ -344,11 +341,11 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══════════════════ CTA (dark immersive card) ══════════════════════ */}
-      <section className="py-32 px-6 bg-[#F1F4F7]">
+      {/* ═══════════════════ CTA (immersive card) ══════════════════════════ */}
+      <section className="py-32 px-6 bg-[#1C1E21]">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <div className="bg-[#00263E] rounded-[32px] p-10 md:p-16 lg:p-20 relative overflow-hidden shadow-[0_12px_28px_0_rgba(0,0,0,0.2),0_2px_4px_0_rgba(0,0,0,0.1)]">
+            <div className="bg-[#00263E] rounded-[32px] p-10 md:p-16 lg:p-20 relative overflow-hidden">
               {/* Ambient blobs */}
               <div className="absolute top-0 right-0 w-96 h-96 bg-accent/20 rounded-full blur-[120px] -mr-48 -mt-48" />
               <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#ffaa00]/15 rounded-full blur-[100px] -ml-40 -mb-40" />
@@ -365,7 +362,7 @@ export default function AboutPage() {
                     </Title>
                   </Reveal>
                   <Reveal delay={100}>
-                    <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto font-medium">
+                    <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto font-medium">
                       <T k="aboutPage.ctaDesc" />
                     </p>
                   </Reveal>
@@ -402,16 +399,15 @@ export default function AboutPage() {
                         className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 flex flex-col hover:bg-white/10 transition-colors duration-300"
                       >
                         <card.icon className="size-7 text-white/80 mb-4" />
-                        <p className="text-white/80 text-[15px] font-medium leading-relaxed mb-6 flex-1">
+                        <p className="text-white/70 text-[15px] font-medium leading-relaxed mb-6 flex-1">
                           <T k={card.textKey} />
                         </p>
                         <Button
                           asChild
-                          className={`w-full rounded-full font-bold h-11 text-sm transition-all duration-200 ${
-                            card.primary
+                          className={`w-full rounded-full font-bold h-11 text-sm transition-all duration-200 ${card.primary
                               ? "bg-white text-[#00263E] hover:bg-slate-100"
                               : "bg-transparent border border-white/20 text-white hover:bg-white/10"
-                          }`}
+                            }`}
                         >
                           <Link href={card.href}>
                             <T k={card.btnKey} />
@@ -436,8 +432,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══════════════════ FOOTER (minimal) ══════════════════════════════ */}
-      <footer className="py-12 border-t border-[#DEE3E9] text-center text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em] bg-white">
+      {/* ═══════════════════ FOOTER (minimal dark) ════════════════════════ */}
+      <footer className="py-12 border-t border-white/10 text-center text-white/30 font-bold text-[10px] uppercase tracking-[0.2em] bg-[#1C1E21]">
         <p>© 2026 HOPE AVIATION. ALL RIGHTS RESERVED.</p>
       </footer>
     </main>
