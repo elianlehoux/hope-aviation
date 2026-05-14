@@ -26,7 +26,7 @@ const COURSES = [
     description: "Explora la ingeniería detrás de los aviones modernos.",
     duration: "6 semanas",
     level: "Intermedio",
-    image: "https://images.unsplash.com/photo-1534433010376-79354005e8e8?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=800&auto=format&fit=crop"
   },
   {
     id: 3,
@@ -50,7 +50,7 @@ const COURSES = [
     description: "Domina el lenguaje de la radio y la interacción con controladores.",
     duration: "3 semanas",
     level: "Principiante",
-    image: "https://images.unsplash.com/photo-1444464666168-49d633b867ad?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1436491865332-7a61a109db05?q=80&w=800&auto=format&fit=crop"
   }
 ];
 
@@ -122,8 +122,8 @@ export default function LandingPage() {
 
             <div className="mt-8">
               <Button asChild variant="outline" className="rounded-full border-white/20 text-white hover:bg-white/10 backdrop-blur-xl h-12 px-8 text-sm font-bold transition-all duration-200 group">
-                <Link href="/campus" className="flex items-center gap-2">
-                  Explore Platform
+                <Link href="/about" className="flex items-center gap-2">
+                  <T k="landing.aboutMoreInfo" />
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
@@ -222,7 +222,8 @@ export default function LandingPage() {
                 alt="Hope Aviation"
                 width={120}
                 height={40}
-                className="h-10 w-auto scale-[2.1] origin-left"
+                className="h-10 scale-[2.1] origin-left"
+                style={{ width: "auto" }}
               />
               <p className="text-slate-400 font-medium text-sm">
                 <T k="landing.footerTagline" />

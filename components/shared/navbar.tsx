@@ -128,7 +128,7 @@ const Navbar = () => {
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full" />
           </Link>
           <Link
-            href="/#about"
+            href="/about"
             className={`flex items-center text-sm font-semibold transition-colors relative group text-white/80 hover:text-white`}
           >
             {t("navbar.about")}
@@ -244,7 +244,7 @@ const Navbar = () => {
                   <Link href="/courses" className="flex items-center text-lg font-bold text-slate-800 hover:text-accent p-2 rounded-lg hover:bg-slate-50 transition-colors">
                   {t("navbar.courses")}
                 </Link>
-                <Link href="/#about" className="flex items-center text-lg font-bold text-slate-800 hover:text-accent p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                <Link href="/about" className="flex items-center text-lg font-bold text-slate-800 hover:text-accent p-2 rounded-lg hover:bg-slate-50 transition-colors">
                   {t("navbar.about")}
                 </Link>
 
