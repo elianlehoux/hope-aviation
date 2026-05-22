@@ -5,7 +5,7 @@ import { responseFromPostgrestError } from "@/lib/api/supabase-errors";
 import { profileSelfPatchSchema } from "@/lib/validation/profile";
 
 const PROFILE_SELECT =
-  "id, first_name, last_name, email, phone, bio, avatar_url, country_code, birth_date, is_active, created_at, updated_at";
+  "id, first_name, last_name, email, phone, bio, avatar_url, country_code, birth_date, is_active, newsletter_opt_in, created_at, updated_at";
 
 export async function GET() {
   const supabase = await createClient();

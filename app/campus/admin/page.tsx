@@ -17,6 +17,7 @@ export default function AdminHomePage() {
     { href: "/campus/admin/exams", labelKey: "admin.exams", noteKey: "admin.examsNote" },
     { href: "/campus/admin/enrollments", labelKey: "admin.enrollments", noteKey: "admin.enrollmentsNote" },
     { href: "/campus/admin/exam-attempts", labelKey: "admin.examAttempts", noteKey: "admin.examAttemptsNote" },
+    { href: "/campus/admin/newsletter", labelKey: "admin.newsletter", noteKey: "admin.newsletterNote" },
   ];
 
   return (

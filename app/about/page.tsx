@@ -8,6 +8,7 @@ import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
 import { LazyGlobe } from "@/components/ui/globe-lazy";
 import { T } from "@/lib/i18n/context";
+import { Footer } from "@/components/shared/footer";
 import {
   ArrowLeft,
   ArrowRight,
@@ -431,11 +432,8 @@ export default function AboutPage() {
           </Reveal>
         </div>
       </section>
-
       {/* ═══════════════════ FOOTER (minimal dark) ════════════════════════ */}
-      <footer className="py-12 border-t border-white/10 text-center text-white/30 font-bold text-[10px] uppercase tracking-[0.2em] bg-[#1C1E21]">
-        <p>© 2026 HOPE AVIATION. ALL RIGHTS RESERVED.</p>
-      </footer>
+      <Footer minimal />
     </main>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "@/lib/i18n/context";
 import { toast } from "sonner";
 import { 
@@ -28,6 +29,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import {
   Popover,
   PopoverContent,
@@ -41,6 +43,7 @@ import type { Profile } from "@/types/database";
 
 export function ProfileForm() {
   const { t } = useTranslation();
+  const router = useRouter();
   const [profile, setProfile] = React.useState<Profile | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [saving, setSaving] = React.useState(false);
@@ -55,6 +58,7 @@ export function ProfileForm() {
   const [description, setDescription] = React.useState("");
   const [countryCode, setCountryCode] = React.useState("");
   const [birthDate, setBirthDate] = React.useState<Date | undefined>(undefined);
+  const [newsletterOptIn, setNewsletterOptIn] = React.useState(false);
 
   // Country selector states
   const [countrySearch, setCountrySearch] = React.useState("");
@@ -87,6 +91,7 @@ export function ProfileForm() {
       if (p.birth_date) {
         setBirthDate(new Date(p.birth_date));
       }
+      setNewsletterOptIn(p.newsletter_opt_in || false);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : t("profile.errorLoading"));
     } finally {
@@ -111,6 +116,7 @@ export function ProfileForm() {
         bio: description || null,
         country_code: countryCode || null,
         birth_date: birthDate ? format(birthDate, "yyyy-MM-dd") : null,
+        newsletter_opt_in: newsletterOptIn,
       };
 
       const res = await fetch("/api/me/profile", {
@@ -125,7 +131,8 @@ export function ProfileForm() {
       }
 
       toast.success(t("profile.profileUpdated"));
-      fetchProfile();
+      router.push("/campus");
+      router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : t("profile.errorUpdating"));
     } finally {
@@ -346,6 +353,32 @@ export function ProfileForm() {
                   {t("profile.personalDescriptionNote")}
                 </p>
               </div>
+            </div>
+          </Card>
+        </section>
+
+        {/* Newsletter Subscription */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 text-primary pl-1">
+            <Mail className="size-4 opacity-70" />
+            <h3 className="text-sm font-bold uppercase tracking-widest opacity-60">{t("profile.newsletterSection")}</h3>
+          </div>
+          
+          <Card className="p-6 md:p-10 bg-white border-slate-100 shadow-xs rounded-3xl">
+            <div className="flex items-center justify-between gap-6">
+              <div className="space-y-1">
+                <Label htmlFor="newsletter" className="text-base font-semibold text-slate-800">
+                  {t("profile.newsletterOptIn")}
+                </Label>
+                <p className="text-sm text-slate-500 max-w-2xl leading-relaxed">
+                  {t("profile.newsletterDescription")}
+                </p>
+              </div>
+              <Switch
+                id="newsletter"
+                checked={newsletterOptIn}
+                onCheckedChange={setNewsletterOptIn}
+              />
             </div>
           </Card>
         </section>

@@ -4,6 +4,7 @@ import { jsonError, jsonOk } from "@/lib/api/json";
 import { parseUuidParam } from "@/lib/api/params";
 import { responseFromPostgrestError } from "@/lib/api/supabase-errors";
 import { examSubmitSchema } from "@/lib/validation/exams";
+import { revalidatePath } from "next/cache";
 
 type RouteContext = { params: Promise<{ courseId: string }> };
 
@@ -97,6 +98,9 @@ export async function POST(request: Request, context: RouteContext) {
        // We still return true passed, but we might want to flag the error.
     }
   }
+
+  revalidatePath("/campus");
+  revalidatePath(`/campus/courses/${courseId}`);
 
   return jsonOk({ score, passed });
 }

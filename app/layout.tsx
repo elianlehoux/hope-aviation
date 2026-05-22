@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { LanguageProvider } from "@/lib/i18n/context";
@@ -34,20 +33,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${montserrat.className} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          forcedTheme="light"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <TooltipProvider>
-            <LanguageProvider>
-              {children}
-              <Toaster position="top-right" />
-            </LanguageProvider>
-          </TooltipProvider>
-        </ThemeProvider>
+        <TooltipProvider>
+          <LanguageProvider>
+            {children}
+            <Toaster position="top-right" />
+          </LanguageProvider>
+        </TooltipProvider>
       </body>
     </html>
   );

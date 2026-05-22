@@ -32,6 +32,7 @@ export interface Profile {
   country_code: string | null;
   birth_date: string | null;
   is_active: boolean;
+  newsletter_opt_in: boolean;
   created_at: string;
   updated_at: string | null;
 }
@@ -131,3 +132,11 @@ export interface ExamAttempt {
   started_at: string;
   finished_at: string | null;
 }
+
+export interface NewsletterSubscriber {
+  id: string;
+  email: string;
+  user_id: string | null;
+  created_at: string;
+}
+

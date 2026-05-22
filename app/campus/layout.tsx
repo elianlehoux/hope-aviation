@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { CampusMobileNav } from "@/components/features/campus/CampusMobileNav";
@@ -18,13 +19,13 @@ export default function CampusLayout({
 }>) {
   const navLinks = [
     { href: "/campus", labelKey: "campus.home" },
-    { href: "/campus/courses", labelKey: "campus.myLearning" },
     { href: "/campus/certificates", labelKey: "campus.myCertificates" },
     { href: "/campus/admin/user-management", labelKey: "campus.userManagement" },
     { href: "/campus/admin/users", labelKey: "campus.users" },
     { href: "/campus/admin/roles", labelKey: "campus.roles" },
     { href: "/campus/admin/courses", labelKey: "campus.courses" },
     { href: "/campus/admin/exams", labelKey: "campus.exams" },
+    { href: "/campus/admin/newsletter", labelKey: "campus.newsletter" },
   ];
 
   return (
@@ -78,6 +79,10 @@ async function CampusHeader({ navLinks }: { navLinks: { href: string; labelKey: 
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/auth/login?clear=1");
+  }
 
   return (
     <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6">

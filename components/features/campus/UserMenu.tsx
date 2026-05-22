@@ -37,13 +37,19 @@ interface UserMenuProps {
       avatar_url?: string;
       picture?: string;
     };
-  };
+  } | null;
 }
 
 export function UserMenu({ user }: UserMenuProps) {
   const router = useRouter();
   const [loading, setLoading] = React.useState(false);
   const { t } = useTranslation();
+
+  if (!user) {
+    return (
+      <div className="h-10 w-10 rounded-full bg-slate-100 animate-pulse border border-slate-100" />
+    );
+  }
 
   const fullName = user.user_metadata?.full_name || 
     `${user.user_metadata?.first_name || ""} ${user.user_metadata?.last_name || ""}`.trim() || 

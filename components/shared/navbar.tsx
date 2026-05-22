@@ -121,7 +121,7 @@ const Navbar = () => {
         {/* Navigation Links (Centered) */}
         <div className="hidden flex-1 justify-center gap-8 md:flex">
           <Link
-            href="/courses"
+            href="/#courses"
             className={`flex items-center text-sm font-semibold transition-colors relative group text-white/80 hover:text-white`}
           >
             {t("navbar.courses")}
@@ -188,7 +188,7 @@ const Navbar = () => {
               size="sm"
               className={`font-bold transition-colors text-white hover:bg-white/10`}
             >
-              <Link href="/donate" className="flex items-center gap-2">
+              <Link href="/get-involved/support" className="flex items-center gap-2">
                 <HandHeart className="size-4 text-accent fill-accent/10" />
                 {t("navbar.donate")}
               </Link>
@@ -241,7 +241,7 @@ const Navbar = () => {
 
                 {/* Mobile Menu Links */}
                 <div className="flex flex-col gap-4 px-6 pb-6">
-                  <Link href="/courses" className="flex items-center text-lg font-bold text-slate-800 hover:text-accent p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                  <Link href="/#courses" className="flex items-center text-lg font-bold text-slate-800 hover:text-accent p-2 rounded-lg hover:bg-slate-50 transition-colors">
                   {t("navbar.courses")}
                 </Link>
                 <Link href="/about" className="flex items-center text-lg font-bold text-slate-800 hover:text-accent p-2 rounded-lg hover:bg-slate-50 transition-colors">

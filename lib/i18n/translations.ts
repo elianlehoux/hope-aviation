@@ -54,10 +54,16 @@ export const translations = {
     // Features section
     featuresTitle: { en: "Everything you need to succeed", es: "Todo lo que necesitas para triunfar" },
     featuresDescription: {
-      en: "Our platform offers a complete suite of tools designed specifically for aeronautical training and education.",
-      es: "Nuestra plataforma ofrece una suite completa de herramientas diseñadas específicamente para la formación y educación aeronáutica.",
+      en: "We do not teach how to fly, but how to serve. Our Virtual Campus offers the spiritual, technical, and humanitarian preparation needed to face the realities of missionary and humanitarian service.",
+      es: "No enseñamos a volar, sino a servir. Nuestro Campus Virtual ofrece la formación espiritual, técnica y humanitaria necesaria para enfrentar las realidades del servicio misionero y humanitario.",
     },
     featureInteractiveCourses: { en: "Interactive Courses", es: "Cursos Interactivos" },
+
+    // Newsletter section
+    newsletterTitle: { en: "Stay Updated", es: "Mantente Informado" },
+    newsletterDesc: { en: "Subscribe to our annual newsletter for the latest updates and projects.", es: "Suscríbete a nuestro boletín anual para recibir las últimas novedades y proyectos." },
+    newsletterPlaceholder: { en: "Enter your email", es: "Tu correo electrónico" },
+    newsletterButton: { en: "Subscribe", es: "Suscribirse" },
     featureInteractiveCoursesDesc: {
       en: "Structured modules covering theory, regulations, and practical knowledge.",
       es: "Módulos estructurados que cubren teoría, regulaciones y conocimientos prácticos.",
@@ -110,6 +116,84 @@ export const translations = {
     footerDesigned: { en: "Designed for excellence", es: "Diseñado para la excelencia" },
     footerCopyright: { en: "© 2026 Hope Aviation. All rights reserved.", es: "© 2026 Hope Aviation. Todos los derechos reservados." },
     footerRightsReserved: { en: "All rights reserved.", es: "Todos los derechos reservados." },
+
+    // Get Involved section
+    getInvolvedTitle: { en: "Be Part of the Mission", es: "Sé Parte de la Misión" },
+    getInvolvedSubtitle: {
+      en: "There are many ways to contribute to this project. Find the one that resonates with your calling.",
+      es: "Hay muchas formas de contribuir a este proyecto. Encontrá la que resuene con tu llamado.",
+    },
+    getInvolvedContact: { en: "Contact Us", es: "Contactanos" },
+
+    // Church card
+    churchTitle: { en: "Connect Your Church", es: "Conectá tu Iglesia" },
+    churchDescription: {
+      en: "If your church wants to partner with us through special or monthly offerings, get in touch so we can coordinate together.",
+      es: "Si tu iglesia quiere asociarse con nosotros a través de ofrendas especiales o mensuales, ponete en contacto para que podamos coordinar juntos.",
+    },
+    churchFeature1: {
+      en: "One-time missions offerings and special campaigns to support our educational platform.",
+      es: "Ofrendas misioneras únicas y campañas especiales para sostener la plataforma educativa.",
+    },
+    churchFeature2: {
+      en: "Recurring monthly partnership to ensure continuous training for volunteers.",
+      es: "Socio mensual recurrente para asegurar la continuidad de la formación de los voluntarios.",
+    },
+    churchFeature3: {
+      en: "Direct student sponsorship to help committed candidates who lack the resources to train.",
+      es: "Becar y acompañar a estudiantes comprometidos que no cuentan con los recursos para capacitarse.",
+    },
+
+    // Project card
+    projectTitle: { en: "Connect Your Project", es: "Conectá tu Proyecto" },
+    projectDescription: {
+      en: "If you want to collaborate as partners, have aircraft available, a place to operate, know of a need somewhere, or offer courses to add to the campus — reach out to us.",
+      es: "Si querés colaborar como partner, tenés aviones disponibles, un lugar para operar, conocés una necesidad en algún lugar, o das cursos y querés sumarlos al campus — contactanos.",
+    },
+    projectFeature1: { en: "Aircraft & operational partnerships", es: "Aviones y alianzas operativas" },
+    projectFeature2: { en: "Joint courses on the campus", es: "Cursos conjuntos en el campus" },
+    projectFeature3: { en: "Identify and connect needs", es: "Identificar y conectar necesidades" },
+
+    // Teach card
+    teachTitle: { en: "Teach", es: "Enseñá" },
+    teachDescription: {
+      en: "If you are a professional in any field and would like to volunteer your expertise to teach a subject, we'd love to hear from you.",
+      es: "Si sos profesional en cualquier área y te gustaría ser voluntario para enseñar algún tema, nos encantaría saber de vos.",
+    },
+    teachFeature1: { en: "Share your professional expertise", es: "Compartí tu experiencia profesional" },
+    teachFeature2: { en: "Flexible volunteer teaching", es: "Enseñanza voluntaria flexible" },
+    teachFeature3: { en: "Impact future mission workers", es: "Impactá a futuros misioneros" },
+
+    // Volunteer card
+    volunteerTitle: { en: "Volunteer", es: "Sé Voluntario" },
+    volunteerDescription: {
+      en: "Help us with online tasks — video editing, filming, production, marketing, and more. Your skills can make a real difference from anywhere.",
+      es: "Ayudanos con tareas online — edición de video, filmación, producción, marketing y más. Tus habilidades pueden hacer una diferencia real desde cualquier lugar.",
+    },
+    volunteerFeature1: { en: "Video editing & production", es: "Edición y producción de video" },
+    volunteerFeature2: { en: "Marketing & content creation", es: "Marketing y creación de contenido" },
+    volunteerFeature3: { en: "Remote work from anywhere", es: "Trabajo remoto desde cualquier lugar" },
+
+    // Donate card
+    donateTitle: { en: "Donate", es: "Doná" },
+    donateDescription: {
+      en: "We're still defining the best way to receive donations. For now, contact us and we'll coordinate together how you can contribute.",
+      es: "Todavía estamos definiendo la mejor forma de recibir donaciones. Por ahora, contactanos y coordinamos juntos cómo podés contribuir.",
+    },
+    donateFeature1: { en: "Contact to coordinate your donation", es: "Contactanos para coordinar tu donación" },
+    donateFeature2: { en: "Every contribution counts", es: "Cada contribución cuenta" },
+    donateFeature3: { en: "Full transparency", es: "Transparencia total" },
+
+    // Courses section
+    noCoursesTitle: { en: "Courses Coming Soon", es: "Cursos Próximamente" },
+    noCoursesDescription: {
+      en: "We're preparing our course catalogue. Stay tuned for new learning opportunities.",
+      es: "Estamos preparando nuestro catálogo de cursos. Mantenete atento a nuevas oportunidades de aprendizaje.",
+    },
+    startLearningNow: {
+      en: "Start Learning Now",
+      es: "Comenzar a Aprender Ahora",
+    },
   },
 
   // ── About Page ──
@@ -201,6 +285,10 @@ export const translations = {
     backToHome: { en: "Back to home", es: "Volver al inicio" },
     errorGeneric: { en: "Could not sign you in. Try again.", es: "No se pudo iniciar sesión. Intenta de nuevo." },
     loadingSignIn: { en: "Loading sign-in…", es: "Cargando inicio de sesión…" },
+    noAccountNotice: {
+      en: "Don't have an account yet? No worries! Logging in with your email or Google will automatically create your account instantly.",
+      es: "¿No tienes una cuenta? ¡No te preocupes! Al iniciar sesión con tu correo o Google se creará tu cuenta automáticamente de forma instantánea."
+    },
   },
 
   // ── Campus Layout / Navigation ──
@@ -213,6 +301,7 @@ export const translations = {
     roles: { en: "Roles", es: "Roles" },
     courses: { en: "Courses", es: "Cursos" },
     exams: { en: "Exams", es: "Exámenes" },
+    newsletter: { en: "Newsletter", es: "Boletín Informativo" },
     backToHome: { en: "← Back to Home", es: "← Volver al Inicio" },
 
     // Dashboard
@@ -278,6 +367,9 @@ export const translations = {
     profileUpdated: { en: "Profile updated successfully", es: "Perfil actualizado exitosamente" },
     errorLoading: { en: "Error loading profile", es: "Error al cargar el perfil" },
     errorUpdating: { en: "Error updating profile", es: "Error al actualizar el perfil" },
+    newsletterSection: { en: "Newsletter Subscriptions", es: "Suscripción al Boletín" },
+    newsletterOptIn: { en: "Subscribe to our annual newsletter", es: "Suscribirme al boletín informativo anual" },
+    newsletterDescription: { en: "Stay updated with the latest news, projects, and activities from Hope Aviation directly in your inbox.", es: "Mantente informado con las últimas noticias, proyectos y actividades de Hope Aviation directamente en tu bandeja de entrada." },
   },
 
   // ── Profile Completion Banner ──
@@ -693,6 +785,8 @@ export const translations = {
     enrollmentsNote: { en: "enrollments", es: "inscripciones" },
     examAttempts: { en: "Exam attempts", es: "Intentos de examen" },
     examAttemptsNote: { en: "exam_attempts", es: "exam_attempts" },
+    newsletter: { en: "Newsletter", es: "Boletín Informativo" },
+    newsletterNote: { en: "Compose and dispatch newsletter to subscribers", es: "Redactar y enviar boletín a los suscriptores" },
   },
 
   // ── Learning View ──
@@ -780,6 +874,45 @@ export const translations = {
   // ── Language Toggle ──
   langToggle: {
     switchLang: { en: "Cambiar a Español", es: "Switch to English" },
+  },
+
+  // ── Newsletter System ──
+  newsletter: {
+    title: { en: "Newsletter Management", es: "Gestión de Boletín" },
+    subtitle: { en: "Manage subscribers, view metrics, and send email updates.", es: "Administra suscriptores, visualiza métricas y envía novedades por correo." },
+    subscribers: { en: "Subscribers", es: "Suscriptores" },
+    totalSubscribers: { en: "Total Subscribers", es: "Total de Suscriptores" },
+    totalUsers: { en: "Total Campus Users", es: "Usuarios del Campus" },
+    subRate: { en: "Subscription Rate", es: "Tasa de Suscripción" },
+    externalSubscribers: { en: "External Subscribers", es: "Suscriptores Externos" },
+    registeredSubscribers: { en: "Registered Subscribers", es: "Suscriptores Registrados" },
+    composeTitle: { en: "Compose Newsletter", es: "Redactar Boletín" },
+    composeSubtitle: { en: "Send an update to all newsletter subscribers.", es: "Envía una actualización a todos los suscriptores del boletín." },
+    subjectLabel: { en: "Subject", es: "Asunto" },
+    subjectPlaceholder: { en: "Enter email subject...", es: "Ingresa el asunto del correo..." },
+    messageLabel: { en: "Message Content", es: "Contenido del Mensaje" },
+    messagePlaceholder: { en: "Write your email message here...", es: "Escribe el mensaje del correo aquí..." },
+    attachmentLabel: { en: "Attachment (Optional)", es: "Archivo Adjunto (Opcional)" },
+    attachmentHint: { en: "Supported formats: PDF, ZIP, Images. Max size: 10MB.", es: "Formatos soportados: PDF, ZIP, Imágenes. Tamaño máx: 10MB." },
+    dragDropText: { en: "Drag & drop your file here, or click to browse", es: "Arrastra y suelta tu archivo aquí, o haz clic para buscar" },
+    sending: { en: "Sending Newsletter...", es: "Enviando Boletín..." },
+    sendButton: { en: "Send Newsletter", es: "Enviar Boletín" },
+    confirmTitle: { en: "Confirm Sending", es: "Confirmar Envío" },
+    confirmMessage: { 
+      en: "Are you sure you want to send this newsletter to {count} subscribers? This action cannot be undone.", 
+      es: "¿Estás seguro de que quieres enviar este boletín a {count} suscriptores? Esta acción no se puede deshacer." 
+    },
+    sendSuccess: { en: "Newsletter sent successfully to {count} subscribers!", es: "¡Boletín enviado con éxito a {count} suscriptores!" },
+    sendError: { en: "Failed to send newsletter.", es: "Error al enviar el boletín." },
+    noSubscribers: { en: "There are no active newsletter subscribers to send to.", es: "No hay suscriptores activos para enviar el boletín." },
+    validationError: { en: "Please fill in all required fields.", es: "Por favor, completa todos los campos requeridos." },
+    unsubscribeSuccess: { en: "You have successfully unsubscribed from our newsletter.", es: "Te has dado de baja con éxito de nuestro boletín." },
+    unsubscribeError: { en: "Error unsubscribing. Please try again.", es: "Error al darse de baja. Intenta nuevamente." },
+    unsubscribeTitle: { en: "Unsubscribe from Newsletter", es: "Darse de Baja del Boletín" },
+    unsubscribeConfirm: { en: "Are you sure you want to unsubscribe {email}?", es: "¿Estás seguro de que deseas dar de baja a {email}?" },
+    unsubscribeBtn: { en: "Confirm Unsubscribe", es: "Confirmar Cancelación" },
+    subscribeSuccessToast: { en: "Subscribed successfully!", es: "¡Suscripción exitosa!" },
+    subscribeErrorToast: { en: "Failed to subscribe. Please try again.", es: "Error al suscribirse. Intenta de nuevo." }
   },
 } as const;
 

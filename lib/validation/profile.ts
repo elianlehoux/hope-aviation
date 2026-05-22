@@ -10,6 +10,7 @@ export const profileSelfPatchSchema = z
     avatar_url: z.string().max(2000).nullable().optional(),
     country_code: z.string().min(2).max(8).nullable().optional(),
     birth_date: z.string().max(32).nullable().optional(),
+    newsletter_opt_in: z.boolean().optional(),
   })
   .refine((o) => Object.keys(o).length > 0, {
     message: "at least one field required",

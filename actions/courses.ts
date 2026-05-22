@@ -43,6 +43,7 @@ export async function enrollInCourse(courseId: string) {
   }
 
   // Revalidate to update the "My Learning" dashboard and the current page
+  revalidatePath("/campus");
   revalidatePath("/campus/courses");
   revalidatePath(`/campus/courses/${courseId}`);
 
@@ -120,6 +121,7 @@ export async function toggleLessonCompletion(courseId: string, classId: string, 
     return { success: false, error: error.message };
   }
 
+  revalidatePath("/campus");
   revalidatePath(`/campus/courses/${courseId}/learn`);
   return { success: true };
 }
@@ -164,6 +166,7 @@ export async function markModuleCompleted(courseId: string, subjectId: string) {
     return { success: false, error: upsertError.message };
   }
 
+  revalidatePath("/campus");
   revalidatePath(`/campus/courses/${courseId}/learn`);
   return { success: true };
 }

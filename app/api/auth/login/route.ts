@@ -20,17 +20,41 @@ export async function POST(request: Request) {
     return jsonError("validation_error", "Invalid login payload.", 400);
   }
 
+  const { email, password } = parsed.data;
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: parsed.data.email,
-    password: parsed.data.password,
+
+  // 1. Try to sign in with password first
+  const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+    email,
+    password,
   });
 
-  if (error || !data.user) {
-    return jsonError("unauthorized", "Invalid credentials.", 401);
+  if (!signInError && signInData.user) {
+    return jsonOk({
+      user: { id: signInData.user.id, email: signInData.user.email },
+      isNewUser: false,
+    });
   }
 
-  return jsonOk({
-    user: { id: data.user.id, email: data.user.email },
+  // 2. If sign-in failed, check if the account doesn't exist by trying to sign it up
+  // If the user already exists, Supabase signUp will return an empty identities array (user enumeration protection)
+  // or a "User already registered" error.
+  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+    email,
+    password,
   });
+
+  // Check if it's a new user (identities array is not empty)
+  const isNewUser = signUpData?.user && signUpData.user.identities && signUpData.user.identities.length > 0;
+
+  if (!signUpError && isNewUser) {
+    return jsonOk({
+      user: { id: signUpData.user!.id, email: signUpData.user!.email },
+      isNewUser: true,
+      requiresConfirmation: !signUpData.session,
+    });
+  }
+
+  // If signUp failed or user already existed (empty identities), return unauthorized (invalid credentials)
+  return jsonError("unauthorized", "Invalid credentials.", 401);
 }
