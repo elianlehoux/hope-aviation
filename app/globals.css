@@ -2,7 +2,8 @@
 
 @theme {
   --font-sans: var(--font-inter);
-  
+  --font-mono: var(--font-mono);
+
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   
@@ -44,6 +45,52 @@
   
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  /* Landing hero: flight-path arc draw + waypoint pulse + gentle rise-in. */
+  --animate-draw-path: draw-path 2.4s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  --animate-waypoint: waypoint 2.4s ease-out forwards;
+  --animate-rise: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-radar: radar 3.5s ease-out infinite;
+
+  @keyframes draw-path {
+    from {
+      stroke-dashoffset: var(--path-length, 1000);
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes waypoint {
+    0%,
+    60% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes radar {
+    0% {
+      opacity: 0.5;
+      transform: scale(0.6);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(2.4);
+    }
+  }
 
   @keyframes accordion-down {
     from {
@@ -99,5 +146,16 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Respect users who prefer reduced motion: no draw/rise/radar animation. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
   }
 }

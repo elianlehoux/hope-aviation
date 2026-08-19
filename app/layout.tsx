@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
@@ -25,6 +25,14 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+// Technical utility face for instrument-style data labels and eyebrows.
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-mono",
+  weight: ["400", "500", "600"],
+  display: "swap",
+  subsets: ["latin"],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,7 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.variable} ${plexMono.variable} ${inter.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
