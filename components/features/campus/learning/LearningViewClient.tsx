@@ -6,7 +6,7 @@ import { YouTubePlayer } from "@/components/features/campus/learning/YouTubePlay
 import { ResourceList } from "@/components/features/campus/learning/ResourceList";
 import { toggleLessonCompletion } from "@/actions/courses";
 import { toast } from "sonner";
-import { useCallback, useTransition } from "react";
+import { useTransition } from "react";
 import { getYoutubeId } from "@/lib/utils/youtube";
 import { ChevronLeft, ChevronRight, GraduationCap, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -100,7 +100,8 @@ export function LearningViewClient({
     }
   };
 
-  const handleAutoAdvance = useCallback(() => {
+  // Plain function: YouTubePlayer reads onEnded through a ref, so identity does not matter.
+  const handleAutoAdvance = () => {
     startTransition(async () => {
       await toggleLessonCompletion(course.id, activeClass.id, true);
       if (nextItem) {
@@ -110,7 +111,7 @@ export function LearningViewClient({
         toast.success(t("learning.courseCompleted"));
       }
     });
-  }, [course.id, activeClass.id, nextItem, t]);
+  };
 
   const isCompleted = activeClass.lesson_progress?.[0]?.is_completed;
 

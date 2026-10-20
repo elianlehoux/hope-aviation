@@ -73,11 +73,11 @@ To maintain maximum order, any new code must be placed within its designated dir
 
 ## 10. UI & Design System
 
-The design system is documented in **`DESIGN.md`** (single source of truth). It combines the original custom Hope identity (logo, Hope Navy `#00263e`, Hope Blue `#1749ff`, Hope Amber `#ffaa00`, photography-led, alternating color bands) with a structural layer adapted from the Meta Store system (8px grid, pill buttons, radii, elevation, form states).
+The design system is documented in **`DESIGN.md`** (single source of truth). It combines the original custom Hope identity (logo, Hope Navy `#00263e`, Hope Amber `#ffaa00`, Hope Blue `#1749ff`, warm paper surfaces, photography-led, alternating color bands) with a structural layer adapted from the Meta Store system (8px grid, pill buttons, radii, elevation, form states).
 
 - **CRITICAL - REUSE CUSTOM COMPONENTS**: Never recreate base UI elements. Always use the versions in `components/ui/` and `components/shared/` (e.g., `Button`, `Badge`, `Navbar`, `Table`, `Modal`, `Title`).
-- **Use tokens, not hex**: colors come from `app/globals.css` (`primary`, `accent`, `accent-hover`, `highlight`, `ink`, `success`, `info`, …). Never hardcode `bg-[#1749ff]`-style values.
-- **Blue is for doing, amber is for hoping**: Hope Blue marks actions (buttons, links, focus, progress); Hope Amber marks emotional highlights (one word in a headline, achievements, section bands).
-- **Typography**: Montserrat. Light (300) and large for editorial landing moments; semibold/bold with `tracking-tight` for the campus UI. Headers use the `Title` component.
+- **Use tokens, not hex**: colors come from `app/globals.css` (`primary`, `brand-orange`/`highlight`, `accent`, `paper`, `ink`, `success`, `info`, …). Never hardcode `bg-[#1749ff]`-style values.
+- **Amber is the one warm accent**: primary CTAs (amber pill, navy text) and emotional highlights. Hope Blue stays structural (focus, progress, logo tile).
+- **Typography**: Bricolage Grotesque (`font-display`) for headlines, Instrument Sans (`font-sans`) for body/UI, IBM Plex Mono (`font-mono`) only for real data labels. Headers use the `Title` component.
 - **Tone**: honest and human. No cockpit/dark-tech aesthetics, no fake live counters.
 - **Reference**: `/componentsdev` shows the current implementation of every component.

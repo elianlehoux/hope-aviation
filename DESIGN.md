@@ -48,18 +48,21 @@ Photography is the protagonist: small aircraft in real landscapes (jungle, delta
 | Token | Hex | Tailwind | Role |
 |-------|-----|----------|------|
 | Hope Navy | `#00263E` | `primary` | Main text on light, headings, primary dark UI surfaces, scrims |
-| Hope Blue | `#1749FF` | `accent` | Brand color and **the action color**: primary buttons, links, focus rings, active nav, progress, blue section bands |
+| Hope Blue | `#1749FF` | `accent` | Brand color: logo tile, focus rings, progress, info states, blue section bands |
 | Hope Blue Hover | `#1541E6` | `accent-hover` | Hover on blue buttons |
 | Hope Blue Pressed | `#1238C7` | `accent-pressed` | Pressed / active state |
-| Hope Amber | `#FFAA00` | `highlight` | "Hope" color: the highlighted word in headlines, amber section bands, contour lines, badges for achievements/certificates |
+| Hope Amber | `#FFAA00` | `highlight` / `brand-orange` | "Hope" color and **primary CTA**: main buttons (navy text), the highlighted word in headlines, amber bands, contour lines, achievements |
 | Ink | `#0B0F15` | `ink` | Deep dark sections (financial / footer bands), immersive photo sections |
-| White | `#FFFFFF` | `background` | Page canvas, cards |
+| Paper | `#F7F4EE` | `paper` | Warm editorial canvas for light sections and the campus shell |
+| Paper Deep | `#EFE9DF` | `paper-deep` | Hover / secondary warm surface |
+| White | `#FFFFFF` | `background` | Cards and panels on paper |
 
 Usage rules:
 
-- **Blue is for doing, amber is for hoping.** Blue marks what you can click; amber marks what matters emotionally (one word in a headline, a milestone, a section band). Amber is never used for a primary button's background in the campus UI.
-- On the landing, use amber as the highlight and keep blue mostly for CTAs, the logo tile and one blue band (e.g. Education / Campus). Do not paint large areas blue *and* amber in the same viewport.
-- Amber text on white fails contrast for body copy; use it only for display sizes (≥ 28px) or on navy/ink/blue backgrounds.
+- **Amber is the one warm accent.** It carries the primary CTA (amber pill, navy text) and the emotional highlight (one word in a headline, a milestone, a section band).
+- **Blue is structural, not decorative**: focus rings, progress, links inside dense UI, the logo tile, at most one blue band on the landing. Do not paint large areas blue *and* amber in the same viewport.
+- Navy carries text and dark bands; paper and white carry light sections.
+- Amber text on white/paper fails contrast for body copy; use it only at display sizes (≥ 28px) or on navy/ink/blue backgrounds. Amber *backgrounds* always take navy text.
 
 ### UI neutrals (structural layer)
 
@@ -86,25 +89,28 @@ Always use the Tailwind tokens (`bg-accent`, `text-primary`, `bg-highlight/10`�
 
 ## 3. Typography
 
-**Family:** Montserrat (loaded via `next/font/google` as `--font-montserrat`, exposed as `font-sans`). It matches the 2026 deck headings and the original identity. Fallbacks: Helvetica, Arial, sans-serif.
+Loaded in `app/layout.tsx` with `next/font/google`:
 
-Two voices from the same family:
+| Face | Token | Use |
+|------|-------|-----|
+| **Bricolage Grotesque** | `font-display` | Headlines, display, section titles — warm, characterful editorial grotesque |
+| **Instrument Sans** | `font-sans` (default) | Body copy and all UI |
+| **IBM Plex Mono** | `font-mono` | Rare genuine data labels (coordinates, codes). Never as decoration on every section |
 
-- **Editorial (landing, heroes, section titles):** large and *light* — weight 300 at display sizes, as in the brochure ("Who we are?", "Financial Overview"). Highlight one word in amber.
-- **Interface (campus, forms, tables):** compact and confident — weight 600–700 with `tracking-tight`.
+The original deck uses Montserrat; Bricolage replaces it as display because it reads warmer at large sizes while keeping the geometric feel.
 
 | Role | Size | Weight | Line height | Notes |
 |------|------|--------|-------------|-------|
-| Display 1 | 64px (→48→36) | 300 | 1.1 | Landing hero only |
-| Display 2 | 48px (→36) | 300 | 1.15 | Section heroes |
-| Heading 1 | 32–36px | 700 | 1.2 | Page titles in campus (`Title` component) |
+| Display 1 | 64px (→48→36) | 600 | 1.05 | Landing hero, `font-display`, tight tracking |
+| Display 2 | 48px (→36) | 600 | 1.1 | Section heroes |
+| Heading 1 | 32–36px | 600 | 1.2 | Page titles in campus (`Title`) |
 | Heading 2 | 24–28px | 600 | 1.25 | Section titles |
-| Heading 3 | 18px | 700 | 1.4 | Card titles |
-| Body | 16–18px | 400 | 1.5 | Paragraphs |
-| UI label | 14px | 500 | 1.43 | Nav, buttons, form labels |
+| Heading 3 | 18px | 600 | 1.4 | Card titles |
+| Body | 16–18px | 400 | 1.55 | Paragraphs |
+| UI label | 14px | 500–600 | 1.43 | Nav, buttons, form labels |
 | Caption | 12–13px | 400–500 | 1.33 | Metadata, legal |
 
-Rules: never use weight 300 below 28px; keep paragraphs to 2–4 lines on the landing; campus copy can be longer but stays within `max-w-2xl` per text column.
+Rules: one highlighted word in amber per headline at most; keep landing paragraphs to 2–4 lines; campus text columns stay within `max-w-2xl`.
 
 ---
 
@@ -114,19 +120,19 @@ All base components live in `components/ui/` and `components/shared/`. Reuse the
 
 ### Buttons (`components/ui/button.tsx`)
 
-- **Primary:** pill (`rounded-full`), `bg-accent`, white text, `hover:bg-accent-hover`, `active:bg-accent-pressed active:scale-[0.98]`.
-- **Secondary:** pill, `bg-secondary text-primary`, hover darkens slightly.
-- **Outline:** pill, 1px `border-border`, transparent background.
-- **Ghost / link:** no background, `text-accent`.
+- **Primary (default):** pill (`rounded-full`), `bg-brand-orange`, navy `text-primary`, `font-semibold`, `hover:bg-brand-orange/90`, `active:scale-[0.98]`.
+- **Outline:** pill, `border-primary/15`, transparent, navy text, `hover:bg-paper`.
+- **Secondary:** pill, `bg-secondary text-primary`.
+- **Ghost:** no background, `text-primary/70`, `hover:bg-paper`.
+- **Link:** navy text, underline on hover.
 - **On dark/photo:** white pill with navy text, or outline white.
 - **Destructive:** `bg-destructive` white text.
-- Disabled: `bg-[#DEE3E9] text-[#8595A4]`, no hover.
-- Focus: `ring-[3px] ring-accent/20`. Min height 40px (44px on touch).
+- Disabled: `bg-[#DEE3E9] text-[#8595A4]`, no hover. Focus: `ring-[3px] ring-ring` (Hope Blue). Min height 40px (44px on touch).
 
 ### Cards & containers
 
 - Radius 20px (`rounded-[20px]`), 24px for feature/photo cards.
-- White background with 1px `border-border/60`, or `bg-secondary` flat.
+- White cards on a `bg-paper` canvas with 1px `border-primary/10`, or flat `bg-paper-deep`.
 - Elevation only on hover or overlays (see §6). No shadows inside dark sections.
 
 ### Inputs & forms
@@ -142,7 +148,7 @@ Pill, small (12px/600). Variants map to tokens: `accent/10 + text-accent` (info)
 ### Navigation
 
 - Landing navbar: transparent over the hero photo with the white logo; turns into `bg-white/80 backdrop-blur-xl` with the black logo after scroll. CTA is a blue pill.
-- Campus: left sidebar (`CampusSidebar`) on white with `border-r`, active item `bg-accent/10 text-accent`; mobile uses `CampusMobileNav`.
+- Campus: paper shell with a left aside (navigation filtered by role) and a header bar; mobile uses `CampusMobileNav`. In dev, `CAMPUS_PREVIEW_AUTH=1` enables a role preview switcher without signing in.
 
 ### Progress & learning
 
@@ -189,7 +195,7 @@ Mostly flat — separation comes from color bands and borders.
 **Do**
 
 - Lead with real photography of aircraft, places and people.
-- Use Hope Blue for every primary action and Hope Amber for the emotional highlight.
+- Use Hope Amber for the primary CTA and the emotional highlight; keep blue structural (focus, progress, logo tile).
 - Alternate section bands (white / amber / photo / blue / ink) on the landing.
 - Keep the honest tone: "examples", "in construction", no fake counters or "LIVE" badges.
 - Write every UI string through the i18n system (`es` / `en`).
@@ -197,7 +203,7 @@ Mostly flat — separation comes from color bands and borders.
 **Don't**
 
 - Don't use Meta Blue `#0064E0` or any other blue — the only blue is `#1749FF`.
-- Don't use amber as a button background in the campus, or amber body text on white.
+- Don't put navy-less text on amber, or amber body text on white/paper.
 - Don't recreate cockpit / instrument / dark-tech aesthetics.
 - Don't put text on photography without a scrim.
 - Don't hardcode hex colors in components — use the tokens in `app/globals.css`.

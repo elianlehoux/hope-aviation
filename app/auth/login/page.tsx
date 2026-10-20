@@ -107,7 +107,7 @@ function LoginForm() {
 
       <form onSubmit={handleEmailLogin} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="email" className="text-xs font-semibold text-[#65676B] pl-1">
+          <Label htmlFor="email" className="text-xs font-semibold text-muted-foreground pl-1">
             {t("auth.email")}
           </Label>
           <div className="relative group">
@@ -120,7 +120,7 @@ function LoginForm() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="pl-11 rounded-[8px] border-[#CED0D4] text-primary focus-visible:border-accent focus-visible:ring-accent/20"
+              className="pl-11 rounded-[8px] border-border text-primary focus-visible:border-accent focus-visible:ring-accent/20"
               disabled={loading || googleLoading}
               placeholder="name@example.com"
             />
@@ -128,7 +128,7 @@ function LoginForm() {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="password" className="text-xs font-semibold text-[#65676B] pl-1">
+          <Label htmlFor="password" className="text-xs font-semibold text-muted-foreground pl-1">
             {t("auth.password")}
           </Label>
           <div className="relative group">
@@ -141,7 +141,7 @@ function LoginForm() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="pl-11 rounded-[8px] border-[#CED0D4] text-primary focus-visible:border-accent focus-visible:ring-accent/20"
+              className="pl-11 rounded-[8px] border-border text-primary focus-visible:border-accent focus-visible:ring-accent/20"
               disabled={loading || googleLoading}
               placeholder="••••••••"
             />

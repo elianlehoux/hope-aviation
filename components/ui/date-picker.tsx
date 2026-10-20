@@ -32,8 +32,8 @@ export function DatePicker({
         <Button
           variant="outline"
           className={cn(
-            "flex h-11 w-full items-center justify-start rounded-[8px] border border-[#CED0D4] bg-white px-4 text-left font-normal text-primary transition-all duration-200 outline-hidden hover:border-[#909396] hover:bg-white focus-visible:outline-hidden focus-visible:border-accent focus-visible:ring-[3px] focus-visible:ring-accent/20",
-            !date && "text-[#65676B]",
+            "flex h-11 w-full items-center justify-start rounded-[8px] border border-border bg-white px-4 text-left font-normal text-primary transition-all duration-200 outline-hidden hover:border-[#909396] hover:bg-white focus-visible:outline-hidden focus-visible:border-accent focus-visible:ring-[3px] focus-visible:ring-accent/20",
+            !date && "text-muted-foreground",
             className
           )}
         >

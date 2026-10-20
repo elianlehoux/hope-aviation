@@ -11,10 +11,10 @@ const badgeVariants = cva(
       variant: {
         default: "bg-accent text-white",
         secondary: "bg-[rgba(23,73,255,0.15)] text-accent border border-accent/20",
-        destructive: "bg-[rgba(255,123,145,0.15)] text-[#E41E3F] border border-[#E41E3F]/20",
+        destructive: "bg-[rgba(255,123,145,0.15)] text-destructive border border-destructive/20",
         success: "bg-[rgba(36,228,0,0.15)] text-success border border-success/20",
         warning: "bg-[rgba(255,170,0,0.15)] text-highlight border border-highlight/20",
-        outline: "border-[#CED0D4] text-primary",
+        outline: "border-border text-primary",
         ghost: "hover:bg-slate-100 hover:text-accent",
         link: "text-accent underline-offset-4 hover:underline",
       },

@@ -4,7 +4,11 @@
     {
       "name": "hope-dev",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev", "--port", "3007"],
+      "runtimeArgs": [
+        "dev",
+        "--port",
+        "3007"
+      ],
       "port": 3007
     }
   ]
