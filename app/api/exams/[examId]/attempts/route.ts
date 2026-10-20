@@ -4,6 +4,7 @@ import { jsonError, jsonOk } from "@/lib/api/json";
 import { parseUuidParam } from "@/lib/api/params";
 import { responseFromPostgrestError } from "@/lib/api/supabase-errors";
 import { examSubmitSchema } from "@/lib/validation/exams";
+import { hasEnrollmentInCourse } from "@/lib/api/guards";
 
 type RouteContext = { params: Promise<{ examId: string }> };
 
@@ -101,7 +102,7 @@ export async function POST(request: Request, context: RouteContext) {
 
   const { data: exam, error: examErr } = await supabase
     .from("exams")
-    .select("id, passing_score, max_attempts")
+    .select("id, course_id, passing_score, max_attempts")
     .eq("id", examId)
     .maybeSingle();
 
@@ -111,6 +112,11 @@ export async function POST(request: Request, context: RouteContext) {
 
   if (!exam) {
     return jsonError("not_found", "Exam not found.", 404);
+  }
+
+  const enrolled = await hasEnrollmentInCourse(supabase, session.user.id, exam.course_id);
+  if (!enrolled) {
+    return jsonError("unauthorized", "Not enrolled in this course.", 403);
   }
 
   const { data: questions, error: qErr } = await supabase
@@ -128,16 +134,6 @@ export async function POST(request: Request, context: RouteContext) {
   }
 
   const answerKeys = new Set(Object.keys(answers));
-  for (const q of list) {
-    if (!answerKeys.has(q.id)) {
-      return jsonError(
-        "validation_error",
-        "Answer required for every question.",
-        400,
-      );
-    }
-  }
-
   for (const k of answerKeys) {
     if (!list.some((q) => q.id === k)) {
       return jsonError("validation_error", "Unknown question id in answers.", 400);
@@ -154,14 +150,7 @@ export async function POST(request: Request, context: RouteContext) {
     const selectedId = answers[q.id];
     const opts = q.options as { id: string; is_correct: boolean }[] | null;
     const selected = opts?.find((o) => o.id === selectedId);
-    if (!selected) {
-      return jsonError(
-        "validation_error",
-        "Each answer must match an option for that question.",
-        400,
-      );
-    }
-    if (selected.is_correct) {
+    if (selected?.is_correct) {
       earnedPoints += pts;
     }
   }

@@ -6,7 +6,8 @@ import { YouTubePlayer } from "@/components/features/campus/learning/YouTubePlay
 import { ResourceList } from "@/components/features/campus/learning/ResourceList";
 import { toggleLessonCompletion } from "@/actions/courses";
 import { toast } from "sonner";
-import { useTransition } from "react";
+import { useCallback, useTransition } from "react";
+import { getYoutubeId } from "@/lib/utils/youtube";
 import { ChevronLeft, ChevronRight, GraduationCap, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -99,12 +100,9 @@ export function LearningViewClient({
     }
   };
 
-  const handleAutoAdvance = () => {
+  const handleAutoAdvance = useCallback(() => {
     startTransition(async () => {
-      // Mark current as completed
       await toggleLessonCompletion(course.id, activeClass.id, true);
-      
-      // Auto-advance if there's a next item
       if (nextItem) {
         toast.info(t("learning.lessonCompleted"), { duration: 3000 });
         handleNext();
@@ -112,29 +110,36 @@ export function LearningViewClient({
         toast.success(t("learning.courseCompleted"));
       }
     });
-  };
+  }, [course.id, activeClass.id, nextItem, t]);
 
   const isCompleted = activeClass.lesson_progress?.[0]?.is_completed;
 
   return (
-    <div className="max-w-[1600px] mx-auto animate-in fade-in duration-700">
+    <div className="mx-auto max-w-6xl">
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
         {/* Main Content Area */}
         <div className="xl:col-span-8 space-y-8">
            {/* Mini Title / Header Section */}
            <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-             <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-primary">
+             <h1 className="font-display text-2xl font-bold tracking-tight text-primary md:text-3xl">
                {classTitle}
              </h1>
            </div>
 
 
 
-           {/* Video Player */}
-           <YouTubePlayer 
-              videoId={activeClass.video_url || ""} 
-              onEnded={handleAutoAdvance}
-           />
+           {getYoutubeId(activeClass.video_url) ? (
+             <YouTubePlayer
+               videoId={activeClass.video_url}
+               onEnded={handleAutoAdvance}
+             />
+           ) : (
+             <div className="flex aspect-video items-center justify-center rounded-2xl border border-primary/10 bg-primary text-white">
+               <p className="max-w-sm px-6 text-center text-sm text-white/70">
+                 Esta clase no tiene video. Leé la descripción y los recursos, y marcá como completada cuando termines.
+               </p>
+             </div>
+           )}
 
            {/* Resources & Info Wrap - Vertical Stack */}
            <div className="flex flex-col gap-12 pt-8">
@@ -148,7 +153,7 @@ export function LearningViewClient({
                  <div className="flex items-center px-1">
                     <h3 className="text-lg font-bold text-primary tracking-tight">{t("learning.aboutThisLesson")}</h3>
                  </div>
-                 <p className="text-sm text-slate-500 leading-relaxed bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+                 <p className="rounded-2xl border border-primary/10 bg-white p-6 text-sm leading-relaxed text-primary/70">
                     {typeof activeClass.description === "string" 
                        ? activeClass.description 
                        : (activeClass.description?.[lang] || t("learning.noDescription"))}

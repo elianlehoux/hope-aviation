@@ -80,8 +80,8 @@ export async function POST(request: Request, context: RouteContext) {
       subject_id: subjectId,
       title: p.title,
       description: p.description ?? null,
-      video_url: p.video_url ?? null,
-      resource_url: p.resource_url ?? null,
+      video_url: p.video_url?.trim() || null,
+      resource_url: p.resource_url?.trim() || null,
       duration_minutes: p.duration_minutes ?? null,
       order_index: p.order_index ?? null,
     })

@@ -47,7 +47,7 @@ export function CampusMobileNav({ navLinks }: { navLinks: NavLink[] }) {
         size="icon"
         onClick={() => setIsOpen(true)}
         aria-label="Open menu"
-        className="text-muted-foreground hover:bg-accent/10 hover:text-accent mr-3"
+        className="mr-2 text-primary/70 hover:bg-paper hover:text-primary"
       >
         <Menu className="size-5" />
       </Button>
@@ -62,9 +62,9 @@ export function CampusMobileNav({ navLinks }: { navLinks: NavLink[] }) {
 
       {/* Nav Panel */}
       <div
-        className={`fixed z-50 flex flex-col bg-white/98 supports-[backdrop-filter]:bg-white/90 backdrop-blur-2xl border-border shadow-2xl transition-transform duration-300 ease-in-out
-          max-lg:inset-x-0 max-lg:top-0 max-lg:w-full max-lg:max-h-[50vh] max-lg:border-b max-lg:rounded-b-2xl
-          lg:inset-y-0 lg:left-0 lg:w-80 lg:h-full lg:border-r
+        className={`fixed z-50 flex flex-col border-primary/10 bg-paper shadow-xl transition-transform duration-300 ease-in-out
+          max-lg:inset-x-0 max-lg:top-0 max-lg:w-full max-lg:max-h-[70vh] max-lg:border-b max-lg:rounded-b-2xl
+          lg:inset-y-0 lg:left-0 lg:h-full lg:w-80 lg:border-r
           ${
             isOpen
               ? "max-lg:translate-y-0 lg:translate-x-0"
@@ -72,12 +72,12 @@ export function CampusMobileNav({ navLinks }: { navLinks: NavLink[] }) {
           }
         `}
       >
-        <div className="flex items-center justify-between px-6 h-20 border-b border-border/50 shrink-0">
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-primary/10 px-6">
           <Link href="/" className="flex items-center" onClick={() => setIsOpen(false)}>
-            <img 
-              src="/logos/Hope Black.svg" 
-              alt="Hope Aviation" 
-              className="h-12 w-auto scale-[1.2] origin-left" 
+            <img
+              src="/logos/hope-logo.svg"
+              alt="Hope Aviation"
+              className="h-8 w-auto"
             />
           </Link>
           <Button
@@ -85,7 +85,7 @@ export function CampusMobileNav({ navLinks }: { navLinks: NavLink[] }) {
             size="icon"
             onClick={() => setIsOpen(false)}
             aria-label="Close menu"
-            className="hover:bg-accent/10 hover:text-accent text-slate-500"
+            className="text-primary/70 hover:bg-white hover:text-primary"
           >
             <X className="size-5" />
           </Button>
@@ -99,11 +99,11 @@ export function CampusMobileNav({ navLinks }: { navLinks: NavLink[] }) {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`block rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200
+                className={`block rounded-lg px-4 py-3 text-sm font-medium transition-colors
                   ${
                     isActive
-                      ? "bg-accent text-white shadow-lg shadow-accent/20 font-semibold"
-                      : "text-muted-foreground hover:bg-accent hover:text-white"
+                      ? "bg-primary text-white"
+                      : "text-primary/70 hover:bg-white hover:text-primary"
                   }
                 `}
                 onClick={() => setIsOpen(false)}
@@ -114,10 +114,10 @@ export function CampusMobileNav({ navLinks }: { navLinks: NavLink[] }) {
           })}
         </nav>
 
-        <div className="border-t border-border/50 px-6 py-5 shrink-0 bg-background/50">
+        <div className="shrink-0 border-t border-primary/10 px-6 py-4">
           <Link
             href="/"
-            className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+            className="text-xs font-medium text-primary/50 transition-colors hover:text-primary"
             onClick={() => setIsOpen(false)}
           >
             {t("campus.backToHome")}

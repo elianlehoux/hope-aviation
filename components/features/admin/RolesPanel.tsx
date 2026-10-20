@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "@/lib/i18n/context";
 
-import { Title } from "@/components/ui/title";
+import { CampusPageHeader } from "@/components/features/campus/ui/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -403,22 +403,17 @@ export default function RolesPanel() {
   }
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <Title level="h3" as="h1">
-            {t("adminDetail.rolesTitle")}
-          </Title>
-          <p className="mt-1 text-sm text-slate-500 font-medium">
-            {t("adminDetail.rolesSubtitle")}
-          </p>
-        </div>
-        <Button onClick={handleCreate} className="shrink-0 self-start sm:self-auto">
-          <Plus className="size-4" />
-          {t("adminDetail.newRole")}
-        </Button>
-      </div>
+    <div className="mx-auto max-w-6xl space-y-8">
+      <CampusPageHeader
+        title={t("adminDetail.rolesTitle")}
+        description={t("adminDetail.rolesSubtitle")}
+        actions={
+          <Button onClick={handleCreate}>
+            <Plus className="size-4" />
+            {t("adminDetail.newRole")}
+          </Button>
+        }
+      />
 
       {/* Content */}
       {loading ? (

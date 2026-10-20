@@ -96,25 +96,14 @@ export function ExamResults({ exam, lastAttempt, onRetry, isFinalExam, nextItemU
               {t("examResults.tryAgain")}
               </Button>
             ) : (isPassed && isFinalExam) ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Link href="/campus" className="block">
-                  <Button
-                    variant="outline"
-                    className="w-full h-16 rounded-2xl text-lg font-bold border-2 border-primary/10 text-primary hover:bg-slate-50 shadow-sm"
-                  >
-                    <ArrowLeft className="size-5 mr-2" />
-                    {t("examResults.backToCampus")}
-                  </Button>
-                </Link>
-                <Link href="/campus/certificates" className="block">
-                  <Button
-                    className="w-full h-16 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/95 shadow-xl shadow-primary/10 group"
-                  >
-                    {t("examResults.generateCertificate")}
-                    <ArrowRight className="size-5 ml-2 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                </Link>
-              </div>
+              <Link href="/campus" className="block">
+                <Button
+                  className="w-full h-16 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/95 shadow-xl shadow-primary/10 group"
+                >
+                  {t("examResults.backToCampus")}
+                  <ArrowRight className="size-5 ml-2 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
             ) : (
               <Link href={nextItemUrl || `/campus/courses/${exam.course_id}`} className="block">
                 <Button

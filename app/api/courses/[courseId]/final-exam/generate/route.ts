@@ -54,10 +54,17 @@ export async function GET(_request: Request, context: RouteContext) {
 
   if (examsErr) return responseFromPostgrestError(examsErr);
 
-  // Check if all module exams are passed
-  for (const exam of (exams ?? [])) {
-    const passed = exam.exam_attempts?.some((a: any) => a.passed);
-    if (!passed) {
+  const examsBySubject = new Map<string, typeof exams>();
+  for (const exam of exams ?? []) {
+    const list = examsBySubject.get(exam.subject_id) ?? [];
+    list.push(exam);
+    examsBySubject.set(exam.subject_id, list);
+  }
+  for (const subjectExams of examsBySubject.values()) {
+    const allPassed = (subjectExams ?? []).every((exam) =>
+      exam.exam_attempts?.some((a: { passed: boolean }) => a.passed),
+    );
+    if (!allPassed) {
       return jsonError("unauthorized", "All module exams must be passed first.", 403);
     }
   }

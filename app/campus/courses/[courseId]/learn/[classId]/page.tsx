@@ -69,8 +69,8 @@ export default async function LearnClassPage({
   // 4. Module-lock check: if active module index > 0, verify previous module's exam is passed
   if (activeSubjectIndex > 0) {
     const prevSubject = course.subjects[activeSubjectIndex - 1];
-    const prevExamPassed = !prevSubject.exams?.length || 
-      prevSubject.exams.some((e: any) => e.exam_attempts?.some((a: any) => a.passed));
+    const prevExamPassed = !prevSubject.exams?.length ||
+      prevSubject.exams.every((e: any) => e.exam_attempts?.some((a: any) => a.passed));
 
     if (!prevExamPassed) {
       // Redirect to the first class of the first unlocked module

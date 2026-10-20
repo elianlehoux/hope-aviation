@@ -15,6 +15,7 @@ import {
   FileText,
   Clock,
   Settings,
+  FileQuestion,
   Save,
   ArrowLeft,
   ChevronRight,
@@ -60,10 +61,11 @@ import {
 } from "@/components/shared/modal";
 import { PublishValidationModal } from "./PublishValidationModal";
 
-import type { Course, Subject, Class, TranslatedText, CourseStatus } from "@/types/database";
+import type { Course, Subject, Class, Exam, TranslatedText, CourseStatus } from "@/types/database";
+import { useRouter } from "next/navigation";
 
 // Define the shape that the `/tree` endpoint returns
-type SubjectWithClasses = Subject & { classes: Class[] };
+type SubjectWithClasses = Subject & { classes: Class[]; exams?: Exam[] };
 type CourseTree = {
   course: Course & { total_questions_count?: number };
   subjects: SubjectWithClasses[];
@@ -140,8 +142,28 @@ async function createClass(courseId: string, subjectId: string, payload: any): P
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
-  if (!res.ok) throw new Error("Error creating class");
+  if (!res.ok) {
+    const json = await res.json().catch(() => ({}));
+    throw new Error(json.error?.message || "Error creating class");
+  }
   return (await res.json()).data.class;
+}
+
+async function createModuleExam(courseId: string, subjectId: string): Promise<Exam> {
+  const res = await fetch(`/api/courses/${courseId}/subjects/${subjectId}/exams`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      title: { es: "Examen del módulo", en: "Module exam" },
+      passing_score: 70,
+      max_attempts: 1,
+    }),
+  });
+  if (!res.ok) {
+    const json = await res.json().catch(() => ({}));
+    throw new Error(json.error?.message || "Error creating exam");
+  }
+  return (await res.json()).data.exam;
 }
 
 async function updateClass(courseId: string, subjectId: string, classId: string, payload: any): Promise<Class> {
@@ -205,12 +227,14 @@ function CourseConfigModal({ courseId, course, open, onOpenChange, onSaved }: Co
   const { t } = useTranslation();
   const [questionCount, setQuestionCount] = React.useState("");
   const [timeLimit, setTimeLimit] = React.useState("");
+  const [passingScore, setPassingScore] = React.useState("70");
   const [saving, setSaving] = React.useState(false);
 
   React.useEffect(() => {
     if (open) {
       setQuestionCount(course?.final_exam_question_count?.toString() ?? "");
       setTimeLimit(course?.final_exam_time_limit_minutes?.toString() ?? "");
+      setPassingScore(course?.final_exam_passing_score?.toString() ?? "70");
     }
   }, [course, open]);
 
@@ -221,6 +245,7 @@ function CourseConfigModal({ courseId, course, open, onOpenChange, onSaved }: Co
       const payload = {
         final_exam_question_count: questionCount !== "" ? parseInt(questionCount, 10) : null,
         final_exam_time_limit_minutes: timeLimit !== "" ? parseInt(timeLimit, 10) : null,
+        final_exam_passing_score: passingScore !== "" ? parseInt(passingScore, 10) : 70,
       };
 
       await updateCourseConfig(courseId, payload);
@@ -264,6 +289,18 @@ function CourseConfigModal({ courseId, course, open, onOpenChange, onSaved }: Co
                 placeholder="Ej. 60"
                 value={timeLimit}
                 onChange={(e) => setTimeLimit(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="cfg-pass">Nota de aprobación (%)</Label>
+              <Input
+                id="cfg-pass"
+                type="number"
+                min={1}
+                max={100}
+                placeholder="70"
+                value={passingScore}
+                onChange={(e) => setPassingScore(e.target.value)}
               />
             </div>
           </div>
@@ -567,8 +604,8 @@ function ClassFormModal({ courseId, subjectId, cls, open, onOpenChange, onSaved 
                 <Label htmlFor="cls-video">{t("adminDetail.videoUrl")}</Label>
                 <Input
                   id="cls-video"
-                  type="url"
-                  placeholder={t("adminDetail.videoPlaceholder")}
+                  type="text"
+                  placeholder="YouTube URL or video ID"
                   value={videoUrl}
                   onChange={(e) => setVideoUrl(e.target.value)}
                 />
@@ -679,6 +716,67 @@ function DeleteConfirmationModal({ courseId, item, open, onOpenChange, onDeleted
   );
 }
 
+
+function ModuleExamRow({
+  courseId,
+  subjectId,
+  exams,
+  lang,
+}: {
+  courseId: string;
+  subjectId: string;
+  exams: Exam[];
+  lang: string;
+}) {
+  const router = useRouter();
+  const [creating, setCreating] = React.useState(false);
+
+  async function handleCreate() {
+    setCreating(true);
+    try {
+      const exam = await createModuleExam(courseId, subjectId);
+      router.push(`/campus/admin/exams/${exam.id}`);
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Error creating exam");
+      setCreating(false);
+    }
+  }
+
+  return (
+    <div className="mt-3 rounded-xl border border-dashed border-primary/15 bg-white px-4 py-3">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+          <FileQuestion className="size-4 text-brand-orange" />
+          Examen del módulo
+        </div>
+        {exams.length === 0 ? (
+          <Button variant="secondary" size="xs" onClick={handleCreate} disabled={creating}>
+            {creating ? <Loader2 className="size-3 animate-spin" /> : <Plus className="size-3" />}
+            Crear examen
+          </Button>
+        ) : null}
+      </div>
+      {exams.length > 0 ? (
+        <ul className="mt-2 space-y-1.5">
+          {exams.map((exam) => (
+            <li key={exam.id} className="flex items-center justify-between gap-2">
+              <span className="text-sm text-primary/80">
+                {getLocalizedText(exam.title, lang as "es" | "en")}
+              </span>
+              <Button asChild variant="ghost" size="xs">
+                <Link href={`/campus/admin/exams/${exam.id}`}>Editar</Link>
+              </Button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="mt-1 text-xs text-slate-500">
+          Cada módulo necesita un examen antes de publicar.
+        </p>
+      )}
+    </div>
+  );
+}
 
 // ─── Main Panel Component ──────────────────────────────────────────────────────
 
@@ -833,7 +931,10 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
         body: JSON.stringify({ status: "published" }),
       });
 
-      if (!res.ok) throw new Error(t("adminDetail.importError")); // Generic error if not specific one
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json.error?.message || t("adminDetail.importError"));
+      }
 
       toast.success(t("common.success")); 
       loadData();
@@ -877,7 +978,9 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
          
          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
              <div>
-                <Title level="h2">{getLocalizedText(tree.course.title, lang)}</Title>
+                <Title level="h2" className="font-display text-3xl font-bold tracking-tight">
+                  {getLocalizedText(tree.course.title, lang)}
+                </Title>
                 <div className="flex items-center mt-2 text-sm text-slate-500 gap-3">
                    <StatusBadge status={tree.course.status} />
                    <span>{t("adminDetail.columnJoined")}: {formatDate(tree.course.created_at, lang === "es" ? "es-ES" : "en-US")}</span>
@@ -1012,12 +1115,20 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                               <AccordionContent className="pb-5 pt-2">
                                  <div className="pl-11 space-y-3">
                                    {sub.classes.length === 0 ? (
+                                     <>
                                      <div className="text-sm text-slate-400 font-medium py-3 px-4 border border-dashed rounded-xl flex items-center justify-between">
                                         <span>{t("adminDetail.noExamRecords").replace(t("adminDetail.examsTitle"), t("adminDetail.classTitle") + "es")}</span>
                                         <Button variant="secondary" size="xs" onClick={(e) => openNewClass(e, sub.id)}>
                                           <Plus className="size-3" /> {t("adminDetail.newClass")}
                                         </Button>
                                      </div>
+                                     <ModuleExamRow
+                                       courseId={courseId}
+                                       subjectId={sub.id}
+                                       exams={sub.exams ?? []}
+                                       lang={lang}
+                                     />
+                                     </>
                                    ) : (
                                      <Droppable droppableId={sub.id} type="CLASS">
                                        {(clsDroppable) => (
@@ -1098,6 +1209,12 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                                        )}
                                      </Droppable>
                                    )}
+                                   <ModuleExamRow
+                                     courseId={courseId}
+                                     subjectId={sub.id}
+                                     exams={sub.exams ?? []}
+                                     lang={lang}
+                                   />
                                  </div>
                               </AccordionContent>
                             </AccordionItem>

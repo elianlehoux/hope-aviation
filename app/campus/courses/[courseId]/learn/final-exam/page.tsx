@@ -44,7 +44,7 @@ export default async function FinalExamPage({
   // (We check this by looking at the exam attempts inside course data)
   const allModulesPassed = (course.subjects ?? []).every((s: any) => {
     if (!s.exams?.length) return true;
-    return s.exams.some((e: any) => e.exam_attempts?.some((a: any) => a.passed));
+    return s.exams.every((e: any) => e.exam_attempts?.some((a: any) => a.passed));
   });
 
   if (!allModulesPassed) {

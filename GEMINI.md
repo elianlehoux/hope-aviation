@@ -61,7 +61,7 @@ To maintain maximum order, any new code must be placed within its designated dir
 - **`supabase/`**: SQL migrations and database documentation (`migrations/`, `README.md`).
 
 ## 8. Project Context
-**Hope Aviation** is a virtual campus platform for aviation training and education. The root `/` serves a public-facing landing page. The `/campus` route group is the authenticated product area where students access courses, schedules, grades, resources, and community features. All campus-related components should live under `components/features/campus/` and campus-specific types under `types/`.
+**Hope Aviation is not a flight school.** It is a missionary-aviation organization with a virtual campus. It teaches the extra skills a ministry needs (cross-cultural work, first aid, remote operations, emotional support, fundraising, spiritual grounding) and connects prepared volunteers with field projects. The root `/` is the public site. `/campus` is the product area for courses, exams, and staff tools. All campus-related components should live under `components/features/campus/` and campus-specific types under `types/`.
 
 ## 9. Database & backend (Supabase)
 

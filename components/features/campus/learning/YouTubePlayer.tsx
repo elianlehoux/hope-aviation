@@ -23,6 +23,8 @@ export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerPro
   const [error, setError] = useState<string | null>(null);
 
   const videoId = getYoutubeId(rawVideoId);
+  const onEndedRef = useRef(onEnded);
+  onEndedRef.current = onEnded;
 
   useEffect(() => {
     if (!videoId) {
@@ -56,8 +58,8 @@ export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerPro
               if (isMounted) setIsLoading(false);
             },
             onStateChange: (event: any) => {
-              if (event.data === 0 && onEnded) {
-                onEnded();
+              if (event.data === 0) {
+                onEndedRef.current?.();
               }
             },
             onError: (e: any) => {
@@ -99,10 +101,10 @@ export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerPro
         playerRef.current = null;
       }
     };
-  }, [videoId, onEnded]);
+  }, [videoId]);
 
   return (
-    <div className="relative w-full aspect-video bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-700 border border-slate-800">
+    <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-primary/10 bg-primary">
       {isLoading && !error && (
         <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm z-10 text-white">
           <Loader2 className="size-10 animate-spin text-primary" />

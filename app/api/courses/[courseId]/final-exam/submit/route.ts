@@ -33,16 +33,11 @@ export async function POST(request: Request, context: RouteContext) {
   }
 
   const { answers } = parsed.data;
-  const questionIds = Object.keys(answers);
-
-  if (questionIds.length === 0) {
-    return jsonError("validation_error", "No answers provided.", 400);
-  }
 
   // 1. Fetch course to get passing score
   const { data: course, error: courseErr } = await supabase
     .from("courses")
-    .select("final_exam_passing_score")
+    .select("final_exam_passing_score, final_exam_question_count")
     .eq("id", courseId)
     .maybeSingle();
 
@@ -62,32 +57,41 @@ export async function POST(request: Request, context: RouteContext) {
     return jsonError("unauthorized", "Not enrolled in this course.", 403);
   }
 
-  // 3. Score the exam
+  const { data: courseExams, error: examsErr } = await supabase
+    .from("exams")
+    .select("id")
+    .eq("course_id", courseId);
+  if (examsErr) return responseFromPostgrestError(examsErr);
+
+  const examIds = (courseExams ?? []).map((e) => e.id);
+  if (examIds.length === 0) {
+    return jsonError("validation_error", "This course has no module exams.", 400);
+  }
+
   const { data: questions, error: qErr } = await supabase
     .from("questions")
     .select("id, points, options(id, is_correct)")
-    .in("id", questionIds);
-
+    .in("exam_id", examIds);
   if (qErr) return responseFromPostgrestError(qErr);
-  
-  const list = questions ?? [];
-  let totalPoints = 0;
-  let earnedPoints = 0;
 
-  for (const q of list) {
-    const pts = Number(q.points);
-    totalPoints += pts;
-
-    const selectedId = answers[q.id];
-    const opts = q.options as { id: string; is_correct: boolean }[] | null;
-    const selected = opts?.find((o) => o.id === selectedId);
-    
-    if (selected?.is_correct) {
-      earnedPoints += pts;
+  const courseQuestionIds = new Set((questions ?? []).map((q) => q.id));
+  for (const questionId of Object.keys(answers)) {
+    if (!courseQuestionIds.has(questionId)) {
+      return jsonError("validation_error", "Unknown question id in answers.", 400);
     }
   }
 
-  const score = totalPoints > 0 ? (earnedPoints / totalPoints) * 100 : 0;
+  const targetCount = Math.max(1, course.final_exam_question_count || Object.keys(answers).length);
+  let correct = 0;
+  for (const [questionId, optionId] of Object.entries(answers)) {
+    const question = (questions ?? []).find((q) => q.id === questionId);
+    const opts = question?.options as { id: string; is_correct: boolean }[] | null;
+    if (opts?.find((o) => o.id === optionId && o.is_correct)) {
+      correct += 1;
+    }
+  }
+
+  const score = (correct / targetCount) * 100;
   const passed = score >= course.final_exam_passing_score;
 
   // 4. Mark completed if passed

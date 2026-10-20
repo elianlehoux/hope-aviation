@@ -15,7 +15,7 @@ import {
   AlertCircle
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Title } from "@/components/ui/title";
+import { CampusPageHeader } from "@/components/features/campus/ui/page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -177,16 +177,11 @@ export function NewsletterAdminPanel() {
   };
 
   return (
-    <div className="space-y-10 max-w-5xl pb-20">
-      {/* Header */}
-      <div>
-        <Title level="h1" className="tracking-tight font-extrabold text-primary">
-          {t("newsletter.title")}
-        </Title>
-        <p className="text-slate-500 mt-2 text-base font-medium">
-          {t("newsletter.subtitle")}
-        </p>
-      </div>
+    <div className="mx-auto max-w-6xl space-y-8 pb-16">
+      <CampusPageHeader
+        title={t("newsletter.title")}
+        description={t("newsletter.subtitle")}
+      />
 
       {/* Metrics Dashboard */}
       {loadingStats ? (

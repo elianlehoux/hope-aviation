@@ -32,10 +32,13 @@ export const translations = {
   // ── Navbar (Public) ──
   navbar: {
     courses: { en: "Courses", es: "Cursos" },
-    about: { en: "About Us", es: "Nosotros" },
-    donate: { en: "Donate", es: "Donar" },
-    goToCampus: { en: "Go to Campus", es: "Ir al Campus" },
+    directory: { en: "Directory", es: "Directorio" },
+    about: { en: "About", es: "Nosotros" },
+    getInvolved: { en: "Get involved", es: "Participar" },
+    donate: { en: "Give", es: "Apoyar" },
+    goToCampus: { en: "Campus", es: "Campus" },
     signIn: { en: "Sign In", es: "Ingresar" },
+    start: { en: "Start", es: "Comenzar" },
     loading: { en: "Loading...", es: "Cargando..." },
   },
 
@@ -106,7 +109,7 @@ export const translations = {
     aboutMoreInfo: { en: "More Info", es: "Más Información" },
 
     // Footer
-    footerTagline: { en: "Transforming aeronautical education through technology and a passion for flight.", es: "Transformando la educación aeronáutica a través de la tecnología y la pasión por el vuelo." },
+    footerTagline: { en: "Learning to reach. Skills and projects for missionary aviation.", es: "Learning to Reach. Habilidades y proyectos para alcanzar donde no llega el camino." },
     footerFeatures: { en: "Features", es: "Características" },
     footerAbout: { en: "About Us", es: "Nosotros" },
     footerCampus: { en: "Campus", es: "Campus" },
@@ -300,13 +303,15 @@ export const translations = {
     users: { en: "Users", es: "Usuarios" },
     roles: { en: "Roles", es: "Roles" },
     courses: { en: "Courses", es: "Cursos" },
+    manageCourses: { en: "Manage courses", es: "Gestionar cursos" },
+    profile: { en: "Profile", es: "Perfil" },
     exams: { en: "Exams", es: "Exámenes" },
     newsletter: { en: "Newsletter", es: "Boletín Informativo" },
-    backToHome: { en: "← Back to Home", es: "← Volver al Inicio" },
+    backToHome: { en: "Back to Home", es: "Volver al inicio" },
 
     // Dashboard
     dashboardTitle: { en: "Campus", es: "Campus" },
-    dashboardSubtitle: { en: "Choose an area to manage your aviation journey.", es: "Elige un área para gestionar tu recorrido en la aviación." },
+    dashboardSubtitle: { en: "Continue preparing for the field, or open a course.", es: "Seguí preparándote para el campo, o abrí un curso." },
 
     // Dashboard areas
     areaStudents: { en: "Students", es: "Estudiantes" },
@@ -385,14 +390,14 @@ export const translations = {
   // ── Student Courses Page ──
   studentCourses: {
     dashboardLabel: { en: "Learning Dashboard", es: "Panel de Aprendizaje" },
-    myAcademy: { en: "My Academy", es: "Mi Academia" },
+    myAcademy: { en: "Campus", es: "Campus" },
     myAcademyDesc: {
-      en: "Manage your enrollments, explore new aviation horizons, and track your professional progress.",
-      es: "Gestiona tus inscripciones, explora nuevos horizontes en aviación y sigue tu progreso profesional.",
+      en: "Your courses, progress, and the skills the mission actually needs.",
+      es: "Tus cursos, tu progreso y las habilidades que la misión realmente necesita.",
     },
     continueLearning: { en: "Continue Learning", es: "Continuar Aprendiendo" },
     exploreCatalog: { en: "Explore Catalog", es: "Explorar Catálogo" },
-    catalogDesc: { en: "New courses available for your career specialisation.", es: "Nuevos cursos disponibles para tu especialización profesional." },
+    catalogDesc: { en: "Published courses you can join from the campus.", es: "Cursos publicados a los que podés sumarte desde el campus." },
     allLevels: { en: "All Levels", es: "Todos los Niveles" },
     newReleases: { en: "New Releases", es: "Nuevos Lanzamientos" },
     popular: { en: "Popular", es: "Popular" },

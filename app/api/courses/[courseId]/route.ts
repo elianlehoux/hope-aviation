@@ -63,6 +63,68 @@ export async function PATCH(request: Request, context: RouteContext) {
 
   const payload = parsed.data;
 
+  if (payload.status === "published") {
+    const { data: tree, error: treeErr } = await supabase
+      .from("subjects")
+      .select("id, classes(id), exams(id)")
+      .eq("course_id", courseId);
+
+    if (treeErr) return responseFromPostgrestError(treeErr);
+
+    const subjects = tree ?? [];
+    if (subjects.length === 0) {
+      return jsonError(
+        "validation_error",
+        "Publish requires at least one module.",
+        400,
+      );
+    }
+
+    const missingClasses = subjects.filter((s) => !s.classes?.length).length;
+    if (missingClasses > 0) {
+      return jsonError(
+        "validation_error",
+        "Every module needs at least one class before publish.",
+        400,
+      );
+    }
+
+    const missingExams = subjects.filter((s) => !s.exams?.length).length;
+    if (missingExams > 0) {
+      return jsonError(
+        "validation_error",
+        "Every module needs an exam before publish.",
+        400,
+      );
+    }
+
+    const examIds = subjects.flatMap((s) => (s.exams ?? []).map((e: { id: string }) => e.id));
+    const { count: questionCount, error: qErr } = await supabase
+      .from("questions")
+      .select("id", { count: "exact", head: true })
+      .in("exam_id", examIds);
+
+    if (qErr) return responseFromPostgrestError(qErr);
+
+    const { data: courseRow } = await supabase
+      .from("courses")
+      .select("final_exam_question_count")
+      .eq("id", courseId)
+      .maybeSingle();
+
+    const configured =
+      payload.final_exam_question_count ??
+      courseRow?.final_exam_question_count ??
+      0;
+    if (configured > 0 && (questionCount ?? 0) < configured) {
+      return jsonError(
+        "validation_error",
+        `The final exam needs ${configured} questions, but the course only has ${questionCount ?? 0}.`,
+        400,
+      );
+    }
+  }
+
   const { data, error } = await supabase
     .from("courses")
     .update({

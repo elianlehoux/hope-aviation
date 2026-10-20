@@ -20,7 +20,7 @@ import Link from "next/link";
 import { useTranslation } from "@/lib/i18n/context";
 import { getLocalizedText } from "@/lib/utils/i18n-helpers";
 import { toast } from "sonner";
-import { Title } from "@/components/ui/title";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -157,7 +157,9 @@ export default function UserAcademicDetail({ userId }: UserAcademicDetailProps) 
           </Button>
         </Link>
         <div>
-          <Title level="h3" as="h1">{t("adminDetail.studentProfile")}</Title>
+          <h1 className="font-display text-3xl font-bold tracking-tight text-primary">
+            {t("adminDetail.studentProfile")}
+          </h1>
           <p className="text-sm text-slate-500 font-medium">{t("adminDetail.studentProfileSubtitle")}</p>
         </div>
       </div>

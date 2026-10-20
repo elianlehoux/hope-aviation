@@ -76,7 +76,7 @@ export function Footer({ minimal = false }: FooterProps) {
             </h4>
             <div className="flex flex-col gap-3.5 font-semibold text-slate-400 text-sm">
               <Link
-                href="/#courses"
+                href="/#cursos"
                 className="hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block w-fit"
               >
                 <T k="navbar.courses" />
