@@ -123,7 +123,7 @@ export function CoursesGallery({ courses }: { courses: CourseData[] }) {
                       </div>
                       <Button
                         asChild
-                        className="w-full mt-6 bg-white text-[#00263E] hover:bg-slate-100 border-none font-bold py-5 rounded-full transition-all duration-300 text-sm hover:scale-[1.02] active:scale-[0.98]"
+                        className="w-full mt-6 bg-white text-primary hover:bg-slate-100 border-none font-bold py-5 rounded-full transition-all duration-300 text-sm hover:scale-[1.02] active:scale-[0.98]"
                       >
                         <Link href={`/campus/courses/${course.id}`} className="flex items-center justify-center gap-1">
                           <T k="enrollment.enrollNow" />

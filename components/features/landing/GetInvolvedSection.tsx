@@ -101,12 +101,12 @@ export function GetInvolvedSection() {
   return (
     <section
       id="get-involved"
-      className="w-full bg-[#00263E] py-32 relative overflow-hidden"
+      className="w-full bg-primary py-32 relative overflow-hidden"
     >
       {/* Ambient background effects */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/8 rounded-full blur-[160px] -mr-64 -mt-64" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#ffaa00]/6 rounded-full blur-[120px] -ml-48 -mb-48" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-highlight/6 rounded-full blur-[120px] -ml-48 -mb-48" />
       </div>
 
       <div className="mx-auto max-w-7xl px-6 relative z-10">

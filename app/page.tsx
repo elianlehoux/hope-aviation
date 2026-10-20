@@ -38,7 +38,7 @@ export default function LandingPage() {
 
       {/* ── Hero Section ── */}
       <div style={{ transformStyle: "preserve-3d" }}>
-        <section className="section-container relative flex h-screen min-h-fit w-full flex-col items-center justify-between overflow-hidden bg-[#0B0F15] px-0!">
+        <section className="section-container relative flex h-screen min-h-fit w-full flex-col items-center justify-between overflow-hidden bg-ink px-0!">
           {/* Background Image */}
           <picture className="pointer-events-none absolute inset-0 z-0">
             <Image
@@ -78,7 +78,7 @@ export default function LandingPage() {
       </div>
 
       {/* ── About Section ── */}
-      <section id="about" className="w-full py-32 px-6 bg-[#00263E] relative overflow-hidden border-b border-white/5">
+      <section id="about" className="w-full py-32 px-6 bg-primary relative overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 z-0 opacity-30">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(23,73,255,0.1),transparent_70%)]" />
         </div>

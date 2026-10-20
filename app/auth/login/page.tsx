@@ -98,7 +98,7 @@ function LoginForm() {
       </div>
 
       {/* Auto-signup Info Card in Dolly Baby Blue */}
-      <div className="flex items-start gap-3 p-4 bg-[#E8F3FF] border border-[#0064E0]/15 rounded-2xl text-xs leading-relaxed shadow-xs">
+      <div className="flex items-start gap-3 p-4 bg-info border border-accent/15 rounded-2xl text-xs leading-relaxed shadow-xs">
         <Sparkles className="size-4 text-accent shrink-0 mt-0.5" />
         <p className="text-slate-700 font-medium">
           {t("auth.noAccountNotice")}
@@ -120,7 +120,7 @@ function LoginForm() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="pl-11 rounded-[8px] border-[#CED0D4] text-[#00263e] focus-visible:border-accent focus-visible:ring-accent/20"
+              className="pl-11 rounded-[8px] border-[#CED0D4] text-primary focus-visible:border-accent focus-visible:ring-accent/20"
               disabled={loading || googleLoading}
               placeholder="name@example.com"
             />
@@ -141,7 +141,7 @@ function LoginForm() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="pl-11 rounded-[8px] border-[#CED0D4] text-[#00263e] focus-visible:border-accent focus-visible:ring-accent/20"
+              className="pl-11 rounded-[8px] border-[#CED0D4] text-primary focus-visible:border-accent focus-visible:ring-accent/20"
               disabled={loading || googleLoading}
               placeholder="••••••••"
             />
@@ -158,7 +158,7 @@ function LoginForm() {
         <Button
           type="submit"
           disabled={loading || googleLoading}
-          className="w-full mt-2 rounded-full h-11 font-bold text-white bg-accent hover:bg-[#1541e6] hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
+          className="w-full mt-2 rounded-full h-11 font-bold text-white bg-accent hover:bg-accent-hover hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
         >
           {loading ? (
             <>

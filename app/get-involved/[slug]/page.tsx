@@ -109,8 +109,8 @@ export default async function GetInvolvedPage({
           className="object-cover object-center opacity-30"
         />
         {/* Gradient scrims identical to About Us */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#00263E] via-transparent to-[#1C1E21]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#00263E]/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary via-transparent to-[#1C1E21]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent" />
       </div>
 
       <div className="flex flex-1 flex-col items-center justify-center px-6 py-32 sm:py-40 relative z-10">
@@ -139,7 +139,7 @@ export default async function GetInvolvedPage({
               </ul>
             </div>
 
-            <Button asChild size="lg" className="w-full h-16 rounded-full bg-white text-[#00263E] hover:bg-slate-100 font-bold text-[18px] transition-all duration-200 shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-[0_0_60px_rgba(255,255,255,0.2)]">
+            <Button asChild size="lg" className="w-full h-16 rounded-full bg-white text-primary hover:bg-slate-100 font-bold text-[18px] transition-all duration-200 shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-[0_0_60px_rgba(255,255,255,0.2)]">
               <a href="mailto:hope.aviation.uap@gmail.com" className="flex items-center justify-center gap-2">
                 <Mail className="size-6" />
                 <T k="landing.getInvolvedContact" />

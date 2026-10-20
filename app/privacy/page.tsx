@@ -23,8 +23,8 @@ export default function PrivacyPage() {
           priority
           className="object-cover object-center opacity-15"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#00263E] via-[#1C1E21] to-[#0B0F15]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#00263E]/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary via-[#1C1E21] to-ink" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/50 to-transparent" />
       </div>
 
       <div className="flex flex-1 flex-col items-center justify-center px-6 py-32 sm:py-40 relative z-10">

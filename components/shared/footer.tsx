@@ -18,7 +18,7 @@ interface FooterProps {
 export function Footer({ minimal = false }: FooterProps) {
   if (minimal) {
     return (
-      <footer className="w-full bg-[#0B0F15] border-t border-white/5 py-12 px-6">
+      <footer className="w-full bg-ink border-t border-white/5 py-12 px-6">
         <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 font-bold text-[10px] uppercase tracking-[0.25em] text-center md:text-left">
           <div className="flex items-center gap-1.5 justify-center md:justify-start">
             <CopyrightYear />
@@ -34,7 +34,7 @@ export function Footer({ minimal = false }: FooterProps) {
   }
 
   return (
-    <footer className="w-full bg-[#0B0F15] border-t border-white/5 pt-20 pb-12 px-6 md:px-8 lg:px-12 relative overflow-hidden">
+    <footer className="w-full bg-ink border-t border-white/5 pt-20 pb-12 px-6 md:px-8 lg:px-12 relative overflow-hidden">
       {/* Background ambient glow */}
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[radial-gradient(circle_at_bottom_right,rgba(23,73,255,0.04),transparent_70%)] pointer-events-none z-0" />
       

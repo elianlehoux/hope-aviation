@@ -74,7 +74,7 @@ export function CampusDashboardContent({
 
       {/* 2. Header & Welcome Greeting */}
       <div className="space-y-3">
-        <div className="flex items-center gap-3 text-[#ffaa00]">
+        <div className="flex items-center gap-3 text-highlight">
           <Sparkles className="size-6 animate-pulse" />
           <h4 className="text-sm font-bold uppercase tracking-widest opacity-70">
             {t("studentCourses.learningDashboard")}
@@ -108,7 +108,7 @@ export function CampusDashboardContent({
                 href="/campus/admin"
                 className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-2xl hover:shadow-md hover:scale-[1.01] transition-all"
               >
-                <div className="size-11 rounded-xl bg-[#E8F3FF] flex items-center justify-center text-accent shrink-0">
+                <div className="size-11 rounded-xl bg-info flex items-center justify-center text-accent shrink-0">
                   <Users className="size-5" />
                 </div>
                 <div>
@@ -119,7 +119,7 @@ export function CampusDashboardContent({
             )}
             {(roles.includes("instructor") || roles.includes("admin")) && (
               <Link
-                href="/campus/professors"
+                href="/campus/admin/courses"
                 className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-2xl hover:shadow-md hover:scale-[1.01] transition-all"
               >
                 <div className="size-11 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500 shrink-0">
@@ -150,7 +150,7 @@ export function CampusDashboardContent({
 
         {/* Avg Progress */}
         <div className="p-6 bg-white border border-slate-100 rounded-3xl shadow-2xs flex items-center gap-4 hover:shadow-md transition-all group duration-300">
-          <div className="size-12 rounded-2xl bg-[#ffaa00]/5 text-[#ffaa00] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
+          <div className="size-12 rounded-2xl bg-highlight/5 text-highlight flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
             <TrendingUp className="size-6" />
           </div>
           <div>
@@ -186,7 +186,7 @@ export function CampusDashboardContent({
       {activeEnrollments.length > 0 ? (
         <section className="space-y-6">
           <div className="flex items-center gap-3 pl-1">
-            <BookOpen className="size-6 text-[#ffaa00]" />
+            <BookOpen className="size-6 text-highlight" />
             <h2 className="text-2xl font-bold tracking-tight text-primary">
               {t("studentCourses.continueLearning")}
             </h2>

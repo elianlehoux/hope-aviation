@@ -16,11 +16,20 @@
   --color-primary-foreground: #ffffff;
   --color-secondary: #F1F4F7;
   --color-secondary-foreground: #00263e;
-  --color-accent: #1749ff; /* Hope Vibrant Blue */
+  --color-accent: #1749ff; /* Hope Blue: brand + action color */
   --color-accent-foreground: #ffffff;
-  --color-highlight: #ffaa00; /* Hope Aviation Orange */
+  --color-accent-hover: #1541e6;
+  --color-accent-pressed: #1238c7;
+  --color-highlight: #ffaa00; /* Hope Amber: emotional highlight */
   --color-brand-orange: #ffaa00;
-  
+  --color-ink: #0b0f15; /* Deep dark section bands */
+  --color-info: #e8f3ff;
+
+  --color-success: #007d1e;
+  --color-success-foreground: #ffffff;
+  --color-warning: #ffaa00;
+  --color-warning-foreground: #00263e;
+
   --color-muted: #F0F2F5;
   --color-muted-foreground: #65676B;
   

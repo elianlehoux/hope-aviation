@@ -109,35 +109,35 @@ export default function ComponentsDevPage() {
         <Section title="Actualized Brand Colors">
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <div className="space-y-2">
-              <div className="h-24 w-full rounded-lg bg-[#00263e] shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #00263e</div>
+              <div className="h-24 w-full rounded-lg bg-primary shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #00263e</div>
               <div>
-                <p className="font-semibold text-[#00263e]">Primary (Deep Blue)</p>
-                <p className="text-sm text-slate-500">bg-[#00263e] / #00263e</p>
+                <p className="font-semibold text-primary">Primary (Deep Blue)</p>
+                <p className="text-sm text-slate-500">bg-primary / #00263e</p>
               </div>
             </div>
             <div className="space-y-2">
-              <div className="h-24 w-full rounded-lg bg-[#ffffff] shadow-sm border border-slate-200 flex items-end p-2 text-xs text-[#00263e] italic">HEX #ffffff</div>
+              <div className="h-24 w-full rounded-lg bg-[#ffffff] shadow-sm border border-slate-200 flex items-end p-2 text-xs text-primary italic">HEX #ffffff</div>
               <div>
-                <p className="font-semibold text-[#00263e]">Secondary (White)</p>
+                <p className="font-semibold text-primary">Secondary (White)</p>
                 <p className="text-sm text-slate-500">bg-[#ffffff] / #ffffff</p>
               </div>
             </div>
             <div className="space-y-2">
-              <div className="h-24 w-full rounded-lg bg-[#1749ff] shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #1749ff</div>
+              <div className="h-24 w-full rounded-lg bg-accent shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #1749ff</div>
               <div>
-                <p className="font-semibold text-[#1749ff]">Accent (Vibrant Blue)</p>
-                <p className="text-sm text-slate-500">bg-[#1749ff] / #1749ff</p>
+                <p className="font-semibold text-accent">Accent (Vibrant Blue)</p>
+                <p className="text-sm text-slate-500">bg-accent / #1749ff</p>
               </div>
             </div>
             <div className="space-y-2">
-              <div className="h-24 w-full rounded-lg bg-[#ffaa00] shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #ffaa00</div>
+              <div className="h-24 w-full rounded-lg bg-highlight shadow-sm border border-slate-200 text-white flex items-end p-2 text-xs">HEX #ffaa00</div>
               <div>
-                <p className="font-semibold text-[#ffaa00]">Aviation Orange</p>
-                <p className="text-sm text-slate-500">bg-[#ffaa00] / #ffaa00</p>
+                <p className="font-semibold text-highlight">Aviation Orange</p>
+                <p className="text-sm text-slate-500">bg-highlight / #ffaa00</p>
               </div>
             </div>
-            <div className="space-y-2 text-[#00263e]">
-              <div className="h-24 w-full rounded-lg bg-[#00263e] shadow-sm border border-slate-200"></div>
+            <div className="space-y-2 text-primary">
+              <div className="h-24 w-full rounded-lg bg-primary shadow-sm border border-slate-200"></div>
               <div>
                 <p className="font-semibold">Current Text Color</p>
                 <p className="text-sm text-slate-500">Should be Deep Blue</p>

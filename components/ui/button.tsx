@@ -9,15 +9,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-accent text-accent-foreground font-normal tracking-[-0.14px] hover:bg-[#1541e6] hover:scale-110 active:bg-[#1238c7] active:scale-90 active:opacity-50 border-none",
+        default: "bg-accent text-accent-foreground font-normal tracking-[-0.14px] hover:bg-accent-hover active:bg-accent-pressed active:scale-[0.98] border-none",
         destructive:
           "bg-destructive text-white hover:opacity-90",
         outline: // Map outline to Secondary (Outlined Pill)
-          "bg-transparent text-[#00263e]/50 border-2 border-[#00263e]/12 font-normal tracking-[-0.14px] hover:bg-[#1749ff]/70 hover:text-white hover:border-transparent active:scale-95",
+          "bg-transparent text-primary/50 border-2 border-primary/12 font-normal tracking-[-0.14px] hover:bg-accent/70 hover:text-white hover:border-transparent active:scale-95",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: // Ghost/Link Button
-          "bg-transparent text-[#1749ff] rounded-[24px] hover:bg-black/5 active:scale-95",
+          "bg-transparent text-accent rounded-[24px] hover:bg-black/5 active:scale-95",
         link: "text-accent underline-offset-4 hover:underline",
       },
       size: {

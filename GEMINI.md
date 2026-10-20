@@ -71,22 +71,13 @@ To maintain maximum order, any new code must be placed within its designated dir
 - **Types**: `types/database.ts` mirrors the schema for application code. After remote schema changes, regenerate types with the Supabase CLI (`supabase gen types typescript --linked`) and align exports as needed.
 - **Agent context**: For database and backend work, follow `AGENTS.md` and `.cursor/rules/hope-aviation-database-backend.mdc`.
 
-## 10. UI & Design System (Custom) - PREMIUM APPLE STYLE
-To maintain the high-end, professional branding of Hope Aviation, all UI development **MUST** strictly adhere to the established "Premium Apple-style" design system:
+## 10. UI & Design System
 
-- **CRITICAL - REUSE CUSTOM COMPONENTS**: Never recreate base UI elements. Always use the refined versions in `components/ui/` and `components/shared/` (e.g., `Button`, `Badge`, `Navbar`, `Table`, `Modal`).
-- **Aesthetics & Effects**:
-  - Use `backdrop-blur-xl` for navigation bars, modals, and overlays to create a sleek, translucent effect.
-  - Borders should be minimal and subtle (typically `border-slate-100`).
-  - Backgrounds for containers should be clean (`bg-white` or `bg-slate-50/50`).
-- **Typography**:
-  - Use `font-semibold` or `font-bold` with `tracking-tight` for a modern, compact look.
-  - Headers should use the `Title` component with appropriate hierarchy.
-- **Color Palette Consistency**:
-  - **Primary**: Brand Deep Blue (`#00263e`).
-  - **Secondary**: Soft Vibrant Blue tint (`bg-accent/10`, `text-accent`, `border-accent/20`).
-  - **Accent**: Brand Vibrant Blue (`#1749ff`).
-  - **Highlights**: Aviation Orange (`#ffaa00`).
-- **Airy Layouts**: Ensure generous vertical padding (`py-4` to `py-10`) to allow content to "breathe" and maintain a premium feel.
-- **Reference**: Always refer to the `/componentsdev` page to see the latest, correct implementation of every component and style.
+The design system is documented in **`DESIGN.md`** (single source of truth). It combines the original custom Hope identity (logo, Hope Navy `#00263e`, Hope Blue `#1749ff`, Hope Amber `#ffaa00`, photography-led, alternating color bands) with a structural layer adapted from the Meta Store system (8px grid, pill buttons, radii, elevation, form states).
 
+- **CRITICAL - REUSE CUSTOM COMPONENTS**: Never recreate base UI elements. Always use the versions in `components/ui/` and `components/shared/` (e.g., `Button`, `Badge`, `Navbar`, `Table`, `Modal`, `Title`).
+- **Use tokens, not hex**: colors come from `app/globals.css` (`primary`, `accent`, `accent-hover`, `highlight`, `ink`, `success`, `info`, …). Never hardcode `bg-[#1749ff]`-style values.
+- **Blue is for doing, amber is for hoping**: Hope Blue marks actions (buttons, links, focus, progress); Hope Amber marks emotional highlights (one word in a headline, achievements, section bands).
+- **Typography**: Montserrat. Light (300) and large for editorial landing moments; semibold/bold with `tracking-tight` for the campus UI. Headers use the `Title` component.
+- **Tone**: honest and human. No cockpit/dark-tech aesthetics, no fake live counters.
+- **Reference**: `/componentsdev` shows the current implementation of every component.

@@ -29,6 +29,7 @@ export function LearningViewClient({
 }: LearningViewClientProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const { t, lang } = useTranslation();
 
   if (!activeClass || !course) return null;
 
@@ -42,7 +43,6 @@ export function LearningViewClient({
     nextItem = { itemType: "final-exam", id: "final-exam" };
   }
 
-  const { t, lang } = useTranslation();
   const courseTitle = typeof course.title === "string" ? course.title : (course.title?.[lang] || t("courseCard.untitledCourse"));
   const classTitle = typeof activeClass.title === "string" ? activeClass.title : (activeClass.title?.[lang] || "Untitled Class");
 

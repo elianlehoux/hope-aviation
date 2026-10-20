@@ -102,7 +102,7 @@ const Navbar = () => {
         activeIsHidden ? "-translate-y-full" : "translate-y-0"
       } ${
         activeIsScrolled
-          ? "bg-[#00263E]/90 backdrop-blur-xl border-white/10 py-1"
+          ? "bg-primary/90 backdrop-blur-xl border-white/10 py-1"
           : "bg-transparent border-transparent py-2"
       }`}
     >
@@ -153,7 +153,7 @@ const Navbar = () => {
                 align="center"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                className={`w-56 border border-white/10 bg-[#00263E] text-white`}
+                className={`w-56 border border-white/10 bg-primary text-white`}
               >
                 <DropdownMenuItem asChild className="cursor-pointer focus:bg-accent/10">
                   <Link href="/get-involved/church">Connect your church</Link>

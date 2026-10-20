@@ -82,7 +82,7 @@ function Bullet({
 }) {
   const colorMap = {
     accent: "text-accent bg-accent/10",
-    "aviation-orange": "text-[#ffaa00] bg-[#ffaa00]/10",
+    "aviation-orange": "text-highlight bg-highlight/10",
   };
   return (
     <li className="flex items-start gap-4 group">
@@ -106,7 +106,7 @@ export default function AboutPage() {
       <Navbar />
 
       {/* ═══════════════════════ HERO ═══════════════════════════════════════ */}
-      <section className="relative min-h-[90vh] flex flex-col items-center justify-start overflow-hidden bg-[#00263E]">
+      <section className="relative min-h-[90vh] flex flex-col items-center justify-start overflow-hidden bg-primary">
         {/* Background photo */}
         <Image
           src="/Untitled-1 copy.webp"
@@ -116,8 +116,8 @@ export default function AboutPage() {
           className="object-cover object-center opacity-30"
         />
         {/* Gradient scrims */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#00263E] via-transparent to-[#1C1E21]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#00263E]/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary via-transparent to-[#1C1E21]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent" />
 
         {/* Text Content - Positioned at the top to clear the background airplane */}
         <div className="relative z-10 mx-auto max-w-4xl px-6 text-center flex flex-col items-center gap-6 pt-32 sm:pt-40">
@@ -157,10 +157,10 @@ export default function AboutPage() {
       </section>
 
       {/* ═══════════════════ VISION (deeper dark + globe) ═══════════════════ */}
-      <section className="relative py-32 md:py-40 px-6 bg-[#0B0F15] overflow-hidden">
+      <section className="relative py-32 md:py-40 px-6 bg-ink overflow-hidden">
         {/* Ambient glow */}
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent/10 rounded-full blur-[160px] -mr-96 -mt-96 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#ffaa00]/8 rounded-full blur-[120px] -ml-64 -mb-64 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-highlight/8 rounded-full blur-[120px] -ml-64 -mb-64 pointer-events-none" />
 
         <div className="mx-auto max-w-7xl relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Text side */}
@@ -243,7 +243,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               <Reveal delay={150} className="order-2 lg:order-1">
                 <div>
-                  <span className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-[#ffaa00]/10 text-[#ffaa00] font-bold text-xs uppercase tracking-widest mb-6">
+                  <span className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-highlight/10 text-highlight font-bold text-xs uppercase tracking-widest mb-6">
                     02
                   </span>
                   <Title
@@ -264,8 +264,8 @@ export default function AboutPage() {
               </Reveal>
               <Reveal className="order-1 lg:order-2">
                 <div className="aspect-[4/3] bg-white/5 rounded-[24px] overflow-hidden relative border border-white/10 flex items-center justify-center p-12 group">
-                  <div className="absolute inset-0 bg-gradient-to-bl from-[#ffaa00]/10 to-transparent" />
-                  <Network className="size-40 text-[#ffaa00]/20 relative z-10 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3" />
+                  <div className="absolute inset-0 bg-gradient-to-bl from-highlight/10 to-transparent" />
+                  <Network className="size-40 text-highlight/20 relative z-10 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3" />
                 </div>
               </Reveal>
             </div>
@@ -306,7 +306,7 @@ export default function AboutPage() {
       </section>
 
       {/* ═══════════════════ MEASUREMENT ═══════════════════════════════════ */}
-      <section className="py-32 px-6 bg-[#0B0F15]">
+      <section className="py-32 px-6 bg-ink">
         <div className="mx-auto max-w-5xl">
           <Reveal>
             <div className="text-center mb-16">
@@ -326,7 +326,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { icon: BookMarked, key: "aboutPage.measureQuality", color: "text-accent" },
-              { icon: Network, key: "aboutPage.measureAlignment", color: "text-[#ffaa00]" },
+              { icon: Network, key: "aboutPage.measureAlignment", color: "text-highlight" },
               { icon: Heart, key: "aboutPage.measureIntegrity", color: "text-accent" },
             ].map((item, i) => (
               <Reveal key={item.key} delay={i * 120}>
@@ -346,10 +346,10 @@ export default function AboutPage() {
       <section className="py-32 px-6 bg-[#1C1E21]">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <div className="bg-[#00263E] rounded-[32px] p-10 md:p-16 lg:p-20 relative overflow-hidden">
+            <div className="bg-primary rounded-[32px] p-10 md:p-16 lg:p-20 relative overflow-hidden">
               {/* Ambient blobs */}
               <div className="absolute top-0 right-0 w-96 h-96 bg-accent/20 rounded-full blur-[120px] -mr-48 -mt-48" />
-              <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#ffaa00]/15 rounded-full blur-[100px] -ml-40 -mb-40" />
+              <div className="absolute bottom-0 left-0 w-80 h-80 bg-highlight/15 rounded-full blur-[100px] -ml-40 -mb-40" />
 
               <div className="relative z-10">
                 {/* Header */}
@@ -406,7 +406,7 @@ export default function AboutPage() {
                         <Button
                           asChild
                           className={`w-full rounded-full font-bold h-11 text-sm transition-all duration-200 ${card.primary
-                              ? "bg-white text-[#00263E] hover:bg-slate-100"
+                              ? "bg-white text-primary hover:bg-slate-100"
                               : "bg-transparent border border-white/20 text-white hover:bg-white/10"
                             }`}
                         >
