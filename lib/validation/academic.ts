@@ -66,8 +66,8 @@ export const subjectUpdateSchema = z
 export const classCreateSchema = z.object({
   title: translatedTitleSchema,
   description: translatedDescriptionSchema,
-  video_url: z.string().url().nullable().optional(),
-  resource_url: z.string().url().nullable().optional(),
+  video_url: z.string().nullable().optional(),
+  resource_url: z.string().nullable().optional(),
   duration_minutes: z.number().int().min(0).nullable().optional(),
   order_index: z.number().int().nullable().optional(),
 });
@@ -76,8 +76,8 @@ export const classUpdateSchema = z
   .object({
     title: translatedTitleSchema.optional(),
     description: translatedDescriptionSchema,
-    video_url: z.string().url().nullable().optional(),
-    resource_url: z.string().url().nullable().optional(),
+    video_url: z.string().nullable().optional(),
+    resource_url: z.string().nullable().optional(),
     duration_minutes: z.number().int().min(0).nullable().optional(),
     order_index: z.number().int().nullable().optional(),
     /** Move class to another subject (same course as URL) */

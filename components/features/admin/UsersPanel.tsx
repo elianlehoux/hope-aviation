@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "@/lib/i18n/context";
 
-import { Title } from "@/components/ui/title";
+import { CampusPageHeader } from "@/components/features/campus/ui/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -688,16 +688,11 @@ export default function UsersPanel() {
   const currentPage = Math.floor(offset / PAGE_SIZE) + 1;
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <Title level="h3" as="h1">
-          {t("adminDetail.usersTitle")}
-        </Title>
-        <p className="mt-1 text-sm text-slate-500 font-medium">
-          {t("adminDetail.usersSubtitle")}
-        </p>
-      </div>
+    <div className="mx-auto max-w-6xl space-y-8">
+      <CampusPageHeader
+        title={t("adminDetail.usersTitle")}
+        description={t("adminDetail.usersSubtitle")}
+      />
 
       {/* Filters bar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

@@ -89,7 +89,7 @@ export function Globe({ className }: { className?: string }) {
               </defs>
               <text className="fill-white/20 text-[10.38px] font-bold tracking-[0.3em] uppercase">
                 <textPath href="#orbitPath">
-                  Helping the outreach through pilot education · Helping the outreach through pilot education · Helping the outreach through pilot education ·
+                  Learning to reach · We do not teach how to fly · Learning to reach · We do not teach how to fly ·
                 </textPath>
               </text>
             </svg>

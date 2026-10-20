@@ -25,7 +25,7 @@ export function ExamQuestionView({ exam, questions, onFinish, submitUrl }: ExamQ
 
   const { t, lang } = useTranslation();
   const currentQuestion = questions[currentIdx];
-  const progress = ((currentIdx + 1) / questions.length) * 100;
+  const progress = questions.length > 0 ? ((currentIdx + 1) / questions.length) * 100 : 0;
 
   // Handle Finish/Submit
   const handleSubmit = useCallback(async (finalAnswers?: Record<string, string>) => {
@@ -37,14 +37,6 @@ export function ExamQuestionView({ exam, questions, onFinish, submitUrl }: ExamQ
     // Ensure all questions have an answer (even if empty/null, though UI prevents it)
     // The backend requires an answer for every question
     const completeAnswers: Record<string, string> = { ...submissionAnswers };
-    questions.forEach(q => {
-      if (!completeAnswers[q.id]) {
-        // Find first option as fallback if auto-submitting empty? 
-        // Or just let it fail validation if backend is strict.
-        // Backend says "Answer required for every question."
-        completeAnswers[q.id] = q.options[0]?.id; // Fallback to first option if forced
-      }
-    });
 
     try {
       const url = submitUrl || `/api/exams/${exam.id}/attempts`;
@@ -64,7 +56,7 @@ export function ExamQuestionView({ exam, questions, onFinish, submitUrl }: ExamQ
       toast.error(error.message);
       setIsSubmitting(false);
     }
-  }, [exam.id, answers, questions, onFinish, isSubmitting]);
+  }, [exam.id, answers, questions, onFinish, isSubmitting, submitUrl]);
 
   // Timer logic
   useEffect(() => {
@@ -101,6 +93,14 @@ export function ExamQuestionView({ exam, questions, onFinish, submitUrl }: ExamQ
   };
 
   const selectedOptionId = answers[currentQuestion?.id];
+
+  if (!questions.length) {
+    return (
+      <div className="rounded-3xl border border-dashed border-primary/15 bg-white p-10 text-center text-sm text-slate-500">
+        Este examen todavía no tiene preguntas.
+      </div>
+    );
+  }
 
   if (!currentQuestion) return null;
 

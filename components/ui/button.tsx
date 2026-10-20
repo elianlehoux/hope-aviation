@@ -9,16 +9,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-accent text-accent-foreground font-normal tracking-[-0.14px] hover:bg-accent-hover active:bg-accent-pressed active:scale-[0.98] border-none",
+        default:
+          "border-none bg-brand-orange font-semibold text-primary hover:bg-brand-orange/90 active:scale-[0.98]",
         destructive:
           "bg-destructive text-white hover:opacity-90",
-        outline: // Map outline to Secondary (Outlined Pill)
-          "bg-transparent text-primary/50 border-2 border-primary/12 font-normal tracking-[-0.14px] hover:bg-accent/70 hover:text-white hover:border-transparent active:scale-95",
+        outline:
+          "border border-primary/15 bg-transparent font-semibold text-primary hover:bg-paper active:scale-[0.98]",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: // Ghost/Link Button
-          "bg-transparent text-accent rounded-[24px] hover:bg-black/5 active:scale-95",
-        link: "text-accent underline-offset-4 hover:underline",
+        ghost:
+          "bg-transparent font-medium text-primary/70 hover:bg-paper hover:text-primary active:scale-[0.98]",
+        link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
         default: "px-[22px] py-[10px]",

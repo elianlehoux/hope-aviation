@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/accordion";
 import Link from "next/link";
 import { getYoutubeId } from "@/lib/utils/youtube";
+import { subjectExamsPassed } from "@/lib/campus/module-gate";
 
 interface Class {
   id: string;
@@ -62,10 +63,7 @@ interface LearnSidebarProps {
 
 // Helper: check if a module's exam has been passed
 function isModuleExamPassed(subject: Subject): boolean {
-  if (!subject.exams?.length) return true; // No exam = considered passed for gating purposes
-  return subject.exams.some((e) =>
-    e.exam_attempts?.some((a) => a.passed)
-  );
+  return subjectExamsPassed(subject);
 }
 
 export function LearnSidebar({
@@ -173,19 +171,19 @@ export function LearnSidebar({
                         {sIdx > 0 && (
                            <div className={cn(
                               "absolute bottom-1/2 left-1/2 -translate-x-1/2 w-[2px] h-[calc(100%+40px)] z-0 transition-colors duration-500",
-                              (isModuleExamPassed(subjects[sIdx - 1]) && isModuleStarted) ? "bg-accent" : "bg-transparent"
+                              (isModuleExamPassed(subjects[sIdx - 1]) && isModuleStarted) ? "bg-primary" : "bg-transparent"
                            )} />
                         )}
 
                         <div className={cn(
                            "size-2.5 rounded-full transition-all duration-500 shadow-sm ring-4 ring-white relative z-10",
                            isModuleLocked ? "bg-slate-300" :
-                           isModuleStarted ? "bg-accent shadow-accent/20" : "bg-slate-200"
+                           isModuleStarted ? "bg-primary shadow-primary/10" : "bg-slate-200"
                         )} />
                         {/* Connecting stem below module dot — only if module is started and not locked */}
                         <div className={cn(
                            "absolute top-1/2 left-1/2 -translate-x-1/2 w-[2px] h-[calc(50%+16px)] z-0 transition-colors duration-500",
-                           (!isModuleLocked && isModuleStarted && (completionMap[0] || (activeType === "class" && subject.classes[0]?.id === activeItemId))) ? "bg-accent" : "bg-transparent"
+                           (!isModuleLocked && isModuleStarted && (completionMap[0] || (activeType === "class" && subject.classes[0]?.id === activeItemId))) ? "bg-primary" : "bg-transparent"
                         )} />
                      </div>
 
@@ -259,11 +257,11 @@ export function LearnSidebar({
                         <div className="absolute left-[29px] inset-y-0 w-[2px] flex flex-col z-0">
                           <div className={cn(
                             "flex-1 transition-colors duration-500",
-                            lineAboveFilled ? "bg-accent" : "bg-transparent"
+                            lineAboveFilled ? "bg-primary" : "bg-transparent"
                           )} />
                           <div className={cn(
                             "flex-1 transition-colors duration-500",
-                            lineBelowFilled ? "bg-accent" : "bg-transparent"
+                            lineBelowFilled ? "bg-primary" : "bg-transparent"
                           )} />
                         </div>
 
@@ -273,7 +271,7 @@ export function LearnSidebar({
                               "relative size-full rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 shadow-sm border-2 border-white",
                               isModuleLocked ? "bg-slate-200 text-slate-400" :
                               isCompleted || isActive 
-                                 ? "bg-accent text-white shadow-accent/20" 
+                                 ? "bg-primary text-white shadow-primary/10" 
                                  : "bg-slate-200 text-slate-500 group-hover:bg-slate-300"
                            )}>
                               {isModuleLocked ? <Lock className="size-2.5" /> : currentIdx}
@@ -313,7 +311,7 @@ export function LearnSidebar({
                                     {t("learning.completed")}
                                  </span>
                               ) : isActive ? (
-                                 <span className="flex items-center gap-1.5 text-[9px] font-bold text-accent uppercase tracking-widest">
+                                 <span className="flex items-center gap-1.5 text-[9px] font-bold text-brand-orange uppercase tracking-widest">
                                     <Play className="size-2.5 fill-accent" /> 
                                     {t("learning.watchingNow")}
                                  </span>
@@ -370,7 +368,7 @@ export function LearnSidebar({
                         <div className="absolute left-[29px] inset-y-0 w-[2px] flex flex-col z-0">
                           <div className={cn(
                             "flex-1 transition-colors duration-500",
-                            lineAboveExamFilled ? "bg-accent" : "bg-transparent"
+                            lineAboveExamFilled ? "bg-primary" : "bg-transparent"
                           )} />
                           <div className={cn(
                             "flex-1 transition-colors duration-500",
@@ -388,7 +386,7 @@ export function LearnSidebar({
                               if (!nextFirstClass) return false;
                               const nextStarted = nextFirstClass.lesson_progress?.[0]?.is_completed || (activeType === 'class' && nextFirstClass.id === activeItemId);
                               return nextStarted;
-                            })() ? "bg-accent" : "bg-transparent"
+                            })() ? "bg-primary" : "bg-transparent"
                           )} />
                         </div>
 
@@ -398,7 +396,7 @@ export function LearnSidebar({
                               "relative size-full rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 shadow-sm border-2 border-white",
                               isModuleLocked ? "bg-slate-200 text-slate-400" :
                               isPassed || isActive 
-                                 ? "bg-accent text-white shadow-accent/20" 
+                                 ? "bg-primary text-white shadow-primary/10" 
                                  : "bg-amber-100 text-amber-600 group-hover:bg-amber-200"
                            )}>
                               {isModuleLocked ? <Lock className="size-2.5" /> : <ClipboardCheck className="size-3.5" />}
@@ -427,7 +425,7 @@ export function LearnSidebar({
                                       {t("learning.passed")} ({Math.round(bestAttempt?.score || 0)}%)
                                    </span>
                                 ) : isActive ? (
-                                   <span className="flex items-center gap-1.5 text-[9px] font-bold text-accent uppercase tracking-widest">
+                                   <span className="flex items-center gap-1.5 text-[9px] font-bold text-brand-orange uppercase tracking-widest">
                                       <Play className="size-2.5 fill-accent" /> 
                                       {t("learning.takingNow")}
                                    </span>
@@ -473,7 +471,7 @@ export function LearnSidebar({
                         <div className="absolute left-[29px] -top-12 bottom-1/2 w-[2px] flex flex-col z-0">
                            <div className={cn(
                              "flex-1 transition-colors duration-500",
-                             (isFinalPassed || isFinalActive) ? "bg-accent" : "bg-transparent"
+                             (isFinalPassed || isFinalActive) ? "bg-primary" : "bg-transparent"
                            )} />
                         </div>
 
@@ -483,7 +481,7 @@ export function LearnSidebar({
                               "relative size-full rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 shadow-sm border-2 border-white",
                               isFinalLocked ? "bg-slate-200 text-slate-400" :
                               isFinalPassed || isFinalActive
-                                 ? "bg-accent text-white shadow-accent/20"
+                                 ? "bg-primary text-white shadow-primary/10"
                                  : "bg-amber-100 text-amber-600 group-hover:bg-amber-200"
                            )}>
                               {isFinalLocked ? <Lock className="size-2.5" /> : <ClipboardCheck className="size-3.5" />}
@@ -510,7 +508,7 @@ export function LearnSidebar({
                                        <CheckCircle2 className="size-2.5" /> {t("learning.passed")}
                                     </span>
                                  ) : isFinalActive ? (
-                                    <span className="flex items-center gap-1.5 text-[9px] font-bold text-accent uppercase tracking-widest">
+                                    <span className="flex items-center gap-1.5 text-[9px] font-bold text-brand-orange uppercase tracking-widest">
                                        <Play className="size-2.5 fill-accent" /> {t("learning.takingNow")}
                                     </span>
                                  ) : null}

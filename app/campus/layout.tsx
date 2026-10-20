@@ -1,105 +1,149 @@
 import Link from "next/link";
-import { Suspense } from "react";
+import { cache, Suspense } from "react";
 import { redirect } from "next/navigation";
-import { getCampusSession, filterNavLinks, type CampusNavLink } from "@/lib/campus/session";
-import { LogoutButton } from "@/components/auth/logout-button";
+import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase/server";
 import { CampusMobileNav } from "@/components/features/campus/CampusMobileNav";
 import { CampusSidebar } from "@/components/features/campus/CampusSidebar";
+import { UserMenu } from "@/components/features/campus/UserMenu";
+import { LanguageToggle } from "@/components/shared/language-toggle";
+import {
+  PreviewAutoEnter,
+  RolePreviewSwitcher,
+} from "@/components/features/campus/RolePreviewSwitcher";
+import {
+  isCampusPreviewEnabled,
+  navLinksForRole,
+  parsePreviewRole,
+  primaryRoleFromSlugs,
+  PREVIEW_COOKIE,
+  type CampusNavLink,
+  type PreviewRole,
+} from "@/lib/dev/campus-preview";
 
 /**
- * Campus layout — shell for all /campus/* routes.
- * Access is enforced globally via Supabase session refresh in `proxy.ts`.
- * 
- * Nav link labels use translation keys that are resolved in client components.
- * Links are filtered by role server-side; admin routes are also guarded in `admin/layout.tsx`.
+ * Campus is session-bound. Nested pages that still await the user at the
+ * top of the segment are allowed to block until they are wrapped in Suspense.
  */
-const NAV_LINKS: CampusNavLink[] = [
-  { href: "/campus", labelKey: "campus.home" },
-  { href: "/campus/certificates", labelKey: "campus.myCertificates" },
-  { href: "/campus/admin/user-management", labelKey: "campus.userManagement", roles: ["admin"] },
-  { href: "/campus/admin/users", labelKey: "campus.users", roles: ["admin"] },
-  { href: "/campus/admin/roles", labelKey: "campus.roles", roles: ["admin"] },
-  { href: "/campus/admin/courses", labelKey: "campus.courses", roles: ["admin", "instructor"] },
-  { href: "/campus/admin/exams", labelKey: "campus.exams", roles: ["admin", "instructor"] },
-  { href: "/campus/admin/newsletter", labelKey: "campus.newsletter", roles: ["admin"] },
-];
+export const instant = false;
 
 export default function CampusLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
-    <div className="min-h-screen flex bg-background text-foreground">
-      <Suspense fallback={<div className="sticky top-0 h-screen hidden xl:flex w-64 flex-col border-r border-border bg-card animate-pulse" />}>
-        <CampusSidebarForUser />
+    <div className="min-h-[100dvh] flex bg-paper text-primary">
+      <Suspense fallback={<AsideFallback />}>
+        <CampusAside />
       </Suspense>
-
-      <div className="flex-1 flex flex-col">
-        <Suspense fallback={<CampusHeaderFallback />}>
-          <CampusHeader />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Suspense fallback={<HeaderFallback />}>
+          <CampusHeaderBar />
         </Suspense>
-
         <main className="flex-1 p-6 md:p-8">
-          <Suspense
-            fallback={
-              <div className="text-sm text-muted-foreground">Loading…</div>
-            }
-          >
-            {children}
-          </Suspense>
+          <Suspense fallback={<ContentFallback />}>{children}</Suspense>
         </main>
       </div>
     </div>
   );
 }
 
-/** Must not render client hooks like `usePathname` — see Next.js cacheComponents + Suspense fallback rules. */
-function CampusHeaderFallback() {
+function AsideFallback() {
   return (
-    <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6">
-      <MobileNavSlotSkeleton />
-      <div className="ml-auto h-8 w-24 animate-pulse rounded-full bg-muted" />
-    </header>
+    <div className="sticky top-0 hidden h-[100dvh] w-64 border-r border-primary/10 bg-white xl:flex" />
   );
 }
 
-function MobileNavSlotSkeleton() {
-  return (
-    <div className="xl:hidden flex items-center" aria-hidden>
-      <div className="mr-3 h-10 w-10 animate-pulse rounded-md bg-muted" />
-    </div>
-  );
+function HeaderFallback() {
+  return <div className="h-16 border-b border-primary/10 bg-white/80" />;
 }
 
-import { UserMenu } from "@/components/features/campus/UserMenu";
-import { LanguageToggle } from "@/components/shared/language-toggle";
-
-async function CampusSidebarForUser() {
-  const { roles } = await getCampusSession();
-  return <CampusSidebar navLinks={filterNavLinks(NAV_LINKS, roles)} />;
+function ContentFallback() {
+  return <div className="h-32 animate-pulse rounded-2xl bg-primary/5" />;
 }
 
-async function CampusHeader() {
-  const { user, roles } = await getCampusSession();
+const getCampusSession = cache(async function getCampusSession() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const preview = isCampusPreviewEnabled();
 
   if (!user) {
+    if (preview) return { user: null, preview, navLinks: navLinksForRole("student"), role: "student" as PreviewRole };
     redirect("/auth/login?clear=1");
   }
 
-  const navLinks = filterNavLinks(NAV_LINKS, roles);
+  const { data: roleRows } = await supabase
+    .from("roles_users")
+    .select("roles(slug)")
+    .eq("user_id", user.id);
 
+  const slugs = (roleRows || [])
+    .map((row: { roles?: { slug?: string } | { slug?: string }[] | null }) => {
+      const rel = row.roles;
+      if (Array.isArray(rel)) return rel[0]?.slug;
+      return rel?.slug;
+    })
+    .filter((slug): slug is string => Boolean(slug));
+
+  const cookieStore = await cookies();
+  const cookieRole = parsePreviewRole(cookieStore.get(PREVIEW_COOKIE)?.value);
+  const role: PreviewRole = preview
+    ? cookieRole ?? primaryRoleFromSlugs(slugs)
+    : primaryRoleFromSlugs(slugs);
+
+  return { user, preview, navLinks: navLinksForRole(role), role };
+});
+
+async function CampusAside() {
+  const session = await getCampusSession();
+  if (!session.user) return null;
+  return <CampusSidebar navLinks={session.navLinks} />;
+}
+
+async function CampusHeaderBar() {
+  const session = await getCampusSession();
+  if (!session.user) {
+    return session.preview ? <PreviewAutoEnter /> : null;
+  }
   return (
-    <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6">
+    <CampusHeader
+      user={session.user}
+      navLinks={session.navLinks}
+      preview={session.preview}
+      role={session.role}
+    />
+  );
+}
+
+function CampusHeader({
+  user,
+  navLinks,
+  preview,
+  role,
+}: {
+  user: { id: string; email?: string; user_metadata?: Record<string, unknown> };
+  navLinks: CampusNavLink[];
+  preview: boolean;
+  role: PreviewRole;
+}) {
+  return (
+    <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-primary/10 bg-white/80 px-4 backdrop-blur-xl md:px-6">
       <div className="xl:hidden">
-        <Suspense fallback={<MobileNavSlotSkeleton />}>
-          <CampusMobileNav navLinks={navLinks} />
-        </Suspense>
+        <CampusMobileNav navLinks={navLinks} />
       </div>
-      <div className="ml-auto flex items-center gap-4">
+      <Link
+        href="/"
+        className="hidden text-xs font-medium text-primary/50 transition-colors hover:text-primary sm:block xl:hidden"
+      >
+        Hope Aviation
+      </Link>
+      <div className="ml-auto flex items-center gap-3">
+        {preview ? <RolePreviewSwitcher currentRole={role} /> : null}
         <LanguageToggle />
-        <UserMenu user={user as any} />
+        <UserMenu user={user as never} />
       </div>
     </header>
   );

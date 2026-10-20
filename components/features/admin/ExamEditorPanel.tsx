@@ -21,7 +21,7 @@ import { useTranslation } from "@/lib/i18n/context";
 import { getLocalizedText } from "@/lib/utils/i18n-helpers";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
 
-import { Title } from "@/components/ui/title";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -685,11 +685,11 @@ export default function ExamEditorPanel({ exam }: { exam: ExamWithRelations }) {
           <Link href="/campus/admin/exams" className="text-sm font-medium text-slate-500 hover:text-primary flex items-center gap-1 mb-2 transition-colors">
              <ArrowLeft className="size-4" /> {t("adminDetail.backToExams")}
           </Link>
-          <Title level="h2" as="h1" className="flex items-center gap-3">
+          <h1 className="font-display flex items-center gap-3 text-3xl font-bold tracking-tight text-primary">
              {getLocalizedText(exam.title, lang)}
              <Badge variant="outline" className="bg-white">{t("adminDetail.configuration")}</Badge>
-          </Title>
-          <p className="mt-1 text-sm text-slate-500 font-medium">
+          </h1>
+          <p className="mt-1 text-sm text-primary/60">
              {t("adminDetail.examSubtitle")}
           </p>
         </div>

@@ -16,7 +16,7 @@ import {
 import Link from "next/link";
 import { useTranslation } from "@/lib/i18n/context";
 
-import { Title } from "@/components/ui/title";
+import { CampusPageHeader } from "@/components/features/campus/ui/page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -107,15 +107,11 @@ export default function UserManagementPanel() {
   const currentPage = Math.floor(offset / PAGE_SIZE) + 1;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <Title level="h3" as="h1">
-          {t("adminDetail.usersTitle")}
-        </Title>
-        <p className="mt-1 text-sm text-slate-500 font-medium">
-          {t("adminDetail.usersSubtitle")}
-        </p>
-      </div>
+    <div className="mx-auto max-w-6xl space-y-8">
+      <CampusPageHeader
+        title={t("adminDetail.usersTitle")}
+        description={t("adminDetail.usersSubtitle")}
+      />
 
       <div className="relative flex-1 max-w-md">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400" />

@@ -14,5 +14,9 @@ export function getYoutubeId(urlOrId?: string | null): string | null {
   const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
   const match = urlOrId.match(regex);
 
-  return match ? match[1] : urlOrId.split("/").pop() || null;
+  return match ? match[1] : null;
+}
+
+export function isValidYoutubeRef(value?: string | null): boolean {
+  return Boolean(getYoutubeId(value));
 }

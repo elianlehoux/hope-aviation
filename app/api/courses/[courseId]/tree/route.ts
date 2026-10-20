@@ -1,14 +1,15 @@
 import { createClient } from "@/lib/supabase/server";
 import { sortByOrderThenCreated } from "@/lib/api/academic-order";
+import { sortExamsByOrderThenCreated } from "@/lib/api/exam-order";
 import { requireSession } from "@/lib/api/auth";
 import { jsonError, jsonOk } from "@/lib/api/json";
 import { parseUuidParam } from "@/lib/api/params";
 import { responseFromPostgrestError } from "@/lib/api/supabase-errors";
-import type { Class, Course, Subject } from "@/types/database";
+import type { Class, Course, Exam, Subject } from "@/types/database";
 
 type RouteContext = { params: Promise<{ courseId: string }> };
 
-type SubjectRow = Subject & { classes: Class[] | null };
+type SubjectRow = Subject & { classes: Class[] | null; exams: Exam[] | null };
 
 type CourseTreeData = Course & {
   subjects: SubjectRow[] | null;
@@ -33,7 +34,8 @@ export async function GET(_request: Request, context: RouteContext) {
       *,
       subjects (
         *,
-        classes (*)
+        classes (*),
+        exams (*)
       )
     `,
     )
@@ -79,9 +81,10 @@ export async function GET(_request: Request, context: RouteContext) {
   const subjectsList = rawSubjects ?? [];
 
   const subjects = sortByOrderThenCreated(subjectsList).map((s) => {
-    const { classes: rawClasses, ...subject } = s;
+    const { classes: rawClasses, exams: rawExams, ...subject } = s;
     const classes = sortByOrderThenCreated(rawClasses ?? []);
-    return { ...subject, classes };
+    const exams = sortExamsByOrderThenCreated(rawExams ?? []);
+    return { ...subject, classes, exams };
   });
 
   return jsonOk({
