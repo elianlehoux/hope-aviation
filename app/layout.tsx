@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, IBM_Plex_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
@@ -19,16 +19,24 @@ export const metadata: Metadata = {
   },
 };
 
-const inter = Inter({
-  variable: "--font-inter",
+// Display face — warm, characterful editorial grotesque for headlines.
+const display = Bricolage_Grotesque({
+  variable: "--font-display",
   display: "swap",
   subsets: ["latin"],
 });
 
-// Technical utility face for instrument-style data labels and eyebrows.
+// Body face — clean, slightly humanist sans for reading copy.
+const body = Instrument_Sans({
+  variable: "--font-body",
+  display: "swap",
+  subsets: ["latin"],
+});
+
+// Mono — reserved for the few genuine data/coordinate labels. Used sparingly.
 const plexMono = IBM_Plex_Mono({
   variable: "--font-mono",
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   display: "swap",
   subsets: ["latin"],
 });
@@ -40,7 +48,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${plexMono.variable} ${inter.className} antialiased`}>
+      <body className={`${display.variable} ${body.variable} ${plexMono.variable} ${body.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
