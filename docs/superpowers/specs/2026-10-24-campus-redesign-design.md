@@ -85,7 +85,7 @@ El aula, el inicio y la ficha de curso ya se rediseñaron en el PR #4. Este docu
 |---|---|---|
 | `/campus/admin` | staff | Redirige a cursos |
 | `/campus/admin/courses` | staff | Lista de cursos |
-| `/campus/admin/courses/[id]` | staff | **Editor de curso** con pestañas Contenido · Ajustes · Alumnos · Instructores |
+| `/campus/admin/courses/[id]` | staff | **Editor de curso** con pestañas Contenido · Ajustes · Alumnos |
 | `/campus/admin/courses/[id]/lessons/[classId]` | staff | Editor de texto de clase *(hecho)* |
 | `/campus/admin/courses/[id]/exams/[examId]` | staff | Editor de examen (se mueve) |
 | `/campus/admin/people` | staff | **Personas**: une "usuarios" y "gestión de usuarios" |
@@ -192,7 +192,7 @@ Gestión → Cursos → [Nuevo curso] (título es/en) → Editor de curso
   - Lista de inscriptos con progreso %, último examen y estado.
   - El click lleva a la ficha de la persona.
   - Botón "Inscribir alumno" por email, solo para admin.
-- **Instructores (pestaña, solo admin):** asignar o quitar instructores (la API ya existe).
+- **Sin pestaña de instructores:** todo instructor edita cualquier curso (decisión del usuario), así que asignar instructores no cambia nada y se saca de la UI. La tabla `course_instructors` queda sin uso; no se borra.
 
 ### 5.5 Admin: personas
 
@@ -203,7 +203,7 @@ Gestión → Personas (buscador + filtro por rol/estado + paginado)
       → [Cambiar rol] / [Desactivar cuenta] (solo admin)
 ```
 
-Un instructor ve en Personas solo a los alumnos de sus cursos, y sin controles de cuenta.
+Un instructor ve en Personas a todos los alumnos, pero sin controles de cuenta (rol, activar/desactivar). *Decisión mía: es coherente con que edite cualquier curso.*
 
 ## 6. Pantallas: lineamientos visuales
 
@@ -250,7 +250,7 @@ Un instructor ve en Personas solo a los alumnos de sus cursos, y sin controles d
 | M1 | `certificates` | En `enrollments`: `completed_at timestamptz` y `certificate_code text unique`. Se completan dentro de `submit_final_exam` y de M3. RPC `verify_certificate(code)` (SECURITY DEFINER, ejecutable por `anon`) que devuelve solo nombre, curso y fecha. Backfill de los completados existentes. |
 | M2 | `exam_timing` | RPC `start_exam_attempt(exam_id)`, que crea el intento abierto con `started_at`. `submit_exam_attempt` / `submit_final_exam` cierran ese intento y rechazan si se pasó el límite más 2 min. El final necesita guardar qué preguntas se sortearon: `final_exam_sessions(user_id, course_id, question_ids uuid[], started_at)`. |
 | M3 | `course_completion_without_final` | RPC `complete_course(course_id)`, válida solo si el curso no tiene final configurado y todo está cumplido. Regla de desbloqueo para módulos sin examen. |
-| M4 | `instructor_course_scope` | Las políticas de escritura de cursos, módulos, clases, exámenes y preguntas pasan de "cualquier instructor" a `is_course_instructor` o admin. Hoy **cualquier instructor puede editar cualquier curso**. Crear curso: el instructor que lo crea queda asignado. |
+| M4 | `instructor_read_all` | **Decisión del usuario: cualquier instructor edita cualquier curso** (la escritura queda como está). Para que la pestaña Alumnos y Personas funcionen igual para todo instructor, las políticas de *lectura* de `enrollments`, `lesson_progress`, `exam_attempts` y `profiles` pasan de `is_course_instructor` a `has_role('instructor')`. Las de escritura de inscripciones no se amplían. |
 | M5 | `remove_default_admin` | Borra `test.admin@test.com` si existe (lo creó la migración 20250401120001). |
 
 Todas se prueban en Supabase local con el seed (que se amplía con un curso sin final y un segundo instructor), con un caso por cada regla nueva. Orden de deploy: `supabase db push`, después la app.
@@ -263,7 +263,7 @@ Cada fase cierra con build, typecheck, prueba en navegador por rol (desktop + 37
 2. **Cuenta:** login sin alta implícita, registro, recuperar y nueva clave, `?next=`.
 3. **Exámenes alumno:** preparación, rendir, revisión, resultado y tiempo (M2).
 4. **Certificados y perfil:** M1 y M3, lista, certificado imprimible, verificación pública y perfil.
-5. **Gestión de cursos:** lista, editor unificado, editor de examen, publicación, vista previa e instructores (M4).
+5. **Gestión de cursos:** lista, editor unificado, editor de examen, publicación, vista previa y pestaña Alumnos (M4).
 6. **Personas:** lista, ficha y acciones.
 7. **Limpieza:** borrar paneles y APIs muertas, lint, M5 y PR.
 8. **Aplicar a producción** (con el usuario): `db push`, deploy y verificación.
