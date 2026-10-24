@@ -64,6 +64,7 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/privacy") ||
     request.nextUrl.pathname.startsWith("/terms") ||
     request.nextUrl.pathname.startsWith("/newsletter") ||
+    request.nextUrl.pathname.startsWith("/certificados") ||
     (previewAuth && request.nextUrl.pathname.startsWith("/campus"));
 
   if (!user && !publicPath) {
