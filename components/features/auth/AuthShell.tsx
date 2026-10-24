@@ -106,11 +106,11 @@ function FlightLines({ className }: { className?: string }) {
 function Tagline({ es }: { es: boolean }) {
   return es ? (
     <>
-      Llevando <span className="text-highlight">esperanza</span> donde los caminos no llegan.
+      Llevando <span className="text-highlight">esperanza</span>{" "}donde los caminos no llegan.
     </>
   ) : (
     <>
-      Bringing <span className="text-highlight">hope</span> where roads can&apos;t reach.
+      Bringing <span className="text-highlight">hope</span>{" "}where roads can&apos;t reach.
     </>
   );
 }
