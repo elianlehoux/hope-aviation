@@ -39,7 +39,7 @@ export async function GET(_request: Request, context: RouteContext) {
 
   const { data: questionsRaw, error: qErr } = await supabase
     .from("questions")
-    .select("id, exam_id, content, points, order_index, options(id, question_id, content)")
+    .select("id, exam_id, content, points, order_index, options:options_public(id, question_id, content)")
     .eq("exam_id", examId);
 
   if (qErr) {

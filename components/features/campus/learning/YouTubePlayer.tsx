@@ -48,7 +48,7 @@ export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerPro
           width: "100%",
           videoId: videoId,
           playerVars: {
-            autoplay: 1,
+            autoplay: 0,
             modestbranding: 1,
             rel: 0,
             origin: window.location.origin,

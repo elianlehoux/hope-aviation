@@ -77,7 +77,7 @@ export async function GET(_request: Request, context: RouteContext) {
   // Fetch questions and options
   const { data: questionsRaw, error: qErr } = await supabase
     .from("questions")
-    .select("id, exam_id, content, points, options(id, question_id, content)")
+    .select("id, exam_id, content, points, options:options_public(id, question_id, content)")
     .in("exam_id", examIds);
 
   if (qErr) return responseFromPostgrestError(qErr);
