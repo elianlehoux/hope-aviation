@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { LearnSidebar } from "@/components/features/campus/learning/LearnSidebar";
 import { ExamPreFlight } from "@/components/features/campus/learning/ExamPreFlight";
 import { ExamQuestionView } from "@/components/features/campus/learning/ExamQuestionView";
 import { ExamResults } from "@/components/features/campus/learning/ExamResults";
@@ -108,59 +107,21 @@ export function FinalExamViewClient({
   const questionCount = examData?.question_count || course.final_exam_question_count;
 
   return (
-    <div className="max-w-[1600px] mx-auto animate-in fade-in duration-700">
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
-        {/* Main Content Area */}
-        <div className="xl:col-span-8 space-y-8 min-h-[600px] flex flex-col">
-          {state === "idle" && (
-            <ExamPreFlight 
-              exam={{...pseudoExamConfig, max_attempts: 9999}} // Overriding so it shows attempts info differently if we want, but currently it just shows large number
-              questionCount={questionCount} 
-              onStart={handleStartExam} 
-            />
-          )}
-          
-          {state === "active" && examData && (
-            <ExamQuestionView 
-              // We pass pseudoExamConfig for context (time limit etc), but questions handles the render
-              exam={pseudoExamConfig}
-              questions={questions} 
-              onFinish={handleFinishExam} 
-              submitUrl={`/api/courses/${course.id}/final-exam/submit`}
-            />
-          )}
-
-          {state === "finished" && (
-            <ExamResults 
-              exam={pseudoExamConfig} 
-              lastAttempt={lastAttempt} 
-              onRetry={handleRestart} 
-              isFinalExam={true} // new prop to handle "Course Completed" instead of "Next Module"
-            />
-          )}
-        </div>
-
-        {/* Sidebar Area */}
-        <aside className="xl:col-span-4 self-start sticky top-28 h-[calc(100vh-8rem)] min-h-[500px]">
-          <div className="h-full rounded-[2.5rem] bg-white border border-slate-100 shadow-2xl shadow-primary/5 overflow-hidden">
-            <LearnSidebar
-              courseId={course.id}
-              subjects={course.subjects}
-              activeItemId="final-exam" // specific string
-              activeType="exam"
-              progressPercentage={progressPercentage}
-              onPrevious={handlePrevious}
-              onNext={() => {}} // Can't go next from final exam unless we want to redirect to dashboard
-              hasPrevious={!!previousItem}
-              hasNext={false}
-              enrollmentStatus={enrollmentStatus} // pass enrollment status down
-              finalExamConfig={{
-                enabled: (course.final_exam_question_count ?? 0) > 0
-              }}
-            />
-          </div>
-        </aside>
-      </div>
+    <div className="mx-auto w-full max-w-3xl px-5 pb-24 pt-8 sm:px-8 lg:pt-12">
+      {state === "idle" && (
+        <ExamPreFlight exam={{ ...pseudoExamConfig, max_attempts: 9999 }} questionCount={questionCount} onStart={handleStartExam} />
+      )}
+      {state === "active" && examData && (
+        <ExamQuestionView
+          exam={pseudoExamConfig}
+          questions={questions}
+          onFinish={handleFinishExam}
+          submitUrl={`/api/courses/${course.id}/final-exam/submit`}
+        />
+      )}
+      {state === "finished" && (
+        <ExamResults exam={pseudoExamConfig} lastAttempt={lastAttempt} onRetry={handleRestart} isFinalExam />
+      )}
     </div>
   );
 }

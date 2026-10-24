@@ -176,7 +176,7 @@ export function ExamQuestionView({ exam, questions, onFinish, submitUrl }: ExamQ
            <Button
              disabled={!selectedOptionId || isSubmitting}
              onClick={handleNext}
-             className="ms-auto h-12 px-8 rounded-xl font-bold bg-primary hover:bg-primary/95 shadow-md shadow-primary/10 group transition-all active:scale-95"
+             className="ms-auto h-12 px-8 rounded-xl font-bold group transition-all active:scale-95"
            >
              {isSubmitting ? t("examQuestion.submitting") : currentIdx < questions.length - 1 ? t("examQuestion.nextQuestion") : t("examQuestion.finishSubmit")}
              <ArrowRight className="size-4 ml-2 transition-transform group-hover:translate-x-1" />

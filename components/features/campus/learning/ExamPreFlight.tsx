@@ -106,7 +106,7 @@ export function ExamPreFlight({ exam, questionCount, onStart }: ExamPreFlightPro
               <div className="space-y-4">
                 <Button
                   onClick={onStart}
-                  className="w-full h-16 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/95 shadow-xl shadow-primary/10 group"
+                  className="w-full h-16 rounded-2xl text-lg font-bold group"
                 >
                   {t("examPreflight.startTest")}
                   <ArrowRight className="size-5 ml-2 transition-transform group-hover:translate-x-1" />

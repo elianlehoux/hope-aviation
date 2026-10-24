@@ -7,3 +7,11 @@ ALTER TABLE public.classes
 
 COMMENT ON COLUMN public.classes.content IS
   'Translatable lesson body in Markdown with campus extensions: {"es": "...", "en": "..."}';
+
+-- Cheap flag for outlines (avoids loading lesson bodies when listing a course).
+ALTER TABLE public.classes
+  ADD COLUMN IF NOT EXISTS has_content boolean
+  GENERATED ALWAYS AS (
+    content IS NOT NULL
+    AND (COALESCE(btrim(content ->> 'es'), '') <> '' OR COALESCE(btrim(content ->> 'en'), '') <> '')
+  ) STORED;

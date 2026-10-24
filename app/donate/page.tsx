@@ -53,7 +53,7 @@ export default function DonatePage() {
                       placeholder={t("donate.emailPlaceholder")} 
                       className="flex-1 h-12 px-4 rounded-xl border border-slate-100 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all font-medium"
                     />
-                    <Button size="icon" className="h-12 w-12 rounded-xl bg-primary">
+                    <Button size="icon" className="h-12 w-12 rounded-xl bg-primary text-white">
                        <ArrowLeft className="size-4 rotate-180" />
                     </Button>
                   </div>

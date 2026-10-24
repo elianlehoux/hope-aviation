@@ -998,7 +998,7 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                 {tree.course.status !== "published" && (
                    <Button 
                       variant="default" 
-                      className="bg-accent hover:bg-accent/90 shadow-lg shadow-accent/20"
+                      className="bg-accent text-white hover:bg-accent/90 shadow-lg shadow-accent/20"
                       onClick={handlePublish}
                       disabled={publishPending}
                    >

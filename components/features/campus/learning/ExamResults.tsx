@@ -90,7 +90,7 @@ export function ExamResults({ exam, lastAttempt, onRetry, isFinalExam, nextItemU
             {(!isPassed && (attemptsRemaining > 0 || isFinalExam)) ? (
               <Button
                 onClick={onRetry}
-                className="w-full h-16 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/95 shadow-xl shadow-primary/10 group"
+                className="w-full h-16 rounded-2xl text-lg font-bold group"
               >
               <RefreshCcw className="size-5 mr-2 transition-transform group-hover:rotate-180 duration-500" />
               {t("examResults.tryAgain")}
@@ -98,7 +98,7 @@ export function ExamResults({ exam, lastAttempt, onRetry, isFinalExam, nextItemU
             ) : (isPassed && isFinalExam) ? (
               <Link href="/campus" className="block">
                 <Button
-                  className="w-full h-16 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/95 shadow-xl shadow-primary/10 group"
+                  className="w-full h-16 rounded-2xl text-lg font-bold group"
                 >
                   {t("examResults.backToCampus")}
                   <ArrowRight className="size-5 ml-2 transition-transform group-hover:translate-x-1" />
@@ -107,7 +107,7 @@ export function ExamResults({ exam, lastAttempt, onRetry, isFinalExam, nextItemU
             ) : (
               <Link href={nextItemUrl || `/campus/courses/${exam.course_id}`} className="block">
                 <Button
-                  className="w-full h-16 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/95 shadow-xl shadow-primary/10 group"
+                  className="w-full h-16 rounded-2xl text-lg font-bold group"
                 >
                   {nextItemUrl ? (
                     <>

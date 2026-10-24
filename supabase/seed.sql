@@ -96,7 +96,7 @@ horas | hasta el hospital más cercano en zonas aisladas
 
 Las ambulancias aéreas existentes operan desde aeropuertos grandes. Eso deja cientos de comunidades sin respuesta rápida.
 
-```chart bar
+```chart
 title: Tiempo estimado de llegada a un centro de salud
 unit: h
 Por tierra (seco): 4
@@ -137,7 +137,7 @@ hours | to the nearest hospital in isolated areas
 
 Existing air ambulances operate from major airports, leaving hundreds of communities without a fast response.
 
-```chart bar
+```chart
 title: Estimated time to reach a health center
 unit: h
 By land (dry): 4
@@ -185,7 +185,8 @@ $md$)),
    jsonb_build_object('es', $md$
 En pistas cortas y no preparadas, **cada kilo cuenta**. La planificación de carga define si se puede despegar con seguridad.
 
-```chart line
+```chart
+type: line
 title: Distancia de despegue según peso (ejemplo ilustrativo)
 unit: m
 800 kg: 210
@@ -215,7 +216,8 @@ unit: m
 $md$, 'en', $md$
 On short, unprepared strips **every kilo counts**. Load planning decides whether a safe takeoff is possible.
 
-```chart line
+```chart
+type: line
 title: Takeoff distance by weight (illustrative example)
 unit: m
 800 kg: 210

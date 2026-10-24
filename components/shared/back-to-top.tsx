@@ -33,7 +33,7 @@ export function BackToTop() {
       variant="ghost"
       size="icon"
       className={cn(
-        "fixed bottom-8 right-8 z-50 size-10 rounded-full bg-accent shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-accent hover:scale-110 active:scale-95 border border-accent",
+        "fixed bottom-8 right-8 z-50 size-10 rounded-full bg-accent text-white hover:text-white shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-accent hover:scale-110 active:scale-95 border border-accent",
         isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0 pointer-events-none"
       )}
       onClick={scrollToTop}

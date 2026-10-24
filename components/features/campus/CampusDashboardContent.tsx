@@ -1,181 +1,140 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRight, Library, UserRound } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n/context";
-import { ProfileCompletionBanner } from "@/components/features/campus/ProfileCompletionBanner";
-import { StudentCourseCard } from "@/components/features/campus/StudentCourseCard";
-import { CampusPageHeader } from "@/components/features/campus/ui/page-header";
-import { CampusEmpty, CampusSurface } from "@/components/features/campus/ui/surface";
-import { BookOpen, GraduationCap, CheckCircle, TrendingUp, Users } from "lucide-react";
+import { getLocalizedText } from "@/lib/utils/i18n-helpers";
+import type { LearnerHome } from "@/lib/campus/home";
+import { CourseCard } from "@/components/features/campus/courses/CourseCard";
+import { CourseCover } from "@/components/features/campus/courses/CourseCover";
 
-interface ProfileProp {
-  first_name: string | null;
-  last_name: string | null;
-  birth_date: string | null;
-  country_code: string | null;
-}
-
-interface CampusDashboardContentProps {
-  showBanner: boolean;
-  activeEnrollments: any[];
-  completedEnrollments: any[];
-  catalogCourses: any[];
-  roles: string[];
-  stats: {
-    activeCoursesCount: number;
-    completedCoursesCount: number;
-    totalCompletedLessons: number;
-    averageProgress: number;
-  };
-  profile: ProfileProp | null;
-}
-
-export function CampusDashboardContent({
-  showBanner,
-  activeEnrollments,
-  completedEnrollments,
-  catalogCourses,
-  roles,
-  stats,
-  profile,
-}: CampusDashboardContentProps) {
-  const { t, lang } = useTranslation();
-  const isStaff = roles.includes("admin") || roles.includes("instructor");
-  const firstName = profile?.first_name || (lang === "es" ? "ahí" : "there");
-
-  const statItems = [
-    { label: lang === "es" ? "Cursos activos" : "Active courses", value: stats.activeCoursesCount, icon: BookOpen },
-    { label: lang === "es" ? "Progreso medio" : "Average progress", value: `${stats.averageProgress}%`, icon: TrendingUp },
-    { label: lang === "es" ? "Clases hechas" : "Lessons done", value: stats.totalCompletedLessons, icon: CheckCircle },
-    { label: lang === "es" ? "Cursos terminados" : "Courses finished", value: stats.completedCoursesCount, icon: GraduationCap },
-  ];
+export function CampusDashboardContent({ home }: { home: LearnerHome }) {
+  const { lang } = useTranslation();
+  const es = lang === "es";
+  const active = home.myCourses.filter((c) => c.status === "active");
+  const current = active[0];
+  const others = home.myCourses.filter((c) => c !== current);
+  const staff = home.roles.includes("admin") || home.roles.includes("instructor");
 
   return (
-    <div className="mx-auto max-w-6xl space-y-10 pb-16">
-      {showBanner ? <ProfileCompletionBanner /> : null}
-
-      <CampusPageHeader
-        title={lang === "es" ? `Hola, ${firstName}` : `Hello, ${firstName}`}
-        description={t("studentCourses.myAcademyDesc")}
-      />
-
-      {isStaff ? (
-        <CampusSurface className="grid gap-px overflow-hidden sm:grid-cols-2">
-          {roles.includes("admin") ? (
-            <Link
-              href="/campus/admin/users"
-              className="flex items-center gap-4 p-5 transition-colors hover:bg-paper"
-            >
-              <span className="flex size-10 items-center justify-center rounded-xl bg-paper text-primary">
-                <Users className="size-5" />
-              </span>
-              <span>
-                <span className="block text-sm font-semibold text-primary">
-                  {lang === "es" ? "Administración" : "Administration"}
-                </span>
-                <span className="mt-0.5 block text-sm text-primary/55">
-                  {lang === "es" ? "Usuarios, roles y boletín" : "Users, roles and newsletter"}
-                </span>
-              </span>
+    <div className="mx-auto max-w-6xl space-y-12 pb-16">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl">
+            {es ? "Hola" : "Hi"}, {home.firstName}
+          </h1>
+          <p className="mt-2 text-primary/60">
+            {current
+              ? es
+                ? "Retomá donde lo dejaste."
+                : "Pick up where you left off."
+              : es
+                ? "Formación para servir donde los caminos no llegan."
+                : "Training to serve where roads can't reach."}
+          </p>
+        </div>
+        {staff ? (
+          <Button asChild variant="outline" size="sm">
+            <Link href="/campus/admin/courses">
+              <Library className="size-4" aria-hidden />
+              {es ? "Gestionar cursos" : "Manage courses"}
             </Link>
-          ) : null}
-          <Link
-            href="/campus/admin/courses"
-            className="flex items-center gap-4 p-5 transition-colors hover:bg-paper"
-          >
-            <span className="flex size-10 items-center justify-center rounded-xl bg-brand-orange/15 text-primary">
-              <BookOpen className="size-5" />
-            </span>
-            <span>
-              <span className="block text-sm font-semibold text-primary">
-                {lang === "es" ? "Cursos y exámenes" : "Courses and exams"}
-              </span>
-              <span className="mt-0.5 block text-sm text-primary/55">
-                {lang === "es" ? "Armar módulos, clases y evaluaciones" : "Build modules, classes and exams"}
-              </span>
-            </span>
-          </Link>
-        </CampusSurface>
+          </Button>
+        ) : null}
+      </header>
+
+      {!home.profileComplete ? (
+        <Link
+          href="/campus/profile"
+          className="flex items-center gap-4 rounded-2xl border border-highlight/40 bg-highlight/10 px-5 py-4 transition-colors hover:bg-highlight/15"
+        >
+          <UserRound className="size-5 shrink-0 text-primary" aria-hidden />
+          <p className="flex-1 text-sm text-primary/80">
+            <span className="font-semibold text-primary">{es ? "Completá tu perfil." : "Complete your profile."}</span>{" "}
+            {es
+              ? "Necesitamos tu nombre, fecha de nacimiento y país para emitir certificados."
+              : "We need your name, birth date and country to issue certificates."}
+          </p>
+          <ArrowRight className="size-4 shrink-0 text-primary/60" aria-hidden />
+        </Link>
       ) : null}
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        {statItems.map((item) => {
-          const Icon = item.icon;
-          return (
-            <CampusSurface key={item.label} className="flex items-center gap-3 p-4">
-              <span className="flex size-9 items-center justify-center rounded-lg bg-paper text-primary">
-                <Icon className="size-4" />
-              </span>
-              <span>
-                <span className="block text-xs text-primary/50">{item.label}</span>
-                <span className="font-display text-xl font-bold tracking-tight text-primary">
-                  {item.value}
-                </span>
-              </span>
-            </CampusSurface>
-          );
-        })}
-      </div>
-
-      {activeEnrollments.length > 0 ? (
-        <section className="space-y-5">
-          <h2 className="font-display text-2xl font-bold tracking-tight text-primary">
-            {t("studentCourses.continueLearning")}
+      {current ? (
+        <section aria-labelledby="continue-heading">
+          <h2 id="continue-heading" className="sr-only">
+            {es ? "Seguir aprendiendo" : "Continue learning"}
           </h2>
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {activeEnrollments.map((e) => (
-              <StudentCourseCard
-                key={e.id}
-                course={e.courses}
-                enrollment={e}
-                variant="active"
-              />
+          <Link
+            href={`/campus/courses/${current.id}/learn`}
+            className="group grid overflow-hidden rounded-3xl bg-primary text-white md:grid-cols-[1fr_1.1fr]"
+          >
+            <div className="relative aspect-[16/9] md:aspect-auto">
+              <CourseCover src={current.thumbnailUrl} alt={getLocalizedText(current.title, lang)} />
+            </div>
+            <div className="flex flex-col justify-center gap-5 p-6 sm:p-8 md:p-10">
+              <p className="text-sm font-medium text-highlight">{es ? "Seguir aprendiendo" : "Continue learning"}</p>
+              <h3 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">
+                {getLocalizedText(current.title, lang)}
+              </h3>
+              <div className="flex items-center gap-3">
+                <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/15">
+                  <div className="h-full rounded-full bg-highlight" style={{ width: `${current.progress}%` }} />
+                </div>
+                <span className="text-sm font-semibold tabular-nums text-white/80">{current.progress}%</span>
+              </div>
+              <p className="text-sm text-white/65">
+                {current.completedLessons}/{current.lessonCount} {es ? "clases completadas" : "lessons completed"}
+              </p>
+              <span className="inline-flex w-fit items-center gap-2 rounded-full bg-highlight px-5 py-2.5 text-sm font-semibold text-primary transition-transform group-hover:translate-x-0.5">
+                {es ? "Continuar" : "Continue"}
+                <ArrowRight className="size-4" aria-hidden />
+              </span>
+            </div>
+          </Link>
+        </section>
+      ) : null}
+
+      {others.length > 0 ? (
+        <section className="space-y-5">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-primary">{es ? "Mis cursos" : "My courses"}</h2>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {others.map((course) => (
+              <CourseCard key={course.id} course={course} />
             ))}
           </div>
         </section>
-      ) : (
-        <CampusEmpty
-          title={lang === "es" ? "Todavía no estás en un curso" : "You are not in a course yet"}
-          description={
-            lang === "es"
-              ? "Inscribite en uno del catálogo para empezar."
-              : "Enroll in one from the catalog to start."
-          }
-        />
-      )}
+      ) : null}
 
       <section className="space-y-5">
-        <h2 className="font-display text-2xl font-bold tracking-tight text-primary">
-          {t("studentCourses.exploreCatalog")}
-        </h2>
-        {catalogCourses && catalogCourses.length > 0 ? (
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {catalogCourses.slice(0, 6).map((course) => (
-              <StudentCourseCard key={course.id} course={course} variant="available" />
+        <div className="flex items-end justify-between gap-4">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-primary">
+            {home.myCourses.length ? (es ? "Explorar cursos" : "Explore courses") : es ? "Empezá un curso" : "Start a course"}
+          </h2>
+          {home.catalog.length > 3 ? (
+            <Link href="/campus/courses" className="text-sm font-semibold text-primary/70 hover:text-primary">
+              {es ? "Ver todos" : "See all"}
+            </Link>
+          ) : null}
+        </div>
+        {home.catalog.length > 0 ? (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {home.catalog.slice(0, 3).map((course) => (
+              <CourseCard key={course.id} course={course} />
             ))}
           </div>
         ) : (
-          <CampusEmpty title={t("studentCourses.emptyCatalog")} />
+          <p className="rounded-2xl border border-dashed border-primary/15 px-6 py-10 text-center text-sm text-primary/55">
+            {home.myCourses.length
+              ? es
+                ? "Ya estás inscripto en todos los cursos disponibles. Pronto sumamos más."
+                : "You're enrolled in every available course. More are on the way."
+              : es
+                ? "Todavía no hay cursos publicados. Pronto sumamos los primeros."
+                : "No courses are published yet. The first ones are on the way."}
+          </p>
         )}
       </section>
-
-      {completedEnrollments.length > 0 ? (
-        <section className="space-y-5">
-          <h2 className="font-display text-2xl font-bold tracking-tight text-primary">
-            {t("studentCourses.certificationsTitle")}
-          </h2>
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {completedEnrollments.map((e) => (
-              <StudentCourseCard
-                key={e.id}
-                course={e.courses}
-                enrollment={e}
-                variant="completed"
-              />
-            ))}
-          </div>
-        </section>
-      ) : null}
     </div>
   );
 }

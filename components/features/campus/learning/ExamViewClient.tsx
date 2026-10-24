@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { LearnSidebar } from "@/components/features/campus/learning/LearnSidebar";
 import { ExamPreFlight } from "./ExamPreFlight";
 import { ExamQuestionView } from "./ExamQuestionView";
 import { ExamResults } from "./ExamResults";
@@ -94,56 +93,16 @@ export function ExamViewClient({
   };
 
   return (
-    <div className="max-w-[1600px] mx-auto animate-in fade-in duration-700">
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
-        {/* Main Content Area */}
-        <div className="xl:col-span-8 space-y-8 min-h-[600px] flex flex-col">
-          {state === "idle" && (
-            <ExamPreFlight 
-              exam={exam} 
-              questionCount={questions.length} 
-              onStart={handleStartExam} 
-            />
-          )}
-          
-          {state === "active" && (
-            <ExamQuestionView 
-              exam={exam} 
-              questions={questions} 
-              onFinish={handleFinishExam} 
-            />
-          )}
-
-          {state === "finished" && (
-            <ExamResults 
-              exam={exam} 
-              lastAttempt={lastAttempt} 
-              onRetry={handleRestart} 
-              nextItemUrl={nextItemUrl}
-            />
-          )}
-        </div>
-
-        {/* Sidebar Area */}
-        <aside className="xl:col-span-4 self-start sticky top-28 h-[calc(100vh-8rem)] min-h-[500px]">
-          <div className="h-full rounded-[2.5rem] bg-white border border-slate-100 shadow-2xl shadow-primary/5 overflow-hidden">
-            <LearnSidebar
-              courseId={course.id}
-              subjects={course.subjects}
-              activeItemId={exam.id}
-              activeType="exam"
-              progressPercentage={progressPercentage}
-              onPrevious={handlePrevious}
-              onNext={handleNext}
-              hasPrevious={!!previousItem}
-              hasNext={!!nextItem && isPassed}
-              onNextFromSidebar={handleNext}
-              enrollmentStatus={enrollmentStatus}
-              finalExamConfig={{ enabled: (course.final_exam_question_count ?? 0) > 0 }}
-            />
-          </div>
-        </aside>
-      </div>
+    <div className="mx-auto w-full max-w-3xl px-5 pb-24 pt-8 sm:px-8 lg:pt-12">
+      {state === "idle" && (
+        <ExamPreFlight exam={exam} questionCount={questions.length} onStart={handleStartExam} />
+      )}
+      {state === "active" && (
+        <ExamQuestionView exam={exam} questions={questions} onFinish={handleFinishExam} />
+      )}
+      {state === "finished" && (
+        <ExamResults exam={exam} lastAttempt={lastAttempt} onRetry={handleRestart} nextItemUrl={nextItemUrl} />
+      )}
     </div>
   );
 }
