@@ -55,14 +55,11 @@ export function navLinksForRole(role: PreviewRole | string | null): CampusNavLin
   const instructor: CampusNavLink[] = [
     ...student,
     { href: "/campus/admin/courses", labelKey: "campus.manageCourses" },
-    { href: "/campus/admin/exams", labelKey: "campus.exams" },
+    { href: "/campus/admin/people", labelKey: "campus.people" },
   ];
 
   const admin: CampusNavLink[] = [
     ...instructor,
-    { href: "/campus/admin/user-management", labelKey: "campus.userManagement" },
-    { href: "/campus/admin/users", labelKey: "campus.users" },
-    { href: "/campus/admin/roles", labelKey: "campus.roles" },
     { href: "/campus/admin/newsletter", labelKey: "campus.newsletter" },
   ];
 

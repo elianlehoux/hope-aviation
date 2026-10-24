@@ -296,6 +296,7 @@ export const translations = {
 
   // ── Campus Layout / Navigation ──
   campus: {
+    people: { en: "People", es: "Personas" },
     home: { en: "Home", es: "Inicio" },
     myLearning: { en: "My Learning", es: "Mi Aprendizaje" },
     myCertificates: { en: "My Certificates", es: "Mis Certificados" },

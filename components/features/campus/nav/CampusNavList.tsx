@@ -5,12 +5,9 @@ import { usePathname } from "next/navigation";
 import {
   Award,
   BookOpen,
-  ClipboardList,
-  GraduationCap,
   Home,
   Library,
   Mail,
-  ShieldCheck,
   UserRound,
   Users,
   type LucideIcon,
@@ -29,10 +26,7 @@ const ICONS: Record<string, LucideIcon> = {
   "/campus/certificates": Award,
   "/campus/profile": UserRound,
   "/campus/admin/courses": Library,
-  "/campus/admin/exams": ClipboardList,
-  "/campus/admin/user-management": GraduationCap,
-  "/campus/admin/users": Users,
-  "/campus/admin/roles": ShieldCheck,
+  "/campus/admin/people": Users,
   "/campus/admin/newsletter": Mail,
 };
 
