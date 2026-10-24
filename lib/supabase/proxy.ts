@@ -70,6 +70,12 @@ export async function updateSession(request: NextRequest) {
   if (!user && !publicPath) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
+    // Send the user back where they were going after signing in.
+    url.search = "";
+    url.searchParams.set(
+      "next",
+      request.nextUrl.pathname + request.nextUrl.search,
+    );
     return NextResponse.redirect(url);
   }
 

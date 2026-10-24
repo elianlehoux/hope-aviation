@@ -7,6 +7,10 @@ const loginSchema = z.object({
   password: z.string().min(1),
 });
 
+/**
+ * Email + password sign-in. Never creates accounts: sign-up lives in
+ * /auth/registro and goes through Supabase's confirmation flow.
+ */
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -23,38 +27,21 @@ export async function POST(request: Request) {
   const { email, password } = parsed.data;
   const supabase = await createClient();
 
-  // 1. Try to sign in with password first
-  const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (!signInError && signInData.user) {
-    return jsonOk({
-      user: { id: signInData.user.id, email: signInData.user.email },
-      isNewUser: false,
-    });
+  if (error || !data.user) {
+    // GoTrue only reports an unconfirmed email after the password matched,
+    // so surfacing it does not reveal whether an address is registered.
+    if (error?.code === "email_not_confirmed") {
+      return jsonError("email_not_confirmed", "Email not confirmed.", 401);
+    }
+    return jsonError("invalid_credentials", "Invalid credentials.", 401);
   }
 
-  // 2. If sign-in failed, check if the account doesn't exist by trying to sign it up
-  // If the user already exists, Supabase signUp will return an empty identities array (user enumeration protection)
-  // or a "User already registered" error.
-  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-    email,
-    password,
+  return jsonOk({
+    user: { id: data.user.id, email: data.user.email },
   });
-
-  // Check if it's a new user (identities array is not empty)
-  const isNewUser = signUpData?.user && signUpData.user.identities && signUpData.user.identities.length > 0;
-
-  if (!signUpError && isNewUser) {
-    return jsonOk({
-      user: { id: signUpData.user!.id, email: signUpData.user!.email },
-      isNewUser: true,
-      requiresConfirmation: !signUpData.session,
-    });
-  }
-
-  // If signUp failed or user already existed (empty identities), return unauthorized (invalid credentials)
-  return jsonError("unauthorized", "Invalid credentials.", 401);
 }
