@@ -4,9 +4,14 @@
 --   admin@hope.test       admin
 --   instructor@hope.test  instructor (assigned to the demo course)
 --   student@hope.test     student (enrolled in the demo course)
+--   instructor2@hope.test instructor (not assigned to any course)
+--   student2@hope.test    student with an empty name, enrolled in course B
 --
 -- Demo course: "Fundamentos de aviación misionera" with two modules, mixed
 -- video / written lessons (Markdown + campus extensions), module exams and a final exam.
+--
+-- Course B: "Seguridad en pistas cortas" with no final exam. Module 1 has no exam (it is passed
+-- by completing its lessons); module 2 has a 1-minute exam to exercise server-side timing.
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;
 
@@ -16,6 +21,12 @@ DECLARE
   v_admin uuid := '00000000-0000-4000-a000-000000000001';
   v_instructor uuid := '00000000-0000-4000-a000-000000000002';
   v_student uuid := '00000000-0000-4000-a000-000000000003';
+  v_instructor2 uuid := '00000000-0000-4000-a000-000000000004';
+  v_student2 uuid := '00000000-0000-4000-a000-000000000005';
+  v_course_b uuid := '10000000-0000-4000-a000-000000000002';
+  v_s3 uuid := '20000000-0000-4000-a000-000000000003';
+  v_s4 uuid := '20000000-0000-4000-a000-000000000004';
+  v_e3 uuid := '40000000-0000-4000-a000-000000000003';
   v_course uuid := '10000000-0000-4000-a000-000000000001';
   v_s1 uuid := '20000000-0000-4000-a000-000000000001';
   v_s2 uuid := '20000000-0000-4000-a000-000000000002';
@@ -28,7 +39,9 @@ BEGIN
     SELECT * FROM (VALUES
       (v_admin, 'admin@hope.test', 'Ana', 'Admin', 'admin'),
       (v_instructor, 'instructor@hope.test', 'Iván', 'Instructor', 'instructor'),
-      (v_student, 'student@hope.test', 'Sofía', 'Estudiante', 'student')
+      (v_student, 'student@hope.test', 'Sofía', 'Estudiante', 'student'),
+      (v_instructor2, 'instructor2@hope.test', 'Inés', 'Instructora', 'instructor'),
+      (v_student2, 'student2@hope.test', '', '', 'student')
     ) AS t(id, email, first_name, last_name, role)
   LOOP
     INSERT INTO auth.users (
@@ -277,5 +290,60 @@ $md$)),
 
   INSERT INTO public.lesson_progress (user_id, class_id, is_completed, completed_at)
   VALUES (v_student, '30000000-0000-4000-a000-000000000001', true, now())
+  ON CONFLICT DO NOTHING;
+
+  -- ---------------------------------------------------------------------------
+  -- Course B: no final exam, module 1 without exam, module 2 with a 1-minute exam
+  -- ---------------------------------------------------------------------------
+  INSERT INTO public.courses (id, title, description, thumbnail_url, status,
+    final_exam_question_count, final_exam_passing_score, final_exam_time_limit_minutes)
+  VALUES (
+    v_course_b,
+    '{"es": "Seguridad en pistas cortas", "en": "Short airstrip safety"}',
+    '{"es": "Curso breve sin examen final: completá las clases y aprobá el examen del módulo 2.", "en": "Short course with no final exam: complete the lessons and pass the module 2 exam."}',
+    NULL, 'published', NULL, 70, NULL
+  ) ON CONFLICT (id) DO NOTHING;
+
+  INSERT INTO public.course_instructors (course_id, user_id) VALUES (v_course_b, v_instructor)
+  ON CONFLICT DO NOTHING;
+
+  INSERT INTO public.subjects (id, course_id, title, description, order_index) VALUES
+    (v_s3, v_course_b, '{"es": "Antes de despegar", "en": "Before takeoff"}',
+     '{"es": "Inspección de la pista y del avión.", "en": "Airstrip and aircraft inspection."}', 0),
+    (v_s4, v_course_b, '{"es": "En el aire", "en": "In the air"}',
+     '{"es": "Aproximación y aterrizaje corto.", "en": "Short approach and landing."}', 1)
+  ON CONFLICT (id) DO NOTHING;
+
+  INSERT INTO public.classes (id, subject_id, title, description, video_url, resource_url, duration_minutes, order_index, content) VALUES
+  ('30000000-0000-4000-a000-000000000005', v_s3,
+   '{"es": "Recorrer la pista", "en": "Walking the airstrip"}', NULL, NULL, NULL, 5, 0,
+   '{"es": "Antes de cada operación, **recorré la pista** buscando piedras, pozos y animales.", "en": "Before every operation, **walk the airstrip** looking for rocks, holes and animals."}'),
+  ('30000000-0000-4000-a000-000000000006', v_s3,
+   '{"es": "Inspección prevuelo", "en": "Preflight inspection"}', NULL, NULL, NULL, 5, 1,
+   '{"es": "Usá siempre la lista de chequeo del fabricante.", "en": "Always use the manufacturer checklist."}'),
+  ('30000000-0000-4000-a000-000000000007', v_s4,
+   '{"es": "Aproximación estabilizada", "en": "Stabilized approach"}', NULL, NULL, NULL, 5, 0,
+   '{"es": "Una aproximación estabilizada es la base de un aterrizaje corto seguro.", "en": "A stabilized approach is the basis of a safe short landing."}')
+  ON CONFLICT (id) DO NOTHING;
+
+  INSERT INTO public.exams (id, course_id, subject_id, title, description, passing_score, max_attempts, order_index, time_limit_minutes)
+  VALUES (v_e3, v_course_b, v_s4, '{"es": "Evaluación: en el aire", "en": "Assessment: in the air"}', NULL, 50, 3, 0, 1)
+  ON CONFLICT (id) DO NOTHING;
+
+  INSERT INTO public.questions (exam_id, content, points, order_index)
+  VALUES (v_e3, '{"es": "¿Qué es lo primero antes de operar en una pista corta?", "en": "What comes first before operating on a short strip?"}', 1, 0)
+  RETURNING id INTO v_q;
+  INSERT INTO public.options (question_id, content, is_correct) VALUES
+    (v_q, '{"es": "Recorrer la pista", "en": "Walk the strip"}', true),
+    (v_q, '{"es": "Cargar combustible extra", "en": "Load extra fuel"}', false);
+
+  INSERT INTO public.questions (exam_id, content, points, order_index)
+  VALUES (v_e3, '{"es": "Un aterrizaje corto seguro empieza con…", "en": "A safe short landing starts with…"}', 1, 1)
+  RETURNING id INTO v_q;
+  INSERT INTO public.options (question_id, content, is_correct) VALUES
+    (v_q, '{"es": "Una aproximación estabilizada", "en": "A stabilized approach"}', true),
+    (v_q, '{"es": "Más velocidad", "en": "More speed"}', false);
+
+  INSERT INTO public.enrollments (user_id, course_id, status) VALUES (v_student2, v_course_b, 'active')
   ON CONFLICT DO NOTHING;
 END $$;
