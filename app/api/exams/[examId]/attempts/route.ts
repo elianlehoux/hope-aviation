@@ -4,6 +4,7 @@ import { jsonError, jsonOk } from "@/lib/api/json";
 import { parseUuidParam } from "@/lib/api/params";
 import { responseFromPostgrestError } from "@/lib/api/supabase-errors";
 import { examSubmitSchema } from "@/lib/validation/exams";
+import { examRpcErrorResponse } from "@/lib/campus/exam-paper";
 
 type RouteContext = { params: Promise<{ examId: string }> };
 
@@ -70,20 +71,10 @@ export async function GET(_request: Request, context: RouteContext) {
   });
 }
 
-const SUBMIT_ERRORS: Record<string, [string, string, number]> = {
-  exam_not_found: ["not_found", "Exam not found.", 404],
-  not_enrolled: ["unauthorized", "Not enrolled in this course.", 403],
-  module_locked: ["forbidden", "Pass the previous module first.", 403],
-  max_attempts_reached: ["validation_error", "Maximum attempts reached for this exam.", 400],
-  unknown_question: ["validation_error", "Unknown question id in answers.", 400],
-  no_questions: ["validation_error", "This exam has no questions.", 400],
-  invalid_answers: ["validation_error", "Invalid attempt payload.", 400],
-  "not authenticated": ["unauthorized", "Authentication required.", 401],
-};
-
 /**
- * Submit a completed exam attempt. Grading, attempt limits, module gating and module credit
- * all run in `public.submit_exam_attempt` so the answer key never reaches the client.
+ * Submit the caller's open attempt. Grading, timing (a late submit scores zero) and module
+ * credit all run in `public.submit_exam_attempt`, so the answer key never reaches the client.
+ * Response: `{ data: { score, passed, correct, total } }`; a second submit gets 409 `no_open_attempt`.
  */
 export async function POST(request: Request, context: RouteContext) {
   const { examId: rawExamId } = await context.params;
@@ -105,7 +96,7 @@ export async function POST(request: Request, context: RouteContext) {
 
   const parsed = examSubmitSchema.safeParse(body);
   if (!parsed.success) {
-    return jsonError("validation_error", "Invalid attempt payload.", 400);
+    return jsonError("invalid_answers", "Invalid attempt payload.", 400);
   }
 
   const { data: attempt, error } = await supabase.rpc("submit_exam_attempt", {
@@ -113,26 +104,27 @@ export async function POST(request: Request, context: RouteContext) {
     p_answers: parsed.data.answers,
   });
 
-  if (error) {
-    const key = Object.keys(SUBMIT_ERRORS).find((k) => error.message?.includes(k));
-    if (key) {
-      const [code, message, status] = SUBMIT_ERRORS[key];
-      return jsonError(code, message, status);
-    }
-    return responseFromPostgrestError(error);
-  }
+  if (error) return examRpcErrorResponse(error);
 
-  const attemptRow = Array.isArray(attempt) ? attempt[0] : attempt;
+  const attemptRow = (Array.isArray(attempt) ? attempt[0] : attempt) as
+    | { score: number | null; passed: boolean | null }
+    | null;
   if (!attemptRow) {
     return jsonError("database_error", "Something went wrong. Please try again.", 500);
   }
 
-  return jsonOk(
-    {
-      attempt: attemptRow,
-      score: attemptRow.score,
-      passed: attemptRow.passed,
-    },
-    201,
-  );
+  const { count, error: countErr } = await supabase
+    .from("questions")
+    .select("id", { count: "exact", head: true })
+    .eq("exam_id", examId);
+  if (countErr) return responseFromPostgrestError(countErr);
+
+  const score = attemptRow.score ?? 0;
+  const total = count ?? 0;
+  return jsonOk({
+    score,
+    passed: attemptRow.passed === true,
+    correct: Math.round((score * total) / 100),
+    total,
+  });
 }
