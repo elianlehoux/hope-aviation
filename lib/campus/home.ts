@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { getLearnerUser } from "@/lib/campus/learning";
+import { getLearnerUser, getUserRoles } from "@/lib/campus/learning";
 import type { TranslatedText } from "@/types/database";
 
 export type CourseSummary = {
@@ -53,13 +53,13 @@ export const getLearnerHome = cache(async (): Promise<LearnerHome | null> => {
   const { supabase, user } = await getLearnerUser();
   if (!user) return null;
 
-  const [profileRes, rolesRes, enrollmentsRes, catalogRes] = await Promise.all([
+  const [profileRes, roles, enrollmentsRes, catalogRes] = await Promise.all([
     supabase
       .from("profiles")
       .select("first_name, last_name, birth_date, country_code")
       .eq("id", user.id)
       .maybeSingle(),
-    supabase.from("roles_users").select("roles(slug)").eq("user_id", user.id),
+    getUserRoles(),
     supabase
       .from("enrollments")
       .select(
@@ -79,13 +79,6 @@ export const getLearnerHome = cache(async (): Promise<LearnerHome | null> => {
   ]);
 
   const profile = profileRes.data;
-  const roles = (rolesRes.data ?? [])
-    .map((r) => {
-      const rel = r.roles as { slug?: string } | { slug?: string }[] | null;
-      return Array.isArray(rel) ? rel[0]?.slug : rel?.slug;
-    })
-    .filter((s): s is string => Boolean(s));
-
   const myCourses: MyCourse[] = (enrollmentsRes.data ?? [])
     .filter((e) => e.courses)
     .map((e) => {

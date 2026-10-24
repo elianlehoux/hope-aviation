@@ -2,7 +2,7 @@ import Link from "next/link";
 import { cache, Suspense } from "react";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { createClient } from "@/lib/supabase/server";
+import { getLearnerUser, getUserRoles } from "@/lib/campus/learning";
 import { CampusMobileNav } from "@/components/features/campus/CampusMobileNav";
 import { CampusSidebar } from "@/components/features/campus/CampusSidebar";
 import { CampusMain, HideInClassroom } from "@/components/features/campus/CampusChrome";
@@ -69,29 +69,13 @@ function ContentFallback() {
 }
 
 const getCampusSession = cache(async function getCampusSession() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const [{ user }, slugs] = await Promise.all([getLearnerUser(), getUserRoles()]);
   const preview = isCampusPreviewEnabled();
 
   if (!user) {
     if (preview) return { user: null, preview, navLinks: navLinksForRole("student"), role: "student" as PreviewRole };
     redirect("/auth/login?clear=1");
   }
-
-  const { data: roleRows } = await supabase
-    .from("roles_users")
-    .select("roles(slug)")
-    .eq("user_id", user.id);
-
-  const slugs = (roleRows || [])
-    .map((row: { roles?: { slug?: string } | { slug?: string }[] | null }) => {
-      const rel = row.roles;
-      if (Array.isArray(rel)) return rel[0]?.slug;
-      return rel?.slug;
-    })
-    .filter((slug): slug is string => Boolean(slug));
 
   const cookieStore = await cookies();
   const cookieRole = parsePreviewRole(cookieStore.get(PREVIEW_COOKIE)?.value);

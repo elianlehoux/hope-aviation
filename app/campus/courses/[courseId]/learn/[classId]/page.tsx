@@ -29,7 +29,7 @@ export default async function LessonPage({
     .maybeSingle();
   if (!lesson) notFound();
 
-  const module = outline.modules[item.moduleIndex];
+  const lessonModule = outline.modules[item.moduleIndex];
   const link = (i: typeof next) =>
     i ? { href: i.href, title: i.title, locked: i.locked, kind: i.kind } : null;
 
@@ -45,7 +45,7 @@ export default async function LessonPage({
         durationMinutes: lesson.duration_minutes,
         content: lesson.content as TranslatedText | null,
       }}
-      module={{ index: module.index, title: module.title }}
+      module={{ index: lessonModule.index, title: lessonModule.title }}
       completed={item.completed}
       previous={link(previous)}
       next={link(next)}

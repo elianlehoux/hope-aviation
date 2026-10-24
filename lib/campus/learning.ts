@@ -97,13 +97,36 @@ const byOrder = <T extends { order_index: number | null; id: string }>(a: T, b: 
   (a.order_index ?? Number.MAX_SAFE_INTEGER) - (b.order_index ?? Number.MAX_SAFE_INTEGER) ||
   a.id.localeCompare(b.id);
 
-/** Signed-in user for this request (one Auth round trip, shared by every caller). */
+/**
+ * Signed-in user for this request, shared by every caller. Uses getClaims, which verifies
+ * the JWT locally when the project has asymmetric signing keys (no Auth round trip) and
+ * falls back to the Auth server otherwise.
+ */
 export const getLearnerUser = cache(async () => {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data } = await supabase.auth.getClaims();
+  const claims = data?.claims;
+  const user = claims?.sub
+    ? {
+        id: claims.sub as string,
+        email: (claims.email as string | undefined) ?? undefined,
+        user_metadata: (claims.user_metadata as Record<string, unknown> | undefined) ?? {},
+      }
+    : null;
   return { supabase, user };
+});
+
+/** Role slugs of the current user (memoized per request). */
+export const getUserRoles = cache(async (): Promise<string[]> => {
+  const { supabase, user } = await getLearnerUser();
+  if (!user) return [];
+  const { data } = await supabase.from("roles_users").select("roles(slug)").eq("user_id", user.id);
+  return (data ?? [])
+    .map((r) => {
+      const rel = r.roles as { slug?: string } | { slug?: string }[] | null;
+      return Array.isArray(rel) ? rel[0]?.slug : rel?.slug;
+    })
+    .filter((s): s is string => Boolean(s));
 });
 
 export const getCourseOutline = cache(async (courseId: string): Promise<CourseOutline | null> => {

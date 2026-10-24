@@ -1177,6 +1177,17 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                                                          </div>
                                                       </div>
                                                       
+                                                      <div className="flex items-center gap-1">
+                                                         <Link
+                                                           href={`/campus/admin/courses/${courseId}/lessons/${cls.id}`}
+                                                           onClick={(e) => e.stopPropagation()}
+                                                           className="inline-flex items-center gap-1 rounded-full border border-primary/15 bg-white px-2.5 py-1 text-[11px] font-semibold text-primary/75 hover:border-primary/30 hover:text-primary"
+                                                         >
+                                                           <FileText className="size-3" />
+                                                           {(cls as { has_content?: boolean }).has_content
+                                                             ? lang === "es" ? "Editar texto" : "Edit text"
+                                                             : lang === "es" ? "Escribir clase" : "Write lesson"}
+                                                         </Link>
                                                       <div className="flex items-center gap-1 opacity-100 sm:opacity-0 group-hover/cls:opacity-100 transition-opacity">
                                                          <Tooltip>
                                                           <TooltipTrigger asChild>
@@ -1194,6 +1205,7 @@ export default function CourseDetailPanel({ courseId }: { courseId: string }) {
                                                           </TooltipTrigger>
                                                           <TooltipContent>{t("common.delete")}</TooltipContent>
                                                         </Tooltip>
+                                                      </div>
                                                       </div>
                                                    </div>
                                                  )}
