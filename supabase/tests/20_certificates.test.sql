@@ -1,5 +1,6 @@
 -- Certificate codes and public verification (migration 20261025110000).
 BEGIN;
+DO $$ BEGIN PERFORM tests.reset_learners(); END $$;
 SAVEPOINT clean;
 
 DO $$

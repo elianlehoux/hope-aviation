@@ -1,4 +1,5 @@
 BEGIN;
+DO $$ BEGIN PERFORM tests.reset_learners(); END $$;
 
 DO $$
 BEGIN

@@ -69,3 +69,35 @@ END;
 $$;
 
 GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA tests TO authenticated, anon;
+
+-- Put the seed learners back to their seed state (inside the caller's transaction, which
+-- the test file rolls back). Other people use the local database, so tests must not depend
+-- on whatever attempts or progress they left behind.
+CREATE OR REPLACE FUNCTION tests.reset_learners()
+RETURNS void
+LANGUAGE plpgsql
+AS $$
+DECLARE
+  v_learners uuid[] := ARRAY[
+    '00000000-0000-4000-a000-000000000003'::uuid,
+    '00000000-0000-4000-a000-000000000005'::uuid
+  ];
+BEGIN
+  DELETE FROM public.exam_attempts WHERE user_id = ANY (v_learners);
+  DELETE FROM public.final_exam_sessions WHERE user_id = ANY (v_learners);
+  DELETE FROM public.lesson_progress WHERE user_id = ANY (v_learners);
+  DELETE FROM public.enrollments WHERE user_id = ANY (v_learners);
+  INSERT INTO public.enrollments (user_id, course_id, status) VALUES
+    ('00000000-0000-4000-a000-000000000003', '10000000-0000-4000-a000-000000000001', 'active'),
+    ('00000000-0000-4000-a000-000000000005', '10000000-0000-4000-a000-000000000002', 'active');
+  INSERT INTO public.lesson_progress (user_id, class_id, is_completed, completed_at)
+  VALUES ('00000000-0000-4000-a000-000000000003', '30000000-0000-4000-a000-000000000001', true, now());
+  UPDATE public.profiles SET first_name = 'Sofía', last_name = 'Estudiante'
+  WHERE id = '00000000-0000-4000-a000-000000000003';
+  UPDATE public.courses
+  SET final_exam_question_count = 4, final_exam_passing_score = 70, final_exam_time_limit_minutes = 20
+  WHERE id = '10000000-0000-4000-a000-000000000001';
+  UPDATE public.courses SET final_exam_question_count = NULL
+  WHERE id = '10000000-0000-4000-a000-000000000002';
+END;
+$$;

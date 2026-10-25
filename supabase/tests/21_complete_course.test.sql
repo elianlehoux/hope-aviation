@@ -2,6 +2,7 @@
 -- Course B (...0002): module 1 has classes 3000...05/06 and no exam; module 2 has class
 -- 3000...07 and exam 4000...03. student2 (...0005) is enrolled with no progress.
 BEGIN;
+DO $$ BEGIN PERFORM tests.reset_learners(); END $$;
 SAVEPOINT clean;
 
 DO $$

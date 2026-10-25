@@ -1,6 +1,7 @@
 -- Server-timed module exam attempts and final exam sessions (migration 20261025100000).
 -- Seed ids: student ...0003 (course A), student2 ...0005 (course B), exams 4000...01/02 (A), 4000...03 (B).
 BEGIN;
+DO $$ BEGIN PERFORM tests.reset_learners(); END $$;
 SAVEPOINT clean;
 
 DO $$
