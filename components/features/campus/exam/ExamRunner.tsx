@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/features/campus/ui/empty-state";
 import { useTranslation } from "@/lib/i18n/context";
+import { completeCourse } from "@/components/features/campus/learn/complete-course";
 import { startExam, submitExam, type ExamErrorCode } from "./api";
 import { ExamIntro } from "./ExamIntro";
 import { ExamMap } from "./ExamMap";
@@ -23,7 +24,7 @@ type Phase =
   | { name: "resuming" }
   | { name: "running" }
   | { name: "review" }
-  | { name: "result"; outcome: ExamOutcome; attemptsLeft: number | null }
+  | { name: "result"; outcome: ExamOutcome; attemptsLeft: number | null; courseCompleted: boolean }
   | { name: "closed" }
   | { name: "unavailable" };
 
@@ -43,6 +44,7 @@ export function ExamRunner({
   intro,
   next,
   openAttemptStartedAt,
+  completesCourse = false,
   preview,
 }: ExamRunnerProps) {
   const { lang } = useTranslation();
@@ -186,12 +188,15 @@ export function ExamRunner({
     }
 
     const attemptsLeft = intro.maxAttempts === null ? null : Math.max(0, intro.maxAttempts - (intro.attemptsUsed + 1));
+    // The last module exam of a course without a final exam also closes the course.
+    const courseCompleted =
+      kind === "module" && res.data.passed && completesCourse ? (await completeCourse(courseId)).ok : false;
     clear();
     setPaper(null);
-    setPhase({ name: "result", outcome: res.data, attemptsLeft });
+    setPhase({ name: "result", outcome: res.data, attemptsLeft, courseCompleted });
     window.scrollTo({ top: 0 });
     router.refresh();
-  }, [clear, es, intro.attemptsUsed, intro.maxAttempts, paper, preview, router, submitUrl]);
+  }, [clear, completesCourse, courseId, es, intro.attemptsUsed, intro.maxAttempts, kind, paper, preview, router, submitUrl]);
 
   const onExpire = React.useCallback(() => {
     toast.info(es ? "Se terminó el tiempo. Enviamos tus respuestas." : "Time's up. We sent your answers.");
@@ -264,6 +269,7 @@ export function ExamRunner({
         passingScore={intro.passingScore}
         next={next}
         attemptsLeft={phase.attemptsLeft}
+        courseCompleted={phase.courseCompleted}
         onRetry={retry}
       />,
     );

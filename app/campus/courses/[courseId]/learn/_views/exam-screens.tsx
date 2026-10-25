@@ -1,5 +1,11 @@
 import { notFound, redirect } from "next/navigation";
-import { getLearnerUser, neighbours, resumeItem, type CourseOutline } from "@/lib/campus/learning";
+import {
+  completesCourse,
+  getLearnerUser,
+  neighbours,
+  resumeItem,
+  type CourseOutline,
+} from "@/lib/campus/learning";
 import { ExamRunner } from "@/components/features/campus/exam/ExamRunner";
 import type { TranslatedText } from "@/types/database";
 
@@ -83,6 +89,7 @@ export async function ModuleExamScreen({
       }}
       next={next ? { href: next.href, title: next.title } : null}
       openAttemptStartedAt={summary.openStartedAt}
+      completesCourse={completesCourse(outline, examId)}
       preview={preview}
     />
   );

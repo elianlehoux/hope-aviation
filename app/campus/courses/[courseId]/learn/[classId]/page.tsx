@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { parseUuidParam } from "@/lib/api/params";
-import { getCourseOutline, getLearnerUser, neighbours, resumeItem } from "@/lib/campus/learning";
+import { completesCourse, getCourseOutline, getLearnerUser, neighbours, resumeItem } from "@/lib/campus/learning";
 import { LessonView } from "@/components/features/campus/learn/LessonView";
 import type { TranslatedText } from "@/types/database";
 
@@ -49,6 +49,8 @@ export default async function LessonPage({
       completed={item.completed}
       previous={link(previous)}
       next={link(next)}
+      completesCourse={completesCourse(outline, classId)}
+      canComplete={outline.canComplete}
     />
   );
 }

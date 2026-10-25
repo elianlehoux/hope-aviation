@@ -16,6 +16,7 @@ export function ExamResult({
   passingScore,
   next,
   attemptsLeft,
+  courseCompleted,
   onRetry,
 }: {
   kind: ExamRunnerProps["kind"];
@@ -25,13 +26,15 @@ export function ExamResult({
   next: ExamRunnerProps["next"];
   /** null = unlimited. */
   attemptsLeft: number | null;
+  /** The pass also completed the course (course without a final exam). */
+  courseCompleted: boolean;
   onRetry: () => void;
 }) {
   const { lang } = useTranslation();
   const es = lang === "es";
   const score = Math.round(outcome.score);
   const canRetry = attemptsLeft === null || attemptsLeft > 0;
-  const finalPassed = kind === "final" && outcome.passed;
+  const finalPassed = (kind === "final" && outcome.passed) || courseCompleted;
 
   return (
     <div className="text-center">

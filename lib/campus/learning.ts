@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import type { TranslatedText } from "@/types/database";
+import { subjectPassed } from "./module-gate";
 
 /**
  * Learner classroom data. One course-tree query (light columns only) runs in parallel
@@ -60,6 +61,13 @@ export type CourseOutline = {
   items: OutlineItem[];
   progress: number;
   finalExam: { questionCount: number; passingScore: number; timeLimitMinutes: number | null } | null;
+  /**
+   * The learner can close the course now: there is no final exam, the enrollment is still
+   * active and every class and module exam is done (POST /api/courses/:id/complete).
+   */
+  canComplete: boolean;
+  /** Staff preview: everything unlocked, no progress, nothing is recorded. */
+  preview?: boolean;
 };
 
 type Attempt = { passed: boolean | null; finished_at: string | null };
@@ -168,7 +176,7 @@ export const getCourseOutline = cache(async (courseId: string): Promise<CourseOu
 
   subjects.forEach((subject, index) => {
     const exams = [...(subject.exams ?? [])].sort(byOrder);
-    const passed = exams.every((e) => e.exam_attempts?.some((a) => a.passed === true));
+    const passed = subjectPassed(subject);
     const locked = !unlocked;
 
     const items: OutlineItem[] = [
@@ -240,6 +248,7 @@ export const getCourseOutline = cache(async (courseId: string): Promise<CourseOu
     items,
     progress: items.length ? Math.round((done / items.length) * 100) : 0,
     finalExam,
+    canComplete: !finalExam && status === "active" && items.length > 0 && done === items.length,
   };
 });
 
@@ -251,6 +260,19 @@ export function neighbours(outline: CourseOutline, id: string) {
     previous: index > 0 ? outline.items[index - 1] : null,
     next: index >= 0 && index < outline.items.length - 1 ? outline.items[index + 1] : null,
   };
+}
+
+const itemDone = (i: OutlineItem) => (i.kind === "class" ? i.completed : i.passed);
+
+/**
+ * True when finishing `itemId` (completing that class or passing that exam) is the last step
+ * of a course without a final exam, so the caller should then complete the course.
+ */
+export function completesCourse(outline: CourseOutline, itemId: string): boolean {
+  if (outline.finalExam || outline.enrollmentStatus !== "active" || outline.preview) return false;
+  const item = outline.items.find((i) => i.id === itemId);
+  if (!item || itemDone(item)) return false;
+  return outline.items.every((i) => i.id === itemId || itemDone(i));
 }
 
 /** First item a learner should open: the first incomplete, unlocked one. */

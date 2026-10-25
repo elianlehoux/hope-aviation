@@ -41,6 +41,8 @@ export type ExamRunnerProps = {
   intro: ExamIntroData;
   /** Next outline item, shown as the call to action after a pass. */
   next: { href: string; title: TranslatedText } | null;
+  /** Passing this module exam is the last step of a course without a final exam. */
+  completesCourse?: boolean;
   /** Start time of an attempt left open (reload / closed tab); the runner resumes it. */
   openAttemptStartedAt: string | null;
   /** Staff preview: the paper renders read-only and nothing is recorded. */

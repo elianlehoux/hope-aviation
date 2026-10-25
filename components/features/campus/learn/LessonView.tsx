@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, Check, Clock, Download, FileText, Lock, PlayCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Award, Check, Clock, Download, FileText, Loader2, Lock, PlayCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,7 @@ import { toggleLessonCompletion } from "@/actions/courses";
 import type { TranslatedText } from "@/types/database";
 import { YouTubePlayer } from "@/components/features/campus/learning/YouTubePlayer";
 import { LessonMarkdown } from "@/components/features/campus/lesson/LessonMarkdown";
+import { completeCourse } from "./complete-course";
 
 type NavTarget = { href: string; title: TranslatedText; locked: boolean; kind: string } | null;
 
@@ -33,6 +34,12 @@ export type LessonViewProps = {
   completed: boolean;
   previous: NavTarget;
   next: NavTarget;
+  /** Completing this lesson is the last step of a course without a final exam. */
+  completesCourse?: boolean;
+  /** Everything is already done; the course only needs closing. */
+  canComplete?: boolean;
+  /** Staff preview: no completion controls, nothing is saved. */
+  preview?: boolean;
 };
 
 function pickText(text: TranslatedText | null, lang: "es" | "en") {
@@ -40,7 +47,17 @@ function pickText(text: TranslatedText | null, lang: "es" | "en") {
   return text[lang]?.trim() || text[lang === "es" ? "en" : "es"]?.trim() || "";
 }
 
-export function LessonView({ courseId, lesson, module, completed, previous, next }: LessonViewProps) {
+export function LessonView({
+  courseId,
+  lesson,
+  module,
+  completed,
+  previous,
+  next,
+  completesCourse = false,
+  canComplete = false,
+  preview = false,
+}: LessonViewProps) {
   const { lang } = useTranslation();
   const router = useRouter();
   const [pending, startTransition] = React.useTransition();
@@ -54,17 +71,41 @@ export function LessonView({ courseId, lesson, module, completed, previous, next
   const videoId = lesson.videoUrl ? getYoutubeId(lesson.videoUrl) : null;
   const reading = body ? readingMinutes(body) : 0;
 
+  const [finishing, setFinishing] = React.useState(false);
+
+  // Closes a course without a final exam, then celebrates on the certificates page.
+  const finishCourse = async () => {
+    setFinishing(true);
+    const res = await completeCourse(courseId);
+    if (res.ok) {
+      toast.success(es ? "¡Curso completado!" : "Course completed!");
+      router.push(`/campus/certificates?new=${courseId}`);
+      return;
+    }
+    setFinishing(false);
+    toast.error(
+      es
+        ? "Todavía falta algo para completar el curso. Revisá el temario."
+        : "Something is still missing to complete the course. Check the outline.",
+    );
+    router.refresh();
+  };
+
   const complete = (goNext: boolean) =>
     startTransition(async () => {
-      const res = await toggleLessonCompletion(courseId, lesson.id, goNext ? true : !done);
+      const value = goNext ? true : !done;
+      const res = await toggleLessonCompletion(courseId, lesson.id, value);
       if (!res.success) {
         toast.error(es ? "No pudimos guardar tu progreso." : "We couldn't save your progress.");
         return;
       }
-      setDone(goNext ? true : !done);
-      if (goNext && next && !next.locked) router.push(next.href);
+      setDone(value);
+      if (value && completesCourse) await finishCourse();
+      else if (goNext && next && !next.locked) router.push(next.href);
       else router.refresh();
     });
+
+  const busy = pending || finishing;
 
   return (
     <article className="mx-auto w-full max-w-[46rem] px-5 pb-32 pt-8 sm:px-8 lg:pt-12">
@@ -93,7 +134,7 @@ export function LessonView({ courseId, lesson, module, completed, previous, next
               <Clock className="size-4" aria-hidden /> {lesson.durationMinutes} min
             </span>
           ) : null}
-          {done ? (
+          {done && !preview ? (
             <span className="inline-flex items-center gap-1.5 font-medium text-success">
               <Check className="size-4" aria-hidden /> {es ? "Completada" : "Completed"}
             </span>
@@ -142,32 +183,53 @@ export function LessonView({ courseId, lesson, module, completed, previous, next
           ) : (
             <span />
           )}
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <Button
-              variant="outline"
-              onClick={() => complete(false)}
-              disabled={pending}
-              className={cn(done && "border-success/30 text-success")}
-            >
-              <Check className="size-4" aria-hidden />
-              {done ? (es ? "Completada" : "Completed") : es ? "Marcar como completada" : "Mark as complete"}
-            </Button>
-            {next ? (
-              next.locked ? (
-                <Button disabled>
-                  <Lock className="size-4" aria-hidden />
-                  {es ? "Aprobá la evaluación para seguir" : "Pass the assessment to continue"}
-                </Button>
-              ) : (
-                <Button onClick={() => complete(true)} disabled={pending} size="lg">
-                  {es ? "Completar y seguir" : "Complete and continue"}
+          {preview ? (
+            next ? (
+              <Button asChild size="lg">
+                <Link href={next.href}>
+                  {es ? "Siguiente" : "Next"}
                   <ArrowRight className="size-4" aria-hidden />
+                </Link>
+              </Button>
+            ) : null
+          ) : canComplete ? (
+            <Button onClick={() => void finishCourse()} disabled={busy} size="lg">
+              {finishing ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <Award className="size-4" aria-hidden />}
+              {es ? "Terminar el curso y ver certificado" : "Finish the course and see the certificate"}
+            </Button>
+          ) : (
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+              <Button
+                variant="outline"
+                onClick={() => complete(false)}
+                disabled={busy}
+                className={cn(done && "border-success/30 text-success")}
+              >
+                <Check className="size-4" aria-hidden />
+                {done ? (es ? "Completada" : "Completed") : es ? "Marcar como completada" : "Mark as complete"}
+              </Button>
+              {completesCourse && !done ? (
+                <Button onClick={() => complete(true)} disabled={busy} size="lg">
+                  {busy ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <Award className="size-4" aria-hidden />}
+                  {es ? "Completar y terminar el curso" : "Complete and finish the course"}
                 </Button>
-              )
-            ) : null}
-          </div>
+              ) : next ? (
+                next.locked ? (
+                  <Button disabled>
+                    <Lock className="size-4" aria-hidden />
+                    {es ? "Aprobá la evaluación para seguir" : "Pass the assessment to continue"}
+                  </Button>
+                ) : (
+                  <Button onClick={() => complete(true)} disabled={busy} size="lg">
+                    {es ? "Completar y seguir" : "Complete and continue"}
+                    <ArrowRight className="size-4" aria-hidden />
+                  </Button>
+                )
+              ) : null}
+            </div>
+          )}
         </div>
-        {next && !next.locked ? (
+        {next && !next.locked && !completesCourse && !canComplete ? (
           <p className="mt-4 text-right text-xs text-primary/50">
             {es ? "Sigue: " : "Up next: "}
             <span className="font-medium text-primary/70">{getLocalizedText(next.title, lang)}</span>
