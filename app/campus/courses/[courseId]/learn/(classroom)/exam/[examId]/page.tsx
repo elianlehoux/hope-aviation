@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { parseUuidParam } from "@/lib/api/params";
 import { getCourseOutline } from "@/lib/campus/learning";
-import { ModuleExamScreen } from "../../_views/exam-screens";
+import { ModuleExamScreen } from "../../../_views/exam-screens";
 
 /** Module exam: intro, one question per screen, review and result (see ExamRunner). */
 export default async function ExamPage({ params }: { params: Promise<{ courseId: string; examId: string }> }) {

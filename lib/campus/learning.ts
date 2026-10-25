@@ -89,14 +89,14 @@ type CourseTreeRow = {
       video_url: string | null;
       has_content: boolean | null;
       order_index: number | null;
-      lesson_progress: { is_completed: boolean }[];
+      lesson_progress?: { is_completed: boolean }[];
     }[];
     exams: {
       id: string;
       title: TranslatedText;
       max_attempts: number;
       order_index: number | null;
-      exam_attempts: Attempt[];
+      exam_attempts?: Attempt[];
     }[];
   }[];
 };
@@ -137,38 +137,32 @@ export const getUserRoles = cache(async (): Promise<string[]> => {
     .filter((s): s is string => Boolean(s));
 });
 
-export const getCourseOutline = cache(async (courseId: string): Promise<CourseOutline | null> => {
-  const { supabase, user } = await getLearnerUser();
-  if (!user) return null;
+const COURSE_TREE_SELECT = `id, title, final_exam_question_count, final_exam_passing_score, final_exam_time_limit_minutes,
+   subjects (
+     id, title, order_index,
+     classes ( id, title, duration_minutes, video_url, has_content, order_index, lesson_progress ( is_completed ) ),
+     exams ( id, title, max_attempts, order_index, exam_attempts ( passed, finished_at ) )
+   )`;
 
-  const [courseRes, enrollmentRes] = await Promise.all([
-    supabase
-      .from("courses")
-      .select(
-        `id, title, final_exam_question_count, final_exam_passing_score, final_exam_time_limit_minutes,
-         subjects (
-           id, title, order_index,
-           classes ( id, title, duration_minutes, video_url, has_content, order_index, lesson_progress ( is_completed ) ),
-           exams ( id, title, max_attempts, order_index, exam_attempts ( passed, finished_at ) )
-         )`,
-      )
-      .eq("id", courseId)
-      .eq("subjects.classes.lesson_progress.user_id", user.id)
-      .eq("subjects.exams.exam_attempts.user_id", user.id)
-      .maybeSingle(),
-    supabase
-      .from("enrollments")
-      .select("status")
-      .eq("user_id", user.id)
-      .eq("course_id", courseId)
-      .maybeSingle(),
-  ]);
+/** Progress-free tree for staff preview (no per-user embeds). */
+const PREVIEW_TREE_SELECT = `id, title, final_exam_question_count, final_exam_passing_score, final_exam_time_limit_minutes,
+   subjects (
+     id, title, order_index,
+     classes ( id, title, duration_minutes, video_url, has_content, order_index ),
+     exams ( id, title, max_attempts, order_index )
+   )`;
 
-  const course = courseRes.data as CourseTreeRow | null;
-  const status = enrollmentRes.data?.status;
-  if (!course || (status !== "active" && status !== "completed")) return null;
-
-  const base = `/campus/courses/${courseId}/learn`;
+/**
+ * Shape a course tree into the classroom outline. In preview every item is unlocked and
+ * nothing counts as done, and links stay under `/learn/preview`.
+ */
+function buildOutline(
+  course: CourseTreeRow,
+  status: "active" | "completed",
+  preview: boolean,
+): CourseOutline {
+  const courseId = course.id;
+  const base = preview ? `/campus/courses/${courseId}/learn/preview` : `/campus/courses/${courseId}/learn`;
   const subjects = [...(course.subjects ?? [])].sort(byOrder);
 
   const modules: OutlineModule[] = [];
@@ -176,8 +170,8 @@ export const getCourseOutline = cache(async (courseId: string): Promise<CourseOu
 
   subjects.forEach((subject, index) => {
     const exams = [...(subject.exams ?? [])].sort(byOrder);
-    const passed = subjectPassed(subject);
-    const locked = !unlocked;
+    const passed = !preview && subjectPassed(subject);
+    const locked = !preview && !unlocked;
 
     const items: OutlineItem[] = [
       ...[...(subject.classes ?? [])].sort(byOrder).map(
@@ -230,15 +224,13 @@ export const getCourseOutline = cache(async (courseId: string): Promise<CourseOu
       id: "final-exam",
       href: `${base}/final-exam`,
       title: { es: "Examen final", en: "Final exam" },
-      passed: status === "completed",
-      locked: !unlocked,
+      passed: !preview && status === "completed",
+      locked: !preview && !unlocked,
       moduleIndex: modules.length,
     });
   }
 
-  const done = items.filter((i) =>
-    i.kind === "class" ? i.completed : i.passed,
-  ).length;
+  const done = items.filter((i) => (i.kind === "class" ? i.completed : i.passed)).length;
 
   return {
     courseId,
@@ -248,8 +240,52 @@ export const getCourseOutline = cache(async (courseId: string): Promise<CourseOu
     items,
     progress: items.length ? Math.round((done / items.length) * 100) : 0,
     finalExam,
-    canComplete: !finalExam && status === "active" && items.length > 0 && done === items.length,
+    canComplete: !preview && !finalExam && status === "active" && items.length > 0 && done === items.length,
+    ...(preview ? { preview: true } : {}),
   };
+}
+
+export const getCourseOutline = cache(async (courseId: string): Promise<CourseOutline | null> => {
+  const { supabase, user } = await getLearnerUser();
+  if (!user) return null;
+
+  const [courseRes, enrollmentRes] = await Promise.all([
+    supabase
+      .from("courses")
+      .select(COURSE_TREE_SELECT)
+      .eq("id", courseId)
+      .eq("subjects.classes.lesson_progress.user_id", user.id)
+      .eq("subjects.exams.exam_attempts.user_id", user.id)
+      .maybeSingle(),
+    supabase
+      .from("enrollments")
+      .select("status")
+      .eq("user_id", user.id)
+      .eq("course_id", courseId)
+      .maybeSingle(),
+  ]);
+
+  const course = courseRes.data as CourseTreeRow | null;
+  const status = enrollmentRes.data?.status;
+  if (!course || (status !== "active" && status !== "completed")) return null;
+
+  return buildOutline(course, status, false);
+});
+
+/**
+ * Staff-only learner preview: the same outline with everything unlocked, no progress and
+ * `preview: true`. Returns null for anyone who is not an admin or instructor.
+ */
+export const getPreviewOutline = cache(async (courseId: string): Promise<CourseOutline | null> => {
+  const { supabase, user } = await getLearnerUser();
+  if (!user) return null;
+  const roles = await getUserRoles();
+  if (!roles.includes("admin") && !roles.includes("instructor")) return null;
+
+  const { data } = await supabase.from("courses").select(PREVIEW_TREE_SELECT).eq("id", courseId).maybeSingle();
+  const course = data as CourseTreeRow | null;
+  if (!course) return null;
+  return buildOutline(course, "active", true);
 });
 
 /** Previous / next navigable items around `id` in the outline. */

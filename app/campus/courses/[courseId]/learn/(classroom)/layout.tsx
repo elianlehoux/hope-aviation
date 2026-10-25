@@ -3,10 +3,15 @@ import { notFound, redirect } from "next/navigation";
 import { parseUuidParam } from "@/lib/api/params";
 import { getCourseOutline, getLearnerUser } from "@/lib/campus/learning";
 import { ClassroomFrame } from "@/components/features/campus/learn/ClassroomFrame";
+import { ClassroomSkeleton } from "../_views/classroom-skeleton";
 
 /**
  * Classroom shell for a course. Loads the outline once (enrollment + progress) and keeps
  * it mounted while the learner moves between lessons and exams.
+ *
+ * Route layout: `(classroom)` holds the learner pages; the staff preview lives in the
+ * sibling `preview/` segment with its own layout (layouts cannot read searchParams, so
+ * `/learn?preview=1` redirects there from `learn/page.tsx`).
  */
 export default function LearnLayout({
   children,
@@ -39,17 +44,4 @@ async function Classroom({
   if (!outline) redirect(`/campus/courses/${courseId}`);
 
   return <ClassroomFrame outline={outline}>{children}</ClassroomFrame>;
-}
-
-function ClassroomSkeleton() {
-  return (
-    <div className="min-h-[100dvh] bg-paper">
-      <div className="h-14 border-b border-primary/10" />
-      <div className="mx-auto max-w-[46rem] space-y-4 px-5 pt-12">
-        <div className="h-4 w-40 animate-pulse rounded bg-primary/10" />
-        <div className="h-10 w-3/4 animate-pulse rounded-lg bg-primary/10" />
-        <div className="h-64 animate-pulse rounded-2xl bg-primary/5" />
-      </div>
-    </div>
-  );
 }

@@ -80,6 +80,7 @@ export function CourseOutlinePanel({ outline }: { outline: CourseOutline }) {
 
   return (
     <nav className="px-3 pb-10 pt-5" aria-label={lang === "es" ? "Temario del curso" : "Course outline"}>
+      {outline.preview ? null : (
       <div className="mb-5 px-3">
         <p className="text-xs font-semibold text-primary/50">{lang === "es" ? "Tu progreso" : "Your progress"}</p>
         <div className="mt-2 flex items-center gap-3">
@@ -92,6 +93,7 @@ export function CourseOutlinePanel({ outline }: { outline: CourseOutline }) {
           <span className="text-sm font-semibold tabular-nums text-primary">{outline.progress}%</span>
         </div>
       </div>
+      )}
 
       <ol className="space-y-6">
         {outline.modules.map((module) => (
