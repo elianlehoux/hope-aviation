@@ -30,6 +30,8 @@ export function Hero() {
       />
       {/* Navy scrim from the top: the headline sits in the sky, the people stay clear */}
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,38,62,0.78)_0%,rgba(0,38,62,0.5)_38%,rgba(0,38,62,0.08)_68%,rgba(0,38,62,0.35)_100%)]" />
+      {/* Left-side scrim keeps the intro copy legible over busy photo areas. */}
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(0,38,62,0.72)_0%,rgba(0,38,62,0.45)_40%,rgba(0,38,62,0)_70%)]" />
 
       {/* Signature flight path: one thin amber line drawn once on load */}
       <svg
