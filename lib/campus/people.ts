@@ -186,7 +186,7 @@ export const getPerson = cache(async (userId: string): Promise<PersonDetail | nu
       .select("class_id, classes!inner(subjects!inner(course_id))")
       .eq("user_id", userId)
       .eq("is_completed", true),
-    isAdmin ? supabase.from("roles").select("id, slug, name").order("name") : Promise.resolve({ data: [] }),
+    isAdmin ? supabase.from("roles").select("id, slug, name") : Promise.resolve({ data: [] }),
   ]);
 
   if (profileRes.error) throw new Error(profileRes.error.message);
@@ -278,7 +278,8 @@ export const getPerson = cache(async (userId: string): Promise<PersonDetail | nu
 
   const roles = ((rolesRes.data ?? []) as { id: string; slug: string; name: string }[])
     .map((r) => ({ id: r.id, slug: asRole(r.slug), name: r.name }))
-    .filter((r): r is { id: string; slug: PersonRole; name: string } => r.slug !== null);
+    .filter((r): r is { id: string; slug: PersonRole; name: string } => r.slug !== null)
+    .sort((a, b) => ROLE_SLUGS.indexOf(b.slug) - ROLE_SLUGS.indexOf(a.slug));
 
   return {
     profile: {
