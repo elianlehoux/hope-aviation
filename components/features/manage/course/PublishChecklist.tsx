@@ -46,8 +46,8 @@ export function PublishChecklist({
     const res = await api(courseRoutes(courseId).course, "PATCH", { status: "published" });
     setPending(false);
     if (!res.ok) {
-      // The route has its own publish rules; surface its message as-is.
-      setServerError(res.message);
+      // The route has its own publish rules; surface its message.
+      setServerError(`${es ? "No se pudo publicar" : "Couldn't publish"}: ${res.message}`);
       return;
     }
     toast.success(es ? "Curso publicado. Ya aparece en el catálogo." : "Course published. It's now in the catalog.");
