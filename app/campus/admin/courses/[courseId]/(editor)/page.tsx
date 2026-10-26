@@ -25,7 +25,7 @@ async function Content({ params }: { params: Promise<{ courseId: string }> }) {
 
 function ContentSkeleton() {
   return (
-    <div className="grid gap-6 lg:grid-cols-[20rem_minmax(0,1fr)]" aria-hidden>
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[20rem_minmax(0,1fr)]" aria-hidden>
       <div className="space-y-3">
         {[0, 1, 2].map((i) => (
           <div key={i} className="h-32 animate-pulse rounded-2xl bg-primary/5" />
