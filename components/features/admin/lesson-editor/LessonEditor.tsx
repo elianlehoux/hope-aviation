@@ -101,7 +101,7 @@ export function LessonEditor({
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
           <Link
-            href={`/campus/admin/courses/${courseId}`}
+            href={`/campus/admin/courses/${courseId}?item=class:${classId}`}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-primary/55 hover:text-primary"
           >
             <ArrowLeft className="size-4" aria-hidden /> {es ? "Volver al curso" : "Back to course"}
