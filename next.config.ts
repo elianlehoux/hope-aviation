@@ -40,6 +40,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // The certificate PDF reads its fonts and logo from disk at runtime.
+  outputFileTracingIncludes: {
+    "/api/certificates/[enrollmentId]/pdf": [
+      "./app/api/certificates/_assets/**",
+      "./public/logos/hope-logo.svg",
+    ],
+  },
   async redirects() {
     return LEGACY_REDIRECTS.map(([source, destination]) => ({ source, destination, permanent: true }));
   },
