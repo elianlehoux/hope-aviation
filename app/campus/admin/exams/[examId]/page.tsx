@@ -1,37 +1,22 @@
-import { createClient } from "@/lib/supabase/server";
-import { requireSession, requireStaff } from "@/lib/api/auth";
-import { redirect, notFound } from "next/navigation";
-import ExamEditorPanel from "@/components/features/admin/ExamEditorPanel";
+import { Suspense } from "react";
+import { notFound, redirect } from "next/navigation";
 import { parseUuidParam } from "@/lib/api/params";
+import { requireStaff } from "@/lib/campus/manage";
 
-export const metadata = {
-  title: "Editor de Examen — Hope Aviation Admin",
-  description: "Exam builder and question settings.",
-};
+/** Legacy URL: looks up the exam's course and redirects to the editor inside the course. */
+export default function LegacyExamEditorRedirect({ params }: { params: Promise<{ examId: string }> }) {
+  return (
+    <Suspense fallback={null}>
+      <Lookup params={params} />
+    </Suspense>
+  );
+}
 
-type Props = { params: Promise<{ examId: string }> };
-
-export default async function AdminExamEditorPage({ params }: Props) {
-  const { examId: rawExamId } = await params;
-  const examId = parseUuidParam(rawExamId);
-
+async function Lookup({ params }: { params: Promise<{ examId: string }> }): Promise<null> {
+  const examId = parseUuidParam((await params).examId);
   if (!examId) notFound();
-
-  const supabase = await createClient();
-  const session = await requireSession(supabase);
-  if (!session.ok) redirect("/");
-
-  const staff = await requireStaff(supabase, session.user.id);
-  if (!staff.ok) redirect("/");
-
-  // Fetch the exam details
-  const { data: exam, error } = await supabase
-    .from("exams")
-    .select("*, course:courses(title), subject:subjects(title)")
-    .eq("id", examId)
-    .single();
-
-  if (error || !exam) notFound();
-
-  return <ExamEditorPanel exam={exam} />;
+  const { supabase } = await requireStaff();
+  const { data } = await supabase.from("exams").select("course_id").eq("id", examId).maybeSingle();
+  if (!data) notFound();
+  redirect(`/campus/admin/courses/${data.course_id}/exams/${examId}`);
 }
