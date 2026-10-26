@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useTranslation } from "@/lib/i18n/context";
 import { toast } from "sonner";
-import { Mail, CheckCircle, Loader2, AlertCircle } from "lucide-react";
+import { Mail, CheckCircle, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

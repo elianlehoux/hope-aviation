@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
@@ -92,8 +91,6 @@ export default async function GetInvolvedPage({
     notFound();
     return null;
   }
-
-  const Icon = option.icon;
 
   return (
     <main className="relative min-h-screen flex flex-col bg-[#1C1E21] text-white font-sans overflow-hidden">
