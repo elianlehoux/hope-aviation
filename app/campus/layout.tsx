@@ -77,6 +77,11 @@ const getCampusSession = cache(async function getCampusSession() {
     redirect("/auth/login?clear=1");
   }
 
+  // Deactivated accounts (also via Google sign-in) are signed out on the login page.
+  const { supabase } = await getLearnerUser();
+  const { data: profile } = await supabase.from("profiles").select("is_active").eq("id", user.id).maybeSingle();
+  if (profile && profile.is_active === false) redirect("/auth/login?clear=1&inactive=1");
+
   const cookieStore = await cookies();
   const cookieRole = parsePreviewRole(cookieStore.get(PREVIEW_COOKIE)?.value);
   const role: PreviewRole = preview

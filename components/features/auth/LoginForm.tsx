@@ -18,7 +18,7 @@ import {
   looksLikeEmail,
 } from "./auth-ui";
 
-type LoginError = "credentials" | "unconfirmed" | "link" | "network" | "google" | null;
+type LoginError = "credentials" | "unconfirmed" | "inactive" | "link" | "network" | "google" | null;
 
 export function LoginForm() {
   const router = useRouter();
@@ -33,7 +33,9 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
-  const [error, setError] = useState<LoginError>(searchParams.get("error") ? "link" : null);
+  const [error, setError] = useState<LoginError>(
+    searchParams.get("inactive") ? "inactive" : searchParams.get("error") ? "link" : null,
+  );
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [resendState, setResendState] = useState<"idle" | "sending" | "sent">("idle");
@@ -73,7 +75,8 @@ export function LoginForm() {
       });
       if (!res.ok) {
         const body = (await res.json().catch(() => null)) as { error?: { code?: string } } | null;
-        setError(body?.error?.code === "email_not_confirmed" ? "unconfirmed" : "credentials");
+        const code = body?.error?.code;
+        setError(code === "email_not_confirmed" ? "unconfirmed" : code === "account_inactive" ? "inactive" : "credentials");
         setLoading(false);
         return;
       }
@@ -174,6 +177,17 @@ export function LoginForm() {
             </Link>
           }
         />
+
+        {error === "inactive" ? (
+          <FormAlert>
+            <p className="font-semibold">{es ? "Tu cuenta está desactivada" : "Your account is deactivated"}</p>
+            <p className="mt-0.5 text-destructive/80">
+              {es
+                ? "Si creés que es un error, escribinos a hope.aviation.uap@gmail.com."
+                : "If you think this is a mistake, write to hope.aviation.uap@gmail.com."}
+            </p>
+          </FormAlert>
+        ) : null}
 
         {error === "credentials" ? (
           <FormAlert>

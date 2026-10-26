@@ -41,6 +41,17 @@ export async function POST(request: Request) {
     return jsonError("invalid_credentials", "Invalid credentials.", 401);
   }
 
+  // Deactivated accounts keep their data but may not sign in.
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("is_active")
+    .eq("id", data.user.id)
+    .maybeSingle();
+  if (profile && profile.is_active === false) {
+    await supabase.auth.signOut();
+    return jsonError("account_inactive", "This account is deactivated.", 403);
+  }
+
   return jsonOk({
     user: { id: data.user.id, email: data.user.email },
   });
