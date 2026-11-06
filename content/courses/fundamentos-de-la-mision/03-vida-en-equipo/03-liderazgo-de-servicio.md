@@ -7,7 +7,7 @@ En algún momento de la misión vas a tener que liderar: un grupo, una tarea o u
 
 Jesús dio vuelta la idea de liderazgo de su época. La noche antes de morir, tomó una toalla y lavó los pies de sus discípulos, una tarea reservada para los sirvientes (Juan 13). Después les dijo: "ejemplo os he dado, para que como yo os he hecho, vosotros también hagáis".
 
-Siglos después, el ensayista Robert Greenleaf llamó a esta idea **liderazgo de servicio**: un líder que se pregunta primero cómo hacer crecer a las personas que tiene a cargo.
+En 1970, el ejecutivo estadounidense Robert K. Greenleaf llamó a esta idea **liderazgo de servicio**: un líder que se pregunta primero cómo hacer crecer a las personas que tiene a cargo.
 
 ## Servir no significa no decidir
 
@@ -47,8 +47,8 @@ Habilidades sociales: Comunicar, negociar y construir confianza.
 
 ```check
 ? Sos responsable de un grupo de voluntarios y el piloto decide no despegar por el clima, aunque la comunidad los espera. ¿Qué hace un líder servidor?
-- Presiona al piloto para que reconsidere, porque la comunidad necesita la ayuda.
 + Respalda la decisión del piloto y ayuda al grupo a reorganizarse.
+- Presiona al piloto para que reconsidere, porque la comunidad necesita la ayuda.
 - Deja que cada voluntario decida qué hacer mientras esperan.
 > Liderar sirviendo incluye respetar la autoridad de quien es responsable de la seguridad del vuelo y ayudar al equipo a adaptarse.
 ```

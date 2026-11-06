@@ -100,6 +100,15 @@ function FencedBlock({ lang, meta, source }: { lang: string; meta?: string; sour
   }
 }
 
+type HastNode = { type: string; tagName?: string; children?: HastNode[] };
+
+/** Number of cells in a table's first row. */
+function tableColumns(node: HastNode | undefined): number {
+  const section = node?.children?.find((c) => c.tagName === "thead" || c.tagName === "tbody");
+  const row = section?.children?.find((c) => c.tagName === "tr");
+  return row?.children?.filter((c) => c.tagName === "th" || c.tagName === "td").length ?? 0;
+}
+
 /** Elements allowed inside callouts (no nested blocks). */
 const inline: Components = {
   p: ({ children }) => <p className="[&:not(:last-child)]:mb-2">{children}</p>,
@@ -130,14 +139,17 @@ const components: Components = {
       {title || alt ? <figcaption className="mt-2 text-center text-xs text-primary/55">{title || alt}</figcaption> : null}
     </figure>
   ),
-  table: ({ children }) => (
+  table: ({ children, node }) => (
     <div className="my-8 overflow-x-auto rounded-2xl border border-primary/10 bg-white">
-      <table className="w-full text-left text-sm">{children}</table>
+      {/* Three or more columns get too narrow on phones: keep a readable width and scroll inside the frame. */}
+      <table className={cn("w-full text-left text-sm", tableColumns(node) >= 3 && "min-w-[36rem]")}>{children}</table>
     </div>
   ),
   thead: ({ children }) => <thead className="bg-paper text-primary">{children}</thead>,
   th: ({ children }) => <th className="px-4 py-3 font-semibold">{children}</th>,
-  td: ({ children }) => <td className="border-t border-primary/10 px-4 py-3 text-primary/80">{children}</td>,
+  td: ({ children }) => (
+    <td className="border-t border-primary/10 px-4 py-3 align-top text-primary/80 first:font-medium first:text-primary">{children}</td>
+  ),
   code: ({ children }) => <code className="rounded bg-paper-deep px-1.5 py-0.5 text-[0.9em]">{children}</code>,
   pre: ({ children, node }) => {
     const code = node?.children?.[0];

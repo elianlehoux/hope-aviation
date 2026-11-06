@@ -51,8 +51,8 @@ Ser humilde no significa pensar que no valés nada. Significa tener una mirada r
 
 ```check
 ? Un compañero del equipo organizó mal la carga y hubo que repetir el trabajo. ¿Qué respuesta refleja mejor el carácter de Cristo?
-- Comentarlo con el resto del equipo para que no vuelva a pasar.
 + Hablar con él en privado, con respeto, y ayudar a resolverlo.
+- Comentarlo con el resto del equipo para que no vuelva a pasar.
 - Rehacer todo vos sin decirle nada para evitar el conflicto.
 > El carácter de Cristo combina verdad y amor: no esconde el problema, pero tampoco expone ni humilla al otro.
 ```

@@ -43,7 +43,7 @@ Seguí siempre al piloto: Nadie se acerca a la aeronave sin su autorización o l
 Cuidado con la hélice: Nunca camines por delante ni cerca de una hélice, aunque el motor esté apagado.
 Declará tu peso y tu equipaje con honestidad: El peso influye directamente en la seguridad del vuelo.
 No subas objetos prohibidos: Combustibles, garrafas, baterías sueltas o cualquier cosa que indique el piloto.
-Escuchá el briefing: Abrocharse, cómo abrir la puerta, qué hacer en una emergencia.
+Escuchá el briefing: Cómo abrocharte el cinturón, cómo abrir la puerta y qué hacer en una emergencia.
 Aceptá un "no" sin discutir: Si el piloto decide no volar por clima, peso o condiciones, esa decisión es definitiva.
 ```
 

@@ -55,8 +55,8 @@ Revisá tus interpretaciones: Antes de juzgar una conducta, preguntate si no hay
 ```check
 ? Le preguntás a un líder de la comunidad si puede reunir a las familias el sábado y responde "sí, sí", pero sin entusiasmo. ¿Qué conviene hacer?
 - Dar por hecho que la reunión está confirmada.
-+ Considerar que el "sí" puede ser cortesía y conversar más para entender su respuesta.
 - Insistir con más firmeza hasta que se comprometa.
++ Considerar que el "sí" puede ser cortesía y conversar más para entender su respuesta.
 > En culturas de comunicación indirecta, decir "no" de frente puede ser descortés. Conversar con calma o consultar a alguien de confianza ayuda a entender qué quiso decir.
 ```
 

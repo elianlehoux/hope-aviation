@@ -33,7 +33,7 @@ Creele: Decile que hizo bien en contarlo y que no es su culpa.
 No investigues: No hagas preguntas detalladas ni pidas pruebas; eso le corresponde a los profesionales.
 No prometas secreto: Explicale con cuidado que vas a contárselo a alguien que puede ayudar.
 Registrá: Apenas puedas, escribí lo que te dijo con sus palabras, la fecha y la hora.
-Reportá ese mismo día: Al responsable de protección del proyecto o de HOPE, que sabrá cómo dar intervención a las autoridades según la ley local.
+Reportá ese mismo día: Al responsable de protección del proyecto (o, si no lo hay, al responsable del equipo), que sabrá cómo dar intervención a las autoridades según la ley local.
 ```
 
 > [!WARNING] Si hay peligro inmediato
@@ -53,8 +53,8 @@ Los mismos principios se aplican a adultos en situación de vulnerabilidad: pers
 ```check
 ? Durante una actividad, un niño te pide que lo acompañes solo a buscar algo a su casa, lejos del grupo. ¿Qué hacés?
 - Lo acompañás, porque es un pedido simple y el niño confía en vos.
-+ Le pedís a otro adulto del equipo que vaya con ustedes o avisás al responsable.
 - Le decís que vaya solo y no le das importancia.
++ Le pedís a otro adulto del equipo que vaya con ustedes o avisás al responsable.
 > La regla es no quedarse a solas con un menor en lugares apartados. Sumar a otro adulto protege al niño y también a vos.
 ```
 

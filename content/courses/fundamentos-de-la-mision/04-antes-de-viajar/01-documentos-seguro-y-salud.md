@@ -19,7 +19,7 @@ Una semana antes: Armá el botiquín, confirmá contactos de emergencia y dejá 
 | Pasaporte | Muchos países exigen que tenga al menos seis meses de vigencia al entrar y hojas libres. |
 | Visa | Según el destino y el tipo de actividad. El voluntariado puede requerir una visa distinta a la de turismo. |
 | Carta de invitación | Emitida por el proyecto que te recibe; algunos países la piden en migraciones. |
-| Antecedentes penales | Muchos proyectos la exigen, sobre todo si vas a trabajar con menores. |
+| Antecedentes penales | Muchos proyectos piden el certificado, sobre todo si vas a trabajar con menores. |
 | Matrícula o título profesional | Si vas a ejercer como profesional de la salud, consultá si necesitás un permiso local. |
 | Autorización de viaje | Obligatoria para menores de edad que viajan sin uno o ambos padres. |
 
@@ -47,7 +47,7 @@ Pedí un turno en un centro de **medicina del viajero** al menos entre cuatro y 
 - **Medicación personal**: llevá cantidad suficiente para todo el viaje y algo extra, con la receta y en su envase original.
 
 > [!NOTE] Prevenir picaduras
-> Muchas enfermedades tropicales, como el dengue o la malaria, se transmiten por mosquitos. Repelente, ropa de manga larga al atardecer y mosquitero para dormir son tan importantes como cualquier vacuna.
+> Muchas enfermedades tropicales, como el dengue o la malaria, se transmiten por mosquitos. El del dengue pica sobre todo **de día**; el de la malaria, al atardecer y de noche. Repelente, ropa de manga larga y mosquitero para dormir son tan importantes como cualquier vacuna.
 
 ## Botiquín personal básico
 
@@ -62,8 +62,8 @@ Consultá con tu médico antes de llevar cualquier medicamento que no uses habit
 
 ```check
 ? ¿Por qué conviene ir a la consulta de medicina del viajero varias semanas antes del viaje?
-- Porque los turnos suelen estar ocupados el último día.
 + Porque algunas vacunas necesitan tiempo para hacer efecto o requieren más de una dosis.
+- Porque los turnos suelen estar ocupados el último día.
 - Porque el certificado de vacunación se vence si se tramita con anticipación.
 > Muchas vacunas necesitan días o semanas para generar protección, y algunas requieren varias dosis. Por eso la consulta se hace con tiempo.
 ```

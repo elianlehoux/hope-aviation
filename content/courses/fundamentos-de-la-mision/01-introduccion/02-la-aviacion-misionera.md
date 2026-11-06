@@ -5,9 +5,9 @@
 En una emergencia, el tiempo decide. Una mordedura de serpiente, un parto complicado o un accidente pueden ser fatales si el hospital más cercano está a horas de camino.
 
 ```stats
-2.780.400 km² | territorio de Argentina, el octavo país más grande del mundo
+2.780.400 | km² de territorio: Argentina es el octavo país más grande del mundo
 18 | regiones naturales, de la selva misionera a la estepa patagónica
-horas | de viaje hasta un hospital en muchas zonas aisladas
+3.694 | km de norte a sur en su parte continental
 ```
 
 En el Chaco o en las sierras de Córdoba, los caminos se vuelven intransitables con las lluvias. En el Delta del Paraná, a muchos lugares solo se llega en lancha. Y las ambulancias aéreas que existen operan desde los aeropuertos principales, lejos de cientos de comunidades.
@@ -27,7 +27,7 @@ En el Chaco o en las sierras de Córdoba, los caminos se vuelven intransitables 
 
 La aviación misionera no es una idea nueva. Después de la Segunda Guerra Mundial, varios pilotos cristianos vieron que los aviones que habían servido en la guerra podían servir para la paz. En 1945 nació **Mission Aviation Fellowship (MAF)**, una de las organizaciones pioneras, que hoy opera en decenas de países.
 
-Esa historia también tiene costos. En 1956, el piloto de MAF **Nate Saint** y cuatro misioneros murieron en Ecuador al intentar contactar a un pueblo aislado. Años después, familiares de esos misioneros siguieron sirviendo en la misma comunidad. La aviación misionera nació de personas dispuestas a arriesgar mucho, y por eso hoy pone tanto énfasis en la **seguridad**: cada vida importa, también la de quien sirve.
+Esa historia también tiene costos. En 1956, el piloto de MAF **Nate Saint** y cuatro misioneros murieron en Ecuador al intentar contactar al pueblo waorani. Poco después, Elisabeth Elliot, viuda de uno de ellos, y Rachel Saint, hermana de Nate, fueron a vivir con esa misma comunidad. La aviación misionera nació de personas dispuestas a arriesgar mucho, y por eso hoy pone tanto énfasis en la **seguridad**: cada vida importa, también la de quien sirve.
 
 ## La red de HOPE
 
@@ -39,7 +39,7 @@ HOPE no trabaja solo. Estamos en contacto con organizaciones que comparten nuest
 | Perú Projects | Amazonía peruana | Apoyan a comunidades de Ucayali y Loreto desde 1997, con hidroavión y avionetas. |
 | Gospel Mission Aviation | Bolivia | Sirven a comunidades aisladas y piden profesionales de salud, como odontólogos. |
 | Alas de Vida | Costa Rica | Combinan aviación, discipulado y salud en Centroamérica. |
-| Miseje | Internacional | Trabajan con helicópteros en zonas de difícil acceso. |
+| Miseje | Argentina (en conversación) | Podrían aportar pilotos de helicóptero para abrir un nuevo proyecto en el país. |
 
 Algunas de estas relaciones todavía son informales y otras están en camino de formalizarse. Lo importante es el principio: **HOPE prepara personas y las conecta con proyectos que ya están en el terreno.**
 
@@ -54,8 +54,8 @@ Continuidad: El trabajo sigue en manos de la comunidad cuando el equipo se va.
 ```check
 ? Según esta clase, ¿cuál es el aporte principal de la aviación a la misión?
 - Reemplazar a los profesionales que trabajan en el terreno.
-+ Acortar distancias para que la ayuda llegue a tiempo.
 - Reducir los costos de cualquier proyecto humanitario.
++ Acortar distancias para que la ayuda llegue a tiempo.
 > La aviación es cara, pero en lugares aislados convierte horas en minutos. Su valor está en llevar personas y recursos a tiempo.
 ```
 

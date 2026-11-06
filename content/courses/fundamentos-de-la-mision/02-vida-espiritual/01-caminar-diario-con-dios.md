@@ -59,8 +59,8 @@ No son motivo de culpa, sino señales de que necesitás volver a la fuente.
 ```check
 ? Según la imagen de la vid y los pámpanos, ¿de dónde viene el fruto en la misión?
 - Del esfuerzo personal y la disciplina del voluntario.
-+ De permanecer conectado con Cristo.
 - De la cantidad de actividades que se realizan.
++ De permanecer conectado con Cristo.
 > La rama no produce fruto por esfuerzo propio: lo da porque está unida a la vid. El servicio sostenible nace de esa conexión.
 ```
 

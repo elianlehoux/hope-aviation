@@ -52,8 +52,8 @@ Bien vivida, la soledad puede ser un regalo: un espacio sin ruido para escuchar 
 
 ```check
 ? Según la historia de Elías, ¿qué hizo Dios primero cuando el profeta estaba agotado y desanimado?
-- Lo reprendió por su falta de fe.
 + Lo dejó descansar y le dio de comer.
+- Lo reprendió por su falta de fe.
 - Le encomendó una nueva misión inmediatamente.
 > Dios atendió primero las necesidades físicas de Elías. Recién después le habló y le dio compañía para seguir.
 ```

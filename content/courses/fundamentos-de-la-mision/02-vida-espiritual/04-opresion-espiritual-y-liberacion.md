@@ -7,7 +7,7 @@ La Biblia no presenta el mal como una idea abstracta. Habla de un conflicto real
 > [!VERSE] Efesios 6:12
 > Porque no tenemos lucha contra sangre y carne, sino contra principados, contra potestades, contra los gobernadores de las tinieblas de este siglo, contra huestes espirituales de maldad en las regiones celestes.
 
-Pero el mismo Nuevo Testamento deja claro quién tiene la victoria: Cristo "despojó a los principados y a las potestades" en la cruz (Colosenses 2:15), y "mayor es el que está en vosotros, que el que está en el mundo" (1 Juan 4:4). El cristiano no enfrenta el mal con miedo, sino desde la victoria de Cristo.
+Pero el mismo Nuevo Testamento deja claro quién tiene la victoria: en la cruz Cristo triunfó sobre el mal, "despojando a los principados y a las potestades" (Colosenses 2:15), y "mayor es el que está en vosotros, que el que está en el mundo" (1 Juan 4:4). El cristiano no enfrenta el mal con miedo, sino desde la victoria de Cristo.
 
 ## Dos errores opuestos
 
@@ -63,8 +63,8 @@ En muchas comunidades conviven la fe cristiana con prácticas animistas, curande
 ```check
 ? Una persona de la comunidad tiene convulsiones y su familia cree que es un problema espiritual. ¿Qué es lo más responsable?
 - Organizar de inmediato una oración de liberación con todo el equipo.
-+ Orar con la familia y asegurarse de que la persona reciba evaluación médica.
 - Explicarles que lo espiritual no existe y que es solo una enfermedad.
++ Orar con la familia y asegurarse de que la persona reciba evaluación médica.
 > Las convulsiones pueden tener causas médicas graves. Orar y buscar atención médica van juntas, siempre con respeto por la familia.
 ```
 

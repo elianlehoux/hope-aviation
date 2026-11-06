@@ -67,9 +67,9 @@ Por eso este campus está abierto a todos: no hace falta ser piloto para servir.
 
 ```check
 ? ¿Cuál de estas afirmaciones describe mejor a HOPE?
-- Es una escuela de vuelo que forma pilotos misioneros.
-+ Es una fundación que forma, conecta y acompaña a voluntarios y pilotos para el servicio.
-- Es una aerolínea que transporta voluntarios a otros países.
++ Es una fundación que forma voluntarios y pilotos y los conecta con proyectos.
+- Es una escuela de vuelo que forma pilotos para el campo misionero.
+- Es una aerolínea humanitaria que traslada voluntarios a otros países.
 > HOPE forma, conecta y sirve. La licencia de piloto se obtiene en escuelas de vuelo habilitadas; HOPE aporta la formación complementaria.
 ```
 
@@ -87,9 +87,9 @@ VALUES ('1f064d14-e483-5c8c-b309-98e473c47c41', '2ccb7819-2cad-51e0-82a8-4efe4bc
 En una emergencia, el tiempo decide. Una mordedura de serpiente, un parto complicado o un accidente pueden ser fatales si el hospital más cercano está a horas de camino.
 
 ```stats
-2.780.400 km² | territorio de Argentina, el octavo país más grande del mundo
+2.780.400 | km² de territorio: Argentina es el octavo país más grande del mundo
 18 | regiones naturales, de la selva misionera a la estepa patagónica
-horas | de viaje hasta un hospital en muchas zonas aisladas
+3.694 | km de norte a sur en su parte continental
 ```
 
 En el Chaco o en las sierras de Córdoba, los caminos se vuelven intransitables con las lluvias. En el Delta del Paraná, a muchos lugares solo se llega en lancha. Y las ambulancias aéreas que existen operan desde los aeropuertos principales, lejos de cientos de comunidades.
@@ -109,7 +109,7 @@ En el Chaco o en las sierras de Córdoba, los caminos se vuelven intransitables 
 
 La aviación misionera no es una idea nueva. Después de la Segunda Guerra Mundial, varios pilotos cristianos vieron que los aviones que habían servido en la guerra podían servir para la paz. En 1945 nació **Mission Aviation Fellowship (MAF)**, una de las organizaciones pioneras, que hoy opera en decenas de países.
 
-Esa historia también tiene costos. En 1956, el piloto de MAF **Nate Saint** y cuatro misioneros murieron en Ecuador al intentar contactar a un pueblo aislado. Años después, familiares de esos misioneros siguieron sirviendo en la misma comunidad. La aviación misionera nació de personas dispuestas a arriesgar mucho, y por eso hoy pone tanto énfasis en la **seguridad**: cada vida importa, también la de quien sirve.
+Esa historia también tiene costos. En 1956, el piloto de MAF **Nate Saint** y cuatro misioneros murieron en Ecuador al intentar contactar al pueblo waorani. Poco después, Elisabeth Elliot, viuda de uno de ellos, y Rachel Saint, hermana de Nate, fueron a vivir con esa misma comunidad. La aviación misionera nació de personas dispuestas a arriesgar mucho, y por eso hoy pone tanto énfasis en la **seguridad**: cada vida importa, también la de quien sirve.
 
 ## La red de HOPE
 
@@ -121,7 +121,7 @@ HOPE no trabaja solo. Estamos en contacto con organizaciones que comparten nuest
 | Perú Projects | Amazonía peruana | Apoyan a comunidades de Ucayali y Loreto desde 1997, con hidroavión y avionetas. |
 | Gospel Mission Aviation | Bolivia | Sirven a comunidades aisladas y piden profesionales de salud, como odontólogos. |
 | Alas de Vida | Costa Rica | Combinan aviación, discipulado y salud en Centroamérica. |
-| Miseje | Internacional | Trabajan con helicópteros en zonas de difícil acceso. |
+| Miseje | Argentina (en conversación) | Podrían aportar pilotos de helicóptero para abrir un nuevo proyecto en el país. |
 
 Algunas de estas relaciones todavía son informales y otras están en camino de formalizarse. Lo importante es el principio: **HOPE prepara personas y las conecta con proyectos que ya están en el terreno.**
 
@@ -136,8 +136,8 @@ Continuidad: El trabajo sigue en manos de la comunidad cuando el equipo se va.
 ```check
 ? Según esta clase, ¿cuál es el aporte principal de la aviación a la misión?
 - Reemplazar a los profesionales que trabajan en el terreno.
-+ Acortar distancias para que la ayuda llegue a tiempo.
 - Reducir los costos de cualquier proyecto humanitario.
++ Acortar distancias para que la ayuda llegue a tiempo.
 > La aviación es cara, pero en lugares aislados convierte horas en minutos. Su valor está en llevar personas y recursos a tiempo.
 ```
 
@@ -221,30 +221,32 @@ ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.poi
 UPDATE public.options SET is_correct = false WHERE question_id = '132693dd-1734-506a-9dca-a4f694807856';
 DELETE FROM public.options WHERE question_id = '132693dd-1734-506a-9dca-a4f694807856' AND id NOT IN ('9ae6f92a-c234-56b3-8584-b4c5f4fb2caf', '8d99ca72-333c-512e-aafd-ec7d6bb5b3a3', '440db66c-279a-5584-8359-db0920354339', '0a368bed-4f96-5bfd-93c6-dbcfbb45677c');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('9ae6f92a-c234-56b3-8584-b4c5f4fb2caf', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$HOPE es un departamento académico de la UAP.$hope$), false),
-  ('8d99ca72-333c-512e-aafd-ec7d6bb5b3a3', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$HOPE nació impulsado por la UAP y hoy es una fundación independiente sin fines de lucro.$hope$), true),
-  ('440db66c-279a-5584-8359-db0920354339', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$HOPE es una empresa privada que alquila instalaciones a la UAP.$hope$), false),
-  ('0a368bed-4f96-5bfd-93c6-dbcfbb45677c', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$No existe ninguna relación entre ambas.$hope$), false)
+  ('9ae6f92a-c234-56b3-8584-b4c5f4fb2caf', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$HOPE nació impulsado por la UAP y hoy es una fundación independiente.$hope$), true),
+  ('8d99ca72-333c-512e-aafd-ec7d6bb5b3a3', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$HOPE es un departamento académico que depende de la UAP.$hope$), false),
+  ('440db66c-279a-5584-8359-db0920354339', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$HOPE es una escuela de vuelo que funciona dentro del campus de la UAP.$hope$), false),
+  ('0a368bed-4f96-5bfd-93c6-dbcfbb45677c', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$HOPE es un programa del Servicio Voluntario Adventista de la UAP.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('482afcd2-c912-5e3f-80cc-d5cda8df7519', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$¿Cuáles son los tres frentes del trabajo de HOPE?$hope$), 1, 1)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '482afcd2-c912-5e3f-80cc-d5cda8df7519';
-DELETE FROM public.options WHERE question_id = '482afcd2-c912-5e3f-80cc-d5cda8df7519' AND id NOT IN ('5fae0d1f-8d77-52f4-b07b-2cf3e5099961', '8f6834c4-7867-54ab-94ca-5546b7a3c14b', '27cd2e1a-ca70-53e1-9bcd-d19f3b2a661b');
+DELETE FROM public.options WHERE question_id = '482afcd2-c912-5e3f-80cc-d5cda8df7519' AND id NOT IN ('5fae0d1f-8d77-52f4-b07b-2cf3e5099961', '8f6834c4-7867-54ab-94ca-5546b7a3c14b', '27cd2e1a-ca70-53e1-9bcd-d19f3b2a661b', '52dac5fc-c46a-5acd-9f20-fe1c93b8467d');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
   ('5fae0d1f-8d77-52f4-b07b-2cf3e5099961', '482afcd2-c912-5e3f-80cc-d5cda8df7519', jsonb_build_object('es', $hope$Formar, conectar y servir.$hope$), true),
-  ('8f6834c4-7867-54ab-94ca-5546b7a3c14b', '482afcd2-c912-5e3f-80cc-d5cda8df7519', jsonb_build_object('es', $hope$Volar, vender pasajes y transportar carga.$hope$), false),
-  ('27cd2e1a-ca70-53e1-9bcd-d19f3b2a661b', '482afcd2-c912-5e3f-80cc-d5cda8df7519', jsonb_build_object('es', $hope$Construir iglesias, predicar y recaudar fondos.$hope$), false)
+  ('8f6834c4-7867-54ab-94ca-5546b7a3c14b', '482afcd2-c912-5e3f-80cc-d5cda8df7519', jsonb_build_object('es', $hope$Volar, transportar y evacuar.$hope$), false),
+  ('27cd2e1a-ca70-53e1-9bcd-d19f3b2a661b', '482afcd2-c912-5e3f-80cc-d5cda8df7519', jsonb_build_object('es', $hope$Enseñar a volar, certificar y enviar.$hope$), false),
+  ('52dac5fc-c46a-5acd-9f20-fe1c93b8467d', '482afcd2-c912-5e3f-80cc-d5cda8df7519', jsonb_build_object('es', $hope$Recaudar, construir y predicar.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('1748508f-45d8-58a2-91e5-dae4d5344893', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$¿Qué afirmación sobre HOPE y la formación de pilotos es correcta?$hope$), 1, 2)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '1748508f-45d8-58a2-91e5-dae4d5344893';
-DELETE FROM public.options WHERE question_id = '1748508f-45d8-58a2-91e5-dae4d5344893' AND id NOT IN ('b1adfa50-a9d0-5b8e-89b4-e4854f0e7076', '5da455bc-8b00-510d-a2ff-7fa192a85fe3', 'fe50d9e1-81a8-5cce-9797-ee138ffa30ce');
+DELETE FROM public.options WHERE question_id = '1748508f-45d8-58a2-91e5-dae4d5344893' AND id NOT IN ('b1adfa50-a9d0-5b8e-89b4-e4854f0e7076', '5da455bc-8b00-510d-a2ff-7fa192a85fe3', 'fe50d9e1-81a8-5cce-9797-ee138ffa30ce', 'fa31ac68-a5d2-51ca-b58b-a7b6e468351d');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('b1adfa50-a9d0-5b8e-89b4-e4854f0e7076', '1748508f-45d8-58a2-91e5-dae4d5344893', jsonb_build_object('es', $hope$HOPE otorga licencias de piloto misionero.$hope$), false),
-  ('5da455bc-8b00-510d-a2ff-7fa192a85fe3', '1748508f-45d8-58a2-91e5-dae4d5344893', jsonb_build_object('es', $hope$HOPE solo acepta pilotos con licencia comercial.$hope$), false),
-  ('fe50d9e1-81a8-5cce-9797-ee138ffa30ce', '1748508f-45d8-58a2-91e5-dae4d5344893', jsonb_build_object('es', $hope$HOPE ofrece formación complementaria; la licencia se obtiene en una escuela de vuelo habilitada.$hope$), true)
+  ('b1adfa50-a9d0-5b8e-89b4-e4854f0e7076', '1748508f-45d8-58a2-91e5-dae4d5344893', jsonb_build_object('es', $hope$HOPE no enseña a volar; ofrece formación complementaria.$hope$), true),
+  ('5da455bc-8b00-510d-a2ff-7fa192a85fe3', '1748508f-45d8-58a2-91e5-dae4d5344893', jsonb_build_object('es', $hope$HOPE otorga licencias de piloto misionero a quienes completan el campus.$hope$), false),
+  ('fe50d9e1-81a8-5cce-9797-ee138ffa30ce', '1748508f-45d8-58a2-91e5-dae4d5344893', jsonb_build_object('es', $hope$HOPE solo acepta en el campus a pilotos con licencia comercial.$hope$), false),
+  ('fa31ac68-a5d2-51ca-b58b-a7b6e468351d', '1748508f-45d8-58a2-91e5-dae4d5344893', jsonb_build_object('es', $hope$HOPE dicta el curso teórico de piloto privado en el campus.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('ebed81cd-69aa-56a5-8001-0ac2fa54c9ec', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$¿Qué valor de HOPE se refiere a priorizar la vida, la prevención y la responsabilidad en cada operación?$hope$), 1, 3)
@@ -252,40 +254,54 @@ ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.poi
 UPDATE public.options SET is_correct = false WHERE question_id = 'ebed81cd-69aa-56a5-8001-0ac2fa54c9ec';
 DELETE FROM public.options WHERE question_id = 'ebed81cd-69aa-56a5-8001-0ac2fa54c9ec' AND id NOT IN ('fae4957f-97d4-5e17-ab55-9de9af395141', 'ffcdfa66-5623-5294-9a3b-36b845a9674e', '2d44f4a2-5cd6-53d8-aa35-a7596f9bf586', 'c70de7e5-f1db-570c-9b5b-5edfafc92397');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('fae4957f-97d4-5e17-ab55-9de9af395141', 'ebed81cd-69aa-56a5-8001-0ac2fa54c9ec', jsonb_build_object('es', $hope$Excelencia$hope$), false),
-  ('ffcdfa66-5623-5294-9a3b-36b845a9674e', 'ebed81cd-69aa-56a5-8001-0ac2fa54c9ec', jsonb_build_object('es', $hope$Adaptabilidad$hope$), false),
-  ('2d44f4a2-5cd6-53d8-aa35-a7596f9bf586', 'ebed81cd-69aa-56a5-8001-0ac2fa54c9ec', jsonb_build_object('es', $hope$Seguridad$hope$), true),
-  ('c70de7e5-f1db-570c-9b5b-5edfafc92397', 'ebed81cd-69aa-56a5-8001-0ac2fa54c9ec', jsonb_build_object('es', $hope$Colaboración$hope$), false)
+  ('fae4957f-97d4-5e17-ab55-9de9af395141', 'ebed81cd-69aa-56a5-8001-0ac2fa54c9ec', jsonb_build_object('es', $hope$Seguridad$hope$), true),
+  ('ffcdfa66-5623-5294-9a3b-36b845a9674e', 'ebed81cd-69aa-56a5-8001-0ac2fa54c9ec', jsonb_build_object('es', $hope$Excelencia$hope$), false),
+  ('2d44f4a2-5cd6-53d8-aa35-a7596f9bf586', 'ebed81cd-69aa-56a5-8001-0ac2fa54c9ec', jsonb_build_object('es', $hope$Adaptabilidad$hope$), false),
+  ('c70de7e5-f1db-570c-9b5b-5edfafc92397', 'ebed81cd-69aa-56a5-8001-0ac2fa54c9ec', jsonb_build_object('es', $hope$Compasión$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('d94d5d25-aaca-5fe2-a8d0-74c6f7e36301', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$¿Por qué la aviación es especialmente valiosa en las zonas aisladas de Argentina?$hope$), 1, 4)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = 'd94d5d25-aaca-5fe2-a8d0-74c6f7e36301';
-DELETE FROM public.options WHERE question_id = 'd94d5d25-aaca-5fe2-a8d0-74c6f7e36301' AND id NOT IN ('e9654b5a-89c1-55b2-9d25-60c63ee7330c', '30c1eb75-4507-508b-bd58-312227d8dfbe', '00d9af7f-33fe-5d56-bdb9-72d9cd0d9d34');
+DELETE FROM public.options WHERE question_id = 'd94d5d25-aaca-5fe2-a8d0-74c6f7e36301' AND id NOT IN ('e9654b5a-89c1-55b2-9d25-60c63ee7330c', '30c1eb75-4507-508b-bd58-312227d8dfbe', '00d9af7f-33fe-5d56-bdb9-72d9cd0d9d34', '76ce01ff-bb45-5213-a205-8234febfed25');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('e9654b5a-89c1-55b2-9d25-60c63ee7330c', 'd94d5d25-aaca-5fe2-a8d0-74c6f7e36301', jsonb_build_object('es', $hope$Porque es más barata que cualquier transporte terrestre.$hope$), false),
-  ('30c1eb75-4507-508b-bd58-312227d8dfbe', 'd94d5d25-aaca-5fe2-a8d0-74c6f7e36301', jsonb_build_object('es', $hope$Porque convierte horas de viaje en minutos cuando los caminos no permiten llegar a tiempo.$hope$), true),
-  ('00d9af7f-33fe-5d56-bdb9-72d9cd0d9d34', 'd94d5d25-aaca-5fe2-a8d0-74c6f7e36301', jsonb_build_object('es', $hope$Porque las ambulancias aéreas ya cubren todas las comunidades del país.$hope$), false)
+  ('e9654b5a-89c1-55b2-9d25-60c63ee7330c', 'd94d5d25-aaca-5fe2-a8d0-74c6f7e36301', jsonb_build_object('es', $hope$Porque convierte horas de viaje en minutos donde no hay caminos.$hope$), true),
+  ('30c1eb75-4507-508b-bd58-312227d8dfbe', 'd94d5d25-aaca-5fe2-a8d0-74c6f7e36301', jsonb_build_object('es', $hope$Porque es más barata que el transporte terrestre en cualquier distancia.$hope$), false),
+  ('00d9af7f-33fe-5d56-bdb9-72d9cd0d9d34', 'd94d5d25-aaca-5fe2-a8d0-74c6f7e36301', jsonb_build_object('es', $hope$Porque reemplaza a los médicos y docentes que faltan en esas zonas.$hope$), false),
+  ('76ce01ff-bb45-5213-a205-8234febfed25', 'd94d5d25-aaca-5fe2-a8d0-74c6f7e36301', jsonb_build_object('es', $hope$Porque las ambulancias aéreas ya llegan a todas las comunidades.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('50012a46-6f82-5936-b04c-44fd07a6a5bb', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$Obtuviste el certificado del campus. ¿Qué afirmación es correcta?$hope$), 1, 5)
+VALUES ('50012a46-6f82-5936-b04c-44fd07a6a5bb', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$¿Qué hace HOPE con las organizaciones de su red?$hope$), 1, 5)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '50012a46-6f82-5936-b04c-44fd07a6a5bb';
-DELETE FROM public.options WHERE question_id = '50012a46-6f82-5936-b04c-44fd07a6a5bb' AND id NOT IN ('bdeb68d7-43ba-5c55-ad02-a3af92265d62', '34425b66-d37e-5e61-99a6-1d12d3764187', 'dd832a10-c6fa-59b7-b477-99f5f1d58221');
+DELETE FROM public.options WHERE question_id = '50012a46-6f82-5936-b04c-44fd07a6a5bb' AND id NOT IN ('bdeb68d7-43ba-5c55-ad02-a3af92265d62', '34425b66-d37e-5e61-99a6-1d12d3764187', 'dd832a10-c6fa-59b7-b477-99f5f1d58221', 'badbc2d1-3e8b-5c18-950a-34305cd4af78');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('bdeb68d7-43ba-5c55-ad02-a3af92265d62', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Te garantiza ser enviado a un proyecto.$hope$), false),
-  ('34425b66-d37e-5e61-99a6-1d12d3764187', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Reemplaza cualquier experiencia previa como voluntario.$hope$), false),
-  ('dd832a10-c6fa-59b7-b477-99f5f1d58221', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Es un primer paso: HOPE además realiza una entrevista personal antes de recomendar a un voluntario.$hope$), true)
+  ('bdeb68d7-43ba-5c55-ad02-a3af92265d62', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Prepara voluntarios y los conecta con proyectos existentes.$hope$), true),
+  ('34425b66-d37e-5e61-99a6-1d12d3764187', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Dirige los proyectos de las organizaciones aliadas.$hope$), false),
+  ('dd832a10-c6fa-59b7-b477-99f5f1d58221', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Compra aeronaves y se las presta a las organizaciones.$hope$), false),
+  ('badbc2d1-3e8b-5c18-950a-34305cd4af78', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Financia a las organizaciones a cambio de cupos para voluntarios.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('d6aa7456-569f-5779-9ada-35928a699d8d', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$Al llegar a una comunidad, ¿qué actitud se espera de un voluntario HOPE?$hope$), 1, 6)
+VALUES ('d6aa7456-569f-5779-9ada-35928a699d8d', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$Obtuviste el certificado del campus. ¿Qué afirmación es correcta?$hope$), 1, 6)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = 'd6aa7456-569f-5779-9ada-35928a699d8d';
-DELETE FROM public.options WHERE question_id = 'd6aa7456-569f-5779-9ada-35928a699d8d' AND id NOT IN ('5cebcadd-06bd-5ac9-9d58-77ed92e06c56', 'ed97630e-2bae-5fc5-9e39-45dceeaee1c0', '05939a5c-fe30-5ad0-98dd-f78fdae24a03');
+DELETE FROM public.options WHERE question_id = 'd6aa7456-569f-5779-9ada-35928a699d8d' AND id NOT IN ('5cebcadd-06bd-5ac9-9d58-77ed92e06c56', 'ed97630e-2bae-5fc5-9e39-45dceeaee1c0', '05939a5c-fe30-5ad0-98dd-f78fdae24a03', '204fdb80-616c-5857-bcbd-62fcc2dea5b5');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('5cebcadd-06bd-5ac9-9d58-77ed92e06c56', 'd6aa7456-569f-5779-9ada-35928a699d8d', jsonb_build_object('es', $hope$Mostrar cómo se hacen las cosas en su país para mejorar la comunidad.$hope$), false),
-  ('ed97630e-2bae-5fc5-9e39-45dceeaee1c0', 'd6aa7456-569f-5779-9ada-35928a699d8d', jsonb_build_object('es', $hope$Aprender antes que enseñar y trabajar junto a los líderes locales.$hope$), true),
-  ('05939a5c-fe30-5ad0-98dd-f78fdae24a03', 'd6aa7456-569f-5779-9ada-35928a699d8d', jsonb_build_object('es', $hope$Tomar el liderazgo para que el trabajo avance más rápido.$hope$), false)
+  ('5cebcadd-06bd-5ac9-9d58-77ed92e06c56', 'd6aa7456-569f-5779-9ada-35928a699d8d', jsonb_build_object('es', $hope$Es un primer paso: después viene una entrevista personal.$hope$), true),
+  ('ed97630e-2bae-5fc5-9e39-45dceeaee1c0', 'd6aa7456-569f-5779-9ada-35928a699d8d', jsonb_build_object('es', $hope$Te garantiza un lugar en el próximo proyecto que tenga cupo.$hope$), false),
+  ('05939a5c-fe30-5ad0-98dd-f78fdae24a03', 'd6aa7456-569f-5779-9ada-35928a699d8d', jsonb_build_object('es', $hope$Reemplaza la experiencia previa que piden algunos proyectos.$hope$), false),
+  ('204fdb80-616c-5857-bcbd-62fcc2dea5b5', 'd6aa7456-569f-5779-9ada-35928a699d8d', jsonb_build_object('es', $hope$Te autoriza a viajar en nombre de HOPE a cualquier proyecto.$hope$), false)
+ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
+INSERT INTO public.questions (id, exam_id, content, points, order_index)
+VALUES ('fc2a5e68-ea50-55c6-8081-81a3fa1ee5ee', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$Al llegar a una comunidad, ¿qué actitud se espera de un voluntario HOPE?$hope$), 1, 7)
+ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
+UPDATE public.options SET is_correct = false WHERE question_id = 'fc2a5e68-ea50-55c6-8081-81a3fa1ee5ee';
+DELETE FROM public.options WHERE question_id = 'fc2a5e68-ea50-55c6-8081-81a3fa1ee5ee' AND id NOT IN ('e3dec4ed-89e7-551c-b94c-af98f4846e1b', 'd9f0b23e-f0bf-5d99-b035-3c7ce3179e90', '4aaed209-304b-5d1f-b635-71620d44c634', 'a17319db-bef8-54fa-b602-4b4c01996379');
+INSERT INTO public.options (id, question_id, content, is_correct) VALUES
+  ('e3dec4ed-89e7-551c-b94c-af98f4846e1b', 'fc2a5e68-ea50-55c6-8081-81a3fa1ee5ee', jsonb_build_object('es', $hope$Aprender antes que enseñar y trabajar junto a los líderes locales.$hope$), true),
+  ('d9f0b23e-f0bf-5d99-b035-3c7ce3179e90', 'fc2a5e68-ea50-55c6-8081-81a3fa1ee5ee', jsonb_build_object('es', $hope$Mostrar cómo se hacen las cosas en su país para mejorar la comunidad.$hope$), false),
+  ('4aaed209-304b-5d1f-b635-71620d44c634', 'fc2a5e68-ea50-55c6-8081-81a3fa1ee5ee', jsonb_build_object('es', $hope$Tomar la iniciativa y liderar para que el trabajo avance más rápido.$hope$), false),
+  ('a17319db-bef8-54fa-b602-4b4c01996379', 'fc2a5e68-ea50-55c6-8081-81a3fa1ee5ee', jsonb_build_object('es', $hope$Concentrarse en su tarea técnica y no involucrarse con la comunidad.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 
 -- Module 2: Vida espiritual
@@ -355,8 +371,8 @@ No son motivo de culpa, sino señales de que necesitás volver a la fuente.
 ```check
 ? Según la imagen de la vid y los pámpanos, ¿de dónde viene el fruto en la misión?
 - Del esfuerzo personal y la disciplina del voluntario.
-+ De permanecer conectado con Cristo.
 - De la cantidad de actividades que se realizan.
++ De permanecer conectado con Cristo.
 > La rama no produce fruto por esfuerzo propio: lo da porque está unida a la vid. El servicio sostenible nace de esa conexión.
 ```
 
@@ -420,8 +436,8 @@ Ser humilde no significa pensar que no valés nada. Significa tener una mirada r
 
 ```check
 ? Un compañero del equipo organizó mal la carga y hubo que repetir el trabajo. ¿Qué respuesta refleja mejor el carácter de Cristo?
-- Comentarlo con el resto del equipo para que no vuelva a pasar.
 + Hablar con él en privado, con respeto, y ayudar a resolverlo.
+- Comentarlo con el resto del equipo para que no vuelva a pasar.
 - Rehacer todo vos sin decirle nada para evitar el conflicto.
 > El carácter de Cristo combina verdad y amor: no esconde el problema, pero tampoco expone ni humilla al otro.
 ```
@@ -440,7 +456,7 @@ VALUES ('e40bc9ca-24ed-55e3-b2c3-c74e63a6c104', '5341fa62-a974-5c83-bac7-13b7abd
 > [!VERSE] Eclesiastés 3:1
 > Todo tiene su tiempo, y todo lo que se quiere debajo del cielo tiene su hora.
 
-En el libro de los Hechos, Pablo quería predicar en Asia y luego en Bitinia, pero "el Espíritu no se lo permitió" (Hechos 16:6–10). Recién después recibió el llamado a Macedonia. Tener buenas intenciones no significa que sea el momento ni el lugar correcto.
+En el libro de los Hechos, Pablo y sus compañeros quisieron predicar en Asia, pero el Espíritu Santo se lo prohibió; intentaron ir a Bitinia, "pero el Espíritu no se lo permitió" (Hechos 16:6–10). Recién después llegó el llamado a Macedonia. Tener buenas intenciones no significa que sea el momento ni el lugar correcto.
 
 ## Cuatro señales para discernir si ir
 
@@ -510,7 +526,7 @@ La Biblia no presenta el mal como una idea abstracta. Habla de un conflicto real
 > [!VERSE] Efesios 6:12
 > Porque no tenemos lucha contra sangre y carne, sino contra principados, contra potestades, contra los gobernadores de las tinieblas de este siglo, contra huestes espirituales de maldad en las regiones celestes.
 
-Pero el mismo Nuevo Testamento deja claro quién tiene la victoria: Cristo "despojó a los principados y a las potestades" en la cruz (Colosenses 2:15), y "mayor es el que está en vosotros, que el que está en el mundo" (1 Juan 4:4). El cristiano no enfrenta el mal con miedo, sino desde la victoria de Cristo.
+Pero el mismo Nuevo Testamento deja claro quién tiene la victoria: en la cruz Cristo triunfó sobre el mal, "despojando a los principados y a las potestades" (Colosenses 2:15), y "mayor es el que está en vosotros, que el que está en el mundo" (1 Juan 4:4). El cristiano no enfrenta el mal con miedo, sino desde la victoria de Cristo.
 
 ## Dos errores opuestos
 
@@ -566,8 +582,8 @@ En muchas comunidades conviven la fe cristiana con prácticas animistas, curande
 ```check
 ? Una persona de la comunidad tiene convulsiones y su familia cree que es un problema espiritual. ¿Qué es lo más responsable?
 - Organizar de inmediato una oración de liberación con todo el equipo.
-+ Orar con la familia y asegurarse de que la persona reciba evaluación médica.
 - Explicarles que lo espiritual no existe y que es solo una enfermedad.
++ Orar con la familia y asegurarse de que la persona reciba evaluación médica.
 > Las convulsiones pueden tener causas médicas graves. Orar y buscar atención médica van juntas, siempre con respeto por la familia.
 ```
 
@@ -632,8 +648,8 @@ Bien vivida, la soledad puede ser un regalo: un espacio sin ruido para escuchar 
 
 ```check
 ? Según la historia de Elías, ¿qué hizo Dios primero cuando el profeta estaba agotado y desanimado?
-- Lo reprendió por su falta de fe.
 + Lo dejó descansar y le dio de comer.
+- Lo reprendió por su falta de fe.
 - Le encomendó una nueva misión inmediatamente.
 > Dios atendió primero las necesidades físicas de Elías. Recién después le habló y le dio compañía para seguir.
 ```
@@ -653,31 +669,34 @@ INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('423350f1-7cae-5e1a-bd0d-e962c2a59403', 'ed863806-d340-55af-8164-b0754047e26e', jsonb_build_object('es', $hope$¿Qué enseña la imagen de la vid y los pámpanos (Juan 15:5) sobre el servicio?$hope$), 1, 0)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '423350f1-7cae-5e1a-bd0d-e962c2a59403';
-DELETE FROM public.options WHERE question_id = '423350f1-7cae-5e1a-bd0d-e962c2a59403' AND id NOT IN ('45c2c2f3-22f7-5ac5-a7a3-040006f012f1', '369b02f8-ac7a-5e19-9320-7cada128f500', 'd0383ace-0cc4-5d45-a50c-f93391f8d4dd');
+DELETE FROM public.options WHERE question_id = '423350f1-7cae-5e1a-bd0d-e962c2a59403' AND id NOT IN ('45c2c2f3-22f7-5ac5-a7a3-040006f012f1', '369b02f8-ac7a-5e19-9320-7cada128f500', 'd0383ace-0cc4-5d45-a50c-f93391f8d4dd', 'a67a1a6d-b1b2-5e17-8667-7f316af9a1a3');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('45c2c2f3-22f7-5ac5-a7a3-040006f012f1', '423350f1-7cae-5e1a-bd0d-e962c2a59403', jsonb_build_object('es', $hope$Que el fruto depende sobre todo del esfuerzo y la disciplina del voluntario.$hope$), false),
-  ('369b02f8-ac7a-5e19-9320-7cada128f500', '423350f1-7cae-5e1a-bd0d-e962c2a59403', jsonb_build_object('es', $hope$Que separados de Cristo no podemos dar fruto.$hope$), true),
-  ('d0383ace-0cc4-5d45-a50c-f93391f8d4dd', '423350f1-7cae-5e1a-bd0d-e962c2a59403', jsonb_build_object('es', $hope$Que hay que trabajar sin descanso para que la misión crezca.$hope$), false)
+  ('45c2c2f3-22f7-5ac5-a7a3-040006f012f1', '423350f1-7cae-5e1a-bd0d-e962c2a59403', jsonb_build_object('es', $hope$Que separados de Cristo no podemos dar fruto.$hope$), true),
+  ('369b02f8-ac7a-5e19-9320-7cada128f500', '423350f1-7cae-5e1a-bd0d-e962c2a59403', jsonb_build_object('es', $hope$Que el fruto depende sobre todo de la disciplina del voluntario.$hope$), false),
+  ('d0383ace-0cc4-5d45-a50c-f93391f8d4dd', '423350f1-7cae-5e1a-bd0d-e962c2a59403', jsonb_build_object('es', $hope$Que hay que trabajar sin descanso para que la misión crezca.$hope$), false),
+  ('a67a1a6d-b1b2-5e17-8667-7f316af9a1a3', '423350f1-7cae-5e1a-bd0d-e962c2a59403', jsonb_build_object('es', $hope$Que cada creyente debe dar fruto por su propia cuenta.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('bd7c800f-de5c-5a80-b2f8-b705110c1a1a', 'ed863806-d340-55af-8164-b0754047e26e', jsonb_build_object('es', $hope$En el terreno, tu rutina devocional se desarma. ¿Qué recomienda la clase?$hope$), 1, 1)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = 'bd7c800f-de5c-5a80-b2f8-b705110c1a1a';
-DELETE FROM public.options WHERE question_id = 'bd7c800f-de5c-5a80-b2f8-b705110c1a1a' AND id NOT IN ('47957fdb-7aa7-5f77-b98e-57c50d37a626', '436115f3-deb8-565a-9276-6a674ae46409', '6521afc3-5be5-5ae3-905a-4bd01371b488');
+DELETE FROM public.options WHERE question_id = 'bd7c800f-de5c-5a80-b2f8-b705110c1a1a' AND id NOT IN ('47957fdb-7aa7-5f77-b98e-57c50d37a626', '436115f3-deb8-565a-9276-6a674ae46409', '6521afc3-5be5-5ae3-905a-4bd01371b488', '432fd23a-30ec-511a-8daa-f94739cea6a9');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('47957fdb-7aa7-5f77-b98e-57c50d37a626', 'bd7c800f-de5c-5a80-b2f8-b705110c1a1a', jsonb_build_object('es', $hope$Suspender la vida devocional hasta volver a casa.$hope$), false),
-  ('436115f3-deb8-565a-9276-6a674ae46409', 'bd7c800f-de5c-5a80-b2f8-b705110c1a1a', jsonb_build_object('es', $hope$Depender únicamente de los cultos que organiza el equipo.$hope$), false),
-  ('6521afc3-5be5-5ae3-905a-4bd01371b488', 'bd7c800f-de5c-5a80-b2f8-b705110c1a1a', jsonb_build_object('es', $hope$Tener un momento fijo aunque sea corto, recursos sin conexión y un plan de lectura.$hope$), true)
+  ('47957fdb-7aa7-5f77-b98e-57c50d37a626', 'bd7c800f-de5c-5a80-b2f8-b705110c1a1a', jsonb_build_object('es', $hope$Un momento fijo cada día, aunque sea corto.$hope$), true),
+  ('436115f3-deb8-565a-9276-6a674ae46409', 'bd7c800f-de5c-5a80-b2f8-b705110c1a1a', jsonb_build_object('es', $hope$Suspenderla hasta volver a casa y retomarla con más tiempo.$hope$), false),
+  ('6521afc3-5be5-5ae3-905a-4bd01371b488', 'bd7c800f-de5c-5a80-b2f8-b705110c1a1a', jsonb_build_object('es', $hope$Reemplazarla por los cultos y devocionales que organiza el equipo.$hope$), false),
+  ('432fd23a-30ec-511a-8daa-f94739cea6a9', 'bd7c800f-de5c-5a80-b2f8-b705110c1a1a', jsonb_build_object('es', $hope$Compensar los días perdidos con jornadas largas de oración.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('4e6cb55c-2b8c-5423-be5b-c2b8f21fcdb9', 'ed863806-d340-55af-8164-b0754047e26e', jsonb_build_object('es', $hope$Según Filipenses 2, ¿qué caracteriza la actitud de Cristo?$hope$), 1, 2)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '4e6cb55c-2b8c-5423-be5b-c2b8f21fcdb9';
-DELETE FROM public.options WHERE question_id = '4e6cb55c-2b8c-5423-be5b-c2b8f21fcdb9' AND id NOT IN ('afdd0bb4-0dcc-5427-94e6-9f035659399e', '1509dfed-4607-5241-864e-452488893379', 'daa5680b-1173-5ea6-b043-ed5838384bf4');
+DELETE FROM public.options WHERE question_id = '4e6cb55c-2b8c-5423-be5b-c2b8f21fcdb9' AND id NOT IN ('afdd0bb4-0dcc-5427-94e6-9f035659399e', '1509dfed-4607-5241-864e-452488893379', 'daa5680b-1173-5ea6-b043-ed5838384bf4', 'cc97a66f-87f4-5917-85ce-b33eb15e9b38');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
   ('afdd0bb4-0dcc-5427-94e6-9f035659399e', '4e6cb55c-2b8c-5423-be5b-c2b8f21fcdb9', jsonb_build_object('es', $hope$Se despojó a sí mismo y tomó forma de siervo.$hope$), true),
-  ('1509dfed-4607-5241-864e-452488893379', '4e6cb55c-2b8c-5423-be5b-c2b8f21fcdb9', jsonb_build_object('es', $hope$Exigió el reconocimiento que le correspondía.$hope$), false),
-  ('daa5680b-1173-5ea6-b043-ed5838384bf4', '4e6cb55c-2b8c-5423-be5b-c2b8f21fcdb9', jsonb_build_object('es', $hope$Evitó las tareas humildes para enfocarse en enseñar.$hope$), false)
+  ('1509dfed-4607-5241-864e-452488893379', '4e6cb55c-2b8c-5423-be5b-c2b8f21fcdb9', jsonb_build_object('es', $hope$Exigió el reconocimiento que le correspondía como Dios.$hope$), false),
+  ('daa5680b-1173-5ea6-b043-ed5838384bf4', '4e6cb55c-2b8c-5423-be5b-c2b8f21fcdb9', jsonb_build_object('es', $hope$Evitó las tareas humildes para concentrarse en enseñar.$hope$), false),
+  ('cc97a66f-87f4-5917-85ce-b33eb15e9b38', '4e6cb55c-2b8c-5423-be5b-c2b8f21fcdb9', jsonb_build_object('es', $hope$Se apartó de la gente para no contaminarse.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('9e44916d-a1a6-5b47-9ef0-93b33434a8f5', 'ed863806-d340-55af-8164-b0754047e26e', jsonb_build_object('es', $hope$¿Cuál de estas NO es una de las señales para discernir si es momento de ir?$hope$), 1, 3)
@@ -685,50 +704,65 @@ ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.poi
 UPDATE public.options SET is_correct = false WHERE question_id = '9e44916d-a1a6-5b47-9ef0-93b33434a8f5';
 DELETE FROM public.options WHERE question_id = '9e44916d-a1a6-5b47-9ef0-93b33434a8f5' AND id NOT IN ('904be002-7d96-55ac-aefb-d94b8d073f3b', 'dc58a112-2de7-5f1a-bd64-efe9f33f248c', '9849f175-5e40-59a8-88c5-6af2266eda55', '879ae92d-3c26-5c97-8c9b-bb405cb1395a');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('904be002-7d96-55ac-aefb-d94b8d073f3b', '9e44916d-a1a6-5b47-9ef0-93b33434a8f5', jsonb_build_object('es', $hope$Un llamado interno que se sostiene en el tiempo.$hope$), false),
-  ('dc58a112-2de7-5f1a-bd64-efe9f33f248c', '9e44916d-a1a6-5b47-9ef0-93b33434a8f5', jsonb_build_object('es', $hope$La confirmación de personas maduras que te conocen.$hope$), false),
-  ('9849f175-5e40-59a8-88c5-6af2266eda55', '9e44916d-a1a6-5b47-9ef0-93b33434a8f5', jsonb_build_object('es', $hope$Puertas abiertas y un proyecto que necesita lo que podés dar.$hope$), false),
-  ('879ae92d-3c26-5c97-8c9b-bb405cb1395a', '9e44916d-a1a6-5b47-9ef0-93b33434a8f5', jsonb_build_object('es', $hope$El deseo de escapar de un problema personal.$hope$), true)
+  ('904be002-7d96-55ac-aefb-d94b8d073f3b', '9e44916d-a1a6-5b47-9ef0-93b33434a8f5', jsonb_build_object('es', $hope$El deseo de escapar de un problema personal.$hope$), true),
+  ('dc58a112-2de7-5f1a-bd64-efe9f33f248c', '9e44916d-a1a6-5b47-9ef0-93b33434a8f5', jsonb_build_object('es', $hope$Un llamado interno que se sostiene en el tiempo.$hope$), false),
+  ('9849f175-5e40-59a8-88c5-6af2266eda55', '9e44916d-a1a6-5b47-9ef0-93b33434a8f5', jsonb_build_object('es', $hope$La confirmación de personas maduras que te conocen.$hope$), false),
+  ('879ae92d-3c26-5c97-8c9b-bb405cb1395a', '9e44916d-a1a6-5b47-9ef0-93b33434a8f5', jsonb_build_object('es', $hope$Puertas abiertas y un proyecto que necesita lo que podés dar.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('eb6eeec1-a145-57e6-9f39-6ed332406df5', 'ed863806-d340-55af-8164-b0754047e26e', jsonb_build_object('es', $hope$¿Cuál de estas es una buena razón para volver de una misión?$hope$), 1, 4)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = 'eb6eeec1-a145-57e6-9f39-6ed332406df5';
-DELETE FROM public.options WHERE question_id = 'eb6eeec1-a145-57e6-9f39-6ed332406df5' AND id NOT IN ('d1978c66-5001-5836-a804-f14c6db802cc', 'b420079a-b2bf-5835-a591-b6e4de11f4aa', '7af48504-d2ad-5758-83e9-550e692e9014');
+DELETE FROM public.options WHERE question_id = 'eb6eeec1-a145-57e6-9f39-6ed332406df5' AND id NOT IN ('d1978c66-5001-5836-a804-f14c6db802cc', 'b420079a-b2bf-5835-a591-b6e4de11f4aa', '7af48504-d2ad-5758-83e9-550e692e9014', 'ca98a229-933d-5c63-8fdb-73ac33962cd7');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
   ('d1978c66-5001-5836-a804-f14c6db802cc', 'eb6eeec1-a145-57e6-9f39-6ed332406df5', jsonb_build_object('es', $hope$Los líderes locales ya pueden continuar el trabajo sin vos.$hope$), true),
-  ('b420079a-b2bf-5835-a591-b6e4de11f4aa', 'eb6eeec1-a145-57e6-9f39-6ed332406df5', jsonb_build_object('es', $hope$Tuviste una discusión con un compañero del equipo.$hope$), false),
-  ('7af48504-d2ad-5758-83e9-550e692e9014', 'eb6eeec1-a145-57e6-9f39-6ed332406df5', jsonb_build_object('es', $hope$El trabajo dejó de ser emocionante.$hope$), false)
+  ('b420079a-b2bf-5835-a591-b6e4de11f4aa', 'eb6eeec1-a145-57e6-9f39-6ed332406df5', jsonb_build_object('es', $hope$Tuviste una discusión fuerte con un compañero del equipo.$hope$), false),
+  ('7af48504-d2ad-5758-83e9-550e692e9014', 'eb6eeec1-a145-57e6-9f39-6ed332406df5', jsonb_build_object('es', $hope$El trabajo dejó de ser emocionante y extrañás tu casa.$hope$), false),
+  ('ca98a229-933d-5c63-8fdb-73ac33962cd7', 'eb6eeec1-a145-57e6-9f39-6ed332406df5', jsonb_build_object('es', $hope$Sentís que la comunidad no valora lo suficiente tu esfuerzo.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('8b8ff310-28eb-5e66-b0ce-a32dc4e731ee', 'ed863806-d340-55af-8164-b0754047e26e', jsonb_build_object('es', $hope$¿Qué equilibrio propone la clase sobre el conflicto espiritual?$hope$), 1, 5)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '8b8ff310-28eb-5e66-b0ce-a32dc4e731ee';
-DELETE FROM public.options WHERE question_id = '8b8ff310-28eb-5e66-b0ce-a32dc4e731ee' AND id NOT IN ('b3099213-2608-52de-aa03-72d245c2e8ed', '16d0d572-8dd9-567f-907c-9930d127c3f0', '768a1929-2c10-5803-b947-482eb7a161e5');
+DELETE FROM public.options WHERE question_id = '8b8ff310-28eb-5e66-b0ce-a32dc4e731ee' AND id NOT IN ('b3099213-2608-52de-aa03-72d245c2e8ed', '16d0d572-8dd9-567f-907c-9930d127c3f0', '768a1929-2c10-5803-b947-482eb7a161e5', 'c100ff26-2906-50c2-a065-bed3edb2c938');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('b3099213-2608-52de-aa03-72d245c2e8ed', '8b8ff310-28eb-5e66-b0ce-a32dc4e731ee', jsonb_build_object('es', $hope$Ignorarlo, porque se trata de supersticiones.$hope$), false),
-  ('16d0d572-8dd9-567f-907c-9930d127c3f0', '8b8ff310-28eb-5e66-b0ce-a32dc4e731ee', jsonb_build_object('es', $hope$Buscar una causa espiritual detrás de cada enfermedad o problema.$hope$), false),
-  ('768a1929-2c10-5803-b947-482eb7a161e5', '8b8ff310-28eb-5e66-b0ce-a32dc4e731ee', jsonb_build_object('es', $hope$Reconocer su realidad, pero poner el foco en la victoria de Cristo.$hope$), true)
+  ('b3099213-2608-52de-aa03-72d245c2e8ed', '8b8ff310-28eb-5e66-b0ce-a32dc4e731ee', jsonb_build_object('es', $hope$Reconocer su realidad, con el foco puesto en Cristo.$hope$), true),
+  ('16d0d572-8dd9-567f-907c-9930d127c3f0', '8b8ff310-28eb-5e66-b0ce-a32dc4e731ee', jsonb_build_object('es', $hope$Tratarlo como una superstición que conviene no alimentar.$hope$), false),
+  ('768a1929-2c10-5803-b947-482eb7a161e5', '8b8ff310-28eb-5e66-b0ce-a32dc4e731ee', jsonb_build_object('es', $hope$Buscar una causa espiritual detrás de cada enfermedad o problema.$hope$), false),
+  ('c100ff26-2906-50c2-a065-bed3edb2c938', '8b8ff310-28eb-5e66-b0ce-a32dc4e731ee', jsonb_build_object('es', $hope$Dejar el tema solo en manos de los pastores, sin involucrarse.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('00b40aac-1e9e-5a79-8151-50711e387c62', 'ed863806-d340-55af-8164-b0754047e26e', jsonb_build_object('es', $hope$Antes de concluir que el problema de una persona es espiritual, ¿qué conviene asegurar?$hope$), 1, 6)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '00b40aac-1e9e-5a79-8151-50711e387c62';
-DELETE FROM public.options WHERE question_id = '00b40aac-1e9e-5a79-8151-50711e387c62' AND id NOT IN ('7ea13a46-d268-5fbb-8ec3-05cc6fa7c61a', '6c7c35f4-d3b0-5dec-87ef-1731c5e93603', 'dc64a36b-c51a-5d90-88b0-9fc46ce54f67');
+DELETE FROM public.options WHERE question_id = '00b40aac-1e9e-5a79-8151-50711e387c62' AND id NOT IN ('7ea13a46-d268-5fbb-8ec3-05cc6fa7c61a', '6c7c35f4-d3b0-5dec-87ef-1731c5e93603', 'dc64a36b-c51a-5d90-88b0-9fc46ce54f67', '7591abbb-e6ae-526c-b22c-fd8b08dbf594');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('7ea13a46-d268-5fbb-8ec3-05cc6fa7c61a', '00b40aac-1e9e-5a79-8151-50711e387c62', jsonb_build_object('es', $hope$Que el equipo organice cuanto antes una ceremonia de oración.$hope$), false),
-  ('6c7c35f4-d3b0-5dec-87ef-1731c5e93603', '00b40aac-1e9e-5a79-8151-50711e387c62', jsonb_build_object('es', $hope$Que la persona tenga acceso a evaluación médica y psicológica.$hope$), true),
-  ('dc64a36b-c51a-5d90-88b0-9fc46ce54f67', '00b40aac-1e9e-5a79-8151-50711e387c62', jsonb_build_object('es', $hope$Que la persona confiese públicamente lo que le pasa.$hope$), false)
+  ('7ea13a46-d268-5fbb-8ec3-05cc6fa7c61a', '00b40aac-1e9e-5a79-8151-50711e387c62', jsonb_build_object('es', $hope$Que la persona tenga acceso a evaluación médica y psicológica.$hope$), true),
+  ('6c7c35f4-d3b0-5dec-87ef-1731c5e93603', '00b40aac-1e9e-5a79-8151-50711e387c62', jsonb_build_object('es', $hope$Que el equipo organice cuanto antes una oración de liberación.$hope$), false),
+  ('dc64a36b-c51a-5d90-88b0-9fc46ce54f67', '00b40aac-1e9e-5a79-8151-50711e387c62', jsonb_build_object('es', $hope$Que la persona confiese públicamente lo que le pasa.$hope$), false),
+  ('7591abbb-e6ae-526c-b22c-fd8b08dbf594', '00b40aac-1e9e-5a79-8151-50711e387c62', jsonb_build_object('es', $hope$Que la familia acepte dejar de lado sus creencias tradicionales.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('1a519133-dd02-50b8-8cc6-fc16001422f5', 'ed863806-d340-55af-8164-b0754047e26e', jsonb_build_object('es', $hope$¿Cuál es la diferencia entre la soledad elegida y el aislamiento?$hope$), 1, 7)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '1a519133-dd02-50b8-8cc6-fc16001422f5';
-DELETE FROM public.options WHERE question_id = '1a519133-dd02-50b8-8cc6-fc16001422f5' AND id NOT IN ('aa47f7d1-96fa-5582-93c4-20b905e1eb89', '1585605b-a702-5116-8b0f-22492894bacf', '424bd5ab-a942-5564-91d2-b0b27331f298');
+DELETE FROM public.options WHERE question_id = '1a519133-dd02-50b8-8cc6-fc16001422f5' AND id NOT IN ('aa47f7d1-96fa-5582-93c4-20b905e1eb89', '1585605b-a702-5116-8b0f-22492894bacf', '424bd5ab-a942-5564-91d2-b0b27331f298', '98ca0490-44f6-5f68-ab4a-013f2278fc89');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('aa47f7d1-96fa-5582-93c4-20b905e1eb89', '1a519133-dd02-50b8-8cc6-fc16001422f5', jsonb_build_object('es', $hope$No hay diferencia: las dos son igual de sanas.$hope$), false),
-  ('1585605b-a702-5116-8b0f-22492894bacf', '1a519133-dd02-50b8-8cc6-fc16001422f5', jsonb_build_object('es', $hope$El aislamiento es más espiritual porque evita distracciones.$hope$), false),
-  ('424bd5ab-a942-5564-91d2-b0b27331f298', '1a519133-dd02-50b8-8cc6-fc16001422f5', jsonb_build_object('es', $hope$La soledad elegida renueva y tiene un fin; el aislamiento vacía y se prolonga.$hope$), true)
+  ('aa47f7d1-96fa-5582-93c4-20b905e1eb89', '1a519133-dd02-50b8-8cc6-fc16001422f5', jsonb_build_object('es', $hope$La soledad elegida renueva; el aislamiento vacía y se prolonga.$hope$), true),
+  ('1585605b-a702-5116-8b0f-22492894bacf', '1a519133-dd02-50b8-8cc6-fc16001422f5', jsonb_build_object('es', $hope$No hay diferencia real: las dos te alejan de los demás.$hope$), false),
+  ('424bd5ab-a942-5564-91d2-b0b27331f298', '1a519133-dd02-50b8-8cc6-fc16001422f5', jsonb_build_object('es', $hope$El aislamiento es más espiritual porque evita las distracciones del equipo.$hope$), false),
+  ('98ca0490-44f6-5f68-ab4a-013f2278fc89', '1a519133-dd02-50b8-8cc6-fc16001422f5', jsonb_build_object('es', $hope$La soledad elegida dura más tiempo que el aislamiento.$hope$), false)
+ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
+INSERT INTO public.questions (id, exam_id, content, points, order_index)
+VALUES ('b0315fd6-a20f-56bf-bcf3-2bee65dafc27', 'ed863806-d340-55af-8164-b0754047e26e', jsonb_build_object('es', $hope$¿Qué enseña el cuidado de Dios con Elías en 1 Reyes 19?$hope$), 1, 8)
+ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
+UPDATE public.options SET is_correct = false WHERE question_id = 'b0315fd6-a20f-56bf-bcf3-2bee65dafc27';
+DELETE FROM public.options WHERE question_id = 'b0315fd6-a20f-56bf-bcf3-2bee65dafc27' AND id NOT IN ('d8d8fe0a-8d2e-5274-b706-3b68c8d703cc', 'f5266eec-9da9-5eb7-a221-2c18ae69b7ae', '242f89ac-eb39-5713-ac20-d4fc55d355b6', '86ac6cb7-51ee-5f98-87d4-db975053b451');
+INSERT INTO public.options (id, question_id, content, is_correct) VALUES
+  ('d8d8fe0a-8d2e-5274-b706-3b68c8d703cc', 'b0315fd6-a20f-56bf-bcf3-2bee65dafc27', jsonb_build_object('es', $hope$Que muchas veces el desánimo empieza por el cansancio físico.$hope$), true),
+  ('f5266eec-9da9-5eb7-a221-2c18ae69b7ae', 'b0315fd6-a20f-56bf-bcf3-2bee65dafc27', jsonb_build_object('es', $hope$Que el desánimo es siempre consecuencia de la falta de fe.$hope$), false),
+  ('242f89ac-eb39-5713-ac20-d4fc55d355b6', 'b0315fd6-a20f-56bf-bcf3-2bee65dafc27', jsonb_build_object('es', $hope$Que un siervo de Dios fiel no debería sentirse solo ni desanimado.$hope$), false),
+  ('86ac6cb7-51ee-5f98-87d4-db975053b451', 'b0315fd6-a20f-56bf-bcf3-2bee65dafc27', jsonb_build_object('es', $hope$Que la solución al desánimo es trabajar todavía más.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 
 -- Module 3: Vida en equipo
@@ -794,8 +828,8 @@ Revisá tus interpretaciones: Antes de juzgar una conducta, preguntate si no hay
 ```check
 ? Le preguntás a un líder de la comunidad si puede reunir a las familias el sábado y responde "sí, sí", pero sin entusiasmo. ¿Qué conviene hacer?
 - Dar por hecho que la reunión está confirmada.
-+ Considerar que el "sí" puede ser cortesía y conversar más para entender su respuesta.
 - Insistir con más firmeza hasta que se comprometa.
++ Considerar que el "sí" puede ser cortesía y conversar más para entender su respuesta.
 > En culturas de comunicación indirecta, decir "no" de frente puede ser descortés. Conversar con calma o consultar a alguien de confianza ayuda a entender qué quiso decir.
 ```
 
@@ -862,8 +896,8 @@ Hospitales, municipios, escuelas, autoridades aeronáuticas o aduanas tienen reg
 ```check
 ? Un compañero te contestó mal delante de todos durante la descarga del avión. ¿Cuál es el mejor primer paso?
 - Responderle en el momento para que no se repita.
-- Comentarlo con el resto del equipo durante la cena.
 + Esperar a estar tranquilo y hablarlo con él en privado.
+- Comentarlo con el resto del equipo durante la cena.
 > Seguir el principio de Mateo 18: primero a solas, con calma. Responder en caliente o exponerlo frente a otros suele agrandar el conflicto.
 ```
 
@@ -883,7 +917,7 @@ VALUES ('a8def25b-8f54-550d-931e-3feac7002217', 'ece67cfd-affb-536d-8107-e8ff01b
 
 Jesús dio vuelta la idea de liderazgo de su época. La noche antes de morir, tomó una toalla y lavó los pies de sus discípulos, una tarea reservada para los sirvientes (Juan 13). Después les dijo: "ejemplo os he dado, para que como yo os he hecho, vosotros también hagáis".
 
-Siglos después, el ensayista Robert Greenleaf llamó a esta idea **liderazgo de servicio**: un líder que se pregunta primero cómo hacer crecer a las personas que tiene a cargo.
+En 1970, el ejecutivo estadounidense Robert K. Greenleaf llamó a esta idea **liderazgo de servicio**: un líder que se pregunta primero cómo hacer crecer a las personas que tiene a cargo.
 
 ## Servir no significa no decidir
 
@@ -923,8 +957,8 @@ Habilidades sociales: Comunicar, negociar y construir confianza.
 
 ```check
 ? Sos responsable de un grupo de voluntarios y el piloto decide no despegar por el clima, aunque la comunidad los espera. ¿Qué hace un líder servidor?
-- Presiona al piloto para que reconsidere, porque la comunidad necesita la ayuda.
 + Respalda la decisión del piloto y ayuda al grupo a reorganizarse.
+- Presiona al piloto para que reconsidere, porque la comunidad necesita la ayuda.
 - Deja que cada voluntario decida qué hacer mientras esperan.
 > Liderar sirviendo incluye respetar la autoridad de quien es responsable de la seguridad del vuelo y ayudar al equipo a adaptarse.
 ```
@@ -1039,7 +1073,7 @@ Creele: Decile que hizo bien en contarlo y que no es su culpa.
 No investigues: No hagas preguntas detalladas ni pidas pruebas; eso le corresponde a los profesionales.
 No prometas secreto: Explicale con cuidado que vas a contárselo a alguien que puede ayudar.
 Registrá: Apenas puedas, escribí lo que te dijo con sus palabras, la fecha y la hora.
-Reportá ese mismo día: Al responsable de protección del proyecto o de HOPE, que sabrá cómo dar intervención a las autoridades según la ley local.
+Reportá ese mismo día: Al responsable de protección del proyecto (o, si no lo hay, al responsable del equipo), que sabrá cómo dar intervención a las autoridades según la ley local.
 ```
 
 > [!WARNING] Si hay peligro inmediato
@@ -1059,8 +1093,8 @@ Los mismos principios se aplican a adultos en situación de vulnerabilidad: pers
 ```check
 ? Durante una actividad, un niño te pide que lo acompañes solo a buscar algo a su casa, lejos del grupo. ¿Qué hacés?
 - Lo acompañás, porque es un pedido simple y el niño confía en vos.
-+ Le pedís a otro adulto del equipo que vaya con ustedes o avisás al responsable.
 - Le decís que vaya solo y no le das importancia.
++ Le pedís a otro adulto del equipo que vaya con ustedes o avisás al responsable.
 > La regla es no quedarse a solas con un menor en lugares apartados. Sumar a otro adulto protege al niño y también a vos.
 ```
 
@@ -1079,92 +1113,122 @@ INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('c3230d70-bafe-5a75-abb9-76160f4991eb', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$Según la imagen del iceberg, ¿qué aspectos de una cultura suelen generar más conflictos?$hope$), 1, 0)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = 'c3230d70-bafe-5a75-abb9-76160f4991eb';
-DELETE FROM public.options WHERE question_id = 'c3230d70-bafe-5a75-abb9-76160f4991eb' AND id NOT IN ('7166280e-9ab3-52d7-8fd2-50b145febb33', '8486bf1d-0840-5724-8994-a18cae960d3b', '2ef7d8d4-9fc6-5d4b-929b-c2d01fcab2ef');
+DELETE FROM public.options WHERE question_id = 'c3230d70-bafe-5a75-abb9-76160f4991eb' AND id NOT IN ('7166280e-9ab3-52d7-8fd2-50b145febb33', '8486bf1d-0840-5724-8994-a18cae960d3b', '2ef7d8d4-9fc6-5d4b-929b-c2d01fcab2ef', 'b2fa4624-69dd-5cab-a6bc-1d52b0bb16d9');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('7166280e-9ab3-52d7-8fd2-50b145febb33', 'c3230d70-bafe-5a75-abb9-76160f4991eb', jsonb_build_object('es', $hope$La comida, la ropa y la música.$hope$), false),
-  ('8486bf1d-0840-5724-8994-a18cae960d3b', 'c3230d70-bafe-5a75-abb9-76160f4991eb', jsonb_build_object('es', $hope$Lo que no se ve: cómo se entienden el tiempo, la autoridad y el respeto.$hope$), true),
-  ('2ef7d8d4-9fc6-5d4b-929b-c2d01fcab2ef', 'c3230d70-bafe-5a75-abb9-76160f4991eb', jsonb_build_object('es', $hope$El idioma escrito.$hope$), false)
+  ('7166280e-9ab3-52d7-8fd2-50b145febb33', 'c3230d70-bafe-5a75-abb9-76160f4991eb', jsonb_build_object('es', $hope$Lo que no se ve, como el tiempo, la autoridad y el respeto.$hope$), true),
+  ('8486bf1d-0840-5724-8994-a18cae960d3b', 'c3230d70-bafe-5a75-abb9-76160f4991eb', jsonb_build_object('es', $hope$La comida, la ropa y la música de cada lugar.$hope$), false),
+  ('2ef7d8d4-9fc6-5d4b-929b-c2d01fcab2ef', 'c3230d70-bafe-5a75-abb9-76160f4991eb', jsonb_build_object('es', $hope$El idioma, porque es lo primero que separa a las personas.$hope$), false),
+  ('b2fa4624-69dd-5cab-a6bc-1d52b0bb16d9', 'c3230d70-bafe-5a75-abb9-76160f4991eb', jsonb_build_object('es', $hope$Las fiestas y celebraciones religiosas tradicionales.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('0ca3c1ae-893c-5f77-83c0-6b0ecd1dfba6', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$En una cultura de comunicación indirecta, un "sí" sin entusiasmo puede significar:$hope$), 1, 1)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '0ca3c1ae-893c-5f77-83c0-6b0ecd1dfba6';
-DELETE FROM public.options WHERE question_id = '0ca3c1ae-893c-5f77-83c0-6b0ecd1dfba6' AND id NOT IN ('055c0213-1359-5beb-a165-6cef0902e7c4', '3680317c-8e5d-57af-b606-0024b7255093', '52cbe082-5c32-5c5b-a5be-4fd75eeb2a89');
+DELETE FROM public.options WHERE question_id = '0ca3c1ae-893c-5f77-83c0-6b0ecd1dfba6' AND id NOT IN ('055c0213-1359-5beb-a165-6cef0902e7c4', '3680317c-8e5d-57af-b606-0024b7255093', '52cbe082-5c32-5c5b-a5be-4fd75eeb2a89', '00a6a317-f7af-568a-8cad-3181eb56810e');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('055c0213-1359-5beb-a165-6cef0902e7c4', '0ca3c1ae-893c-5f77-83c0-6b0ecd1dfba6', jsonb_build_object('es', $hope$Un acuerdo total y entusiasta.$hope$), false),
-  ('3680317c-8e5d-57af-b606-0024b7255093', '0ca3c1ae-893c-5f77-83c0-6b0ecd1dfba6', jsonb_build_object('es', $hope$Un rechazo definitivo e irreversible.$hope$), false),
-  ('52cbe082-5c32-5c5b-a5be-4fd75eeb2a89', '0ca3c1ae-893c-5f77-83c0-6b0ecd1dfba6', jsonb_build_object('es', $hope$Cortesía o "te escuché", no necesariamente acuerdo.$hope$), true)
+  ('055c0213-1359-5beb-a165-6cef0902e7c4', '0ca3c1ae-893c-5f77-83c0-6b0ecd1dfba6', jsonb_build_object('es', $hope$Cortesía o "te escuché", no necesariamente acuerdo.$hope$), true),
+  ('3680317c-8e5d-57af-b606-0024b7255093', '0ca3c1ae-893c-5f77-83c0-6b0ecd1dfba6', jsonb_build_object('es', $hope$Un acuerdo total con lo que se propuso.$hope$), false),
+  ('52cbe082-5c32-5c5b-a5be-4fd75eeb2a89', '0ca3c1ae-893c-5f77-83c0-6b0ecd1dfba6', jsonb_build_object('es', $hope$Que la persona no entendió la pregunta.$hope$), false),
+  ('00a6a317-f7af-568a-8cad-3181eb56810e', '0ca3c1ae-893c-5f77-83c0-6b0ecd1dfba6', jsonb_build_object('es', $hope$Que hace falta insistir hasta obtener un compromiso.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('8f5df8f6-d161-53f8-ac76-fba73d2fb968', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$Según Mateo 18:15, ¿cuál es el primer paso ante un conflicto con un hermano?$hope$), 1, 2)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '8f5df8f6-d161-53f8-ac76-fba73d2fb968';
-DELETE FROM public.options WHERE question_id = '8f5df8f6-d161-53f8-ac76-fba73d2fb968' AND id NOT IN ('55dd7867-8a45-5952-a894-ced115bca155', '803103c7-2d1c-57e2-bbd6-59bbc4fa6381', 'e53ee6c1-84fe-571c-854f-0c261cb93af6');
+DELETE FROM public.options WHERE question_id = '8f5df8f6-d161-53f8-ac76-fba73d2fb968' AND id NOT IN ('55dd7867-8a45-5952-a894-ced115bca155', '803103c7-2d1c-57e2-bbd6-59bbc4fa6381', 'e53ee6c1-84fe-571c-854f-0c261cb93af6', 'e5c1e40a-b693-53ab-80f1-46941b16f7d7');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
   ('55dd7867-8a45-5952-a894-ced115bca155', '8f5df8f6-d161-53f8-ac76-fba73d2fb968', jsonb_build_object('es', $hope$Hablar a solas con la persona.$hope$), true),
-  ('803103c7-2d1c-57e2-bbd6-59bbc4fa6381', '8f5df8f6-d161-53f8-ac76-fba73d2fb968', jsonb_build_object('es', $hope$Informarlo de inmediato a toda la comunidad.$hope$), false),
-  ('e53ee6c1-84fe-571c-854f-0c261cb93af6', '8f5df8f6-d161-53f8-ac76-fba73d2fb968', jsonb_build_object('es', $hope$Pedir la opinión del resto del equipo.$hope$), false)
+  ('803103c7-2d1c-57e2-bbd6-59bbc4fa6381', '8f5df8f6-d161-53f8-ac76-fba73d2fb968', jsonb_build_object('es', $hope$Contárselo al líder para que intervenga.$hope$), false),
+  ('e53ee6c1-84fe-571c-854f-0c261cb93af6', '8f5df8f6-d161-53f8-ac76-fba73d2fb968', jsonb_build_object('es', $hope$Pedir la opinión del resto del equipo.$hope$), false),
+  ('e5c1e40a-b693-53ab-80f1-46941b16f7d7', '8f5df8f6-d161-53f8-ac76-fba73d2fb968', jsonb_build_object('es', $hope$Llevarlo ante la iglesia para que decida.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('c9cd087d-a570-565c-8ff2-7c3bbaecd06d', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$¿Cuál de estas frases ayuda más a resolver un conflicto?$hope$), 1, 3)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = 'c9cd087d-a570-565c-8ff2-7c3bbaecd06d';
-DELETE FROM public.options WHERE question_id = 'c9cd087d-a570-565c-8ff2-7c3bbaecd06d' AND id NOT IN ('705fe4b7-4745-5700-9d7d-f19d3d6bef5c', 'ddd5a5eb-22de-5b0e-bfda-a2c5a9e31c1c', '9c271959-9a56-56d4-bd6b-e42391559c60');
+DELETE FROM public.options WHERE question_id = 'c9cd087d-a570-565c-8ff2-7c3bbaecd06d' AND id NOT IN ('705fe4b7-4745-5700-9d7d-f19d3d6bef5c', 'ddd5a5eb-22de-5b0e-bfda-a2c5a9e31c1c', '9c271959-9a56-56d4-bd6b-e42391559c60', 'dd6427c5-a297-5ba5-bcae-d43d4b7151c5');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('705fe4b7-4745-5700-9d7d-f19d3d6bef5c', 'c9cd087d-a570-565c-8ff2-7c3bbaecd06d', jsonb_build_object('es', $hope$"Vos siempre llegás tarde y nos complicás a todos."$hope$), false),
-  ('ddd5a5eb-22de-5b0e-bfda-a2c5a9e31c1c', 'c9cd087d-a570-565c-8ff2-7c3bbaecd06d', jsonb_build_object('es', $hope$"Me preocupé cuando no llegaste a la descarga; ¿qué pasó?"$hope$), true),
-  ('9c271959-9a56-56d4-bd6b-e42391559c60', 'c9cd087d-a570-565c-8ff2-7c3bbaecd06d', jsonb_build_object('es', $hope$"Todos piensan que sos irresponsable."$hope$), false)
+  ('705fe4b7-4745-5700-9d7d-f19d3d6bef5c', 'c9cd087d-a570-565c-8ff2-7c3bbaecd06d', jsonb_build_object('es', $hope$"Me preocupé cuando no llegaste a la descarga; ¿qué pasó?"$hope$), true),
+  ('ddd5a5eb-22de-5b0e-bfda-a2c5a9e31c1c', 'c9cd087d-a570-565c-8ff2-7c3bbaecd06d', jsonb_build_object('es', $hope$"Vos siempre llegás tarde y nos complicás a todos."$hope$), false),
+  ('9c271959-9a56-56d4-bd6b-e42391559c60', 'c9cd087d-a570-565c-8ff2-7c3bbaecd06d', jsonb_build_object('es', $hope$"No quiero pelear, pero todos opinan que sos un irresponsable."$hope$), false),
+  ('dd6427c5-a297-5ba5-bcae-d43d4b7151c5', 'c9cd087d-a570-565c-8ff2-7c3bbaecd06d', jsonb_build_object('es', $hope$"No pasa nada, olvidate", aunque te haya molestado.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('a991fe41-3a6e-53c6-81f8-f9f0b7b7b236', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$¿Qué significa el liderazgo de servicio?$hope$), 1, 4)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = 'a991fe41-3a6e-53c6-81f8-f9f0b7b7b236';
-DELETE FROM public.options WHERE question_id = 'a991fe41-3a6e-53c6-81f8-f9f0b7b7b236' AND id NOT IN ('a7e951b8-443a-533a-9d5e-dbcad7e0a2b5', '319efb52-4e36-5aa1-bfe0-ff0bba3f8112', '9843ea8a-e1d4-5222-b004-aa65920bb225');
+DELETE FROM public.options WHERE question_id = 'a991fe41-3a6e-53c6-81f8-f9f0b7b7b236' AND id NOT IN ('a7e951b8-443a-533a-9d5e-dbcad7e0a2b5', '319efb52-4e36-5aa1-bfe0-ff0bba3f8112', '9843ea8a-e1d4-5222-b004-aa65920bb225', '022aea4e-9e5d-5066-aabe-4b01ead0cbdb');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('a7e951b8-443a-533a-9d5e-dbcad7e0a2b5', 'a991fe41-3a6e-53c6-81f8-f9f0b7b7b236', jsonb_build_object('es', $hope$Dejar que cada integrante del equipo haga lo que le parezca.$hope$), false),
-  ('319efb52-4e36-5aa1-bfe0-ff0bba3f8112', 'a991fe41-3a6e-53c6-81f8-f9f0b7b7b236', jsonb_build_object('es', $hope$Concentrar todas las decisiones sin dar explicaciones.$hope$), false),
-  ('9843ea8a-e1d4-5222-b004-aa65920bb225', 'a991fe41-3a6e-53c6-81f8-f9f0b7b7b236', jsonb_build_object('es', $hope$Dar dirección buscando el crecimiento y el bien del equipo.$hope$), true)
+  ('a7e951b8-443a-533a-9d5e-dbcad7e0a2b5', 'a991fe41-3a6e-53c6-81f8-f9f0b7b7b236', jsonb_build_object('es', $hope$Dar dirección buscando el crecimiento y el bien del equipo.$hope$), true),
+  ('319efb52-4e36-5aa1-bfe0-ff0bba3f8112', 'a991fe41-3a6e-53c6-81f8-f9f0b7b7b236', jsonb_build_object('es', $hope$Dejar que cada integrante del equipo haga lo que le parezca.$hope$), false),
+  ('9843ea8a-e1d4-5222-b004-aa65920bb225', 'a991fe41-3a6e-53c6-81f8-f9f0b7b7b236', jsonb_build_object('es', $hope$Tomar todas las decisiones para que el equipo no cargue con ellas.$hope$), false),
+  ('022aea4e-9e5d-5066-aabe-4b01ead0cbdb', 'a991fe41-3a6e-53c6-81f8-f9f0b7b7b236', jsonb_build_object('es', $hope$Hacer personalmente las tareas más difíciles en lugar de delegarlas.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('63ee66bd-847e-5ff2-b74e-b341fa19f604', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$¿Cuál de estos es uno de los componentes de la inteligencia emocional?$hope$), 1, 5)
+VALUES ('63ee66bd-847e-5ff2-b74e-b341fa19f604', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$En una operación aérea, ¿quién tiene la decisión final sobre el vuelo?$hope$), 1, 5)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '63ee66bd-847e-5ff2-b74e-b341fa19f604';
 DELETE FROM public.options WHERE question_id = '63ee66bd-847e-5ff2-b74e-b341fa19f604' AND id NOT IN ('609f9e58-6a40-5379-8ad9-738795fa9f01', '1d14dc7c-0256-592e-9f66-52d5c4b7973b', '782b8ffa-c94b-5c35-bc89-226787ac19ca', 'b51ee7c6-62a1-5d2c-9156-423095e9d514');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('609f9e58-6a40-5379-8ad9-738795fa9f01', '63ee66bd-847e-5ff2-b74e-b341fa19f604', jsonb_build_object('es', $hope$La autorregulación.$hope$), true),
-  ('1d14dc7c-0256-592e-9f66-52d5c4b7973b', '63ee66bd-847e-5ff2-b74e-b341fa19f604', jsonb_build_object('es', $hope$La experiencia de vuelo.$hope$), false),
-  ('782b8ffa-c94b-5c35-bc89-226787ac19ca', '63ee66bd-847e-5ff2-b74e-b341fa19f604', jsonb_build_object('es', $hope$La memoria fotográfica.$hope$), false),
-  ('b51ee7c6-62a1-5d2c-9156-423095e9d514', '63ee66bd-847e-5ff2-b74e-b341fa19f604', jsonb_build_object('es', $hope$La velocidad de lectura.$hope$), false)
+  ('609f9e58-6a40-5379-8ad9-738795fa9f01', '63ee66bd-847e-5ff2-b74e-b341fa19f604', jsonb_build_object('es', $hope$El piloto al mando.$hope$), true),
+  ('1d14dc7c-0256-592e-9f66-52d5c4b7973b', '63ee66bd-847e-5ff2-b74e-b341fa19f604', jsonb_build_object('es', $hope$El líder del grupo de voluntarios.$hope$), false),
+  ('782b8ffa-c94b-5c35-bc89-226787ac19ca', '63ee66bd-847e-5ff2-b74e-b341fa19f604', jsonb_build_object('es', $hope$El responsable de la comunidad que recibe.$hope$), false),
+  ('b51ee7c6-62a1-5d2c-9156-423095e9d514', '63ee66bd-847e-5ff2-b74e-b341fa19f604', jsonb_build_object('es', $hope$La mayoría del equipo, por votación.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('c92cbb08-3559-51cf-a6e7-5095dd10dd6e', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$Gálatas 6:2 dice "sobrellevad los unos las cargas de los otros" y 6:5 "cada uno llevará su propia carga". ¿Cómo se entienden juntas?$hope$), 1, 6)
+VALUES ('c92cbb08-3559-51cf-a6e7-5095dd10dd6e', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$Según Daniel Goleman, ¿cuál de estos es un componente de la inteligencia emocional?$hope$), 1, 6)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = 'c92cbb08-3559-51cf-a6e7-5095dd10dd6e';
-DELETE FROM public.options WHERE question_id = 'c92cbb08-3559-51cf-a6e7-5095dd10dd6e' AND id NOT IN ('a58d2347-b1a4-5ed3-899e-2f087e162ef1', '1ff35f6d-b7ad-5d2a-9ecb-7ad7a197e2d6', '9ab2da06-40d3-5316-9a42-d037ef7377d9');
+DELETE FROM public.options WHERE question_id = 'c92cbb08-3559-51cf-a6e7-5095dd10dd6e' AND id NOT IN ('a58d2347-b1a4-5ed3-899e-2f087e162ef1', '1ff35f6d-b7ad-5d2a-9ecb-7ad7a197e2d6', '9ab2da06-40d3-5316-9a42-d037ef7377d9', '75ed455e-a3a4-5539-9085-923c47337c0c');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('a58d2347-b1a4-5ed3-899e-2f087e162ef1', 'c92cbb08-3559-51cf-a6e7-5095dd10dd6e', jsonb_build_object('es', $hope$Se contradicen y hay que elegir una de las dos.$hope$), false),
-  ('1ff35f6d-b7ad-5d2a-9ecb-7ad7a197e2d6', 'c92cbb08-3559-51cf-a6e7-5095dd10dd6e', jsonb_build_object('es', $hope$Hay cargas que se comparten y responsabilidades propias que no se delegan.$hope$), true),
-  ('9ab2da06-40d3-5316-9a42-d037ef7377d9', 'c92cbb08-3559-51cf-a6e7-5095dd10dd6e', jsonb_build_object('es', $hope$Significan que nunca hay que pedir ayuda.$hope$), false)
+  ('a58d2347-b1a4-5ed3-899e-2f087e162ef1', 'c92cbb08-3559-51cf-a6e7-5095dd10dd6e', jsonb_build_object('es', $hope$La autorregulación.$hope$), true),
+  ('1ff35f6d-b7ad-5d2a-9ecb-7ad7a197e2d6', 'c92cbb08-3559-51cf-a6e7-5095dd10dd6e', jsonb_build_object('es', $hope$La memoria de trabajo.$hope$), false),
+  ('9ab2da06-40d3-5316-9a42-d037ef7377d9', 'c92cbb08-3559-51cf-a6e7-5095dd10dd6e', jsonb_build_object('es', $hope$El pensamiento lógico.$hope$), false),
+  ('75ed455e-a3a4-5539-9085-923c47337c0c', 'c92cbb08-3559-51cf-a6e7-5095dd10dd6e', jsonb_build_object('es', $hope$La experiencia técnica.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('a5606883-ba5b-52e1-955b-a0a28eb8fdc5', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$¿Cuál de estas conductas con menores es correcta?$hope$), 1, 7)
+VALUES ('a5606883-ba5b-52e1-955b-a0a28eb8fdc5', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$Gálatas 6:2 dice "sobrellevad los unos las cargas de los otros" y 6:5 "cada uno llevará su propia carga". ¿Cómo se entienden juntas?$hope$), 1, 7)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = 'a5606883-ba5b-52e1-955b-a0a28eb8fdc5';
-DELETE FROM public.options WHERE question_id = 'a5606883-ba5b-52e1-955b-a0a28eb8fdc5' AND id NOT IN ('bc41ebb4-5adf-58ea-a256-bb41a1eced92', 'c517d4c2-8717-5ad1-8403-7576ac24e3e2', 'd1bc11d0-ce96-5790-82cf-d086cf2193df');
+DELETE FROM public.options WHERE question_id = 'a5606883-ba5b-52e1-955b-a0a28eb8fdc5' AND id NOT IN ('bc41ebb4-5adf-58ea-a256-bb41a1eced92', 'c517d4c2-8717-5ad1-8403-7576ac24e3e2', 'd1bc11d0-ce96-5790-82cf-d086cf2193df', 'afd32bb0-f126-5e9d-adb3-763efd976d50');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('bc41ebb4-5adf-58ea-a256-bb41a1eced92', 'a5606883-ba5b-52e1-955b-a0a28eb8fdc5', jsonb_build_object('es', $hope$Mantener chats privados con adolescentes para acompañarlos mejor.$hope$), false),
-  ('c517d4c2-8717-5ad1-8403-7576ac24e3e2', 'a5606883-ba5b-52e1-955b-a0a28eb8fdc5', jsonb_build_object('es', $hope$Hacer regalos personales a los niños más necesitados.$hope$), false),
-  ('d1bc11d0-ce96-5790-82cf-d086cf2193df', 'a5606883-ba5b-52e1-955b-a0a28eb8fdc5', jsonb_build_object('es', $hope$Estar con menores en lugares visibles y con al menos otro adulto presente.$hope$), true)
+  ('bc41ebb4-5adf-58ea-a256-bb41a1eced92', 'a5606883-ba5b-52e1-955b-a0a28eb8fdc5', jsonb_build_object('es', $hope$Hay cargas que se comparten y responsabilidades que no se delegan.$hope$), true),
+  ('c517d4c2-8717-5ad1-8403-7576ac24e3e2', 'a5606883-ba5b-52e1-955b-a0a28eb8fdc5', jsonb_build_object('es', $hope$La primera vale para la vida en la iglesia y la segunda para el trabajo.$hope$), false),
+  ('d1bc11d0-ce96-5790-82cf-d086cf2193df', 'a5606883-ba5b-52e1-955b-a0a28eb8fdc5', jsonb_build_object('es', $hope$Primero hay que resolver lo propio y recién después ayudar.$hope$), false),
+  ('afd32bb0-f126-5e9d-adb3-763efd976d50', 'a5606883-ba5b-52e1-955b-a0a28eb8fdc5', jsonb_build_object('es', $hope$Que pedir ayuda es una señal de falta de madurez.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('e34c861f-f400-585a-8e7a-8a751c491363', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$Un niño te cuenta que está siendo maltratado. ¿Qué tenés que hacer?$hope$), 1, 8)
+VALUES ('e34c861f-f400-585a-8e7a-8a751c491363', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$¿Por qué no conviene dar dinero o regalos por tu cuenta en la comunidad?$hope$), 1, 8)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = 'e34c861f-f400-585a-8e7a-8a751c491363';
-DELETE FROM public.options WHERE question_id = 'e34c861f-f400-585a-8e7a-8a751c491363' AND id NOT IN ('8970cf5b-60dd-5038-9064-1e3a92b7b185', '9bb7b3d2-3b9a-5db8-b3a9-60ca24b5f602', '0634b705-5c45-5858-8050-2f75ac24efd7');
+DELETE FROM public.options WHERE question_id = 'e34c861f-f400-585a-8e7a-8a751c491363' AND id NOT IN ('8970cf5b-60dd-5038-9064-1e3a92b7b185', '9bb7b3d2-3b9a-5db8-b3a9-60ca24b5f602', '0634b705-5c45-5858-8050-2f75ac24efd7', '41a92ebd-11d8-59c9-9488-d9c5f9ddc692');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('8970cf5b-60dd-5038-9064-1e3a92b7b185', 'e34c861f-f400-585a-8e7a-8a751c491363', jsonb_build_object('es', $hope$Prometerle que vas a guardar el secreto para que confíe en vos.$hope$), false),
-  ('9bb7b3d2-3b9a-5db8-b3a9-60ca24b5f602', 'e34c861f-f400-585a-8e7a-8a751c491363', jsonb_build_object('es', $hope$Hacerle preguntas detalladas para confirmar que dice la verdad.$hope$), false),
-  ('0634b705-5c45-5858-8050-2f75ac24efd7', 'e34c861f-f400-585a-8e7a-8a751c491363', jsonb_build_object('es', $hope$Escucharlo con calma, creerle, no prometer secreto y reportarlo ese mismo día.$hope$), true)
+  ('8970cf5b-60dd-5038-9064-1e3a92b7b185', 'e34c861f-f400-585a-8e7a-8a751c491363', jsonb_build_object('es', $hope$Porque puede generar dependencia, celos y falsas expectativas.$hope$), true),
+  ('9bb7b3d2-3b9a-5db8-b3a9-60ca24b5f602', 'e34c861f-f400-585a-8e7a-8a751c491363', jsonb_build_object('es', $hope$Porque la ley de la mayoría de los países lo prohíbe expresamente.$hope$), false),
+  ('0634b705-5c45-5858-8050-2f75ac24efd7', 'e34c861f-f400-585a-8e7a-8a751c491363', jsonb_build_object('es', $hope$Porque las familias suelen ofenderse al recibir ayuda material.$hope$), false),
+  ('41a92ebd-11d8-59c9-9488-d9c5f9ddc692', 'e34c861f-f400-585a-8e7a-8a751c491363', jsonb_build_object('es', $hope$Porque los voluntarios no deben gastar dinero durante el viaje.$hope$), false)
+ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
+INSERT INTO public.questions (id, exam_id, content, points, order_index)
+VALUES ('9f2e5af9-beb8-5a6a-88bd-36a1bdf8d94d', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$¿Cuál de estas conductas con menores es correcta?$hope$), 1, 9)
+ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
+UPDATE public.options SET is_correct = false WHERE question_id = '9f2e5af9-beb8-5a6a-88bd-36a1bdf8d94d';
+DELETE FROM public.options WHERE question_id = '9f2e5af9-beb8-5a6a-88bd-36a1bdf8d94d' AND id NOT IN ('44a042af-7c21-5330-bb05-3b7aa27ab557', 'f356d9bf-58da-5d7b-befa-7533992e8efa', '380d22cc-fdba-50df-bb52-11311839cf53', '1bd74f6d-5ce1-54d8-bc9f-c9cb51c5c5e8');
+INSERT INTO public.options (id, question_id, content, is_correct) VALUES
+  ('44a042af-7c21-5330-bb05-3b7aa27ab557', '9f2e5af9-beb8-5a6a-88bd-36a1bdf8d94d', jsonb_build_object('es', $hope$Estar con menores en lugares visibles y con otro adulto presente.$hope$), true),
+  ('f356d9bf-58da-5d7b-befa-7533992e8efa', '9f2e5af9-beb8-5a6a-88bd-36a1bdf8d94d', jsonb_build_object('es', $hope$Mantener chats privados con adolescentes para acompañarlos mejor.$hope$), false),
+  ('380d22cc-fdba-50df-bb52-11311839cf53', '9f2e5af9-beb8-5a6a-88bd-36a1bdf8d94d', jsonb_build_object('es', $hope$Hacer regalos personales a los niños que más lo necesitan, sin que se note.$hope$), false),
+  ('1bd74f6d-5ce1-54d8-bc9f-c9cb51c5c5e8', '9f2e5af9-beb8-5a6a-88bd-36a1bdf8d94d', jsonb_build_object('es', $hope$Acompañar a un niño solo a su casa si él te lo pide.$hope$), false)
+ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
+INSERT INTO public.questions (id, exam_id, content, points, order_index)
+VALUES ('fc6e9435-3fcf-5e43-af17-2e2a4c801c0c', '5754b1fe-1054-5179-9f3e-0e92f29ab676', jsonb_build_object('es', $hope$Un niño te cuenta que está siendo maltratado. ¿Qué tenés que hacer?$hope$), 1, 10)
+ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
+UPDATE public.options SET is_correct = false WHERE question_id = 'fc6e9435-3fcf-5e43-af17-2e2a4c801c0c';
+DELETE FROM public.options WHERE question_id = 'fc6e9435-3fcf-5e43-af17-2e2a4c801c0c' AND id NOT IN ('39eeba6e-2d7d-51c0-b3cc-b58a652fc980', 'd626efd4-7280-5923-90c9-e91aace2c1cb', '93d659f2-1bea-51e0-9f22-0391d6b65ea3', 'f69e934d-24de-5323-bf1f-1c2ab11ce399');
+INSERT INTO public.options (id, question_id, content, is_correct) VALUES
+  ('39eeba6e-2d7d-51c0-b3cc-b58a652fc980', 'fc6e9435-3fcf-5e43-af17-2e2a4c801c0c', jsonb_build_object('es', $hope$Escucharlo con calma, no prometer secreto y reportarlo ese mismo día.$hope$), true),
+  ('d626efd4-7280-5923-90c9-e91aace2c1cb', 'fc6e9435-3fcf-5e43-af17-2e2a4c801c0c', jsonb_build_object('es', $hope$Prometerle que vas a guardar el secreto para que confíe en vos.$hope$), false),
+  ('93d659f2-1bea-51e0-9f22-0391d6b65ea3', 'fc6e9435-3fcf-5e43-af17-2e2a4c801c0c', jsonb_build_object('es', $hope$Hacerle preguntas detalladas para confirmar que dice la verdad.$hope$), false),
+  ('f69e934d-24de-5323-bf1f-1c2ab11ce399', 'fc6e9435-3fcf-5e43-af17-2e2a4c801c0c', jsonb_build_object('es', $hope$Confrontar a la persona sospechada para que sepa que alguien lo vigila.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 
 -- Module 4: Antes de viajar
@@ -1194,7 +1258,7 @@ Una semana antes: Armá el botiquín, confirmá contactos de emergencia y dejá 
 | Pasaporte | Muchos países exigen que tenga al menos seis meses de vigencia al entrar y hojas libres. |
 | Visa | Según el destino y el tipo de actividad. El voluntariado puede requerir una visa distinta a la de turismo. |
 | Carta de invitación | Emitida por el proyecto que te recibe; algunos países la piden en migraciones. |
-| Antecedentes penales | Muchos proyectos la exigen, sobre todo si vas a trabajar con menores. |
+| Antecedentes penales | Muchos proyectos piden el certificado, sobre todo si vas a trabajar con menores. |
 | Matrícula o título profesional | Si vas a ejercer como profesional de la salud, consultá si necesitás un permiso local. |
 | Autorización de viaje | Obligatoria para menores de edad que viajan sin uno o ambos padres. |
 
@@ -1222,7 +1286,7 @@ Pedí un turno en un centro de **medicina del viajero** al menos entre cuatro y 
 - **Medicación personal**: llevá cantidad suficiente para todo el viaje y algo extra, con la receta y en su envase original.
 
 > [!NOTE] Prevenir picaduras
-> Muchas enfermedades tropicales, como el dengue o la malaria, se transmiten por mosquitos. Repelente, ropa de manga larga al atardecer y mosquitero para dormir son tan importantes como cualquier vacuna.
+> Muchas enfermedades tropicales, como el dengue o la malaria, se transmiten por mosquitos. El del dengue pica sobre todo **de día**; el de la malaria, al atardecer y de noche. Repelente, ropa de manga larga y mosquitero para dormir son tan importantes como cualquier vacuna.
 
 ## Botiquín personal básico
 
@@ -1237,8 +1301,8 @@ Consultá con tu médico antes de llevar cualquier medicamento que no uses habit
 
 ```check
 ? ¿Por qué conviene ir a la consulta de medicina del viajero varias semanas antes del viaje?
-- Porque los turnos suelen estar ocupados el último día.
 + Porque algunas vacunas necesitan tiempo para hacer efecto o requieren más de una dosis.
+- Porque los turnos suelen estar ocupados el último día.
 - Porque el certificado de vacunación se vence si se tramita con anticipación.
 > Muchas vacunas necesitan días o semanas para generar protección, y algunas requieren varias dosis. Por eso la consulta se hace con tiempo.
 ```
@@ -1295,7 +1359,7 @@ Seguí siempre al piloto: Nadie se acerca a la aeronave sin su autorización o l
 Cuidado con la hélice: Nunca camines por delante ni cerca de una hélice, aunque el motor esté apagado.
 Declará tu peso y tu equipaje con honestidad: El peso influye directamente en la seguridad del vuelo.
 No subas objetos prohibidos: Combustibles, garrafas, baterías sueltas o cualquier cosa que indique el piloto.
-Escuchá el briefing: Abrocharse, cómo abrir la puerta, qué hacer en una emergencia.
+Escuchá el briefing: Cómo abrocharte el cinturón, cómo abrir la puerta y qué hacer en una emergencia.
 Aceptá un "no" sin discutir: Si el piloto decide no volar por clima, peso o condiciones, esa decisión es definitiva.
 ```
 
@@ -1379,8 +1443,8 @@ Lo que publicás en tus redes durante y después de un viaje representa al proye
 ```check
 ? Querés publicar una foto tuya rodeado de niños de la comunidad para contar tu experiencia. ¿Qué es lo más respetuoso?
 - Publicarla, porque muestra el cariño que hubo durante el viaje.
-+ Evitarla y elegir una imagen, con permiso, que muestre a la comunidad como protagonista y no identifique a los niños.
 - Publicarla, pero sin etiquetar la ubicación.
++ Evitarla y elegir una imagen, con permiso, que muestre a la comunidad como protagonista y no identifique a los niños.
 > La foto del voluntario rodeado de niños pone el foco en quien ayuda y expone a menores. Es mejor elegir imágenes con permiso que respeten su identidad y muestren a la comunidad como protagonista.
 ```
 
@@ -1399,71 +1463,89 @@ INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('45697b22-ce4a-5e5c-8d37-980d87468b05', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$¿Qué vigencia del pasaporte exigen muchos países al momento de entrar?$hope$), 1, 0)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '45697b22-ce4a-5e5c-8d37-980d87468b05';
-DELETE FROM public.options WHERE question_id = '45697b22-ce4a-5e5c-8d37-980d87468b05' AND id NOT IN ('fc6745d8-5baa-5704-beda-65810b9792ec', '59b0a1f5-7376-502e-b720-fb54a20ff486', '1010073f-dc1f-56b9-a548-799648fac307');
+DELETE FROM public.options WHERE question_id = '45697b22-ce4a-5e5c-8d37-980d87468b05' AND id NOT IN ('fc6745d8-5baa-5704-beda-65810b9792ec', '59b0a1f5-7376-502e-b720-fb54a20ff486', '1010073f-dc1f-56b9-a548-799648fac307', 'c2c1e952-02be-514f-a8f4-8833afbe10cd');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('fc6745d8-5baa-5704-beda-65810b9792ec', '45697b22-ce4a-5e5c-8d37-980d87468b05', jsonb_build_object('es', $hope$Al menos un mes.$hope$), false),
-  ('59b0a1f5-7376-502e-b720-fb54a20ff486', '45697b22-ce4a-5e5c-8d37-980d87468b05', jsonb_build_object('es', $hope$Al menos seis meses.$hope$), true),
-  ('1010073f-dc1f-56b9-a548-799648fac307', '45697b22-ce4a-5e5c-8d37-980d87468b05', jsonb_build_object('es', $hope$Al menos dos años.$hope$), false)
+  ('fc6745d8-5baa-5704-beda-65810b9792ec', '45697b22-ce4a-5e5c-8d37-980d87468b05', jsonb_build_object('es', $hope$Al menos seis meses.$hope$), true),
+  ('59b0a1f5-7376-502e-b720-fb54a20ff486', '45697b22-ce4a-5e5c-8d37-980d87468b05', jsonb_build_object('es', $hope$Al menos un mes.$hope$), false),
+  ('1010073f-dc1f-56b9-a548-799648fac307', '45697b22-ce4a-5e5c-8d37-980d87468b05', jsonb_build_object('es', $hope$Al menos tres meses.$hope$), false),
+  ('c2c1e952-02be-514f-a8f4-8833afbe10cd', '45697b22-ce4a-5e5c-8d37-980d87468b05', jsonb_build_object('es', $hope$Al menos dos años.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('acf1c737-26d3-5dfd-8f32-622717d96258', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$¿Qué debería cubrir un buen seguro para un viaje de voluntariado?$hope$), 1, 1)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = 'acf1c737-26d3-5dfd-8f32-622717d96258';
-DELETE FROM public.options WHERE question_id = 'acf1c737-26d3-5dfd-8f32-622717d96258' AND id NOT IN ('073b4e02-9c65-5ba2-8afb-208ec0377210', '373a9cb6-ac18-5521-ad87-57a6baf1eeb3', 'e696ff58-36fc-523f-954e-478a93fab18e');
+DELETE FROM public.options WHERE question_id = 'acf1c737-26d3-5dfd-8f32-622717d96258' AND id NOT IN ('073b4e02-9c65-5ba2-8afb-208ec0377210', '373a9cb6-ac18-5521-ad87-57a6baf1eeb3', 'e696ff58-36fc-523f-954e-478a93fab18e', 'a4f60107-ff31-54f8-8f60-e62244c290f9');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('073b4e02-9c65-5ba2-8afb-208ec0377210', 'acf1c737-26d3-5dfd-8f32-622717d96258', jsonb_build_object('es', $hope$Solo la pérdida de equipaje.$hope$), false),
-  ('373a9cb6-ac18-5521-ad87-57a6baf1eeb3', 'acf1c737-26d3-5dfd-8f32-622717d96258', jsonb_build_object('es', $hope$Atención médica, evacuación y repatriación, incluyendo las actividades del voluntariado.$hope$), true),
-  ('e696ff58-36fc-523f-954e-478a93fab18e', 'acf1c737-26d3-5dfd-8f32-622717d96258', jsonb_build_object('es', $hope$Solo los vuelos comerciales de ida y vuelta.$hope$), false)
+  ('073b4e02-9c65-5ba2-8afb-208ec0377210', 'acf1c737-26d3-5dfd-8f32-622717d96258', jsonb_build_object('es', $hope$Atención médica, evacuación y repatriación, incluido el voluntariado.$hope$), true),
+  ('373a9cb6-ac18-5521-ad87-57a6baf1eeb3', 'acf1c737-26d3-5dfd-8f32-622717d96258', jsonb_build_object('es', $hope$La pérdida de equipaje, robos y la cancelación de vuelos comerciales.$hope$), false),
+  ('e696ff58-36fc-523f-954e-478a93fab18e', 'acf1c737-26d3-5dfd-8f32-622717d96258', jsonb_build_object('es', $hope$Solo las urgencias médicas en hospitales públicos del país de destino.$hope$), false),
+  ('a4f60107-ff31-54f8-8f60-e62244c290f9', 'acf1c737-26d3-5dfd-8f32-622717d96258', jsonb_build_object('es', $hope$Los vuelos comerciales de ida y vuelta al destino.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('c7c9d0be-04e7-53c3-8e92-23147a56c0e4', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$¿Cuál es la conducta correcta cerca de una aeronave?$hope$), 1, 2)
+VALUES ('c7c9d0be-04e7-53c3-8e92-23147a56c0e4', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$Para prevenir el dengue, ¿cuándo hay que protegerse de los mosquitos?$hope$), 1, 2)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = 'c7c9d0be-04e7-53c3-8e92-23147a56c0e4';
-DELETE FROM public.options WHERE question_id = 'c7c9d0be-04e7-53c3-8e92-23147a56c0e4' AND id NOT IN ('4e7c4760-8c10-50f8-8d0a-3d4b7bc333c1', 'f24466d2-374e-5fdb-8626-661361d4712f', '7edb05a1-4140-520c-aa4a-9382e6fa1b50');
+DELETE FROM public.options WHERE question_id = 'c7c9d0be-04e7-53c3-8e92-23147a56c0e4' AND id NOT IN ('4e7c4760-8c10-50f8-8d0a-3d4b7bc333c1', 'f24466d2-374e-5fdb-8626-661361d4712f', '7edb05a1-4140-520c-aa4a-9382e6fa1b50', '3edf950b-647f-58f6-9c63-0d22ffbae892');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('4e7c4760-8c10-50f8-8d0a-3d4b7bc333c1', 'c7c9d0be-04e7-53c3-8e92-23147a56c0e4', jsonb_build_object('es', $hope$Acercarte cuando quieras si el motor está apagado.$hope$), false),
-  ('f24466d2-374e-5fdb-8626-661361d4712f', 'c7c9d0be-04e7-53c3-8e92-23147a56c0e4', jsonb_build_object('es', $hope$Ayudar a mover la hélice para ganar tiempo.$hope$), false),
-  ('7edb05a1-4140-520c-aa4a-9382e6fa1b50', 'c7c9d0be-04e7-53c3-8e92-23147a56c0e4', jsonb_build_object('es', $hope$Seguir las indicaciones del piloto y nunca caminar por delante de la hélice.$hope$), true)
+  ('4e7c4760-8c10-50f8-8d0a-3d4b7bc333c1', 'c7c9d0be-04e7-53c3-8e92-23147a56c0e4', jsonb_build_object('es', $hope$Durante el día, que es cuando más pica.$hope$), true),
+  ('f24466d2-374e-5fdb-8626-661361d4712f', 'c7c9d0be-04e7-53c3-8e92-23147a56c0e4', jsonb_build_object('es', $hope$Solo de noche, mientras dormís.$hope$), false),
+  ('7edb05a1-4140-520c-aa4a-9382e6fa1b50', 'c7c9d0be-04e7-53c3-8e92-23147a56c0e4', jsonb_build_object('es', $hope$Solo en la temporada de lluvias.$hope$), false),
+  ('3edf950b-647f-58f6-9c63-0d22ffbae892', 'c7c9d0be-04e7-53c3-8e92-23147a56c0e4', jsonb_build_object('es', $hope$No hace falta si te vacunaste contra la fiebre amarilla.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('70b19bec-4e00-5b6a-8c97-dc3adf0c9871', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$El piloto cancela un vuelo por el clima y la comunidad los espera. ¿Cómo hay que entenderlo?$hope$), 1, 3)
+VALUES ('70b19bec-4e00-5b6a-8c97-dc3adf0c9871', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$¿Cuál es la conducta correcta cerca de una aeronave?$hope$), 1, 3)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '70b19bec-4e00-5b6a-8c97-dc3adf0c9871';
-DELETE FROM public.options WHERE question_id = '70b19bec-4e00-5b6a-8c97-dc3adf0c9871' AND id NOT IN ('170b30c1-baad-54e1-a301-184944760404', 'e408bf0f-291d-5317-ad89-d607ed4dbd6e', '305591aa-e89e-55af-8010-6739585cecac');
+DELETE FROM public.options WHERE question_id = '70b19bec-4e00-5b6a-8c97-dc3adf0c9871' AND id NOT IN ('170b30c1-baad-54e1-a301-184944760404', 'e408bf0f-291d-5317-ad89-d607ed4dbd6e', '305591aa-e89e-55af-8010-6739585cecac', 'c8c60575-44ef-5c29-9b6e-7e0a950c26e4');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('170b30c1-baad-54e1-a301-184944760404', '70b19bec-4e00-5b6a-8c97-dc3adf0c9871', jsonb_build_object('es', $hope$Como el sistema de seguridad funcionando.$hope$), true),
-  ('e408bf0f-291d-5317-ad89-d607ed4dbd6e', '70b19bec-4e00-5b6a-8c97-dc3adf0c9871', jsonb_build_object('es', $hope$Como un fracaso del equipo.$hope$), false),
-  ('305591aa-e89e-55af-8010-6739585cecac', '70b19bec-4e00-5b6a-8c97-dc3adf0c9871', jsonb_build_object('es', $hope$Como una decisión que conviene discutir hasta que cambie.$hope$), false)
+  ('170b30c1-baad-54e1-a301-184944760404', '70b19bec-4e00-5b6a-8c97-dc3adf0c9871', jsonb_build_object('es', $hope$Seguir al piloto y nunca caminar por delante de la hélice.$hope$), true),
+  ('e408bf0f-291d-5317-ad89-d607ed4dbd6e', '70b19bec-4e00-5b6a-8c97-dc3adf0c9871', jsonb_build_object('es', $hope$Acercarte sin aviso si ves que el motor está apagado.$hope$), false),
+  ('305591aa-e89e-55af-8010-6739585cecac', '70b19bec-4e00-5b6a-8c97-dc3adf0c9871', jsonb_build_object('es', $hope$Ayudar a cargar sin esperar instrucciones para ganar tiempo.$hope$), false),
+  ('c8c60575-44ef-5c29-9b6e-7e0a950c26e4', '70b19bec-4e00-5b6a-8c97-dc3adf0c9871', jsonb_build_object('es', $hope$Pasar por delante de la hélice solo cuando el motor está apagado.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('933f31d0-fa40-508e-bf3d-7694a5e75dbc', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$¿Qué conviene hacer ante un asalto?$hope$), 1, 4)
+VALUES ('933f31d0-fa40-508e-bf3d-7694a5e75dbc', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$El piloto cancela un vuelo por el clima y la comunidad los espera. ¿Cómo hay que entenderlo?$hope$), 1, 4)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '933f31d0-fa40-508e-bf3d-7694a5e75dbc';
-DELETE FROM public.options WHERE question_id = '933f31d0-fa40-508e-bf3d-7694a5e75dbc' AND id NOT IN ('438d2f8d-b6a1-5b03-8e9a-a5f52924679d', '3e2a569f-fab9-51a4-80b8-ebe60a1a6bc8', '3ad81eac-2b37-5049-b70c-30907118f10f');
+DELETE FROM public.options WHERE question_id = '933f31d0-fa40-508e-bf3d-7694a5e75dbc' AND id NOT IN ('438d2f8d-b6a1-5b03-8e9a-a5f52924679d', '3e2a569f-fab9-51a4-80b8-ebe60a1a6bc8', '3ad81eac-2b37-5049-b70c-30907118f10f', 'f0b3fe5a-a918-5a31-abd4-c28ff43f5d67');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('438d2f8d-b6a1-5b03-8e9a-a5f52924679d', '933f31d0-fa40-508e-bf3d-7694a5e75dbc', jsonb_build_object('es', $hope$Resistirte para proteger el equipo del proyecto.$hope$), false),
-  ('3e2a569f-fab9-51a4-80b8-ebe60a1a6bc8', '933f31d0-fa40-508e-bf3d-7694a5e75dbc', jsonb_build_object('es', $hope$No resistirte, entregar lo que pidan y avisar al responsable cuando estés a salvo.$hope$), true),
-  ('3ad81eac-2b37-5049-b70c-30907118f10f', '933f31d0-fa40-508e-bf3d-7694a5e75dbc', jsonb_build_object('es', $hope$Seguir a los agresores para identificarlos.$hope$), false)
+  ('438d2f8d-b6a1-5b03-8e9a-a5f52924679d', '933f31d0-fa40-508e-bf3d-7694a5e75dbc', jsonb_build_object('es', $hope$Como el sistema de seguridad funcionando.$hope$), true),
+  ('3e2a569f-fab9-51a4-80b8-ebe60a1a6bc8', '933f31d0-fa40-508e-bf3d-7694a5e75dbc', jsonb_build_object('es', $hope$Como un fracaso del equipo que hay que evitar.$hope$), false),
+  ('3ad81eac-2b37-5049-b70c-30907118f10f', '933f31d0-fa40-508e-bf3d-7694a5e75dbc', jsonb_build_object('es', $hope$Como una decisión que conviene revisar con el grupo.$hope$), false),
+  ('f0b3fe5a-a918-5a31-abd4-c28ff43f5d67', '933f31d0-fa40-508e-bf3d-7694a5e75dbc', jsonb_build_object('es', $hope$Como falta de fe frente a una necesidad urgente.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('03f99ba2-d614-5fcc-837a-5348584a58ce', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$¿Cuál de estos es un principio para contar historias con dignidad?$hope$), 1, 5)
+VALUES ('03f99ba2-d614-5fcc-837a-5348584a58ce', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$¿Qué conviene hacer ante un asalto?$hope$), 1, 5)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '03f99ba2-d614-5fcc-837a-5348584a58ce';
-DELETE FROM public.options WHERE question_id = '03f99ba2-d614-5fcc-837a-5348584a58ce' AND id NOT IN ('84182910-4cc1-55a0-8dac-99fe22eeaa6f', '978cbe51-42ed-5596-b49a-62fa598ece25', '5499995e-f9dc-5ce3-a632-1f11554939f4');
+DELETE FROM public.options WHERE question_id = '03f99ba2-d614-5fcc-837a-5348584a58ce' AND id NOT IN ('84182910-4cc1-55a0-8dac-99fe22eeaa6f', '978cbe51-42ed-5596-b49a-62fa598ece25', '5499995e-f9dc-5ce3-a632-1f11554939f4', 'f8147efa-a41f-57d6-9212-dcb0da24e21e');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('84182910-4cc1-55a0-8dac-99fe22eeaa6f', '03f99ba2-d614-5fcc-837a-5348584a58ce', jsonb_build_object('es', $hope$Dramatizar la situación para que conmueva más.$hope$), false),
-  ('978cbe51-42ed-5596-b49a-62fa598ece25', '03f99ba2-d614-5fcc-837a-5348584a58ce', jsonb_build_object('es', $hope$Poner al voluntario en el centro de la historia.$hope$), false),
-  ('5499995e-f9dc-5ce3-a632-1f11554939f4', '03f99ba2-d614-5fcc-837a-5348584a58ce', jsonb_build_object('es', $hope$Mostrar capacidades, no solo necesidades, y dar crédito a los líderes locales.$hope$), true)
+  ('84182910-4cc1-55a0-8dac-99fe22eeaa6f', '03f99ba2-d614-5fcc-837a-5348584a58ce', jsonb_build_object('es', $hope$No resistirte, entregar lo que pidan y avisar al estar a salvo.$hope$), true),
+  ('978cbe51-42ed-5596-b49a-62fa598ece25', '03f99ba2-d614-5fcc-837a-5348584a58ce', jsonb_build_object('es', $hope$Negociar con calma para entregar solo una parte de lo que llevás.$hope$), false),
+  ('5499995e-f9dc-5ce3-a632-1f11554939f4', '03f99ba2-d614-5fcc-837a-5348584a58ce', jsonb_build_object('es', $hope$Gritar y pedir ayuda para que los agresores se asusten y se vayan.$hope$), false),
+  ('f8147efa-a41f-57d6-9212-dcb0da24e21e', '03f99ba2-d614-5fcc-837a-5348584a58ce', jsonb_build_object('es', $hope$Resistirte para proteger el equipo del proyecto.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('1094ca1f-d0d9-5a27-8d25-61b6da8124ed', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$¿Qué corresponde hacer con las fotos de menores?$hope$), 1, 6)
+VALUES ('1094ca1f-d0d9-5a27-8d25-61b6da8124ed', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$¿Cuál de estos es un principio para contar historias con dignidad?$hope$), 1, 6)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '1094ca1f-d0d9-5a27-8d25-61b6da8124ed';
-DELETE FROM public.options WHERE question_id = '1094ca1f-d0d9-5a27-8d25-61b6da8124ed' AND id NOT IN ('7c8e5c1b-766c-5659-a301-1d7e81adb6bf', '37a9dbd5-f1d5-5a3d-9ff1-2cf03c9ad79c', 'd5af94f8-7c0a-560a-997f-f8933d2776dc');
+DELETE FROM public.options WHERE question_id = '1094ca1f-d0d9-5a27-8d25-61b6da8124ed' AND id NOT IN ('7c8e5c1b-766c-5659-a301-1d7e81adb6bf', '37a9dbd5-f1d5-5a3d-9ff1-2cf03c9ad79c', 'd5af94f8-7c0a-560a-997f-f8933d2776dc', 'e3a33f55-6d5e-5609-b789-592310b350ca');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('7c8e5c1b-766c-5659-a301-1d7e81adb6bf', '1094ca1f-d0d9-5a27-8d25-61b6da8124ed', jsonb_build_object('es', $hope$Pedir permiso a sus padres o tutores y no publicarlas de forma que se los identifique junto con su ubicación.$hope$), true),
-  ('37a9dbd5-f1d5-5a3d-9ff1-2cf03c9ad79c', '1094ca1f-d0d9-5a27-8d25-61b6da8124ed', jsonb_build_object('es', $hope$Publicarlas con la ubicación para que los donantes conozcan el lugar.$hope$), false),
-  ('d5af94f8-7c0a-560a-997f-f8933d2776dc', '1094ca1f-d0d9-5a27-8d25-61b6da8124ed', jsonb_build_object('es', $hope$Publicar cualquier foto si es tierna o positiva.$hope$), false)
+  ('7c8e5c1b-766c-5659-a301-1d7e81adb6bf', '1094ca1f-d0d9-5a27-8d25-61b6da8124ed', jsonb_build_object('es', $hope$Mostrar capacidades, no solo necesidades, y dar crédito a los locales.$hope$), true),
+  ('37a9dbd5-f1d5-5a3d-9ff1-2cf03c9ad79c', '1094ca1f-d0d9-5a27-8d25-61b6da8124ed', jsonb_build_object('es', $hope$Dramatizar un poco la situación para que conmueva más.$hope$), false),
+  ('d5af94f8-7c0a-560a-997f-f8933d2776dc', '1094ca1f-d0d9-5a27-8d25-61b6da8124ed', jsonb_build_object('es', $hope$Poner al voluntario en el centro, porque es quien cuenta la historia.$hope$), false),
+  ('e3a33f55-6d5e-5609-b789-592310b350ca', '1094ca1f-d0d9-5a27-8d25-61b6da8124ed', jsonb_build_object('es', $hope$Mostrar la pobreza tal cual es, sin pedir permiso para no alterarla.$hope$), false)
+ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
+INSERT INTO public.questions (id, exam_id, content, points, order_index)
+VALUES ('1bc5ac69-0d9f-5ab5-a4b0-cb83c2079731', '72e9688b-b3b3-5e88-a85b-c67bc657bbe3', jsonb_build_object('es', $hope$¿Qué corresponde hacer con las fotos de menores?$hope$), 1, 7)
+ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
+UPDATE public.options SET is_correct = false WHERE question_id = '1bc5ac69-0d9f-5ab5-a4b0-cb83c2079731';
+DELETE FROM public.options WHERE question_id = '1bc5ac69-0d9f-5ab5-a4b0-cb83c2079731' AND id NOT IN ('476c481d-eb00-589b-a096-3a20c68fb49f', 'e5a185d4-586e-542b-bed1-ee44c3d263a5', '4838227d-8278-5cf6-806f-b6aa25b4fb48', 'f9028e8d-f630-5bdd-aa8f-a271a171d540');
+INSERT INTO public.options (id, question_id, content, is_correct) VALUES
+  ('476c481d-eb00-589b-a096-3a20c68fb49f', '1bc5ac69-0d9f-5ab5-a4b0-cb83c2079731', jsonb_build_object('es', $hope$Pedir permiso a sus padres o tutores y no mostrar dónde viven.$hope$), true),
+  ('e5a185d4-586e-542b-bed1-ee44c3d263a5', '1bc5ac69-0d9f-5ab5-a4b0-cb83c2079731', jsonb_build_object('es', $hope$Publicarlas con la ubicación para que los donantes conozcan el lugar.$hope$), false),
+  ('4838227d-8278-5cf6-806f-b6aa25b4fb48', '1bc5ac69-0d9f-5ab5-a4b0-cb83c2079731', jsonb_build_object('es', $hope$Publicar cualquier foto si es tierna o muestra algo positivo.$hope$), false),
+  ('f9028e8d-f630-5bdd-aa8f-a271a171d540', '1bc5ac69-0d9f-5ab5-a4b0-cb83c2079731', jsonb_build_object('es', $hope$Pedirle permiso al niño, porque alcanza con su consentimiento.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 
 COMMIT;

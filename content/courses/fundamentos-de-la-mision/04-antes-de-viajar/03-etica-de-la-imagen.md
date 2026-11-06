@@ -56,8 +56,8 @@ Lo que publicás en tus redes durante y después de un viaje representa al proye
 ```check
 ? Querés publicar una foto tuya rodeado de niños de la comunidad para contar tu experiencia. ¿Qué es lo más respetuoso?
 - Publicarla, porque muestra el cariño que hubo durante el viaje.
-+ Evitarla y elegir una imagen, con permiso, que muestre a la comunidad como protagonista y no identifique a los niños.
 - Publicarla, pero sin etiquetar la ubicación.
++ Evitarla y elegir una imagen, con permiso, que muestre a la comunidad como protagonista y no identifique a los niños.
 > La foto del voluntario rodeado de niños pone el foco en quien ayuda y expone a menores. Es mejor elegir imágenes con permiso que respeten su identidad y muestren a la comunidad como protagonista.
 ```
 

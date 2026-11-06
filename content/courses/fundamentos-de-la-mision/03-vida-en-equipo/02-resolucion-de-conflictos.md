@@ -54,8 +54,8 @@ Hospitales, municipios, escuelas, autoridades aeronáuticas o aduanas tienen reg
 ```check
 ? Un compañero te contestó mal delante de todos durante la descarga del avión. ¿Cuál es el mejor primer paso?
 - Responderle en el momento para que no se repita.
-- Comentarlo con el resto del equipo durante la cena.
 + Esperar a estar tranquilo y hablarlo con él en privado.
+- Comentarlo con el resto del equipo durante la cena.
 > Seguir el principio de Mateo 18: primero a solas, con calma. Responder en caliente o exponerlo frente a otros suele agrandar el conflicto.
 ```
 

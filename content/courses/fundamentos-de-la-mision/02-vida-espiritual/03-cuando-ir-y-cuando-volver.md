@@ -5,7 +5,7 @@ Tan importante como saber ir es saber cuándo hacerlo, y también cuándo es mom
 > [!VERSE] Eclesiastés 3:1
 > Todo tiene su tiempo, y todo lo que se quiere debajo del cielo tiene su hora.
 
-En el libro de los Hechos, Pablo quería predicar en Asia y luego en Bitinia, pero "el Espíritu no se lo permitió" (Hechos 16:6–10). Recién después recibió el llamado a Macedonia. Tener buenas intenciones no significa que sea el momento ni el lugar correcto.
+En el libro de los Hechos, Pablo y sus compañeros quisieron predicar en Asia, pero el Espíritu Santo se lo prohibió; intentaron ir a Bitinia, "pero el Espíritu no se lo permitió" (Hechos 16:6–10). Recién después llegó el llamado a Macedonia. Tener buenas intenciones no significa que sea el momento ni el lugar correcto.
 
 ## Cuatro señales para discernir si ir
 

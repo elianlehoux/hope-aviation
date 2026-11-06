@@ -51,9 +51,9 @@ Por eso este campus está abierto a todos: no hace falta ser piloto para servir.
 
 ```check
 ? ¿Cuál de estas afirmaciones describe mejor a HOPE?
-- Es una escuela de vuelo que forma pilotos misioneros.
-+ Es una fundación que forma, conecta y acompaña a voluntarios y pilotos para el servicio.
-- Es una aerolínea que transporta voluntarios a otros países.
++ Es una fundación que forma voluntarios y pilotos y los conecta con proyectos.
+- Es una escuela de vuelo que forma pilotos para el campo misionero.
+- Es una aerolínea humanitaria que traslada voluntarios a otros países.
 > HOPE forma, conecta y sirve. La licencia de piloto se obtiene en escuelas de vuelo habilitadas; HOPE aporta la formación complementaria.
 ```
 
