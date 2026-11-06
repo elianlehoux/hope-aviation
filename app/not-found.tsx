@@ -1,45 +1,47 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Title } from '@/components/ui/title';
-import { Button } from '@/components/ui/button';
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/lib/i18n/context";
 
 export default function NotFound() {
   const router = useRouter();
+  const { lang } = useTranslation();
+  const es = lang === "es";
 
-  const handleReturn = () => {
-    // Navigate back if there's history from our own origin, otherwise go to home
-    if (typeof window !== 'undefined' && window.history.length > 1 && document.referrer.includes(window.location.origin)) {
-      router.back();
-    } else {
-      router.push('/');
-    }
+  const goBack = () => {
+    // Go back only when the previous page is ours; otherwise send people home.
+    if (window.history.length > 1 && document.referrer.startsWith(window.location.origin)) router.back();
+    else router.push("/");
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-[80vh] px-6 py-20 lg:py-32 bg-white text-center">
-      <div className="max-w-2xl mx-auto space-y-10">
-        <div className="space-y-6">
-          <Title level="display1" className="text-accent text-[120px] md:text-[180px] font-bold leading-none">404</Title>
-          <Title level="h2" as="h1" className="text-primary mt-4">
-            Nothing to see here...
-          </Title>
-          <p className="text-[18px] text-muted-foreground leading-[1.44] max-w-lg mx-auto mt-2">
-            The page you are looking for has been moved, renamed, or is temporarily unavailable. Go back to the previous page or consider supporting us with a donation.
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button onClick={handleReturn} variant="default" size="lg">
-            Return
-          </Button>
-          <Button asChild variant="link" size="lg">
-            <Link href="/donate">
-              Donate
-            </Link>
-          </Button>
-        </div>
+    <main className="flex min-h-dvh flex-col items-center justify-center bg-paper px-6 py-20 text-center">
+      <Link href="/" aria-label="Hope Aviation" className="mb-12">
+        <Image src="/logos/hope-logo.svg" alt="Hope Aviation" width={130} height={40} className="h-9 w-auto" priority />
+      </Link>
+      <p className="font-display text-[96px] font-semibold leading-none tracking-tight text-highlight md:text-[140px]" aria-hidden>
+        404
+      </p>
+      <h1 className="mt-6 font-display text-2xl font-semibold tracking-tight text-primary md:text-3xl">
+        {es ? "No encontramos esta página" : "We couldn't find this page"}
+      </h1>
+      <p className="mt-3 max-w-md text-base leading-relaxed text-primary/65">
+        {es
+          ? "Puede que el enlace esté mal escrito, que la página se haya movido o que no tengas acceso a ella."
+          : "The link may be mistyped, the page may have moved, or you may not have access to it."}
+      </p>
+      <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
+        <Button onClick={goBack} size="lg" variant="outline">
+          <ArrowLeft aria-hidden />
+          {es ? "Volver" : "Go back"}
+        </Button>
+        <Button asChild size="lg">
+          <Link href="/">{es ? "Ir al inicio" : "Go home"}</Link>
+        </Button>
       </div>
     </main>
   );
