@@ -60,8 +60,8 @@ export function MissionSection() {
               </p>
               <p>
                 {es
-                  ? "Trabajo transcultural, primeros auxilios y rescate, operaciones en zonas remotas, apoyo emocional, sostén económico y fundamento espiritual. Y cuando estás listo, te conectamos con organizaciones que ya vuelan en el campo."
-                  : "Cross-cultural work, first aid and rescue, remote-field operations, emotional support, fundraising and spiritual grounding. And when you're ready, we connect you with organizations already flying in the field."}
+                  ? "Trabajo transcultural, primeros auxilios y rescate, operaciones en zonas remotas, apoyo emocional, sostén económico y fundamento espiritual. Y cuando estés listo, queremos conectarte con organizaciones que ya vuelan en el campo."
+                  : "Cross-cultural work, first aid and rescue, remote-field operations, emotional support, fundraising and spiritual grounding. And when you're ready, we want to connect you with organizations already flying in the field."}
               </p>
             </div>
 
@@ -165,8 +165,8 @@ export function WhyArgentinaSection() {
 
         <p className="mt-12 max-w-2xl font-display text-2xl font-normal leading-snug tracking-tight md:text-3xl">
           {es
-            ? "Nuestra misión es simple: llegar a quien nadie llega, un vuelo a la vez."
-            : "Our mission is simple: to reach the unreachable, one flight at a time."}
+            ? "Nuestra misión es simple: preparar a quienes van a llegar donde nadie llega."
+            : "Our mission is simple: to prepare the people who will reach the unreachable."}
         </p>
       </div>
     </section>

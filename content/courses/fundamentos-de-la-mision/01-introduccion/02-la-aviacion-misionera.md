@@ -29,9 +29,9 @@ La aviación misionera no es una idea nueva. Después de la Segunda Guerra Mundi
 
 Esa historia también tiene costos. En 1956, el piloto de MAF **Nate Saint** y cuatro misioneros murieron en Ecuador al intentar contactar al pueblo waorani. Poco después, Elisabeth Elliot, viuda de uno de ellos, y Rachel Saint, hermana de Nate, fueron a vivir con esa misma comunidad. La aviación misionera nació de personas dispuestas a arriesgar mucho, y por eso hoy pone tanto énfasis en la **seguridad**: cada vida importa, también la de quien sirve.
 
-## La red de HOPE
+## Con quién conversa HOPE
 
-HOPE no trabaja solo. Estamos en contacto con organizaciones que comparten nuestros valores, y en cada caso buscamos entender qué necesita cada una antes de ofrecer ayuda:
+HOPE ya conversa con organizaciones que vuelan en el terreno y comparten nuestros valores. Con cada una buscamos entender qué necesita antes de ofrecer ayuda:
 
 | Organización | Dónde | Qué hacen |
 |---|---|---|
@@ -41,11 +41,13 @@ HOPE no trabaja solo. Estamos en contacto con organizaciones que comparten nuest
 | Alas de Vida | Costa Rica | Combinan aviación, discipulado y salud en Centroamérica. |
 | Miseje | Argentina (en conversación) | Podrían aportar pilotos de helicóptero para abrir un nuevo proyecto en el país. |
 
-Algunas de estas relaciones todavía son informales y otras están en camino de formalizarse. Lo importante es el principio: **HOPE prepara personas y las conecta con proyectos que ya están en el terreno.**
+Por ahora son, en su mayoría, contactos informales. Lo importante es el principio: **HOPE no busca reemplazar a estos proyectos, sino prepararles personas.**
+
+Así es, en general, el recorrido de una misión con aviación. El segundo paso es el lugar que HOPE quiere ocupar:
 
 ```steps
-Necesidad: Una comunidad o un proyecto aliado identifica qué hace falta.
-Preparación: HOPE selecciona y prepara a voluntarios con el perfil adecuado.
+Necesidad: Una comunidad o un proyecto identifica qué hace falta.
+Preparación: Alguien selecciona y prepara a voluntarios con el perfil adecuado.
 Traslado: La aviación acorta la distancia entre la ayuda y quien la necesita.
 Servicio: Los voluntarios trabajan junto a la iglesia y los líderes locales.
 Continuidad: El trabajo sigue en manos de la comunidad cuando el equipo se va.

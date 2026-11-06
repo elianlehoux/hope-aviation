@@ -14,25 +14,25 @@ VALUES ('2ccb7819-2cad-51e0-82a8-4efe4bc4f580', '33210bed-c3f2-5e1b-8548-d67df48
 ON CONFLICT (id) DO UPDATE SET course_id = EXCLUDED.course_id, title = EXCLUDED.title,
   description = EXCLUDED.description, order_index = EXCLUDED.order_index;
 INSERT INTO public.classes (id, subject_id, title, description, content, order_index)
-VALUES ('6e7dde89-2abb-5741-8a68-3d916e43ace0', '2ccb7819-2cad-51e0-82a8-4efe4bc4f580', jsonb_build_object('es', $hope$¿Qué es HOPE?$hope$), jsonb_build_object('es', $hope$Origen, misión, visión y valores de HOPE.$hope$), jsonb_build_object('es', $hope$Antes de hablar de aviones, misiones o viajes, conviene entender de dónde venimos y qué buscamos. Esta clase te presenta a HOPE: quiénes somos, qué hacemos y qué no hacemos.
+VALUES ('6e7dde89-2abb-5741-8a68-3d916e43ace0', '2ccb7819-2cad-51e0-82a8-4efe4bc4f580', jsonb_build_object('es', $hope$¿Qué es HOPE?$hope$), jsonb_build_object('es', $hope$Origen, misión, visión y valores de HOPE.$hope$), jsonb_build_object('es', $hope$Antes de hablar de aviones, misiones o viajes, conviene entender de dónde venimos y qué buscamos. Esta clase te presenta a HOPE: quiénes somos, qué hacemos hoy, hacia dónde vamos y qué no hacemos.
 
 ## De dónde nace HOPE
 
-HOPE nació impulsado por la **Universidad Adventista del Plata (UAP)**, en Libertador San Martín, Entre Ríos. Hoy funciona como una **fundación independiente y sin fines de lucro** con sede en Argentina, que mantiene convenios con distintas organizaciones para cumplir un mismo objetivo: preparar personas para servir.
+HOPE surgió en Libertador San Martín, Entre Ríos, en el ambiente de la **Universidad Adventista del Plata (UAP)**. Pero no fue una iniciativa de la universidad ni depende de ella: nació como una iniciativa personal y hoy es un **proyecto independiente y sin fines de lucro**. Todavía no es una fundación; ojalá algún día lo sea.
 
-Somos un equipo diverso de pilotos, mecánicos, médicos, educadores y voluntarios. Nos une una convicción: **la aviación puede salvar vidas** y llevar ayuda a lugares donde casi nada llega.
+Es un proyecto chico, que recién empieza. No tiene aviones, no opera vuelos y todavía no envió voluntarios. Lo que sí tiene es este campus y una convicción: **la aviación puede salvar vidas** y llevar ayuda a lugares donde casi nada llega, siempre que quienes sirven estén bien preparados.
 
 > [!NOTE] Idea clave
-> HOPE es un puente: conecta personas preparadas con comunidades que las necesitan, y usa la aviación como herramienta para acortar distancias.
+> HOPE quiere ser un puente: preparar personas y conectarlas con proyectos que usan la aviación para acortar distancias.
 
-## Qué hacemos
+## Formar, conectar, servir
 
-El trabajo de HOPE tiene tres frentes que se complementan:
+El trabajo de HOPE se resume en tres verbos. Cada uno está en una etapa distinta:
 
 ```steps
-Formar: Preparamos a voluntarios y pilotos en lo espiritual, lo técnico y lo humanitario, a través de este campus y de experiencias prácticas.
-Conectar: Evaluamos, preparamos y recomendamos candidatos a proyectos de aviación misionera y humanitaria en Argentina y otros países.
-Servir: Buscamos llevar apoyo médico, educativo, social y logístico a comunidades aisladas, y atención aérea y médica de alta complejidad donde haga falta.
+Formar (hoy): Preparamos a voluntarios y pilotos en lo espiritual, lo técnico y lo humanitario, a través de este campus.
+Conectar (en marcha): Conversamos con proyectos de aviación misionera y humanitaria para, más adelante, recomendarles voluntarios evaluados y preparados.
+Servir (la meta): Soñamos con llevar apoyo médico, educativo, social y logístico a comunidades aisladas de Argentina y de otros países, también con aviación propia.
 ```
 
 ## Visión y misión
@@ -66,11 +66,11 @@ Fijate que **excelencia** y **compasión** aparecen juntas. En el servicio no al
 Por eso este campus está abierto a todos: no hace falta ser piloto para servir. Un enfermero, una docente, un mecánico o una estudiante de teología pueden ser tan necesarios en una misión como quien está al mando del avión.
 
 ```check
-? ¿Cuál de estas afirmaciones describe mejor a HOPE?
-+ Es una fundación que forma voluntarios y pilotos y los conecta con proyectos.
+? ¿Cuál de estas afirmaciones describe mejor a HOPE hoy?
++ Es un proyecto independiente que forma voluntarios y pilotos.
 - Es una escuela de vuelo que forma pilotos para el campo misionero.
 - Es una aerolínea humanitaria que traslada voluntarios a otros países.
-> HOPE forma, conecta y sirve. La licencia de piloto se obtiene en escuelas de vuelo habilitadas; HOPE aporta la formación complementaria.
+> Hoy HOPE forma a través de este campus. La licencia de piloto se obtiene en escuelas de vuelo habilitadas; HOPE aporta la formación complementaria.
 ```
 
 ## Para reflexionar
@@ -111,9 +111,9 @@ La aviación misionera no es una idea nueva. Después de la Segunda Guerra Mundi
 
 Esa historia también tiene costos. En 1956, el piloto de MAF **Nate Saint** y cuatro misioneros murieron en Ecuador al intentar contactar al pueblo waorani. Poco después, Elisabeth Elliot, viuda de uno de ellos, y Rachel Saint, hermana de Nate, fueron a vivir con esa misma comunidad. La aviación misionera nació de personas dispuestas a arriesgar mucho, y por eso hoy pone tanto énfasis en la **seguridad**: cada vida importa, también la de quien sirve.
 
-## La red de HOPE
+## Con quién conversa HOPE
 
-HOPE no trabaja solo. Estamos en contacto con organizaciones que comparten nuestros valores, y en cada caso buscamos entender qué necesita cada una antes de ofrecer ayuda:
+HOPE ya conversa con organizaciones que vuelan en el terreno y comparten nuestros valores. Con cada una buscamos entender qué necesita antes de ofrecer ayuda:
 
 | Organización | Dónde | Qué hacen |
 |---|---|---|
@@ -123,11 +123,13 @@ HOPE no trabaja solo. Estamos en contacto con organizaciones que comparten nuest
 | Alas de Vida | Costa Rica | Combinan aviación, discipulado y salud en Centroamérica. |
 | Miseje | Argentina (en conversación) | Podrían aportar pilotos de helicóptero para abrir un nuevo proyecto en el país. |
 
-Algunas de estas relaciones todavía son informales y otras están en camino de formalizarse. Lo importante es el principio: **HOPE prepara personas y las conecta con proyectos que ya están en el terreno.**
+Por ahora son, en su mayoría, contactos informales. Lo importante es el principio: **HOPE no busca reemplazar a estos proyectos, sino prepararles personas.**
+
+Así es, en general, el recorrido de una misión con aviación. El segundo paso es el lugar que HOPE quiere ocupar:
 
 ```steps
-Necesidad: Una comunidad o un proyecto aliado identifica qué hace falta.
-Preparación: HOPE selecciona y prepara a voluntarios con el perfil adecuado.
+Necesidad: Una comunidad o un proyecto identifica qué hace falta.
+Preparación: Alguien selecciona y prepara a voluntarios con el perfil adecuado.
 Traslado: La aviación acorta la distancia entre la ayuda y quien la necesita.
 Servicio: Los voluntarios trabajan junto a la iglesia y los líderes locales.
 Continuidad: El trabajo sigue en manos de la comunidad cuando el equipo se va.
@@ -167,11 +169,14 @@ Una misión con aviación necesita mucho más que pilotos. Este campus está pen
 
 ```steps
 Formarte: Completás los cursos del campus y obtenés tu certificado.
-Conversar: HOPE realiza una entrevista personal antes de recomendar a cualquier voluntario.
+Conversar: Antes de recomendar a alguien, HOPE va a tener una entrevista personal con esa persona.
 Prepararte para el destino: Según el lugar, se trabaja idioma, contexto religioso y cultural, y las habilidades que el proyecto necesita.
-Ser enviado: HOPE te conecta con un proyecto aliado, por ejemplo a través del Servicio Voluntario Adventista (SVA).
+Ser enviado: Cuando haya un proyecto que encaje con tu perfil, HOPE puede recomendarte, por ejemplo a través del Servicio Voluntario Adventista (SVA).
 Servir y volver: Trabajás bajo la coordinación del proyecto local, y al regresar compartís lo aprendido y recibís acompañamiento.
 ```
+
+> [!NOTE] Un camino que recién empieza
+> HOPE todavía no envió voluntarios. Este es el camino que estamos armando, y vos podés ser parte de la primera camada.
 
 El certificado del campus **no garantiza** un envío. Es un primer paso: demuestra que te preparaste. La entrevista personal y la experiencia previa como voluntario —según el tipo de proyecto— completan la evaluación. Este filtro protege a las comunidades, a los proyectos aliados y también a vos.
 
@@ -201,7 +206,7 @@ HOPE proyecta sumar experiencias prácticas a la formación virtual:
 - El certificado te habilita automáticamente para viajar a cualquier proyecto.
 + Una entrevista personal y una preparación específica según el destino.
 - Elegir por tu cuenta un proyecto y viajar en nombre de HOPE.
-> El certificado demuestra que te formaste. Antes de recomendar a alguien, HOPE conversa personalmente con cada voluntario y lo prepara para el lugar concreto al que va.
+> El certificado demuestra que te formaste. Antes de recomendar a alguien, HOPE va a conversar personalmente con esa persona y prepararla para el lugar concreto al que vaya.
 ```
 
 ## Para reflexionar
@@ -216,18 +221,18 @@ ON CONFLICT (id) DO UPDATE SET title = EXCLUDED.title, description = EXCLUDED.de
   passing_score = EXCLUDED.passing_score, max_attempts = EXCLUDED.max_attempts,
   time_limit_minutes = EXCLUDED.time_limit_minutes, order_index = EXCLUDED.order_index;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('132693dd-1734-506a-9dca-a4f694807856', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$¿Cuál es la relación actual entre HOPE y la Universidad Adventista del Plata?$hope$), 1, 0)
+VALUES ('132693dd-1734-506a-9dca-a4f694807856', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$¿Cuál es la relación entre HOPE y la Universidad Adventista del Plata?$hope$), 1, 0)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '132693dd-1734-506a-9dca-a4f694807856';
 DELETE FROM public.options WHERE question_id = '132693dd-1734-506a-9dca-a4f694807856' AND id NOT IN ('9ae6f92a-c234-56b3-8584-b4c5f4fb2caf', '8d99ca72-333c-512e-aafd-ec7d6bb5b3a3', '440db66c-279a-5584-8359-db0920354339', '0a368bed-4f96-5bfd-93c6-dbcfbb45677c');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('9ae6f92a-c234-56b3-8584-b4c5f4fb2caf', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$HOPE nació impulsado por la UAP y hoy es una fundación independiente.$hope$), true),
+  ('9ae6f92a-c234-56b3-8584-b4c5f4fb2caf', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$HOPE surgió en la UAP, pero es un proyecto independiente.$hope$), true),
   ('8d99ca72-333c-512e-aafd-ec7d6bb5b3a3', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$HOPE es un departamento académico que depende de la UAP.$hope$), false),
   ('440db66c-279a-5584-8359-db0920354339', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$HOPE es una escuela de vuelo que funciona dentro del campus de la UAP.$hope$), false),
   ('0a368bed-4f96-5bfd-93c6-dbcfbb45677c', '132693dd-1734-506a-9dca-a4f694807856', jsonb_build_object('es', $hope$HOPE es un programa del Servicio Voluntario Adventista de la UAP.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('482afcd2-c912-5e3f-80cc-d5cda8df7519', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$¿Cuáles son los tres frentes del trabajo de HOPE?$hope$), 1, 1)
+VALUES ('482afcd2-c912-5e3f-80cc-d5cda8df7519', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$¿Con qué tres verbos resume HOPE su trabajo?$hope$), 1, 1)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '482afcd2-c912-5e3f-80cc-d5cda8df7519';
 DELETE FROM public.options WHERE question_id = '482afcd2-c912-5e3f-80cc-d5cda8df7519' AND id NOT IN ('5fae0d1f-8d77-52f4-b07b-2cf3e5099961', '8f6834c4-7867-54ab-94ca-5546b7a3c14b', '27cd2e1a-ca70-53e1-9bcd-d19f3b2a661b', '52dac5fc-c46a-5acd-9f20-fe1c93b8467d');
@@ -271,15 +276,15 @@ INSERT INTO public.options (id, question_id, content, is_correct) VALUES
   ('76ce01ff-bb45-5213-a205-8234febfed25', 'd94d5d25-aaca-5fe2-a8d0-74c6f7e36301', jsonb_build_object('es', $hope$Porque las ambulancias aéreas ya llegan a todas las comunidades.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
-VALUES ('50012a46-6f82-5936-b04c-44fd07a6a5bb', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$¿Qué hace HOPE con las organizaciones de su red?$hope$), 1, 5)
+VALUES ('50012a46-6f82-5936-b04c-44fd07a6a5bb', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$¿Qué busca HOPE en su relación con otras organizaciones?$hope$), 1, 5)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, points = EXCLUDED.points, order_index = EXCLUDED.order_index;
 UPDATE public.options SET is_correct = false WHERE question_id = '50012a46-6f82-5936-b04c-44fd07a6a5bb';
 DELETE FROM public.options WHERE question_id = '50012a46-6f82-5936-b04c-44fd07a6a5bb' AND id NOT IN ('bdeb68d7-43ba-5c55-ad02-a3af92265d62', '34425b66-d37e-5e61-99a6-1d12d3764187', 'dd832a10-c6fa-59b7-b477-99f5f1d58221', 'badbc2d1-3e8b-5c18-950a-34305cd4af78');
 INSERT INTO public.options (id, question_id, content, is_correct) VALUES
-  ('bdeb68d7-43ba-5c55-ad02-a3af92265d62', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Prepara voluntarios y los conecta con proyectos existentes.$hope$), true),
-  ('34425b66-d37e-5e61-99a6-1d12d3764187', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Dirige los proyectos de las organizaciones aliadas.$hope$), false),
-  ('dd832a10-c6fa-59b7-b477-99f5f1d58221', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Compra aeronaves y se las presta a las organizaciones.$hope$), false),
-  ('badbc2d1-3e8b-5c18-950a-34305cd4af78', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Financia a las organizaciones a cambio de cupos para voluntarios.$hope$), false)
+  ('bdeb68d7-43ba-5c55-ad02-a3af92265d62', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Prepararles voluntarios, sin reemplazar sus proyectos.$hope$), true),
+  ('34425b66-d37e-5e61-99a6-1d12d3764187', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Dirigir los proyectos de esas organizaciones.$hope$), false),
+  ('dd832a10-c6fa-59b7-b477-99f5f1d58221', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Comprar aeronaves y prestárselas a esas organizaciones.$hope$), false),
+  ('badbc2d1-3e8b-5c18-950a-34305cd4af78', '50012a46-6f82-5936-b04c-44fd07a6a5bb', jsonb_build_object('es', $hope$Financiarlas a cambio de cupos para sus voluntarios.$hope$), false)
 ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, is_correct = EXCLUDED.is_correct;
 INSERT INTO public.questions (id, exam_id, content, points, order_index)
 VALUES ('d6aa7456-569f-5779-9ada-35928a699d8d', 'ee9a66b1-1c02-590d-b4e4-57454a36359f', jsonb_build_object('es', $hope$Obtuviste el certificado del campus. ¿Qué afirmación es correcta?$hope$), 1, 6)

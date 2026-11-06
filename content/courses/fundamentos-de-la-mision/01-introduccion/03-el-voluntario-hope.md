@@ -17,11 +17,14 @@ Una misión con aviación necesita mucho más que pilotos. Este campus está pen
 
 ```steps
 Formarte: Completás los cursos del campus y obtenés tu certificado.
-Conversar: HOPE realiza una entrevista personal antes de recomendar a cualquier voluntario.
+Conversar: Antes de recomendar a alguien, HOPE va a tener una entrevista personal con esa persona.
 Prepararte para el destino: Según el lugar, se trabaja idioma, contexto religioso y cultural, y las habilidades que el proyecto necesita.
-Ser enviado: HOPE te conecta con un proyecto aliado, por ejemplo a través del Servicio Voluntario Adventista (SVA).
+Ser enviado: Cuando haya un proyecto que encaje con tu perfil, HOPE puede recomendarte, por ejemplo a través del Servicio Voluntario Adventista (SVA).
 Servir y volver: Trabajás bajo la coordinación del proyecto local, y al regresar compartís lo aprendido y recibís acompañamiento.
 ```
+
+> [!NOTE] Un camino que recién empieza
+> HOPE todavía no envió voluntarios. Este es el camino que estamos armando, y vos podés ser parte de la primera camada.
 
 El certificado del campus **no garantiza** un envío. Es un primer paso: demuestra que te preparaste. La entrevista personal y la experiencia previa como voluntario —según el tipo de proyecto— completan la evaluación. Este filtro protege a las comunidades, a los proyectos aliados y también a vos.
 
@@ -51,7 +54,7 @@ HOPE proyecta sumar experiencias prácticas a la formación virtual:
 - El certificado te habilita automáticamente para viajar a cualquier proyecto.
 + Una entrevista personal y una preparación específica según el destino.
 - Elegir por tu cuenta un proyecto y viajar en nombre de HOPE.
-> El certificado demuestra que te formaste. Antes de recomendar a alguien, HOPE conversa personalmente con cada voluntario y lo prepara para el lugar concreto al que va.
+> El certificado demuestra que te formaste. Antes de recomendar a alguien, HOPE va a conversar personalmente con esa persona y prepararla para el lugar concreto al que vaya.
 ```
 
 ## Para reflexionar

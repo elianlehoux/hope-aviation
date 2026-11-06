@@ -1,22 +1,22 @@
-Antes de hablar de aviones, misiones o viajes, conviene entender de dónde venimos y qué buscamos. Esta clase te presenta a HOPE: quiénes somos, qué hacemos y qué no hacemos.
+Antes de hablar de aviones, misiones o viajes, conviene entender de dónde venimos y qué buscamos. Esta clase te presenta a HOPE: quiénes somos, qué hacemos hoy, hacia dónde vamos y qué no hacemos.
 
 ## De dónde nace HOPE
 
-HOPE nació impulsado por la **Universidad Adventista del Plata (UAP)**, en Libertador San Martín, Entre Ríos. Hoy funciona como una **fundación independiente y sin fines de lucro** con sede en Argentina, que mantiene convenios con distintas organizaciones para cumplir un mismo objetivo: preparar personas para servir.
+HOPE surgió en Libertador San Martín, Entre Ríos, en el ambiente de la **Universidad Adventista del Plata (UAP)**. Pero no fue una iniciativa de la universidad ni depende de ella: nació como una iniciativa personal y hoy es un **proyecto independiente y sin fines de lucro**. Todavía no es una fundación; ojalá algún día lo sea.
 
-Somos un equipo diverso de pilotos, mecánicos, médicos, educadores y voluntarios. Nos une una convicción: **la aviación puede salvar vidas** y llevar ayuda a lugares donde casi nada llega.
+Es un proyecto chico, que recién empieza. No tiene aviones, no opera vuelos y todavía no envió voluntarios. Lo que sí tiene es este campus y una convicción: **la aviación puede salvar vidas** y llevar ayuda a lugares donde casi nada llega, siempre que quienes sirven estén bien preparados.
 
 > [!NOTE] Idea clave
-> HOPE es un puente: conecta personas preparadas con comunidades que las necesitan, y usa la aviación como herramienta para acortar distancias.
+> HOPE quiere ser un puente: preparar personas y conectarlas con proyectos que usan la aviación para acortar distancias.
 
-## Qué hacemos
+## Formar, conectar, servir
 
-El trabajo de HOPE tiene tres frentes que se complementan:
+El trabajo de HOPE se resume en tres verbos. Cada uno está en una etapa distinta:
 
 ```steps
-Formar: Preparamos a voluntarios y pilotos en lo espiritual, lo técnico y lo humanitario, a través de este campus y de experiencias prácticas.
-Conectar: Evaluamos, preparamos y recomendamos candidatos a proyectos de aviación misionera y humanitaria en Argentina y otros países.
-Servir: Buscamos llevar apoyo médico, educativo, social y logístico a comunidades aisladas, y atención aérea y médica de alta complejidad donde haga falta.
+Formar (hoy): Preparamos a voluntarios y pilotos en lo espiritual, lo técnico y lo humanitario, a través de este campus.
+Conectar (en marcha): Conversamos con proyectos de aviación misionera y humanitaria para, más adelante, recomendarles voluntarios evaluados y preparados.
+Servir (la meta): Soñamos con llevar apoyo médico, educativo, social y logístico a comunidades aisladas de Argentina y de otros países, también con aviación propia.
 ```
 
 ## Visión y misión
@@ -50,11 +50,11 @@ Fijate que **excelencia** y **compasión** aparecen juntas. En el servicio no al
 Por eso este campus está abierto a todos: no hace falta ser piloto para servir. Un enfermero, una docente, un mecánico o una estudiante de teología pueden ser tan necesarios en una misión como quien está al mando del avión.
 
 ```check
-? ¿Cuál de estas afirmaciones describe mejor a HOPE?
-+ Es una fundación que forma voluntarios y pilotos y los conecta con proyectos.
+? ¿Cuál de estas afirmaciones describe mejor a HOPE hoy?
++ Es un proyecto independiente que forma voluntarios y pilotos.
 - Es una escuela de vuelo que forma pilotos para el campo misionero.
 - Es una aerolínea humanitaria que traslada voluntarios a otros países.
-> HOPE forma, conecta y sirve. La licencia de piloto se obtiene en escuelas de vuelo habilitadas; HOPE aporta la formación complementaria.
+> Hoy HOPE forma a través de este campus. La licencia de piloto se obtiene en escuelas de vuelo habilitadas; HOPE aporta la formación complementaria.
 ```
 
 ## Para reflexionar

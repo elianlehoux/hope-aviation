@@ -20,16 +20,16 @@
         "maxAttempts": 3,
         "questions": [
           {
-            "text": "¿Cuál es la relación actual entre HOPE y la Universidad Adventista del Plata?",
+            "text": "¿Cuál es la relación entre HOPE y la Universidad Adventista del Plata?",
             "options": [
-              { "text": "HOPE nació impulsado por la UAP y hoy es una fundación independiente.", "correct": true },
+              { "text": "HOPE surgió en la UAP, pero es un proyecto independiente.", "correct": true },
               { "text": "HOPE es un departamento académico que depende de la UAP." },
               { "text": "HOPE es una escuela de vuelo que funciona dentro del campus de la UAP." },
               { "text": "HOPE es un programa del Servicio Voluntario Adventista de la UAP." }
             ]
           },
           {
-            "text": "¿Cuáles son los tres frentes del trabajo de HOPE?",
+            "text": "¿Con qué tres verbos resume HOPE su trabajo?",
             "options": [
               { "text": "Formar, conectar y servir.", "correct": true },
               { "text": "Volar, transportar y evacuar." },
@@ -65,12 +65,12 @@
             ]
           },
           {
-            "text": "¿Qué hace HOPE con las organizaciones de su red?",
+            "text": "¿Qué busca HOPE en su relación con otras organizaciones?",
             "options": [
-              { "text": "Prepara voluntarios y los conecta con proyectos existentes.", "correct": true },
-              { "text": "Dirige los proyectos de las organizaciones aliadas." },
-              { "text": "Compra aeronaves y se las presta a las organizaciones." },
-              { "text": "Financia a las organizaciones a cambio de cupos para voluntarios." }
+              { "text": "Prepararles voluntarios, sin reemplazar sus proyectos.", "correct": true },
+              { "text": "Dirigir los proyectos de esas organizaciones." },
+              { "text": "Comprar aeronaves y prestárselas a esas organizaciones." },
+              { "text": "Financiarlas a cambio de cupos para sus voluntarios." }
             ]
           },
           {

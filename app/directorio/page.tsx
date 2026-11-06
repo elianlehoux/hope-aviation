@@ -42,9 +42,9 @@ const inContact: Org[] = [
   {
     name: "Alas de Vida",
     region: "Costa Rica",
-    focus: "Montaña",
+    focus: "Salud y discipulado",
     description:
-      "Socio para pilotos hispanohablantes nativos. Operan Vulcanair y helicópteros en zonas montañosas.",
+      "Aviación, discipulado y salud en Centroamérica. Buscan sumar un Vulcanair y podrían necesitar pilotos hispanohablantes nativos desde 2027.",
   },
   {
     name: "Perú Projects",
@@ -174,7 +174,7 @@ export default function DirectorioPage() {
             Aviación misionera en el mundo
           </Title>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
-            Organizaciones reales que ya vuelan en el campo. Hope Aviation es el
+            Organizaciones reales que ya vuelan en el campo. Hope Aviation quiere ser el
             puente que conecta voluntarios preparados con quienes sirven en
             terreno.
           </p>

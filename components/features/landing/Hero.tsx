@@ -20,8 +20,8 @@ export function Hero() {
         src="/images/landing/airfield-team.webp"
         alt={
           es
-            ? "Voluntarios de Hope Aviation conversan junto a un avión liviano en un aeródromo de pasto"
-            : "Hope Aviation volunteers talking next to a light aircraft on a grass airfield"
+            ? "Un grupo de personas conversa junto a un avión liviano en un aeródromo de pasto"
+            : "A group of people talking next to a light aircraft on a grass airfield"
         }
         fill
         priority
