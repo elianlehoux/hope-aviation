@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { safeNext } from "@/lib/auth/safe-next";
+import { authCookieOptions } from "@/lib/supabase/cookie";
 
 /**
  * Exchanges the PKCE code (OAuth, sign-up confirmation, password recovery)
@@ -19,6 +20,7 @@ export async function GET(request: Request) {
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
       {
+        cookieOptions: authCookieOptions(),
         cookies: {
           getAll() {
             return cookieStore.getAll();
