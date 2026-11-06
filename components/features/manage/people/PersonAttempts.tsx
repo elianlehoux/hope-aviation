@@ -80,8 +80,8 @@ export function PersonAttempts({
         description={
           target
             ? es
-              ? `Se borran los ${target.attempts} intentos de ${personName} en “${getLocalizedText(target.examTitle, lang)}”. Va a poder rendirlo de nuevo y los módulos siguientes se vuelven a bloquear hasta que apruebe.`
-              : `This deletes ${personName}'s ${target.attempts} attempts on “${getLocalizedText(target.examTitle, lang)}”. They can take it again, and later modules lock until they pass.`
+              ? `Se ${target.attempts === 1 ? "borra el intento" : `borran los ${target.attempts} intentos`} de ${personName} en “${getLocalizedText(target.examTitle, lang)}”. Va a poder rendirlo de nuevo y los módulos siguientes se vuelven a bloquear hasta que apruebe.`
+              : `This deletes ${personName}'s ${target.attempts === 1 ? "attempt" : `${target.attempts} attempts`} on “${getLocalizedText(target.examTitle, lang)}”. They can take it again, and later modules lock until they pass.`
             : undefined
         }
         confirmLabel={es ? "Reiniciar intentos" : "Reset attempts"}
