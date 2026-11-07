@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Hope Aviation",
   description:
-    "Hope Aviation no es una escuela de vuelo. Enseñamos las habilidades que la aviación misionera necesita, y conectamos voluntarios con proyectos en el campo.",
+    "Hope Aviation no es una escuela de vuelo. Enseñamos las habilidades que la aviación misionera necesita, y queremos conectar voluntarios con proyectos en el campo.",
   icons: {
     icon: "/icon.png",
   },

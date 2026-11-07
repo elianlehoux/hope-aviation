@@ -23,7 +23,7 @@ export default function DonatePage() {
   const ways = [
     es ? "Ofrendas únicas o mensuales, personales o de tu iglesia." : "One-off or monthly gifts, personal or from your church.",
     es ? "Becas para estudiantes que no pueden costear su formación." : "Scholarships for students who can't afford their training.",
-    es ? "Patrocinar un vuelo, una pieza del avión o un curso." : "Sponsoring a flight, an aircraft part or a course.",
+    es ? "Patrocinar un curso del campus o aportar para el primer avión." : "Sponsoring a campus course or giving toward the first aircraft.",
     es
       ? "Donar aeronaves, equipamiento o servicios de mantenimiento."
       : "Donating aircraft, aviation equipment or maintenance services.",
@@ -47,8 +47,8 @@ export default function DonatePage() {
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-primary/80 md:text-xl">
                 {es
-                  ? "Hope Aviation se sostiene con personas e iglesias que creen en llevar esperanza donde los caminos no llegan. Tu ayuda mantiene el campus gratuito y nos acerca a nuestra propia base y pista en Argentina."
-                  : "Hope Aviation is sustained by people and churches who believe in bringing hope where roads can't reach. Your support keeps the campus free and brings us closer to our own base and airstrip in Argentina."}
+                  ? "Hope Aviation necesita personas e iglesias que crean en llevar esperanza donde los caminos no llegan. Tu ayuda mantiene el campus gratuito y nos acerca a nuestra propia base y pista en Argentina."
+                  : "Hope Aviation needs people and churches who believe in bringing hope where roads can't reach. Your support keeps the campus free and brings us closer to our own base and airstrip in Argentina."}
               </p>
               <div className="mt-8 rounded-[20px] border border-primary/10 bg-paper p-6">
                 <p className="font-semibold">
@@ -72,8 +72,8 @@ export default function DonatePage() {
                 src="/images/landing/airfield-group.webp"
                 alt={
                   es
-                    ? "Voluntarios reunidos alrededor de un avión liviano en un campo de pasto"
-                    : "Volunteers gathered around a light aircraft on a grass field"
+                    ? "Un grupo de personas reunido alrededor de un avión liviano en un campo de pasto"
+                    : "A group of people gathered around a light aircraft on a grass field"
                 }
                 fill
                 priority
