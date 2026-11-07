@@ -154,7 +154,8 @@ export function WhyArgentinaSection() {
           </p>
         </div>
 
-        <dl className="mt-16 grid gap-px overflow-hidden rounded-[20px] bg-primary/15 sm:grid-cols-3">
+        {/* Hairline dividers come from the 1px gap; no rounding, so no faint corners on amber. */}
+        <dl className="mt-16 grid gap-px bg-primary/15 sm:grid-cols-3">
           {facts.map((fact) => (
             <div key={fact.figure} className="bg-highlight p-6 md:p-8">
               <dt className="font-display text-4xl font-light tracking-[-0.03em] md:text-5xl">{fact.figure}</dt>
@@ -226,15 +227,18 @@ export function TrainingPathSection() {
         </div>
 
         {/* The route: a dashed flight path joining five waypoints (vertical on mobile) */}
-        <ol className="relative mt-16 grid gap-10 lg:grid-cols-5 lg:gap-6">
-          <span
-            aria-hidden="true"
-            className="absolute bottom-6 left-[1.4375rem] top-6 border-l-2 border-dashed border-primary/20 lg:bottom-auto lg:left-6 lg:right-6 lg:top-[1.4375rem] lg:border-l-0 lg:border-t-2"
-          />
+        <ol className="mt-16 grid gap-10 lg:grid-cols-5 lg:gap-6">
           {steps.map((step, i) => {
             const last = i === steps.length - 1;
             return (
               <li key={step.title} className="relative flex gap-5 lg:flex-col lg:gap-0">
+                {/* Each leg runs from this waypoint to the next, so the route ends at the certificate. */}
+                {!last && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute -bottom-10 left-[1.4375rem] top-12 border-l-2 border-dashed border-primary/20 lg:-right-6 lg:bottom-auto lg:left-12 lg:top-[1.4375rem] lg:border-l-0 lg:border-t-2"
+                  />
+                )}
                 <span
                   className={`relative z-10 flex size-12 shrink-0 items-center justify-center rounded-full font-display text-lg font-medium ring-8 ring-paper ${
                     last ? "bg-highlight text-primary" : "bg-primary text-white"
@@ -408,7 +412,7 @@ export function GetInvolvedBand() {
               >
                 <span>
                   <span className="block font-display text-2xl font-normal tracking-tight">{way.title}</span>
-                  <span className="mt-1 block text-white/75">{way.text}</span>
+                  <span className="mt-1 block text-white/85">{way.text}</span>
                 </span>
                 <ArrowUpRight
                   className="size-6 shrink-0 text-white/70 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white"
@@ -437,8 +441,8 @@ export function NewsletterBand() {
           </h2>
           <p className="mt-4 max-w-md text-lg text-primary/70">
             {es
-              ? "Novedades del campus, del proyecto de pista y de los equipos en el campo. Sin spam."
-              : "News from the campus, the airstrip project and the teams in the field. No spam."}
+              ? "Novedades del campus, de los cursos nuevos y del proyecto de pista. Sin spam."
+              : "News about the campus, new courses and the airstrip project. No spam."}
           </p>
         </div>
         <div className="w-full max-w-md lg:col-span-5 lg:col-start-8">

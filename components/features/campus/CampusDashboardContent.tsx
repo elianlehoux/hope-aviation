@@ -24,7 +24,7 @@ export function CampusDashboardContent({ home }: { home: LearnerHome }) {
           <h1 className="font-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl">
             {es ? "Hola" : "Hi"}, {home.firstName}
           </h1>
-          <p className="mt-2 text-primary/60">
+          <p className="mt-2 text-primary/65">
             {current
               ? es
                 ? "Retomá donde lo dejaste."
@@ -53,10 +53,10 @@ export function CampusDashboardContent({ home }: { home: LearnerHome }) {
           <p className="flex-1 text-sm text-primary/80">
             <span className="font-semibold text-primary">{es ? "Completá tu perfil." : "Complete your profile."}</span>{" "}
             {es
-              ? "Necesitamos tu nombre, fecha de nacimiento y país para emitir certificados."
-              : "We need your name, birth date and country to issue certificates."}
+              ? "Sumá tus datos: el nombre de tu perfil es el que aparece en tus certificados."
+              : "Add your details: the name on your profile is the one printed on your certificates."}
           </p>
-          <ArrowRight className="size-4 shrink-0 text-primary/60" aria-hidden />
+          <ArrowRight className="size-4 shrink-0 text-primary/65" aria-hidden />
         </Link>
       ) : null}
 
@@ -70,7 +70,7 @@ export function CampusDashboardContent({ home }: { home: LearnerHome }) {
             className="group grid overflow-hidden rounded-3xl bg-primary text-white md:grid-cols-[1fr_1.1fr]"
           >
             <div className="relative aspect-[16/9] md:aspect-auto">
-              <CourseCover src={current.thumbnailUrl} alt={getLocalizedText(current.title, lang)} />
+              <CourseCover src={current.thumbnailUrl} alt={getLocalizedText(current.title, lang)} seed={current.id} />
             </div>
             <div className="flex flex-col justify-center gap-5 p-6 sm:p-8 md:p-10">
               <p className="text-sm font-medium text-highlight">{es ? "Seguir aprendiendo" : "Continue learning"}</p>
@@ -124,7 +124,7 @@ export function CampusDashboardContent({ home }: { home: LearnerHome }) {
             ))}
           </div>
         ) : (
-          <p className="rounded-2xl border border-dashed border-primary/15 px-6 py-10 text-center text-sm text-primary/55">
+          <p className="rounded-2xl border border-dashed border-primary/15 px-6 py-10 text-center text-sm text-primary/65">
             {home.myCourses.length
               ? es
                 ? "Ya estás inscripto en todos los cursos disponibles. Pronto sumamos más."

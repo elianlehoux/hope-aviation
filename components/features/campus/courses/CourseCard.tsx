@@ -21,7 +21,7 @@ export function CourseCard({ course }: { course: CourseSummary | MyCourse }) {
       className="group flex flex-col overflow-hidden rounded-2xl border border-primary/10 bg-white transition-shadow hover:shadow-[0_12px_28px_rgba(0,38,62,0.08)]"
     >
       <div className="relative aspect-[16/9]">
-        <CourseCover src={course.thumbnailUrl} alt={title} />
+        <CourseCover src={course.thumbnailUrl} alt={title} seed={course.id} />
         {mine && course.status === "completed" ? (
           <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-highlight px-2.5 py-1 text-xs font-semibold text-primary">
             <Award className="size-3.5" aria-hidden /> {es ? "Completado" : "Completed"}
@@ -29,13 +29,13 @@ export function CourseCard({ course }: { course: CourseSummary | MyCourse }) {
         ) : null}
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <p className="flex items-center gap-1.5 text-xs font-medium text-primary/50">
+        <p className="flex items-center gap-1.5 text-xs font-medium text-primary/65">
           <BookOpen className="size-3.5" aria-hidden />
           {course.moduleCount} {es ? "módulos" : "modules"} · {course.lessonCount} {es ? "clases" : "lessons"}
         </p>
         <h3 className="mt-2 font-display text-lg font-semibold leading-snug text-primary">{title}</h3>
         {description && description !== "—" ? (
-          <p className="mt-1.5 line-clamp-2 text-sm text-primary/60">{description}</p>
+          <p className="mt-1.5 line-clamp-2 text-sm text-primary/65">{description}</p>
         ) : null}
         <div className="mt-auto pt-5">
           {mine && course.status === "active" ? (

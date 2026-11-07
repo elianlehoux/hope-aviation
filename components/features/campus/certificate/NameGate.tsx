@@ -63,7 +63,7 @@ export function NameGate({
       <h2 className="mt-5 font-display text-2xl font-semibold tracking-tight text-primary">
         {es ? "¿Cómo querés que figure tu nombre?" : "How should your name appear?"}
       </h2>
-      <p className="mt-2 text-sm leading-relaxed text-primary/60">
+      <p className="mt-2 text-sm leading-relaxed text-primary/65">
         {es
           ? "Tu certificado lleva tu nombre y apellido completos. Escribilos tal como querés que se lean."
           : "Your certificate shows your full first and last name. Write them exactly as you want them to read."}
@@ -127,7 +127,7 @@ export function CertificateNameStep({
     <div className="mx-auto max-w-5xl space-y-8 pb-16">
       <Link
         href="/campus/certificates"
-        className="-my-2 inline-flex items-center gap-1.5 py-2 text-sm font-medium text-primary/55 hover:text-primary"
+        className="relative inline-flex items-center gap-1.5 text-sm font-medium text-primary/65 after:absolute after:-inset-x-2 after:-inset-y-3 hover:text-primary"
       >
         <ArrowLeft className="size-4" aria-hidden />
         {es ? "Mis certificados" : "My certificates"}

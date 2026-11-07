@@ -49,7 +49,7 @@ export function CourseOverview({
 
   return (
     <div className="mx-auto max-w-5xl space-y-12 pb-16">
-      <Link href="/campus/courses" className="-my-2 inline-flex items-center gap-1.5 py-2 text-sm font-medium text-primary/55 hover:text-primary">
+      <Link href="/campus/courses" className="relative inline-flex items-center gap-1.5 text-sm font-medium text-primary/65 after:absolute after:-inset-x-2 after:-inset-y-3 hover:text-primary">
         <ArrowLeft className="size-4" aria-hidden />
         {es ? "Cursos" : "Courses"}
       </Link>
@@ -63,7 +63,7 @@ export function CourseOverview({
           ) : null}
           <h1 className="font-display text-4xl font-semibold leading-[1.05] tracking-tight text-primary sm:text-5xl">{title}</h1>
           {description && description !== "—" ? <p className="max-w-[55ch] text-lg text-primary/65">{description}</p> : null}
-          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-primary/60">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-primary/65">
             <li className="inline-flex items-center gap-1.5">
               <Layers className="size-4" aria-hidden /> {subjects.length} {es ? "módulos" : "modules"}
             </li>
@@ -92,7 +92,7 @@ export function CourseOverview({
         </div>
         <div className="overflow-hidden rounded-3xl">
           <div className="aspect-[4/3]">
-            <CourseCover src={course.thumbnail_url} alt={title} />
+            <CourseCover src={course.thumbnail_url} alt={title} seed={course.id} />
           </div>
         </div>
       </section>
@@ -102,30 +102,30 @@ export function CourseOverview({
         <ol className="space-y-3">
           {subjects.map((subject, i) => (
             <li key={subject.id} className="rounded-2xl border border-primary/10 bg-white p-5 sm:p-6">
-              <p className="text-xs font-semibold text-primary/45">
+              <p className="text-xs font-semibold text-primary/65">
                 {es ? "Módulo" : "Module"} {i + 1}
               </p>
               <h3 className="mt-1 font-display text-lg font-semibold text-primary">{getLocalizedText(subject.title, lang)}</h3>
               {subject.description ? (
-                <p className="mt-1 text-sm text-primary/60">{getLocalizedText(subject.description, lang)}</p>
+                <p className="mt-1 text-sm text-primary/65">{getLocalizedText(subject.description, lang)}</p>
               ) : null}
               <ul className="mt-4 divide-y divide-primary/5">
                 {(subject.classes ?? []).map((c) => (
                   <li key={c.id} className="flex items-center gap-3 py-2.5 text-sm text-primary/80">
                     {c.video_url ? (
-                      <PlayCircle className="size-4 shrink-0 text-primary/45" aria-label="Video" />
+                      <PlayCircle className="size-4 shrink-0 text-primary/65" aria-label="Video" />
                     ) : (
-                      <FileText className="size-4 shrink-0 text-primary/45" aria-label={es ? "Lectura" : "Reading"} />
+                      <FileText className="size-4 shrink-0 text-primary/65" aria-label={es ? "Lectura" : "Reading"} />
                     )}
                     <span className="flex-1">{getLocalizedText(c.title, lang)}</span>
-                    {c.duration_minutes ? <span className="text-xs tabular-nums text-primary/45">{c.duration_minutes} min</span> : null}
+                    {c.duration_minutes ? <span className="text-xs tabular-nums text-primary/65">{c.duration_minutes} min</span> : null}
                   </li>
                 ))}
                 {(subject.exams ?? []).map((e) => (
                   <li key={e.id} className="flex items-center gap-3 py-2.5 text-sm text-primary/80">
-                    <ClipboardCheck className="size-4 shrink-0 text-primary/45" aria-hidden />
+                    <ClipboardCheck className="size-4 shrink-0 text-primary/65" aria-hidden />
                     <span className="flex-1">{getLocalizedText(e.title, lang)}</span>
-                    <span className="text-xs text-primary/45">{es ? "Evaluación" : "Assessment"}</span>
+                    <span className="text-xs text-primary/65">{es ? "Evaluación" : "Assessment"}</span>
                   </li>
                 ))}
               </ul>

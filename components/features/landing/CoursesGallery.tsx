@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import {
-  BookOpen,
   Languages,
   HeartPulse,
   Radio,
@@ -11,6 +10,7 @@ import {
   HeartHandshake,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CourseCover } from "@/components/features/campus/courses/CourseCover";
 import { useTranslation } from "@/lib/i18n/context";
 import type { TranslatedText } from "@/types/database";
 
@@ -111,21 +111,13 @@ export function CoursesGallery({ courses, loading = false }: { courses: CourseDa
                     className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-primary/10 bg-paper transition-shadow hover:shadow-[0_2px_4px_rgba(0,0,0,0.08)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
                   >
                     <div className="relative aspect-[16/10] overflow-hidden bg-paper-deep">
-                      {course.thumbnail_url ? (
-                        // Plain <img>: thumbnails can live on any storage host, which
-                        // next/image would reject unless listed in remotePatterns.
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={course.thumbnail_url}
-                          alt=""
-                          loading="lazy"
-                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] motion-reduce:transition-none"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center">
-                          <BookOpen className="size-12 text-primary/15" aria-hidden="true" />
-                        </div>
-                      )}
+                      {/* Same artwork as the campus cards: the thumbnail, or the branded navy cover. */}
+                      <CourseCover
+                        src={course.thumbnail_url}
+                        alt=""
+                        seed={course.id}
+                        className="transition-transform duration-700 group-hover:scale-[1.03] motion-reduce:transition-none"
+                      />
                     </div>
                     <div className="flex flex-1 flex-col p-6">
                       <h3 className="font-display text-xl font-medium leading-snug tracking-tight text-primary">{title}</h3>
@@ -133,7 +125,7 @@ export function CoursesGallery({ courses, loading = false }: { courses: CourseDa
                         <p className="mt-2 line-clamp-3 leading-relaxed text-primary/70">{description}</p>
                       )}
                       {(course.moduleCount ?? 0) > 0 && (
-                        <p className="mt-auto pt-5 text-sm text-primary/60">
+                        <p className="mt-auto pt-5 text-sm text-primary/65">
                           {es
                             ? `${course.moduleCount} ${course.moduleCount === 1 ? "módulo" : "módulos"}, ${course.lessonCount} ${course.lessonCount === 1 ? "clase" : "clases"}`
                             : `${course.moduleCount} ${course.moduleCount === 1 ? "module" : "modules"}, ${course.lessonCount} ${course.lessonCount === 1 ? "lesson" : "lessons"}`}
