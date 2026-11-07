@@ -1,7 +1,7 @@
 import { NewsletterAdminPanel } from "@/components/features/admin/NewsletterAdminPanel";
 
 export const metadata = {
-  title: "Boletín — Hope Aviation",
+  title: "Boletín",
   description: "Manage subscribers and dispatch updates.",
 };
 

@@ -1,7 +1,13 @@
 import { notFound, redirect } from "next/navigation";
 import { parseUuidParam } from "@/lib/api/params";
 import { getCourseOutline } from "@/lib/campus/learning";
+import { classroomTitle } from "@/lib/campus/page-titles";
 import { ModuleExamScreen } from "../../../_views/exam-screens";
+
+export async function generateMetadata({ params }: { params: Promise<{ courseId: string; examId: string }> }) {
+  const { courseId, examId } = await params;
+  return classroomTitle(courseId, examId);
+}
 
 /** Module exam: intro, one question per screen, review and result (see ExamRunner). */
 export default async function ExamPage({ params }: { params: Promise<{ courseId: string; examId: string }> }) {

@@ -4,7 +4,7 @@ import { parseUuidParam } from "@/lib/api/params";
 import { listCourseLearners, requireStaff } from "@/lib/campus/manage";
 import { LearnerTable } from "@/components/features/manage/course/LearnerTable";
 
-export const metadata = { title: "Alumnos del curso — Hope Aviation" };
+export const metadata = { title: "Alumnos del curso" };
 
 /** Alumnos tab: enrolled learners with progress and last exam. */
 export default function CourseLearnersPage({ params }: { params: Promise<{ courseId: string }> }) {

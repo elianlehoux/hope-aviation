@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { getLearnerHome } from "@/lib/campus/home";
 import { CoursesIndex } from "@/components/features/campus/courses/CoursesIndex";
+
+export const metadata: Metadata = { title: "Cursos" };
 
 export default function CoursesPage() {
   return (

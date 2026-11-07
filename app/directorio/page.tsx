@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Plane, Handshake, Radar } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Directorio · Hope Aviation",
+  title: "Directorio",
   description:
-    "Directorio de organizaciones de aviación misionera en el mundo. Hope Aviation te conecta con quienes ya vuelan en el campo.",
+    "Directorio de organizaciones de aviación misionera en el mundo. Hope Aviation quiere conectarte con quienes ya vuelan en el campo.",
 };
 
 /**

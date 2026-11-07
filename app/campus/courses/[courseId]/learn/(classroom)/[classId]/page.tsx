@@ -1,7 +1,13 @@
 import { notFound, redirect } from "next/navigation";
 import { parseUuidParam } from "@/lib/api/params";
 import { getCourseOutline } from "@/lib/campus/learning";
+import { classroomTitle } from "@/lib/campus/page-titles";
 import { LessonScreen } from "../../_views/lesson-screen";
+
+export async function generateMetadata({ params }: { params: Promise<{ courseId: string; classId: string }> }) {
+  const { courseId, classId } = await params;
+  return classroomTitle(courseId, classId);
+}
 
 export default async function LessonPage({
   params,

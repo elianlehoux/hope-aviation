@@ -33,7 +33,7 @@ export function CampusMobileNav({ navLinks }: { navLinks: CampusNavLink[] }) {
         variant="ghost"
         size="icon"
         onClick={() => setOpen(true)}
-        aria-label="Menu"
+        aria-label={t("common.menu")}
         aria-expanded={open}
         className="text-primary/70"
       >
@@ -51,14 +51,14 @@ export function CampusMobileNav({ navLinks }: { navLinks: CampusNavLink[] }) {
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Menu"
+        aria-label={t("common.menu")}
         className={`fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col bg-paper shadow-xl transition-transform duration-300 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex h-16 items-center justify-between px-5">
           <img src="/logos/hope-logo.svg" alt="Hope Aviation" className="h-7 w-auto" />
-          <Button variant="ghost" size="icon" onClick={() => setOpen(false)} aria-label="Close" className="text-primary/70">
+          <Button variant="ghost" size="icon" onClick={() => setOpen(false)} aria-label={t("common.close")} className="text-primary/70">
             <X className="size-5" />
           </Button>
         </div>
@@ -66,7 +66,7 @@ export function CampusMobileNav({ navLinks }: { navLinks: CampusNavLink[] }) {
           <CampusNavList links={navLinks} onNavigate={() => setOpen(false)} />
         </div>
         <div className="px-5 py-4">
-          <Link href="/" className="inline-flex items-center gap-1.5 text-xs font-medium text-primary/50 hover:text-primary">
+          <Link href="/" className="-my-2 inline-flex items-center gap-1.5 py-2 text-xs font-medium text-primary/50 hover:text-primary">
             <ArrowLeft className="size-3.5" aria-hidden />
             {t("campus.backToHome")}
           </Link>

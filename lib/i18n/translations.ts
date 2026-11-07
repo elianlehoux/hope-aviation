@@ -17,6 +17,7 @@ export const translations = {
     create: { en: "Create", es: "Crear" },
     search: { en: "Search", es: "Buscar" },
     close: { en: "Close", es: "Cerrar" },
+    menu: { en: "Menu", es: "Menú" },
     back: { en: "Back", es: "Volver" },
     next: { en: "Next", es: "Siguiente" },
     previous: { en: "Previous", es: "Anterior" },

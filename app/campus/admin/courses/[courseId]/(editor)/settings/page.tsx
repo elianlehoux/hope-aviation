@@ -4,7 +4,7 @@ import { parseUuidParam } from "@/lib/api/params";
 import { getCourseTree } from "@/lib/campus/manage";
 import { CourseSettingsForm } from "@/components/features/manage/course/CourseSettingsForm";
 
-export const metadata = { title: "Ajustes del curso — Hope Aviation" };
+export const metadata = { title: "Ajustes del curso" };
 
 /** Ajustes tab: title, description, cover and final exam. */
 export default function CourseSettingsPage({ params }: { params: Promise<{ courseId: string }> }) {

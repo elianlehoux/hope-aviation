@@ -1,7 +1,12 @@
 import { notFound, redirect } from "next/navigation";
 import { parseUuidParam } from "@/lib/api/params";
 import { getLearnerUser } from "@/lib/campus/learning";
+import { courseTitle } from "@/lib/campus/page-titles";
 import { CourseOverview, type CourseOverviewData } from "@/components/features/campus/courses/CourseOverview";
+
+export async function generateMetadata({ params }: { params: Promise<{ courseId: string }> }) {
+  return courseTitle((await params).courseId);
+}
 
 export default async function CourseDetailPage({ params }: { params: Promise<{ courseId: string }> }) {
   const courseId = parseUuidParam((await params).courseId);

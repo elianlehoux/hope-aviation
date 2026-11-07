@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound, redirect } from "next/navigation";
 import { parseUuidParam } from "@/lib/api/params";
@@ -7,6 +8,8 @@ import { certificateVerifyUrl } from "@/components/features/campus/certificate/f
 import { bandContours, qrModulesPath } from "@/components/features/campus/certificate/geometry";
 import { CertificateView } from "@/components/features/campus/certificate/CertificateView";
 import { CertificateNameStep } from "@/components/features/campus/certificate/NameGate";
+
+export const metadata: Metadata = { title: "Certificado" };
 
 type Params = Promise<{ enrollmentId: string }>;
 

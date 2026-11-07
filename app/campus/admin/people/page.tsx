@@ -9,7 +9,7 @@ import {
 import { PeopleDirectory } from "@/components/features/manage/people/PeopleDirectory";
 
 export const metadata = {
-  title: "Personas — Hope Aviation",
+  title: "Personas",
 };
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;

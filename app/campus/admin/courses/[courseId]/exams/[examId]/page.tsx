@@ -4,7 +4,7 @@ import { parseUuidParam } from "@/lib/api/params";
 import { getExamEditor } from "@/lib/campus/manage";
 import { ExamEditor } from "@/components/features/manage/exam/ExamEditor";
 
-export const metadata = { title: "Editor de examen — Hope Aviation" };
+export const metadata = { title: "Editor de examen" };
 
 type Params = Promise<{ courseId: string; examId: string }>;
 

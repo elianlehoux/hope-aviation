@@ -49,7 +49,7 @@ export function CourseOverview({
 
   return (
     <div className="mx-auto max-w-5xl space-y-12 pb-16">
-      <Link href="/campus/courses" className="inline-flex items-center gap-1.5 text-sm font-medium text-primary/55 hover:text-primary">
+      <Link href="/campus/courses" className="-my-2 inline-flex items-center gap-1.5 py-2 text-sm font-medium text-primary/55 hover:text-primary">
         <ArrowLeft className="size-4" aria-hidden />
         {es ? "Cursos" : "Courses"}
       </Link>

@@ -5,7 +5,7 @@ import { getPerson, requireStaffForPeople } from "@/lib/campus/people";
 import { PersonDetailView } from "@/components/features/manage/people/PersonDetailView";
 
 export const metadata = {
-  title: "Persona — Hope Aviation",
+  title: "Persona",
 };
 
 type Params = Promise<{ userId: string }>;

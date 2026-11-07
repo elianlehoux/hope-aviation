@@ -3,7 +3,7 @@ import { listManagedCourses } from "@/lib/campus/manage";
 import { CourseList } from "@/components/features/manage/course/CourseList";
 
 export const metadata = {
-  title: "Cursos — Hope Aviation",
+  title: "Administrar cursos",
   description: "Course management for Hope Aviation staff.",
 };
 

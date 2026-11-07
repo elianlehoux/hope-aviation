@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CampusDashboard } from "./campus-dashboard";
+
+export const metadata: Metadata = { title: "Campus" };
 
 export default function CampusDashboardPage() {
   return (

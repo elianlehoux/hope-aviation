@@ -1,8 +1,11 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { parseUuidParam } from "@/lib/api/params";
 import { getLearnerUser } from "@/lib/campus/learning";
 import { LessonEditor } from "@/components/features/admin/lesson-editor/LessonEditor";
 import type { TranslatedText } from "@/types/database";
+
+export const metadata: Metadata = { title: "Editor de clase" };
 
 /** Full-screen editor for a class's written content (staff only; guarded by admin layout). */
 export default async function LessonEditorPage({

@@ -1,9 +1,12 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { parseUuidParam } from "@/lib/api/params";
 import { getLearnerUser } from "@/lib/campus/learning";
 import { getMyCertificates, getMyNameReady } from "@/lib/campus/certificates";
 import { CertificateList } from "@/components/features/campus/certificate/CertificateList";
+
+export const metadata: Metadata = { title: "Mis certificados" };
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 

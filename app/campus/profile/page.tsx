@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { getLearnerUser } from "@/lib/campus/learning";
 import { ProfileScreen } from "@/components/features/campus/profile/ProfileScreen";
+
+export const metadata: Metadata = { title: "Perfil" };
 
 /** Profile: server-loads the caller's row, then client sections save via PATCH /api/me/profile. */
 export default function ProfilePage() {

@@ -4,7 +4,7 @@ import { parseUuidParam } from "@/lib/api/params";
 import { getCourseTree } from "@/lib/campus/manage";
 import { CourseContentEditor } from "@/components/features/manage/course/CourseContentEditor";
 
-export const metadata = { title: "Editor de curso — Hope Aviation" };
+export const metadata = { title: "Editor de curso" };
 
 /** Contenido tab: course outline and the selected item's panel. */
 export default function CourseContentPage({ params }: { params: Promise<{ courseId: string }> }) {

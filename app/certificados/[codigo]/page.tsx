@@ -5,7 +5,7 @@ import type { TranslatedText } from "@/types/database";
 import { VerificationCard, type VerifiedCertificate } from "@/components/features/campus/certificate/VerificationCard";
 
 export const metadata: Metadata = {
-  title: "Verificación de certificado · Hope Aviation",
+  title: "Verificación de certificado",
   robots: { index: false, follow: false },
 };
 

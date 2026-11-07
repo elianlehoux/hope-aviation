@@ -11,7 +11,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Hope Aviation",
+  // Pages set a short title; the template appends the site name.
+  title: { default: "Hope Aviation", template: "%s · Hope Aviation" },
   description:
     "Hope Aviation no es una escuela de vuelo. Enseñamos las habilidades que la aviación misionera necesita, y queremos conectar voluntarios con proyectos en el campo.",
   icons: {
