@@ -156,7 +156,7 @@ export default function AboutPage() {
                   <Bullet icon={Target} k="aboutPage.pillar1Technical" />
                   <Bullet icon={Users} k="aboutPage.pillar1Humanitarian" />
                 </ul>
-                <p className="mt-8 text-primary/60">
+                <p className="mt-8 text-primary/65">
                   <T k="aboutPage.pillar1Conclusion" />
                 </p>
               </Pillar>

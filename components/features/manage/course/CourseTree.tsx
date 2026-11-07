@@ -74,7 +74,7 @@ export function CourseTree({
                         >
                           <span
                             {...drag.dragHandleProps}
-                            className="grid size-8 shrink-0 cursor-grab place-items-center rounded-full text-primary/30 hover:text-primary/60"
+                            className="grid size-8 shrink-0 cursor-grab place-items-center rounded-full text-primary/30 hover:text-primary/65"
                             aria-label={es ? `Arrastrar «${moduleName}»` : `Drag “${moduleName}”`}
                           >
                             <GripVertical className="size-4" aria-hidden />
@@ -85,7 +85,7 @@ export function CourseTree({
                             aria-current={selected === `module:${s.id}` ? "true" : undefined}
                             className="flex min-w-0 flex-1 items-baseline gap-2 rounded-lg px-1 py-1.5 text-left outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
                           >
-                            <span className="font-display text-sm font-semibold tabular-nums text-primary/35">
+                            <span className="font-display text-sm font-semibold tabular-nums text-primary/65">
                               {String(i + 1).padStart(2, "0")}
                             </span>
                             <span className="min-w-0 truncate font-display text-[15px] font-semibold text-primary">
@@ -122,7 +122,7 @@ export function CourseTree({
                                       >
                                         <span
                                           {...cdrag.dragHandleProps}
-                                          className="grid size-7 shrink-0 cursor-grab place-items-center text-primary/25 hover:text-primary/60"
+                                          className="grid size-7 shrink-0 cursor-grab place-items-center text-primary/25 hover:text-primary/65"
                                           aria-label={es ? `Arrastrar «${name}»` : `Drag “${name}”`}
                                         >
                                           <GripVertical className="size-3.5" aria-hidden />
@@ -140,7 +140,7 @@ export function CourseTree({
                                           {empty ? (
                                             <Warn label={es ? "Sin video ni texto" : "No video or text"} />
                                           ) : c.duration_minutes ? (
-                                            <span className="ml-auto shrink-0 text-xs tabular-nums text-primary/40">
+                                            <span className="ml-auto shrink-0 text-xs tabular-nums text-primary/65">
                                               {c.duration_minutes}′
                                             </span>
                                           ) : null}
@@ -174,7 +174,7 @@ export function CourseTree({
                                         selected === key ? "bg-accent/[0.07]" : "hover:bg-paper/70",
                                       )}
                                     >
-                                      <ClipboardCheck className="size-4 shrink-0 text-primary/55" aria-hidden />
+                                      <ClipboardCheck className="size-4 shrink-0 text-primary/65" aria-hidden />
                                       <span className={cn("min-w-0 truncate", selected === key ? "font-semibold text-primary" : "text-primary/80")}>
                                         {getLocalizedText(e.title, lang)}
                                       </span>
@@ -191,7 +191,7 @@ export function CourseTree({
                                           }
                                         />
                                       ) : (
-                                        <span className="ml-auto shrink-0 text-xs tabular-nums text-primary/40">
+                                        <span className="ml-auto shrink-0 text-xs tabular-nums text-primary/65">
                                           {e.questionCount} {es ? "preg." : "q."}
                                         </span>
                                       )}
@@ -239,7 +239,7 @@ export function CourseTree({
 
 function ClassIcons({ video, text }: { video: boolean; text: boolean }) {
   return (
-    <span className="flex w-8 shrink-0 items-center gap-0.5 text-primary/45">
+    <span className="flex w-8 shrink-0 items-center gap-0.5 text-primary/65">
       {video ? <PlayCircle className="size-3.5" aria-label="Video" /> : null}
       {text ? <FileText className="size-3.5" aria-label="Texto" /> : null}
       {!video && !text ? <span className="size-3.5 rounded-full border border-dashed border-primary/25" aria-hidden /> : null}
@@ -262,7 +262,7 @@ function AddButton({ busy, onClick, children }: { busy: boolean; onClick: () => 
       type="button"
       onClick={onClick}
       disabled={busy}
-      className="inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-xs font-semibold text-primary/60 transition-colors hover:bg-paper hover:text-primary focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:opacity-60"
+      className="inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-xs font-semibold text-primary/65 transition-colors hover:bg-paper hover:text-primary focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:opacity-60"
     >
       {busy ? <Loader2 className="size-3.5 animate-spin" aria-hidden /> : <Plus className="size-3.5" aria-hidden />}
       {children}

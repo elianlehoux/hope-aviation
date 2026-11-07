@@ -87,7 +87,7 @@ export function AccountSection({ email, usesGoogle }: { email: string; usesGoogl
             {usesGoogle ? (es ? "Crear una clave" : "Create a password") : es ? "Cambiar la clave" : "Change password"}
           </h3>
           {usesGoogle ? (
-            <p className="mt-1 text-xs text-primary/55">
+            <p className="mt-1 text-xs text-primary/65">
               {es
                 ? "Opcional: te permite entrar también con email y clave."
                 : "Optional: lets you also sign in with email and password."}

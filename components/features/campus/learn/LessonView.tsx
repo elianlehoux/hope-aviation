@@ -110,13 +110,13 @@ export function LessonView({
   return (
     <article className="mx-auto w-full max-w-[46rem] px-5 pb-32 pt-8 sm:px-8 lg:pt-12">
       <header className="mb-8">
-        <p className="text-sm font-medium text-primary/55">
+        <p className="text-sm font-medium text-primary/65">
           {es ? "Módulo" : "Module"} {module.index + 1} · {getLocalizedText(module.title, lang)}
         </p>
         <h1 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-primary sm:text-4xl">
           {getLocalizedText(lesson.title, lang)}
         </h1>
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-primary/60">
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-primary/65">
           {videoId ? (
             <span className="inline-flex items-center gap-1.5">
               <PlayCircle className="size-4" aria-hidden /> Video
@@ -166,7 +166,7 @@ export function LessonView({
           </span>
           <span className="min-w-0">
             <span className="block text-sm font-semibold text-primary">{es ? "Material de la clase" : "Class material"}</span>
-            <span className="block truncate text-xs text-primary/55">{lesson.resourceUrl.split("/").pop()}</span>
+            <span className="block truncate text-xs text-primary/65">{lesson.resourceUrl.split("/").pop()}</span>
           </span>
         </a>
       ) : null}
@@ -230,7 +230,7 @@ export function LessonView({
           )}
         </div>
         {next && !next.locked && !completesCourse && !canComplete ? (
-          <p className="mt-4 text-right text-xs text-primary/50">
+          <p className="mt-4 text-right text-xs text-primary/65">
             {es ? "Sigue: " : "Up next: "}
             <span className="font-medium text-primary/70">{getLocalizedText(next.title, lang)}</span>
           </p>

@@ -85,6 +85,8 @@ Usage rules:
 
 Always use the Tailwind tokens (`bg-accent`, `text-primary`, `bg-highlight/10`…) instead of hardcoded hex values. Opacity modifiers work on every token.
 
+**Text opacity floor.** Navy text needs at least `text-primary/65` to reach 4.5:1 on white, paper, paper-deep and muted (it measures 4.7–5.1:1). Use `/65` for metadata, labels, placeholders and secondary copy; `/70`–`/85` for body copy. Anything fainter (`/30`–`/60`) is for icons, separators, drag handles and disabled states only, never for text a learner needs to read.
+
 ---
 
 ## 3. Typography

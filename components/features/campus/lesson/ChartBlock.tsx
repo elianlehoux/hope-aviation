@@ -16,7 +16,7 @@ export function ChartBlock({ data }: { data: ChartData }) {
         <figcaption className="mb-4 text-sm font-semibold text-primary">{data.title}</figcaption>
       ) : null}
       {data.type === "line" ? <LineChart data={data} unit={unit} /> : <BarChart data={data} unit={unit} />}
-      {data.caption ? <p className="mt-3 text-xs text-primary/55">{data.caption}</p> : null}
+      {data.caption ? <p className="mt-3 text-xs text-primary/65">{data.caption}</p> : null}
       <table className="sr-only">
         <caption>{data.title}</caption>
         <tbody>

@@ -22,7 +22,7 @@ export function ExamMap({
 
   return (
     <nav aria-label={es ? "Mapa de preguntas" : "Question map"}>
-      <p className="mb-2 text-xs font-medium text-primary/55">
+      <p className="mb-2 text-xs font-medium text-primary/65">
         {es ? `${answered} de ${questions.length} respondidas` : `${answered} of ${questions.length} answered`}
       </p>
       <ol className="flex flex-wrap gap-1.5">
@@ -42,7 +42,7 @@ export function ExamMap({
                 }
                 className={cn(
                   "flex size-9 items-center justify-center rounded-full text-xs font-semibold tabular-nums transition-all focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent/40",
-                  done ? "bg-primary text-white" : "bg-white text-primary/60",
+                  done ? "bg-primary text-white" : "bg-white text-primary/65",
                   active
                     ? "ring-2 ring-accent ring-offset-2 ring-offset-paper"
                     : !done && "ring-1 ring-inset ring-primary/15 hover:ring-primary/35",

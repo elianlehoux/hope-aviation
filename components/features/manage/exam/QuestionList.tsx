@@ -103,7 +103,7 @@ export function QuestionList({
         <div>
           <h2 id="questions-heading" className="font-display text-lg font-semibold text-primary">
             {es ? "Preguntas" : "Questions"}{" "}
-            <span className="tabular-nums text-primary/40">{ordered.length}</span>
+            <span className="tabular-nums text-primary/65">{ordered.length}</span>
           </h2>
           {invalidCount > 0 ? (
             <p className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-highlight/25 px-2.5 py-0.5 text-xs font-semibold text-primary">
@@ -129,7 +129,7 @@ export function QuestionList({
                 onClick={() => setLocale(l)}
                 className={cn(
                   "h-8 rounded-full px-3 text-xs font-bold uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring",
-                  locale === l ? "bg-primary text-white" : "text-primary/55 hover:text-primary",
+                  locale === l ? "bg-primary text-white" : "text-primary/65 hover:text-primary",
                 )}
               >
                 {l}
@@ -145,11 +145,11 @@ export function QuestionList({
 
       {total === 0 ? (
         <div className="flex flex-col items-center rounded-2xl border border-dashed border-primary/20 px-6 py-12 text-center">
-          <span className="mb-3 grid size-11 place-items-center rounded-2xl bg-white text-primary/55">
+          <span className="mb-3 grid size-11 place-items-center rounded-2xl bg-white text-primary/65">
             <ListChecks className="size-5" aria-hidden />
           </span>
           <p className="font-display font-semibold text-primary">{es ? "Todavía no hay preguntas" : "No questions yet"}</p>
-          <p className="mt-1 max-w-sm text-sm text-primary/60">
+          <p className="mt-1 max-w-sm text-sm text-primary/65">
             {es
               ? "Escribilas una por una o importalas en lote desde un JSON."
               : "Write them one by one or batch import them from JSON."}

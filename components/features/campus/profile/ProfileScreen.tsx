@@ -23,7 +23,7 @@ function Section({
     <CampusSurface className="p-5 sm:p-7">
       <div className="mb-6">
         <h2 className="font-display text-lg font-semibold text-primary">{title}</h2>
-        <p className="mt-1 text-sm leading-relaxed text-primary/60">{description}</p>
+        <p className="mt-1 text-sm leading-relaxed text-primary/65">{description}</p>
       </div>
       {children}
     </CampusSurface>
@@ -67,7 +67,7 @@ function Preferences({ newsletter }: { newsletter: boolean }) {
           <p className="text-sm font-semibold text-primary" id="pref-language">
             {es ? "Idioma" : "Language"}
           </p>
-          <p className="text-xs text-primary/55">{es ? "Para todo el campus y la web." : "For the whole campus and site."}</p>
+          <p className="text-xs text-primary/65">{es ? "Para todo el campus y la web." : "For the whole campus and site."}</p>
         </div>
         <div role="radiogroup" aria-labelledby="pref-language" className="inline-flex rounded-full bg-paper p-1 ring-1 ring-primary/10">
           {languages.map((l) => (
@@ -79,7 +79,7 @@ function Preferences({ newsletter }: { newsletter: boolean }) {
               onClick={() => setLang(l.value)}
               className={cn(
                 "min-h-9 rounded-full px-4 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent/30",
-                lang === l.value ? "bg-white text-primary shadow-sm" : "text-primary/60 hover:text-primary",
+                lang === l.value ? "bg-white text-primary shadow-sm" : "text-primary/65 hover:text-primary",
               )}
             >
               {l.label}
@@ -90,7 +90,7 @@ function Preferences({ newsletter }: { newsletter: boolean }) {
       <div className="flex items-center justify-between gap-4 border-t border-primary/10 pt-6">
         <label htmlFor="pref-newsletter" className="min-w-0">
           <span className="block text-sm font-semibold text-primary">Newsletter</span>
-          <span className="block text-xs text-primary/55">
+          <span className="block text-xs text-primary/65">
             {es ? "Novedades de Hope Aviation, cada tanto." : "Hope Aviation news, now and then."}
           </span>
         </label>

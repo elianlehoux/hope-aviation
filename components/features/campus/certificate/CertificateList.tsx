@@ -126,11 +126,11 @@ export function CertificateList({
                 </Link>
                 <div className="flex flex-1 flex-col p-5">
                   <h2 className="font-display text-lg font-semibold leading-snug text-primary">{title}</h2>
-                  <p className="mt-1 text-sm text-primary/60">
+                  <p className="mt-1 text-sm text-primary/65">
                     {es ? "Completado el " : "Completed "}
                     {formatCertificateDate(cert.completedAt, lang)}
                   </p>
-                  <p className="mt-1 font-mono text-xs text-primary/45">{cert.code}</p>
+                  <p className="mt-1 font-mono text-xs text-primary/65">{cert.code}</p>
                   <div className="mt-5 flex flex-wrap gap-2 pt-1">
                     <Button asChild size="sm">
                       {nameReady ? (

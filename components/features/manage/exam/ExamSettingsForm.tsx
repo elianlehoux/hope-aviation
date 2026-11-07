@@ -74,7 +74,7 @@ export function ExamSettingsForm({ courseId, exam }: { courseId: string; exam: M
     <CampusSurface className="p-5 sm:p-7">
       <div className="mb-6 flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="font-display text-lg font-semibold text-primary">{es ? "Configuración" : "Settings"}</h2>
-        <p className="text-xs text-primary/45">
+        <p className="text-xs text-primary/65">
           {es ? "Lo que ve el alumno antes de empezar." : "What learners see before they start."}
         </p>
       </div>
@@ -132,7 +132,7 @@ export function ExamSettingsForm({ courseId, exam }: { courseId: string; exam: M
         />
       </div>
       <div className="mt-6 flex items-center justify-end gap-3 border-t border-primary/10 pt-4">
-        <span className="hidden text-xs text-primary/45 sm:inline">
+        <span className="hidden text-xs text-primary/65 sm:inline">
           {dirty ? (es ? "Cambios sin guardar · ⌘S" : "Unsaved changes · ⌘S") : es ? "Todo guardado" : "All saved"}
         </span>
         <Button onClick={() => void save()} disabled={!dirty || saving}>

@@ -17,7 +17,7 @@ export function PersonCourses({ enrollments }: { enrollments: PersonEnrollment[]
     <CampusSurface className="p-5 sm:p-6">
       <h2 className="font-display text-lg font-semibold text-primary">{es ? "Cursos" : "Courses"}</h2>
       {enrollments.length === 0 ? (
-        <p className="mt-4 flex items-center gap-2 text-sm text-primary/55">
+        <p className="mt-4 flex items-center gap-2 text-sm text-primary/65">
           <BookOpen className="size-4" aria-hidden />
           {es ? "Todavía no se inscribió en ningún curso." : "Not enrolled in any course yet."}
         </p>
@@ -48,7 +48,7 @@ export function PersonCourses({ enrollments }: { enrollments: PersonEnrollment[]
                   <span className="w-10 text-right text-xs font-semibold tabular-nums text-primary/70">{e.progress}%</span>
                 </div>
                 {done && e.completedAt ? (
-                  <p className="mt-1.5 text-xs text-primary/50">
+                  <p className="mt-1.5 text-xs text-primary/65">
                     {es ? "Completado el" : "Completed on"} {formatDate(e.completedAt, lang)}
                   </p>
                 ) : null}

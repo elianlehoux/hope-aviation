@@ -44,7 +44,7 @@ export function PersonAttempts({
     <CampusSurface className="p-5 sm:p-6">
       <h2 className="font-display text-lg font-semibold text-primary">{es ? "Exámenes" : "Exams"}</h2>
       {attempts.length === 0 ? (
-        <p className="mt-4 text-sm text-primary/55">
+        <p className="mt-4 text-sm text-primary/65">
           {es ? "Todavía no rindió ningún examen." : "No exam attempts yet."}
         </p>
       ) : (
@@ -53,7 +53,7 @@ export function PersonAttempts({
             <li key={a.examId} className="flex flex-col gap-3 py-4 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0">
                 <p className="font-medium text-primary">{getLocalizedText(a.examTitle, lang)}</p>
-                <p className="mt-0.5 text-xs text-primary/50">{getLocalizedText(a.courseTitle, lang)}</p>
+                <p className="mt-0.5 text-xs text-primary/65">{getLocalizedText(a.courseTitle, lang)}</p>
                 <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-primary/70">
                   <StatusBadge status={a.passed ? "passed" : "failed"} />
                   <span className="tabular-nums">

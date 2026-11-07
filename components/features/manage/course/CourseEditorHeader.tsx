@@ -67,7 +67,7 @@ export function CourseEditorHeader({
     <header className="space-y-5">
       <Link
         href={manageHref.courses}
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-primary/55 hover:text-primary"
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-primary/65 hover:text-primary"
       >
         <ArrowLeft className="size-4" aria-hidden />
         {es ? "Cursos" : "Courses"}
@@ -78,7 +78,7 @@ export function CourseEditorHeader({
           <div className="mb-2 flex items-center gap-2">
             <StatusBadge status={status} />
             {status !== "published" && issues.length > 0 ? (
-              <span className="text-xs text-primary/50">
+              <span className="text-xs text-primary/65">
                 {es
                   ? `${issues.length} ${issues.length === 1 ? "pendiente" : "pendientes"} para publicar`
                   : `${issues.length} to fix before publishing`}
@@ -140,7 +140,7 @@ export function CourseEditorHeader({
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "-mb-px inline-flex h-11 items-center border-b-2 text-sm font-semibold transition-colors",
-                    active ? "border-primary text-primary" : "border-transparent text-primary/50 hover:text-primary",
+                    active ? "border-primary text-primary" : "border-transparent text-primary/65 hover:text-primary",
                   )}
                 >
                   {es ? t.es : t.en}

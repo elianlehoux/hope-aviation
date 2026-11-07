@@ -34,7 +34,7 @@ export function LearnerTable({
       cell: (l) => (
         <span className="flex min-w-0 flex-col">
           <span className="truncate font-semibold text-primary">{l.fullName || l.email || "—"}</span>
-          {l.fullName && l.email ? <span className="truncate text-xs font-normal text-primary/50">{l.email}</span> : null}
+          {l.fullName && l.email ? <span className="truncate text-xs font-normal text-primary/65">{l.email}</span> : null}
         </span>
       ),
     },
@@ -61,17 +61,17 @@ export function LearnerTable({
           <span className="flex min-w-0 items-center gap-2">
             <span className="tabular-nums font-semibold">{l.lastExam.score}%</span>
             <StatusBadge status={l.lastExam.passed ? "passed" : "failed"} />
-            <span className="hidden truncate text-xs text-primary/50 lg:inline">{getLocalizedText(l.lastExam.title, lang)}</span>
+            <span className="hidden truncate text-xs text-primary/65 lg:inline">{getLocalizedText(l.lastExam.title, lang)}</span>
           </span>
         ) : (
-          <span className="text-primary/40">{es ? "Sin rendir" : "Not taken"}</span>
+          <span className="text-primary/65">{es ? "Sin rendir" : "Not taken"}</span>
         ),
     },
     { key: "status", header: es ? "Estado" : "Status", cell: (l) => <StatusBadge status={l.status} /> },
     {
       key: "enrolled",
       header: es ? "Inscripción" : "Enrolled",
-      cell: (l) => <span className="text-primary/60">{date.format(new Date(l.enrolledAt))}</span>,
+      cell: (l) => <span className="text-primary/65">{date.format(new Date(l.enrolledAt))}</span>,
       hideOnMobile: true,
     },
   ];
@@ -81,10 +81,10 @@ export function LearnerTable({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h2 className="font-display text-xl font-semibold text-primary">
-            {es ? "Alumnos" : "Learners"} <span className="tabular-nums text-primary/40">{learners.length}</span>
+            {es ? "Alumnos" : "Learners"} <span className="tabular-nums text-primary/65">{learners.length}</span>
           </h2>
           {learners.length > 0 ? (
-            <p className="mt-1 text-sm text-primary/55">
+            <p className="mt-1 text-sm text-primary/65">
               {es
                 ? `${active} en curso · ${completed} ${completed === 1 ? "completó" : "completaron"}`
                 : `${active} in progress · ${completed} completed`}

@@ -127,7 +127,7 @@ const components: Components = {
   h3: ({ children }) => <h3 className="mb-2 mt-8 font-display text-xl font-semibold text-primary">{children}</h3>,
   p: ({ children }) => <p className="my-4">{children}</p>,
   ul: ({ children }) => <ul className="my-4 list-disc space-y-1.5 pl-6 marker:text-highlight">{children}</ul>,
-  ol: ({ children }) => <ol className="my-4 list-decimal space-y-1.5 pl-6 marker:font-semibold marker:text-primary/60">{children}</ol>,
+  ol: ({ children }) => <ol className="my-4 list-decimal space-y-1.5 pl-6 marker:font-semibold marker:text-primary/65">{children}</ol>,
   blockquote: ({ children }) => (
     <blockquote className="my-6 border-l-2 border-highlight pl-4 text-primary/75">{children}</blockquote>
   ),
@@ -136,7 +136,7 @@ const components: Components = {
     <figure className="my-8">
       {/* eslint-disable-next-line @next/next/no-img-element -- author-provided external images */}
       <img src={typeof src === "string" ? src : undefined} alt={alt ?? ""} loading="lazy" className="w-full rounded-2xl" />
-      {title || alt ? <figcaption className="mt-2 text-center text-xs text-primary/55">{title || alt}</figcaption> : null}
+      {title || alt ? <figcaption className="mt-2 text-center text-xs text-primary/65">{title || alt}</figcaption> : null}
     </figure>
   ),
   table: ({ children, node }) => (

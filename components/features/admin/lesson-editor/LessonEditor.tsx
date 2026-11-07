@@ -102,14 +102,14 @@ export function LessonEditor({
         <div className="min-w-0">
           <Link
             href={`/campus/admin/courses/${courseId}?item=class:${classId}`}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary/55 hover:text-primary"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary/65 hover:text-primary"
           >
             <ArrowLeft className="size-4" aria-hidden /> {es ? "Volver al curso" : "Back to course"}
           </Link>
           <h1 className="mt-1 truncate font-display text-2xl font-semibold text-primary">
             {getLocalizedText(title, lang)}
           </h1>
-          <p className="text-sm text-primary/55">
+          <p className="text-sm text-primary/65">
             {es ? "Contenido escrito de la clase" : "Written lesson content"} ·{" "}
             {value.trim() ? `${readingMinutes(value)} min ${es ? "de lectura" : "read"}` : es ? "vacío" : "empty"}
           </p>
@@ -124,7 +124,7 @@ export function LessonEditor({
                 onClick={() => setLocale(l)}
                 className={cn(
                   "rounded-full px-3.5 py-1.5 text-xs font-semibold uppercase transition-colors",
-                  locale === l ? "bg-primary text-white" : "text-primary/60 hover:text-primary",
+                  locale === l ? "bg-primary text-white" : "text-primary/65 hover:text-primary",
                 )}
               >
                 {l}
@@ -159,7 +159,7 @@ export function LessonEditor({
             onClick={() => setMobileView(v)}
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold",
-              mobileView === v ? "bg-primary text-white" : "text-primary/60",
+              mobileView === v ? "bg-primary text-white" : "text-primary/65",
             )}
           >
             {v === "write" ? <PencilLine className="size-3.5" /> : <Eye className="size-3.5" />}
@@ -194,7 +194,7 @@ export function LessonEditor({
           {value.trim() ? (
             <LessonMarkdown source={value} />
           ) : (
-            <p className="text-sm text-primary/45">{es ? "La vista previa aparece acá." : "The preview appears here."}</p>
+            <p className="text-sm text-primary/65">{es ? "La vista previa aparece acá." : "The preview appears here."}</p>
           )}
         </div>
       </div>

@@ -62,26 +62,26 @@ export function VerificationCard({ code, certificate }: { code: string; certific
               </div>
               <dl className="space-y-5 px-6 py-7 sm:px-8">
                 <div>
-                  <dt className="text-sm text-primary/55">{es ? "Otorgado a" : "Awarded to"}</dt>
+                  <dt className="text-sm text-primary/65">{es ? "Otorgado a" : "Awarded to"}</dt>
                   <dd className="mt-0.5 font-display text-3xl font-semibold leading-tight tracking-tight text-primary">
                     {certificate.fullName}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm text-primary/55">{es ? "Curso completado" : "Course completed"}</dt>
+                  <dt className="text-sm text-primary/65">{es ? "Curso completado" : "Course completed"}</dt>
                   <dd className="mt-0.5 text-lg font-semibold text-primary">
                     {getLocalizedText(certificate.courseTitle, lang)}
                   </dd>
                 </div>
                 <div className="grid grid-cols-2 gap-4 border-t border-primary/10 pt-5">
                   <div>
-                    <dt className="text-sm text-primary/55">{es ? "Fecha" : "Date"}</dt>
+                    <dt className="text-sm text-primary/65">{es ? "Fecha" : "Date"}</dt>
                     <dd className="mt-0.5 font-medium text-primary">
                       {formatCertificateDate(certificate.completedAt, lang)}
                     </dd>
                   </div>
                   <div className="min-w-0">
-                    <dt className="text-sm text-primary/55">{es ? "Código" : "Code"}</dt>
+                    <dt className="text-sm text-primary/65">{es ? "Código" : "Code"}</dt>
                     <dd className="mt-0.5 truncate font-mono text-sm font-medium text-primary">{code}</dd>
                   </div>
                 </div>
@@ -89,24 +89,24 @@ export function VerificationCard({ code, certificate }: { code: string; certific
             </>
           ) : (
             <div className="flex flex-col items-center px-6 py-12 text-center sm:px-8">
-              <span className="grid size-12 place-items-center rounded-2xl bg-paper text-primary/60">
+              <span className="grid size-12 place-items-center rounded-2xl bg-paper text-primary/65">
                 <SearchX className="size-6" aria-hidden />
               </span>
               <h1 className="mt-4 font-display text-2xl font-semibold tracking-tight text-primary">
                 {es ? "No encontramos este certificado" : "We couldn't find this certificate"}
               </h1>
-              <p className="mt-2 max-w-sm text-sm leading-relaxed text-primary/60">
+              <p className="mt-2 max-w-sm text-sm leading-relaxed text-primary/65">
                 {es
                   ? "Revisá que el código esté bien escrito. Si te lo compartieron, pedí el link de verificación original."
                   : "Check that the code is spelled correctly. If someone shared it with you, ask for the original verification link."}
               </p>
-              {code ? <p className="mt-4 break-all font-mono text-sm text-primary/50">{code}</p> : null}
+              {code ? <p className="mt-4 break-all font-mono text-sm text-primary/65">{code}</p> : null}
             </div>
           )}
         </div>
 
         <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-primary/60">
+          <p className="text-sm text-primary/65">
             {es ? "Llevando esperanza donde los caminos no llegan." : "Bringing hope where roads can't reach."}
           </p>
           <Button asChild variant="outline" size="sm">

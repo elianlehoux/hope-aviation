@@ -28,7 +28,7 @@ export function PersonDetailView({
     <div className="mx-auto max-w-4xl space-y-6 pb-16">
       <Link
         href="/campus/admin/people"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary/60 hover:text-primary"
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary/65 hover:text-primary"
       >
         <ArrowLeft className="size-4" aria-hidden />
         {es ? "Personas" : "People"}
@@ -39,7 +39,7 @@ export function PersonDetailView({
         description={profile.email}
         actions={!person.isActive ? <StatusBadge status="inactive" /> : undefined}
       />
-      <p className="-mt-3 text-sm text-primary/50">
+      <p className="-mt-3 text-sm text-primary/65">
         {isAdmin && person.role ? `${roleLabel(person.role, es)} · ` : ""}
         {es ? "Se sumó el" : "Joined"} {formatDate(profile.createdAt, lang)}
       </p>

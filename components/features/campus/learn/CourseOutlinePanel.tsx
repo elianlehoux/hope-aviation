@@ -20,7 +20,7 @@ function ItemIcon({ item }: { item: OutlineItem }) {
   if (item.locked) return <Lock className="size-4 shrink-0 text-primary/35" aria-hidden />;
   const Icon =
     item.kind === "final" ? Award : item.kind === "exam" ? ClipboardCheck : item.hasVideo ? PlayCircle : FileText;
-  return <Icon className="size-[1.125rem] shrink-0 text-primary/55" aria-hidden />;
+  return <Icon className="size-[1.125rem] shrink-0 text-primary/65" aria-hidden />;
 }
 
 function itemMeta(item: OutlineItem, lang: "es" | "en") {
@@ -54,7 +54,7 @@ export function CourseOutlinePanel({ outline }: { outline: CourseOutline }) {
           <span className={cn("block text-sm leading-snug", active ? "font-semibold text-primary" : "text-primary/80")}>
             {getLocalizedText(item.title, lang)}
           </span>
-          <span className="mt-0.5 block text-xs text-primary/50">{itemMeta(item, lang)}</span>
+          <span className="mt-0.5 block text-xs text-primary/65">{itemMeta(item, lang)}</span>
         </span>
       </>
     );
@@ -82,7 +82,7 @@ export function CourseOutlinePanel({ outline }: { outline: CourseOutline }) {
     <nav className="px-3 pb-10 pt-5" aria-label={lang === "es" ? "Temario del curso" : "Course outline"}>
       {outline.preview ? null : (
       <div className="mb-5 px-3">
-        <p className="text-xs font-semibold text-primary/50">{lang === "es" ? "Tu progreso" : "Your progress"}</p>
+        <p className="text-xs font-semibold text-primary/65">{lang === "es" ? "Tu progreso" : "Your progress"}</p>
         <div className="mt-2 flex items-center gap-3">
           <div className="h-2 flex-1 overflow-hidden rounded-full bg-primary/10">
             <div
@@ -99,7 +99,7 @@ export function CourseOutlinePanel({ outline }: { outline: CourseOutline }) {
         {outline.modules.map((module) => (
           <li key={module.id}>
             <div className="mb-1.5 flex items-baseline gap-2 px-3">
-              <span className="text-xs font-semibold text-primary/45">
+              <span className="text-xs font-semibold text-primary/65">
                 {lang === "es" ? "Módulo" : "Module"} {module.index + 1}
               </span>
               {module.locked ? <Lock className="size-3 text-primary/35" aria-label="locked" /> : null}

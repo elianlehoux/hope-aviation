@@ -184,7 +184,7 @@ export function QuestionCard({
         {dragHandle ? (
           <span
             {...dragHandle}
-            className="grid size-8 cursor-grab place-items-center rounded-full text-primary/30 hover:text-primary/60"
+            className="grid size-8 cursor-grab place-items-center rounded-full text-primary/30 hover:text-primary/65"
             aria-label={es ? `Arrastrar pregunta ${index + 1}` : `Drag question ${index + 1}`}
           >
             <GripVertical className="size-4" aria-hidden />
@@ -192,11 +192,11 @@ export function QuestionCard({
         ) : (
           <span className="size-8" />
         )}
-        <span className="font-display text-sm font-semibold tabular-nums text-primary/40">
+        <span className="font-display text-sm font-semibold tabular-nums text-primary/65">
           {String(index + 1).padStart(2, "0")}
         </span>
         {!questionId ? (
-          <span className="ml-2 rounded-full bg-paper px-2 py-0.5 text-[11px] font-semibold text-primary/55">
+          <span className="ml-2 rounded-full bg-paper px-2 py-0.5 text-[11px] font-semibold text-primary/65">
             {es ? "Nueva" : "New"}
           </span>
         ) : null}
@@ -207,7 +207,7 @@ export function QuestionCard({
           <button
             type="button"
             onClick={() => onRemove(questionId)}
-            className="grid size-8 place-items-center rounded-full text-primary/40 hover:bg-paper hover:text-primary focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
+            className="grid size-8 place-items-center rounded-full text-primary/65 hover:bg-paper hover:text-primary focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
             aria-label={es ? `Eliminar pregunta ${index + 1}` : `Delete question ${index + 1}`}
           >
             <Trash2 className="size-4" aria-hidden />
@@ -229,14 +229,14 @@ export function QuestionCard({
             className={cn(fieldControl, "resize-y font-medium leading-relaxed")}
           />
           {missingOther ? (
-            <p className="mt-1 text-xs text-primary/45">
+            <p className="mt-1 text-xs text-primary/65">
               {other === "en" ? (es ? "Falta la versión en inglés." : "English version missing.") : es ? "Falta la versión en español." : "Spanish version missing."}
             </p>
           ) : null}
         </div>
 
         <fieldset>
-          <legend className="mb-2 text-xs font-semibold text-primary/55">
+          <legend className="mb-2 text-xs font-semibold text-primary/65">
             {es ? "Opciones · marcá la correcta" : "Options · mark the correct one"}
           </legend>
           <ul className="space-y-2">
@@ -281,7 +281,7 @@ export function QuestionCard({
             onClick={() =>
               setDraft((d) => ({ ...d, options: [...d.options, { key: newKey(), es: "", en: "", correct: false }] }))
             }
-            className="mt-2 inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-xs font-semibold text-primary/60 hover:bg-paper hover:text-primary focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
+            className="mt-2 inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-xs font-semibold text-primary/65 hover:bg-paper hover:text-primary focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
           >
             <Plus className="size-3.5" aria-hidden />
             {es ? "Opción" : "Option"}
@@ -309,7 +309,7 @@ export function QuestionCard({
 
       {dirty ? (
         <footer className="flex items-center justify-end gap-3 border-t border-primary/5 px-4 py-3 sm:px-5">
-          <span className="hidden text-xs text-primary/45 sm:inline">⌘S</span>
+          <span className="hidden text-xs text-primary/65 sm:inline">⌘S</span>
           {!questionId ? (
             <Button type="button" variant="ghost" size="sm" onClick={() => onRemove(undefined)}>
               {es ? "Descartar" : "Discard"}

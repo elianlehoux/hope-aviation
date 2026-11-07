@@ -66,7 +66,7 @@ export function CampusMobileNav({ navLinks }: { navLinks: CampusNavLink[] }) {
           <CampusNavList links={navLinks} onNavigate={() => setOpen(false)} />
         </div>
         <div className="px-5 py-4">
-          <Link href="/" className="-my-2 inline-flex items-center gap-1.5 py-2 text-xs font-medium text-primary/50 hover:text-primary">
+          <Link href="/" className="-my-2 inline-flex items-center gap-1.5 py-2 text-xs font-medium text-primary/65 hover:text-primary">
             <ArrowLeft className="size-3.5" aria-hidden />
             {t("campus.backToHome")}
           </Link>

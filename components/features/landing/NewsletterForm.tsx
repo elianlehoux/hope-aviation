@@ -61,7 +61,7 @@ export function NewsletterForm({ variant = "dark" }: { variant?: "dark" | "light
         className={cn(
           "h-12 flex-1 rounded-full px-5 text-base",
           light
-            ? "border-primary/20 bg-white text-primary placeholder:text-primary/45 focus-visible:border-accent focus-visible:ring-accent/20"
+            ? "border-primary/20 bg-white text-primary placeholder:text-primary/65 focus-visible:border-accent focus-visible:ring-accent/20"
             : "border-white/15 bg-white/5 text-white placeholder:text-white/40 hover:border-white/25 focus-visible:border-white/60 focus-visible:ring-white/20",
         )}
         required

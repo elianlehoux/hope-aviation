@@ -10,7 +10,7 @@ import type { ExamIntroData, ExamRunnerProps } from "./types";
 function Fact({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-2xl border border-primary/10 bg-white px-4 py-3.5">
-      <dt className="text-xs font-medium text-primary/55">{label}</dt>
+      <dt className="text-xs font-medium text-primary/65">{label}</dt>
       <dd className="mt-1 font-display text-xl font-semibold tabular-nums text-primary">{value}</dd>
     </div>
   );
@@ -60,7 +60,7 @@ export function ExamIntro({
       ) : null}
 
       {intro.eyebrow ? (
-        <p className="text-sm font-medium text-primary/55">{getLocalizedText(intro.eyebrow, lang)}</p>
+        <p className="text-sm font-medium text-primary/65">{getLocalizedText(intro.eyebrow, lang)}</p>
       ) : null}
       <h1 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-primary sm:text-4xl">
         {getLocalizedText(intro.title, lang)}
@@ -151,7 +151,7 @@ export function ExamIntro({
                     ? "Empezar"
                     : "Start"}
             </Button>
-            <p className="text-sm leading-relaxed text-primary/60">
+            <p className="text-sm leading-relaxed text-primary/65">
               {preview
                 ? es
                   ? "Ves el examen como el alumno, sin enviar respuestas."

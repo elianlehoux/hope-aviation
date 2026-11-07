@@ -214,7 +214,7 @@ export function LoginForm() {
               type="button"
               onClick={handleResend}
               disabled={resendState !== "idle"}
-              className="mt-2 font-semibold text-accent underline-offset-4 hover:underline disabled:text-primary/60 disabled:no-underline"
+              className="mt-2 font-semibold text-accent underline-offset-4 hover:underline disabled:text-primary/65 disabled:no-underline"
             >
               {resendState === "sent"
                 ? es ? "Listo, te lo reenviamos." : "Done, we sent it again."

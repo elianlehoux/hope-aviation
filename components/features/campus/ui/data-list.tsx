@@ -39,7 +39,7 @@ export function DataList<T>({
               <th
                 key={c.key}
                 scope="col"
-                className={cn("px-5 py-3 text-xs font-semibold text-primary/55", c.className)}
+                className={cn("px-5 py-3 text-xs font-semibold text-primary/65", c.className)}
               >
                 {c.header}
               </th>
@@ -82,7 +82,7 @@ export function DataList<T>({
                   .filter((c) => !c.hideOnMobile)
                   .map((c) => (
                     <div key={c.key} className="contents">
-                      <dt className="text-primary/50">{c.header}</dt>
+                      <dt className="text-primary/65">{c.header}</dt>
                       <dd className="min-w-0 text-primary/80">{c.cell(row)}</dd>
                     </div>
                   ))}

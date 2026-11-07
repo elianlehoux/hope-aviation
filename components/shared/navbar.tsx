@@ -158,7 +158,7 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
                   ))}
                 </ul>
 
-                <p className="mt-8 text-sm font-semibold text-primary/55">{es ? "Sumate" : "Get involved"}</p>
+                <p className="mt-8 text-sm font-semibold text-primary/65">{es ? "Sumate" : "Get involved"}</p>
                 <ul className="mt-2 flex flex-col">
                   {involved.map((item) => (
                     <li key={item.href}>
@@ -185,7 +185,7 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
                       <Link href="/donate">{es ? "Donar" : "Donate"}</Link>
                     </Button>
                   </SheetClose>
-                  <div className="flex items-center justify-between pt-2 text-sm text-primary/60">
+                  <div className="flex items-center justify-between pt-2 text-sm text-primary/65">
                     <span>{es ? "Idioma: español" : "Language: English"}</span>
                     <LanguageToggle className="text-primary/70 hover:bg-primary/5 hover:text-primary" />
                   </div>

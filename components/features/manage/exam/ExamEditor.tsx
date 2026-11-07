@@ -20,13 +20,13 @@ export function ExamEditor({ data }: { data: ExamEditorData }) {
       <header className="space-y-4">
         <Link
           href={manageHref.course(courseId, `exam:${exam.id}`)}
-          className="inline-flex max-w-full items-center gap-1.5 text-sm font-medium text-primary/55 hover:text-primary"
+          className="inline-flex max-w-full items-center gap-1.5 text-sm font-medium text-primary/65 hover:text-primary"
         >
           <ArrowLeft className="size-4 shrink-0" aria-hidden />
           <span className="truncate">{getLocalizedText(data.courseTitle, lang)}</span>
         </Link>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary/45">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary/65">
             {es ? "Examen" : "Exam"} · {getLocalizedText(data.subjectTitle, lang)}
           </p>
           <h1 className="mt-1 break-words font-display text-3xl font-semibold tracking-tight text-primary md:text-[2.25rem] md:leading-tight">

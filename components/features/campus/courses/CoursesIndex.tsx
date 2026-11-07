@@ -12,7 +12,7 @@ export function CoursesIndex({ myCourses, catalog }: { myCourses: MyCourse[]; ca
     <div className="mx-auto max-w-6xl space-y-12 pb-16">
       <header>
         <h1 className="font-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl">{es ? "Cursos" : "Courses"}</h1>
-        <p className="mt-2 max-w-[60ch] text-primary/60">
+        <p className="mt-2 max-w-[60ch] text-primary/65">
           {es
             ? "Formación complementaria —técnica, humanitaria y espiritual— para servir en la aviación misionera. Gratis y a tu ritmo."
             : "Complementary training — technical, humanitarian and spiritual — for mission aviation. Free and at your own pace."}
@@ -39,7 +39,7 @@ export function CoursesIndex({ myCourses, catalog }: { myCourses: MyCourse[]; ca
             ))}
           </div>
         ) : (
-          <p className="rounded-2xl border border-dashed border-primary/15 px-6 py-10 text-center text-sm text-primary/55">
+          <p className="rounded-2xl border border-dashed border-primary/15 px-6 py-10 text-center text-sm text-primary/65">
             {es ? "No hay más cursos disponibles por ahora." : "No more courses available right now."}
           </p>
         )}

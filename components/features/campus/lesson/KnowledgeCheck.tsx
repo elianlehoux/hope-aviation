@@ -15,7 +15,7 @@ export function KnowledgeCheck({ data }: { data: CheckData }) {
 
   return (
     <section className="my-8 rounded-2xl border border-primary/10 bg-white p-5 sm:p-6" aria-label={lang === "es" ? "Repaso" : "Quick check"}>
-      <p className="mb-1 inline-flex items-center gap-1.5 text-xs font-semibold text-primary/55">
+      <p className="mb-1 inline-flex items-center gap-1.5 text-xs font-semibold text-primary/65">
         <Lightbulb className="size-3.5 text-highlight" aria-hidden />
         {lang === "es" ? "Repaso rápido" : "Quick check"}
       </p>
@@ -54,7 +54,7 @@ export function KnowledgeCheck({ data }: { data: CheckData }) {
             </span>
             {data.explanation}
           </p>
-          <button type="button" onClick={() => setPicked(null)} className="shrink-0 text-xs font-medium text-primary/55 underline-offset-2 hover:underline">
+          <button type="button" onClick={() => setPicked(null)} className="shrink-0 text-xs font-medium text-primary/65 underline-offset-2 hover:underline">
             {lang === "es" ? "Reintentar" : "Try again"}
           </button>
         </div>

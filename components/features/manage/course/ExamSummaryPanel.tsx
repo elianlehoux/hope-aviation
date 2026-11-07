@@ -72,7 +72,7 @@ export function ExamSummaryPanel({
         <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-primary/10 bg-primary/10 sm:grid-cols-4">
           {stats.map((s) => (
             <div key={s.label} className="bg-white px-4 py-3">
-              <dt className="text-xs font-semibold text-primary/50">{s.label}</dt>
+              <dt className="text-xs font-semibold text-primary/65">{s.label}</dt>
               <dd className="mt-1 font-display text-2xl font-semibold tabular-nums text-primary">{s.value}</dd>
             </div>
           ))}
@@ -91,7 +91,7 @@ export function ExamSummaryPanel({
               : `${exam.invalidQuestionCount} ${exam.invalidQuestionCount === 1 ? "question needs" : "questions need"} at least 2 options and exactly one correct.`}
           </Notice>
         ) : (
-          <p className="text-sm leading-relaxed text-primary/60">
+          <p className="text-sm leading-relaxed text-primary/65">
             {es
               ? "Los alumnos lo rinden al terminar las clases del módulo; aprobarlo desbloquea el módulo siguiente."
               : "Learners take it after the module's classes; passing it unlocks the next module."}

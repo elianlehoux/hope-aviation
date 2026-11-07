@@ -58,7 +58,7 @@ export function ClassroomFrame({
               <div className="h-1.5 w-28 overflow-hidden rounded-full bg-primary/10">
                 <div className="h-full rounded-full bg-accent" style={{ width: `${outline.progress}%` }} />
               </div>
-              <span className="text-xs font-semibold tabular-nums text-primary/60">{outline.progress}%</span>
+              <span className="text-xs font-semibold tabular-nums text-primary/65">{outline.progress}%</span>
             </div>
           )}
           <LanguageToggle />

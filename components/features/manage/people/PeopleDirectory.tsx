@@ -52,7 +52,7 @@ export function PeopleDirectory({
       cell: (r) => (
         <span className="flex min-w-0 flex-col">
           <span className="truncate font-medium text-primary">{r.fullName}</span>
-          <span className="truncate text-xs font-normal text-primary/55">{r.email}</span>
+          <span className="truncate text-xs font-normal text-primary/65">{r.email}</span>
         </span>
       ),
     },
@@ -79,7 +79,7 @@ export function PeopleDirectory({
       key: "joined",
       header: es ? "Alta" : "Joined",
       hideOnMobile: true,
-      className: "whitespace-nowrap text-primary/60",
+      className: "whitespace-nowrap text-primary/65",
       cell: (r) => formatDate(r.joinedAt, lang),
     },
   ];
@@ -101,7 +101,7 @@ export function PeopleDirectory({
 
       <PeopleFilters query={query} showRole={isAdmin} />
 
-      <p className="text-sm text-primary/55" aria-live="polite">
+      <p className="text-sm text-primary/65" aria-live="polite">
         {total === 1
           ? es
             ? "1 persona"
@@ -147,7 +147,7 @@ export function PeopleDirectory({
             <ChevronLeft className="size-4" aria-hidden />
             {es ? "Anterior" : "Previous"}
           </PageLink>
-          <span className="text-sm tabular-nums text-primary/60">
+          <span className="text-sm tabular-nums text-primary/65">
             {es ? `Página ${page} de ${pages}` : `Page ${page} of ${pages}`}
           </span>
           <PageLink href={peopleHref({ ...query, page: page + 1 })} disabled={page >= pages}>

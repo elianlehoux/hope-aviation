@@ -60,14 +60,14 @@ export function ExamReview({
                 onClick={() => onJump(i)}
                 className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-paper focus-visible:bg-paper focus-visible:outline-none"
               >
-                <span className="w-6 shrink-0 text-sm font-semibold tabular-nums text-primary/45">{i + 1}</span>
+                <span className="w-6 shrink-0 text-sm font-semibold tabular-nums text-primary/65">{i + 1}</span>
                 <span className="min-w-0 flex-1 truncate text-[15px] text-primary/85">
                   {getLocalizedText(q.content, lang)}
                 </span>
                 <span
                   className={cn(
                     "inline-flex shrink-0 items-center gap-1.5 text-xs font-semibold",
-                    done ? "text-success" : "text-primary/55",
+                    done ? "text-success" : "text-primary/65",
                   )}
                 >
                   {done ? <Check className="size-3.5" strokeWidth={3} aria-hidden /> : <CircleDashed className="size-3.5" aria-hidden />}

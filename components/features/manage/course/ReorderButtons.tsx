@@ -24,7 +24,7 @@ export function ReorderButtons({
   const { lang } = useTranslation();
   const es = lang === "es";
   const btn =
-    "grid size-7 place-items-center rounded-full text-primary/45 transition-colors hover:bg-paper hover:text-primary focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-30";
+    "grid size-7 place-items-center rounded-full text-primary/65 transition-colors hover:bg-paper hover:text-primary focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-30";
 
   return (
     <span className={cn("inline-flex items-center", className)}>

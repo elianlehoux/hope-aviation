@@ -58,7 +58,7 @@ export function ExamQuestion({
               <span
                 className={cn(
                   "flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold transition-colors",
-                  checked ? "bg-accent text-white" : "bg-paper text-primary/60 group-hover:bg-paper-deep",
+                  checked ? "bg-accent text-white" : "bg-paper text-primary/65 group-hover:bg-paper-deep",
                 )}
                 aria-hidden
               >

@@ -43,12 +43,12 @@ export function ExamResult({
           <Award className="size-7" aria-hidden />
         </span>
       ) : null}
-      <p className="text-sm font-semibold text-primary/55">
+      <p className="text-sm font-semibold text-primary/65">
         {finalPassed ? (es ? "¡Curso completado!" : "Course completed!") : es ? "Tu nota" : "Your score"}
       </p>
       <p className="mt-2 font-display text-[5.5rem] font-semibold leading-none tracking-tight text-primary tabular-nums sm:text-[7rem]">
         {score}
-        <span className="text-[0.45em] text-primary/45">%</span>
+        <span className="text-[0.45em] text-primary/65">%</span>
       </p>
       <p
         className={cn(
@@ -101,7 +101,7 @@ export function ExamResult({
                   ? `Reintentar (te ${attemptsLeft === 1 ? "queda 1" : `quedan ${attemptsLeft}`})`
                   : `Try again (${attemptsLeft} left)`}
             </Button>
-            <p className="text-xs text-primary/55">
+            <p className="text-xs text-primary/65">
               {es
                 ? "Antes de volver a rendir, podés repasar las clases del módulo."
                 : "Before trying again, you can review the module's lessons."}

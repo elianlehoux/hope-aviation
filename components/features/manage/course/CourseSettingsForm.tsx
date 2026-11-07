@@ -176,7 +176,7 @@ export function CourseSettingsForm({ course, availableQuestions }: { course: Cou
               aria-describedby="final-count-pool"
               aria-invalid={Boolean(errors.finalCount) || undefined}
             />
-            <p id="final-count-pool" className={cn("text-xs", overPool ? "font-semibold text-primary" : "text-primary/50")}>
+            <p id="final-count-pool" className={cn("text-xs", overPool ? "font-semibold text-primary" : "text-primary/65")}>
               {es
                 ? `${availableQuestions} ${availableQuestions === 1 ? "pregunta disponible" : "preguntas disponibles"}`
                 : `${availableQuestions} ${availableQuestions === 1 ? "question available" : "questions available"}`}
@@ -208,7 +208,7 @@ export function CourseSettingsForm({ course, availableQuestions }: { course: Cou
       </Section>
 
       <div className="sticky bottom-4 z-10 flex items-center justify-end gap-3 rounded-full border border-primary/10 bg-white/90 py-2 pl-5 pr-2 backdrop-blur">
-        <span className="mr-auto text-xs text-primary/50 sm:mr-0" aria-live="polite">
+        <span className="mr-auto text-xs text-primary/65 sm:mr-0" aria-live="polite">
           {dirty ? (es ? "Cambios sin guardar · ⌘S" : "Unsaved changes · ⌘S") : es ? "Todo guardado" : "All saved"}
         </span>
         <Button onClick={() => void save()} disabled={!dirty || saving}>
@@ -225,7 +225,7 @@ function Section({ title, note, children }: { title: string; note: string; child
     <CampusSurface className="grid gap-6 p-5 sm:p-7 md:grid-cols-[14rem_minmax(0,1fr)] md:gap-10">
       <div>
         <h2 className="font-display text-lg font-semibold text-primary">{title}</h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-primary/55">{note}</p>
+        <p className="mt-1.5 text-sm leading-relaxed text-primary/65">{note}</p>
       </div>
       <div className="min-w-0 space-y-6">{children}</div>
     </CampusSurface>

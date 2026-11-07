@@ -96,7 +96,7 @@ export function PublishChecklist({
                   onClick={() => onOpenChange(false)}
                   className="group flex items-start gap-3 px-4 py-3 text-sm text-primary outline-none hover:bg-paper/70 focus-visible:bg-paper"
                 >
-                  <CircleAlert className="mt-0.5 size-4 shrink-0 text-primary/50" aria-hidden />
+                  <CircleAlert className="mt-0.5 size-4 shrink-0 text-primary/65" aria-hidden />
                   <span className="min-w-0 flex-1 leading-snug">{es ? issue.label.es : issue.label.en}</span>
                   <ArrowRight
                     className="mt-0.5 size-4 shrink-0 text-primary/30 transition-transform group-hover:translate-x-0.5 group-hover:text-primary"

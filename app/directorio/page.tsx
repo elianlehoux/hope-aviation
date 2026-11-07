@@ -140,8 +140,9 @@ const argentina = [
 function OrgCard({ org }: { org: Org }) {
   return (
     <article className="reveal group rounded-2xl border border-primary/10 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-orange/30 hover:shadow-xl hover:shadow-primary/5">
-      <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-brand-orange">
-        <MapPin className="size-3.5" />
+      {/* Amber fails contrast as small text on white (DESIGN.md), so it stays on the icon only. */}
+      <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-primary/65">
+        <MapPin className="size-3.5 text-brand-orange" aria-hidden />
         {org.region} · {org.focus}
       </div>
       <h3 className="mt-3 font-display text-xl font-bold tracking-tight text-primary">
@@ -235,7 +236,8 @@ export default function DirectorioPage() {
       <section className="bg-paper py-20 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <div className="reveal max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-orange">
+            <p className="flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-primary/65">
+              <span className="h-px w-8 bg-brand-orange" aria-hidden />
               Nuestro campo
             </p>
             <Title
@@ -333,7 +335,7 @@ export default function DirectorioPage() {
               hopeaviation.org
             </a>
           </div>
-          <p className="text-sm text-slate-500">&copy; 2026 Hope Aviation</p>
+          <p className="text-sm text-slate-400">&copy; 2026 Hope Aviation</p>
         </div>
       </footer>
     </main>

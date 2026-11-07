@@ -77,7 +77,7 @@ export function CampusNavList({
       <div className="flex flex-col gap-1">{renderGroup(learn)}</div>
       {manage.length > 0 ? (
         <div className="flex flex-col gap-1">
-          <p className="px-3 pb-1 text-xs font-semibold text-primary/45">
+          <p className="px-3 pb-1 text-xs font-semibold text-primary/65">
             {lang === "es" ? "Gestión" : "Manage"}
           </p>
           {renderGroup(manage)}

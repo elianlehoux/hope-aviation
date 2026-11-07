@@ -63,7 +63,7 @@ export function CourseList({ courses }: { courses: ManagedCourseRow[] }) {
     {
       key: "updated",
       header: es ? "Actualizado" : "Updated",
-      cell: (c) => <span className="text-primary/60">{date.format(new Date(c.updatedAt))}</span>,
+      cell: (c) => <span className="text-primary/65">{date.format(new Date(c.updatedAt))}</span>,
       hideOnMobile: true,
     },
   ];
@@ -71,7 +71,7 @@ export function CourseList({ courses }: { courses: ManagedCourseRow[] }) {
   return (
     <div className="mx-auto max-w-6xl space-y-8 pb-16">
       <div>
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary/45">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary/65">
           {es ? "Gestión" : "Management"}
         </p>
         <CampusPageHeader
@@ -103,7 +103,7 @@ export function CourseList({ courses }: { courses: ManagedCourseRow[] }) {
                 )}
               >
                 {es ? f.es : f.en}
-                <span className={cn("tabular-nums text-xs", active ? "text-white/70" : "text-primary/40")}>
+                <span className={cn("tabular-nums text-xs", active ? "text-white/70" : "text-primary/65")}>
                   {counts[f.key]}
                 </span>
               </button>

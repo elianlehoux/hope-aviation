@@ -30,7 +30,7 @@ function formatBytes(bytes: number) {
 function StatTile({ label, value, loading }: { label: string; value: string; loading: boolean }) {
   return (
     <CampusSurface className="px-5 py-4">
-      <p className="text-sm font-medium text-primary/55">{label}</p>
+      <p className="text-sm font-medium text-primary/65">{label}</p>
       {loading ? (
         <div className="mt-2 h-8 w-16 animate-pulse rounded-md bg-primary/10" aria-hidden />
       ) : (
@@ -163,7 +163,7 @@ export function NewsletterAdminPanel() {
 
       <CampusSurface className="p-5 sm:p-8">
         <h2 className="font-display text-xl font-semibold text-primary">{es ? "Nuevo envío" : "New send-out"}</h2>
-        <p className="mt-1 text-sm text-primary/55">
+        <p className="mt-1 text-sm text-primary/65">
           {es ? "Llega a todas las personas suscriptas al boletín." : "Goes to everyone subscribed to the newsletter."}
         </p>
 
@@ -215,7 +215,7 @@ export function NewsletterAdminPanel() {
                   dragActive ? "border-accent bg-accent/5" : "border-primary/15 bg-paper/50 hover:border-primary/25 hover:bg-paper",
                 )}
               >
-                <Upload className="size-5 text-primary/50" aria-hidden />
+                <Upload className="size-5 text-primary/65" aria-hidden />
                 <span className="text-sm font-semibold text-primary/80">
                   {es ? "Arrastrá un archivo o hacé clic para elegirlo" : "Drag a file here or click to choose one"}
                 </span>
@@ -223,10 +223,10 @@ export function NewsletterAdminPanel() {
             ) : (
               <div className="flex items-center justify-between gap-3 rounded-xl border border-primary/10 bg-paper/60 px-4 py-3">
                 <div className="flex min-w-0 items-center gap-3">
-                  <Paperclip className="size-4 shrink-0 text-primary/60" aria-hidden />
+                  <Paperclip className="size-4 shrink-0 text-primary/65" aria-hidden />
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-primary">{file.name}</p>
-                    <p className="text-xs text-primary/50">{formatBytes(file.size)}</p>
+                    <p className="text-xs text-primary/65">{formatBytes(file.size)}</p>
                   </div>
                 </div>
                 <Button type="button" variant="ghost" size="icon-sm" onClick={removeFile} aria-label={es ? "Quitar adjunto" : "Remove attachment"}>

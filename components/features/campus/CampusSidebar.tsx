@@ -32,7 +32,7 @@ export function CampusSidebar({ navLinks }: { navLinks: CampusNavLink[] }) {
       <div className="px-5 py-4">
         <Link
           href="/"
-          className="-my-2 inline-flex items-center gap-1.5 py-2 text-xs font-medium text-primary/50 transition-colors hover:text-primary"
+          className="-my-2 inline-flex items-center gap-1.5 py-2 text-xs font-medium text-primary/65 transition-colors hover:text-primary"
         >
           <ArrowLeft className="size-3.5" aria-hidden />
           {t("campus.backToHome")}

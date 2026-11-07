@@ -50,11 +50,11 @@ export function RolePreviewSwitcher({ currentRole }: { currentRole: PreviewRole 
           ) : (
             <span className="size-1.5 rounded-full bg-brand-orange" />
           )}
-          <span className="hidden sm:inline text-[10px] uppercase tracking-[0.14em] text-primary/50">
+          <span className="hidden sm:inline text-[10px] uppercase tracking-[0.14em] text-primary/65">
             Vista
           </span>
           <span>{lang === "es" ? current.labelEs : current.labelEn}</span>
-          <ChevronDown className="size-3.5 text-primary/40" />
+          <ChevronDown className="size-3.5 text-primary/65" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">

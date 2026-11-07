@@ -28,7 +28,7 @@ export function Field({
           {error}
         </p>
       ) : hint ? (
-        <p id={`${htmlFor}-hint`} className="text-xs text-primary/50">
+        <p id={`${htmlFor}-hint`} className="text-xs text-primary/65">
           {hint}
         </p>
       ) : null}
@@ -38,4 +38,4 @@ export function Field({
 
 /** Shared input styling for campus forms (use on <input>, <textarea>, <select>). */
 export const fieldControl =
-  "w-full rounded-xl border border-primary/15 bg-white px-3.5 py-2.5 text-sm text-primary outline-none transition-colors placeholder:text-primary/35 focus:border-accent focus:ring-[3px] focus:ring-accent/15 disabled:bg-paper disabled:text-primary/50 aria-[invalid=true]:border-destructive";
+  "w-full rounded-xl border border-primary/15 bg-white px-3.5 py-2.5 text-sm text-primary outline-none transition-colors placeholder:text-primary/65 focus:border-accent focus:ring-[3px] focus:ring-accent/15 disabled:bg-paper disabled:text-primary/65 aria-[invalid=true]:border-destructive";

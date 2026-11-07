@@ -190,7 +190,7 @@ export function ClassPanel({
               </span>
               <div className="min-w-0">
                 <p className="font-semibold text-primary">{es ? "Texto de la clase" : "Class text"}</p>
-                <p className="mt-0.5 text-sm text-primary/60">
+                <p className="mt-0.5 text-sm text-primary/65">
                   {cls.has_content
                     ? es
                       ? "Lectura con el mismo formato que ven los alumnos."
@@ -208,7 +208,7 @@ export function ClassPanel({
               </div>
             </div>
             {dirty ? (
-              <span className="text-xs text-primary/50">{es ? "Guardá los cambios primero" : "Save your changes first"}</span>
+              <span className="text-xs text-primary/65">{es ? "Guardá los cambios primero" : "Save your changes first"}</span>
             ) : (
               <Link
                 href={manageHref.lesson(courseId, cls.id)}

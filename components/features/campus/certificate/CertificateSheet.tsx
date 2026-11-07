@@ -109,7 +109,7 @@ export function CertificateSheet({
           <div className="flex items-center" style={{ gap: pt(10) }}>
             <span className="bg-highlight" style={{ width: pt(22), height: pt(2.2) }} />
             <span
-              className="font-bold uppercase text-primary/60"
+              className="font-bold uppercase text-primary/65"
               style={{ fontSize: pt(8), letterSpacing: pt(1.6), lineHeight: 1 }}
             >
               {copy.eyebrow}
@@ -120,7 +120,7 @@ export function CertificateSheet({
           </p>
 
           <div className="flex flex-1 flex-col justify-center" style={{ paddingBottom: pt(18) }}>
-            <p className="text-primary/60" style={{ fontSize: pt(12) }}>
+            <p className="text-primary/65" style={{ fontSize: pt(12) }}>
               {copy.awardedTo}
             </p>
             <p
@@ -132,7 +132,7 @@ export function CertificateSheet({
             <div className="relative bg-primary/15" style={{ height: pt(0.6), marginTop: pt(18) }}>
               <span className="absolute left-0 bg-highlight" style={{ width: pt(56), height: pt(2.2), top: pt(-0.8) }} />
             </div>
-            <p className="text-primary/60" style={{ fontSize: pt(12), marginTop: pt(22) }}>
+            <p className="text-primary/65" style={{ fontSize: pt(12), marginTop: pt(22) }}>
               {copy.forCompleting}
             </p>
             <p className="line-clamp-2" style={{ fontSize: pt(20), lineHeight: 1.25, marginTop: pt(6) }}>
@@ -149,7 +149,7 @@ export function CertificateSheet({
               { label: copy.code, value: code },
             ].map((col) => (
               <div key={col.label} className="min-w-0">
-                <p className="font-bold uppercase text-primary/50" style={{ fontSize: pt(7), letterSpacing: pt(1.4) }}>
+                <p className="font-bold uppercase text-primary/65" style={{ fontSize: pt(7), letterSpacing: pt(1.4) }}>
                   {col.label}
                 </p>
                 <p className="truncate" style={{ fontSize: pt(12), marginTop: pt(6) }}>
@@ -158,13 +158,13 @@ export function CertificateSheet({
               </div>
             ))}
             <div className="min-w-0">
-              <p className="font-bold uppercase text-primary/50" style={{ fontSize: pt(7), letterSpacing: pt(1.4) }}>
+              <p className="font-bold uppercase text-primary/65" style={{ fontSize: pt(7), letterSpacing: pt(1.4) }}>
                 {copy.issuedBy}
               </p>
               <p className="font-display font-bold" style={{ fontSize: pt(13), marginTop: pt(5) }}>
                 {copy.issuer}
               </p>
-              <p className="text-primary/60" style={{ fontSize: pt(8.5) }}>
+              <p className="text-primary/65" style={{ fontSize: pt(8.5) }}>
                 {copy.issuerSub}
               </p>
             </div>

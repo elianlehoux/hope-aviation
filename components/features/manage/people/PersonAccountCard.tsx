@@ -56,7 +56,7 @@ export function PersonAccountCard({ person, isSelf }: { person: PersonDetail; is
   return (
     <CampusSurface className="p-5 sm:p-6">
       <h2 className="font-display text-lg font-semibold text-primary">{es ? "Cuenta" : "Account"}</h2>
-      <p className="mt-1 text-sm text-primary/55">
+      <p className="mt-1 text-sm text-primary/65">
         {isSelf
           ? es
             ? "Es tu propia cuenta: no podés cambiar tu rol ni desactivarla desde acá."

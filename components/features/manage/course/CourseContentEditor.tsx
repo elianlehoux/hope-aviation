@@ -213,13 +213,13 @@ export function CourseContentEditor({ tree }: { tree: ManageCourseTree }) {
           <section className="hidden min-w-0 lg:block" aria-live="polite">
             {panel ?? (
               <CampusSurface className="flex flex-col items-center px-6 py-20 text-center">
-                <span className="mb-4 grid size-12 place-items-center rounded-2xl bg-paper text-primary/55">
+                <span className="mb-4 grid size-12 place-items-center rounded-2xl bg-paper text-primary/65">
                   <MousePointerClick className="size-6" aria-hidden />
                 </span>
                 <p className="font-display text-lg font-semibold text-primary">
                   {es ? "Elegí qué querés editar" : "Pick something to edit"}
                 </p>
-                <p className="mt-2 max-w-sm text-sm leading-relaxed text-primary/60">
+                <p className="mt-2 max-w-sm text-sm leading-relaxed text-primary/65">
                   {es
                     ? "Tocá un módulo, una clase o un examen del índice. Arrastralos para cambiar el orden."
                     : "Click a module, class or exam in the outline. Drag them to change the order."}
