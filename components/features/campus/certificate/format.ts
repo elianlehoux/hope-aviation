@@ -27,6 +27,40 @@ export function certificateVerifyUrl(siteUrl: string, code: string): string {
   return `${siteUrl.replace(/\/+$/, "")}/certificados/${encodeURIComponent(code)}`;
 }
 
+/**
+ * LinkedIn's "Add license or certification" form, prefilled with the course, issuer,
+ * issue month (in the organization's time zone, like the printed date), credential URL and ID.
+ */
+export function linkedInCertificationUrl(input: {
+  name: string;
+  issuedAt: string;
+  verifyUrl: string;
+  code: string;
+}): string {
+  const params = new URLSearchParams({
+    startTask: "CERTIFICATION_NAME",
+    name: input.name,
+    organizationName: "Hope Aviation",
+  });
+  const date = new Date(input.issuedAt);
+  if (!Number.isNaN(date.getTime())) {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "numeric",
+      timeZone: CERTIFICATE_TIME_ZONE,
+    }).formatToParts(date);
+    const year = parts.find((p) => p.type === "year")?.value;
+    const month = parts.find((p) => p.type === "month")?.value;
+    if (year && month) {
+      params.set("issueYear", year);
+      params.set("issueMonth", month);
+    }
+  }
+  params.set("certUrl", input.verifyUrl);
+  params.set("certId", input.code);
+  return `https://www.linkedin.com/profile/add?${params.toString()}`;
+}
+
 /** The URL without protocol, for print where it reads cleaner. */
 export function displayUrl(url: string): string {
   return url.replace(/^https?:\/\//, "");
