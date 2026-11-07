@@ -53,23 +53,13 @@ export async function updateSession(request: NextRequest) {
     process.env.NODE_ENV !== "production" &&
     process.env.VERCEL_ENV !== "production";
 
-  const publicPath =
-    request.nextUrl.pathname === "/" ||
-    request.nextUrl.pathname.startsWith("/login") ||
-    request.nextUrl.pathname.startsWith("/auth") ||
-    request.nextUrl.pathname.startsWith("/componentsdev") ||
-    request.nextUrl.pathname.startsWith("/about") ||
-    request.nextUrl.pathname.startsWith("/donate") ||
-    request.nextUrl.pathname.startsWith("/courses") ||
-    request.nextUrl.pathname.startsWith("/get-involved") ||
-    request.nextUrl.pathname.startsWith("/directorio") ||
-    request.nextUrl.pathname.startsWith("/privacy") ||
-    request.nextUrl.pathname.startsWith("/terms") ||
-    request.nextUrl.pathname.startsWith("/newsletter") ||
-    request.nextUrl.pathname.startsWith("/certificados") ||
-    (previewAuth && request.nextUrl.pathname.startsWith("/campus"));
+  // Only the campus needs a session. Everything else is public, so a mistyped
+  // URL shows the 404 page instead of bouncing an anonymous visitor to login.
+  const { pathname } = request.nextUrl;
+  const protectedPath =
+    (pathname === "/campus" || pathname.startsWith("/campus/")) && !previewAuth;
 
-  if (!user && !publicPath) {
+  if (!user && protectedPath) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
     // Send the user back where they were going after signing in.
