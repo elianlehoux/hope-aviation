@@ -3,14 +3,11 @@ import { Bricolage_Grotesque, Instrument_Sans, IBM_Plex_Mono } from "next/font/g
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { LanguageProvider } from "@/lib/i18n/context";
+import { isIndexable, siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(defaultUrl),
+  metadataBase: new URL(siteUrl()),
   // Pages set a short title; the template appends the site name.
   title: { default: "Hope Aviation", template: "%s · Hope Aviation" },
   description:
@@ -18,6 +15,10 @@ export const metadata: Metadata = {
   icons: {
     icon: "/icon.png",
   },
+  // The share image comes from app/opengraph-image.tsx.
+  openGraph: { type: "website", siteName: "Hope Aviation", locale: "es_AR" },
+  twitter: { card: "summary_large_image" },
+  ...(isIndexable() ? {} : { robots: { index: false, follow: false } }),
 };
 
 const display = Bricolage_Grotesque({
