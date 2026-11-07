@@ -20,7 +20,27 @@ export type ProfileData = {
 
 type Errors = Partial<Record<"first_name" | "last_name" | "phone" | "birth_date", string>>;
 
-const sortedCountries = [...countries].sort((a, b) => a.name.localeCompare(b.name));
+const noopSubscribe = () => () => {};
+
+/** The stored English names: identical on server and client, so hydration always matches. */
+const englishCountries = [...countries].sort((a, b) => a.name.localeCompare(b.name, "en"));
+
+/**
+ * Country names in the reader's language (the list stores English), sorted for that language.
+ * Browser-only: Node and the browser ship different ICU data, so names and order can differ.
+ */
+function countryOptions(lang: "es" | "en") {
+  let names: Intl.DisplayNames | null = null;
+  try {
+    names = new Intl.DisplayNames([lang], { type: "region" });
+  } catch {
+    // Very old browsers: keep the English names.
+  }
+  const collator = new Intl.Collator(lang);
+  return countries
+    .map((c) => ({ code: c.code, flag: c.flag, name: names?.of(c.code) ?? c.name }))
+    .sort((a, b) => collator.compare(a.name, b.name));
+}
 
 /** PATCH /api/me/profile; returns false (and toasts) on failure. */
 export async function patchProfile(body: Partial<ProfileData>, es: boolean): Promise<boolean> {
@@ -42,6 +62,16 @@ export async function patchProfile(body: Partial<ProfileData>, es: boolean): Pro
 export function ProfileDetails({ profile }: { profile: ProfileData }) {
   const { lang } = useTranslation();
   const es = lang === "es";
+  // false while hydrating (matches the server HTML), true right after.
+  const hydrated = React.useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
+  const sortedCountries = React.useMemo(
+    () => (hydrated ? countryOptions(es ? "es" : "en") : englishCountries),
+    [hydrated, es],
+  );
   const router = useRouter();
   const [values, setValues] = React.useState({
     first_name: profile.first_name ?? "",
@@ -125,7 +155,7 @@ export function ProfileDetails({ profile }: { profile: ProfileData }) {
           autoComplete="family-name"
         />
       </Field>
-      <p className="-mt-2 text-xs text-primary/50 sm:col-span-2">
+      <p className="-mt-2 text-xs text-primary/65 sm:col-span-2">
         {es ? "Así va a figurar tu nombre en los certificados." : "This is how your name appears on certificates."}
       </p>
       <Field label={es ? "Fecha de nacimiento" : "Birth date"} htmlFor="profile-birth_date" error={errors.birth_date}>
