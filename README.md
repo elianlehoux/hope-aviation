@@ -1,13 +1,46 @@
-# Hope Aviation
+<div align="center">
 
-Website and virtual campus for **Hope Aviation**, a non-profit humanitarian project that prepares pilots and volunteers to serve isolated communities through aviation (Argentina and South America).
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="public/logos/Hope%20Aviation%20White.png">
+  <img src="public/logos/hope-logo.svg" alt="Hope Aviation" width="320">
+</picture>
 
-> Hope Aviation is **not a flight school** and does not issue licenses. The campus offers complementary training — technical, humanitarian and spiritual — for mission and humanitarian aviation.
+<p><strong>Website and virtual campus for a non-profit humanitarian aviation project.</strong></p>
 
-- **Landing** (`/`): public site — who we are, how to get involved, donations, newsletter.
-- **Campus** (`/campus`): authenticated learning platform. Structure: **Course → Subjects → Classes (video, resources) → Exams**, with lesson progress, module-gated exams, a final exam and certificates. Content is bilingual (`es` / `en`).
+[![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%2B%20Auth-3FCF8E?logo=supabase&logoColor=white)](https://supabase.com)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+![Status](https://img.shields.io/badge/status-in%20development-orange)
 
-**Status:** in development.
+</div>
+
+<p align="center">
+  <img src="docs/images/landing.jpg" alt="Hope Aviation landing page" width="900">
+</p>
+
+Hope Aviation prepares pilots and volunteers to serve isolated communities through aviation in Argentina and South America.
+
+> Hope Aviation is **not a flight school** and does not issue licenses. The campus offers complementary training (technical, humanitarian and spiritual) for mission and humanitarian aviation.
+
+## Features
+
+**Public site**
+- Landing, about, get involved, donations and newsletter sign-up.
+- Directory of mission aviation organizations around the world (`/directorio`).
+- Public certificate verification by code (`/certificados/[codigo]`).
+- Spanish and English.
+
+**Campus** (`/campus`, sign-in with email/password or Google)
+- Course → Subjects → Classes (video, resources) → Exams.
+- Lesson progress, exams unlocked module by module, a final exam and certificates.
+- Student profile and certificates page.
+
+**Staff tools** (`/campus/admin`)
+- Instructors and admins manage courses, exams and people.
+- Admin-only newsletter management.
+- Access is enforced with Row Level Security in Postgres, API guards and UI guards (see [Roles & security](#roles--security)).
 
 ## Stack
 
