@@ -63,6 +63,63 @@ export async function PATCH(request: Request, context: RouteContext) {
 
   const payload = parsed.data;
 
+  if (payload.status === "published") {
+    const { data: tree, error: treeErr } = await supabase
+      .from("subjects")
+      .select("id, classes(id), exams(id)")
+      .eq("course_id", courseId);
+
+    if (treeErr) return responseFromPostgrestError(treeErr);
+
+    const subjects = tree ?? [];
+    if (subjects.length === 0) {
+      return jsonError(
+        "validation_error",
+        "Publish requires at least one module.",
+        400,
+      );
+    }
+
+    const missingClasses = subjects.filter((s) => !s.classes?.length).length;
+    if (missingClasses > 0) {
+      return jsonError(
+        "validation_error",
+        "Every module needs at least one class before publish.",
+        400,
+      );
+    }
+
+    // Modules without an exam are allowed: they unlock the next one once their classes are done.
+    const examIds = subjects.flatMap((s) => (s.exams ?? []).map((e: { id: string }) => e.id));
+    let questionCount = 0;
+    if (examIds.length > 0) {
+      const { count, error: qErr } = await supabase
+        .from("questions")
+        .select("id", { count: "exact", head: true })
+        .in("exam_id", examIds);
+      if (qErr) return responseFromPostgrestError(qErr);
+      questionCount = count ?? 0;
+    }
+
+    const { data: courseRow } = await supabase
+      .from("courses")
+      .select("final_exam_question_count")
+      .eq("id", courseId)
+      .maybeSingle();
+
+    const configured =
+      payload.final_exam_question_count ??
+      courseRow?.final_exam_question_count ??
+      0;
+    if (configured > 0 && questionCount < configured) {
+      return jsonError(
+        "validation_error",
+        `The final exam needs ${configured} questions, but the course only has ${questionCount}.`,
+        400,
+      );
+    }
+  }
+
   const { data, error } = await supabase
     .from("courses")
     .update({

@@ -3,7 +3,10 @@ import { requireAdmin, requireSession } from "@/lib/api/auth";
 import { jsonError, jsonOk } from "@/lib/api/json";
 import { parseUuidParam } from "@/lib/api/params";
 import { responseFromPostgrestError } from "@/lib/api/supabase-errors";
+import { z } from "zod";
 import { enrollOtherUserSchema } from "@/lib/validation/enrollments";
+
+const enrollByEmailSchema = z.object({ email: z.string().trim().email() });
 
 type RouteContext = { params: Promise<{ courseId: string }> };
 
@@ -37,6 +40,10 @@ export async function POST(request: Request, context: RouteContext) {
     obj.user_id !== undefined
       ? enrollOtherUserSchema.safeParse(obj)
       : { success: false as const };
+  const enrollByEmail =
+    obj.user_id === undefined && obj.email !== undefined
+      ? enrollByEmailSchema.safeParse(obj)
+      : { success: false as const };
 
   let targetUserId = session.user.id;
   let requirePublished = true;
@@ -46,10 +53,27 @@ export async function POST(request: Request, context: RouteContext) {
     if (!admin.ok) return admin.response;
     targetUserId = enrollOther.data.user_id;
     requirePublished = false;
+  } else if (enrollByEmail.success) {
+    const admin = await requireAdmin(supabase, session.user.id);
+    if (!admin.ok) return admin.response;
+    // Auth stores emails lowercased; profiles.email is copied from auth.users.
+    const { data: profile, error: profileErr } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("email", enrollByEmail.data.email.trim().toLowerCase())
+      .maybeSingle();
+    if (profileErr) {
+      return responseFromPostgrestError(profileErr);
+    }
+    if (!profile) {
+      return jsonError("user_not_found", "No account uses that email.", 404);
+    }
+    targetUserId = profile.id;
+    requirePublished = false;
   } else if (Object.keys(obj).length > 0) {
     return jsonError(
       "validation_error",
-      "Invalid body. Use {} for self-enroll or { user_id } (admin only).",
+      "Invalid body. Use {} for self-enroll, or { user_id } / { email } (admin only).",
       400,
     );
   }

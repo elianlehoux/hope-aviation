@@ -3,127 +3,75 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { ArrowLeft, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n/context";
+import { CampusNavList, type CampusNavLink } from "./nav/CampusNavList";
 
-interface NavLink {
-  href: string;
-  labelKey: string;
-}
-
-export function CampusMobileNav({ navLinks }: { navLinks: NavLink[] }) {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [mounted, setMounted] = React.useState(false);
+export function CampusMobileNav({ navLinks }: { navLinks: CampusNavLink[] }) {
+  const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
   const { t } = useTranslation();
 
-  // Close menu automatically if the route changes
-  React.useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
+  React.useEffect(() => setOpen(false), [pathname]);
 
   React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Prevent background scrolling when overlay is active
-  React.useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKey);
     };
-  }, [isOpen]);
+  }, [open]);
 
   return (
-    <div className="xl:hidden flex items-center">
-      {/* Trigger */}
+    <>
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => setIsOpen(true)}
-        aria-label="Open menu"
-        className="text-muted-foreground hover:bg-accent/10 hover:text-accent mr-3"
+        onClick={() => setOpen(true)}
+        aria-label={t("common.menu")}
+        aria-expanded={open}
+        className="text-primary/70"
       >
         <Menu className="size-5" />
       </Button>
 
-      {/* Backdrop (Darkened and blurred) */}
       <div
-        className={`fixed inset-0 z-50 bg-background/50 backdrop-blur-sm transition-opacity duration-300 ${
-          isOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+        className={`fixed inset-0 z-50 bg-primary/30 backdrop-blur-sm transition-opacity ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
-        onClick={() => setIsOpen(false)}
+        onClick={() => setOpen(false)}
+        aria-hidden
       />
 
-      {/* Nav Panel */}
       <div
-        className={`fixed z-50 flex flex-col bg-white/98 supports-[backdrop-filter]:bg-white/90 backdrop-blur-2xl border-border shadow-2xl transition-transform duration-300 ease-in-out
-          max-lg:inset-x-0 max-lg:top-0 max-lg:w-full max-lg:max-h-[50vh] max-lg:border-b max-lg:rounded-b-2xl
-          lg:inset-y-0 lg:left-0 lg:w-80 lg:h-full lg:border-r
-          ${
-            isOpen
-              ? "max-lg:translate-y-0 lg:translate-x-0"
-              : "max-lg:-translate-y-full lg:-translate-x-full"
-          }
-        `}
+        role="dialog"
+        aria-modal="true"
+        aria-label={t("common.menu")}
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col bg-paper shadow-xl transition-transform duration-300 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        <div className="flex items-center justify-between px-6 h-20 border-b border-border/50 shrink-0">
-          <Link href="/" className="flex items-center" onClick={() => setIsOpen(false)}>
-            <img 
-              src="/logos/Hope Black.svg" 
-              alt="Hope Aviation" 
-              className="h-12 w-auto scale-[1.2] origin-left" 
-            />
-          </Link>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsOpen(false)}
-            aria-label="Close menu"
-            className="hover:bg-accent/10 hover:text-accent text-slate-500"
-          >
+        <div className="flex h-16 items-center justify-between px-5">
+          <img src="/logos/hope-logo.svg" alt="Hope Aviation" className="h-7 w-auto" />
+          <Button variant="ghost" size="icon" onClick={() => setOpen(false)} aria-label={t("common.close")} className="text-primary/70">
             <X className="size-5" />
           </Button>
         </div>
-
-        <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
-          {navLinks.map((link) => {
-            // Simplified active path matching
-            const isActive = mounted && (pathname === link.href || (pathname.startsWith(link.href) && link.href !== "/campus"));
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`block rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200
-                  ${
-                    isActive
-                      ? "bg-accent text-white shadow-lg shadow-accent/20 font-semibold"
-                      : "text-muted-foreground hover:bg-accent hover:text-white"
-                  }
-                `}
-                onClick={() => setIsOpen(false)}
-              >
-                {t(link.labelKey)}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="border-t border-border/50 px-6 py-5 shrink-0 bg-background/50">
-          <Link
-            href="/"
-            className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
-            onClick={() => setIsOpen(false)}
-          >
+        <div className="flex-1 overflow-y-auto px-3 py-2">
+          <CampusNavList links={navLinks} onNavigate={() => setOpen(false)} />
+        </div>
+        <div className="px-5 py-4">
+          <Link href="/" className="-my-2 inline-flex items-center gap-1.5 py-2 text-xs font-medium text-primary/65 hover:text-primary">
+            <ArrowLeft className="size-3.5" aria-hidden />
             {t("campus.backToHome")}
           </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 }

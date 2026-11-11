@@ -23,8 +23,8 @@ export default function TermsPage() {
           priority
           className="object-cover object-center opacity-15"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#00263E] via-[#1C1E21] to-[#0B0F15]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#00263E]/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary via-[#1C1E21] to-ink" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/50 to-transparent" />
       </div>
 
       <div className="flex flex-1 flex-col items-center justify-center px-6 py-32 sm:py-40 relative z-10">
@@ -38,7 +38,7 @@ export default function TermsPage() {
               </div>
               <div>
                 <Title level="h1" className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-none">
-                  {lang === "es" ? "Términos de Servicio" : "Terms of Service"}
+                  {lang === "es" ? "Términos de servicio" : "Terms of Service"}
                 </Title>
                 <p className="text-slate-400 font-medium text-xs uppercase tracking-widest mt-2">
                   {lang === "es" ? "Última actualización: Mayo 2026" : "Last updated: May 2026"}
@@ -78,7 +78,7 @@ export default function TermsPage() {
 
                   <section className="space-y-3">
                     <Title level="h3" className="text-lg md:text-xl font-bold text-white tracking-tight">
-                      2. Registro y Seguridad de Cuentas
+                      2. Registro y seguridad de cuentas
                     </Title>
                     <p>
                       Para acceder a ciertos cursos y secciones del campus, es necesario crear una cuenta de usuario. Eres el único responsable de mantener la confidencialidad de tus credenciales de inicio de sesión. Te comprometes a:
@@ -92,7 +92,7 @@ export default function TermsPage() {
 
                   <section className="space-y-3">
                     <Title level="h3" className="text-lg md:text-xl font-bold text-white tracking-tight">
-                      3. Propiedad Intelectual
+                      3. Propiedad intelectual
                     </Title>
                     <p>
                       Todo el material interactivo, videos, textos, imágenes, logos, marcas y código de software en Hope Aviation son propiedad intelectual de la plataforma o de sus respectivos creadores. Se prohíbe la copia, reproducción, distribución, venta o alteración del contenido sin nuestra autorización expresa y por escrito.
@@ -101,7 +101,7 @@ export default function TermsPage() {
 
                   <section className="space-y-3">
                     <Title level="h3" className="text-lg md:text-xl font-bold text-white tracking-tight">
-                      4. Uso Permitido del Campus
+                      4. Uso permitido del campus
                     </Title>
                     <p>
                       El uso de la plataforma está restringido a actividades académicas de aprendizaje. No está permitido:
@@ -115,7 +115,7 @@ export default function TermsPage() {
 
                   <section className="space-y-3">
                     <Title level="h3" className="text-lg md:text-xl font-bold text-white tracking-tight">
-                      5. Limitación de Responsabilidad General
+                      5. Limitación de responsabilidad general
                     </Title>
                     <p>
                       Hope Aviation proporciona el sitio web y el campus virtual &quot;tal como están&quot;, sin garantías de ningún tipo respecto a su disponibilidad ininterrumpida, velocidad o preservación de datos académicos en caso de fallas técnicas ajenas a nuestro control razonable.
@@ -124,7 +124,7 @@ export default function TermsPage() {
 
                   <section className="space-y-3">
                     <Title level="h3" className="text-lg md:text-xl font-bold text-white tracking-tight">
-                      6. Modificaciones de los Términos
+                      6. Modificaciones de los términos
                     </Title>
                     <p>
                       Nos reservamos el derecho de actualizar estos Términos de Servicio cuando sea necesario. Tu uso continuado de la plataforma tras la publicación de los cambios constituye tu aceptación vinculante de los nuevos términos.

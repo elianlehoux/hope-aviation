@@ -62,13 +62,13 @@ function SheetContent({
         className={cn(
           "fixed z-50 flex flex-col gap-6 bg-white shadow-[0_12px_28px_0_rgba(0,0,0,0.2),_0_2px_4px_0_rgba(0,0,0,0.1)] transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:animate-in data-[state=open]:duration-500",
           side === "right" &&
-            "inset-y-0 right-0 h-full w-3/4 border-l border-[#CED0D4] rounded-l-[20px] data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-md",
+            "inset-y-0 right-0 h-full w-3/4 border-l border-border rounded-l-[20px] data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-md",
           side === "left" &&
-            "inset-y-0 left-0 h-full w-3/4 border-r border-[#CED0D4] rounded-r-[20px] data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-md",
+            "inset-y-0 left-0 h-full w-3/4 border-r border-border rounded-r-[20px] data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-md",
           side === "top" &&
             "inset-x-0 top-0 h-auto -translate-y-full data-[state=open]:translate-y-0 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
           side === "bottom" &&
-            "inset-x-0 bottom-0 h-auto border-t border-[#CED0D4] rounded-t-[20px] data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
+            "inset-x-0 bottom-0 h-auto border-t border-border rounded-t-[20px] data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
           className
         )}
         {...props}
@@ -112,7 +112,7 @@ function SheetTitle({
   return (
     <SheetPrimitive.Title
       data-slot="sheet-title"
-      className={cn("text-[28px] font-light leading-[1.21] text-[#00263e]", className)}
+      className={cn("text-[28px] font-light leading-[1.21] text-primary", className)}
       {...props}
     />
   )

@@ -1,62 +1,40 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "@/lib/i18n/context";
+import { CampusNavList, type CampusNavLink } from "./nav/CampusNavList";
 
-interface NavLink {
-  href: string;
-  labelKey: string;
+/** Whether the current route is the focused classroom (no campus chrome). */
+export function isClassroomPath(pathname: string) {
+  return /^\/campus\/courses\/[^/]+\/learn(\/|$)/.test(pathname);
 }
 
-export function CampusSidebar({ navLinks }: { navLinks: NavLink[] }) {
+export function CampusSidebar({ navLinks }: { navLinks: CampusNavLink[] }) {
   const pathname = usePathname();
-  const [mounted, setMounted] = React.useState(false);
   const { t } = useTranslation();
 
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  if (isClassroomPath(pathname)) return null;
 
   return (
-    <aside className="sticky top-0 h-screen hidden xl:flex w-64 flex-col border-r border-border bg-card">
-      <div className="flex items-center px-6 h-20 border-b border-border">
-        <Link href="/" className="group flex items-center w-fit">
-          <img 
-            src="/logos/Hope Black.svg" 
-            alt="Hope Aviation" 
-            className="h-20 w-auto drop-shadow-sm scale-[1.5] origin-left transition-transform duration-300 group-hover:scale-[1.55]" 
-          />
+    <aside className="sticky top-0 hidden h-[100dvh] w-60 shrink-0 flex-col border-r border-primary/10 bg-paper xl:flex">
+      <div className="flex h-16 items-center px-5">
+        <Link href="/campus" className="flex items-center" aria-label="Hope Aviation campus">
+          <img src="/logos/hope-logo.svg" alt="Hope Aviation" className="h-7 w-auto" />
         </Link>
       </div>
 
-      <nav className="flex-1 flex flex-col gap-1 px-3 py-4">
-        {navLinks.map((link) => {
-          const isActive = mounted && (pathname === link.href || (pathname.startsWith(link.href) && link.href !== "/campus"));
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200
-                ${
-                  isActive
-                    ? "bg-accent text-white shadow-lg shadow-accent/20"
-                    : "text-muted-foreground hover:text-white hover:bg-accent"
-                }
-              `}
-            >
-              {t(link.labelKey)}
-            </Link>
-          );
-        })}
-      </nav>
+      <div className="flex-1 overflow-y-auto px-3 py-4">
+        <CampusNavList links={navLinks} />
+      </div>
 
-      <div className="border-t border-border px-6 py-4">
+      <div className="px-5 py-4">
         <Link
           href="/"
-          className="text-xs text-muted-foreground hover:text-accent transition-colors font-medium"
+          className="-my-2 inline-flex items-center gap-1.5 py-2 text-xs font-medium text-primary/65 transition-colors hover:text-primary"
         >
+          <ArrowLeft className="size-3.5" aria-hidden />
           {t("campus.backToHome")}
         </Link>
       </div>

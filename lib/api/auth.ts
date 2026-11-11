@@ -32,6 +32,18 @@ async function roleSlugsForUser(
 }
 
 /**
+ * Role slugs for a user. Returns an empty set when roles could not be loaded,
+ * so callers that gate UI fall back to the least-privileged view.
+ */
+export async function getRoleSlugs(
+  supabase: SupabaseClient,
+  userId: string,
+): Promise<Set<string>> {
+  const r = await roleSlugsForUser(supabase, userId);
+  return r.ok ? r.slugs : new Set();
+}
+
+/**
  * True if the user has admin or instructor role. False if roles could not be loaded.
  *
  * For read-only handlers that branch staff vs student (e.g. hide correct answers), use

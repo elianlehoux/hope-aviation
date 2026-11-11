@@ -18,8 +18,8 @@ export const apiRoutes = {
   meProfile: () => "/api/me/profile",
   /** Learner: own attempts + limits for an exam. */
   examAttempts: (examId: string) => `/api/exams/${examId}/attempts`,
-  /** GET exam paper (questions) for a learner. */
-  examPaper: (examId: string) => `/api/exams/${examId}/paper`,
+  /** POST: open (or resume) an attempt and get the exam paper. */
+  examStart: (examId: string) => `/api/exams/${examId}/start`,
   /** Admin or course instructor: all attempts for an exam. */
   courseExamAttempts: (courseId: string, examId: string) =>
     `/api/courses/${courseId}/exams/${examId}/attempts`,

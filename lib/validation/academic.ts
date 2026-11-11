@@ -22,6 +22,16 @@ export const translatedDescriptionSchema = z
   .optional()
   .nullable();
 
+/** Written lesson body in Markdown per locale (empty strings clear a locale). */
+export const lessonContentSchema = z
+  .object({
+    es: z.string().max(100_000).optional(),
+    en: z.string().max(100_000).optional(),
+  })
+  .strict()
+  .nullable()
+  .optional();
+
 export const courseStatusSchema = z.enum(["draft", "published", "archived"]);
 
 export const courseCreateSchema = z.object({
@@ -66,20 +76,22 @@ export const subjectUpdateSchema = z
 export const classCreateSchema = z.object({
   title: translatedTitleSchema,
   description: translatedDescriptionSchema,
-  video_url: z.string().url().nullable().optional(),
-  resource_url: z.string().url().nullable().optional(),
+  video_url: z.string().nullable().optional(),
+  resource_url: z.string().nullable().optional(),
   duration_minutes: z.number().int().min(0).nullable().optional(),
   order_index: z.number().int().nullable().optional(),
+  content: lessonContentSchema,
 });
 
 export const classUpdateSchema = z
   .object({
     title: translatedTitleSchema.optional(),
     description: translatedDescriptionSchema,
-    video_url: z.string().url().nullable().optional(),
-    resource_url: z.string().url().nullable().optional(),
+    video_url: z.string().nullable().optional(),
+    resource_url: z.string().nullable().optional(),
     duration_minutes: z.number().int().min(0).nullable().optional(),
     order_index: z.number().int().nullable().optional(),
+    content: lessonContentSchema,
     /** Move class to another subject (same course as URL) */
     subjectId: z.string().uuid().optional(),
   })

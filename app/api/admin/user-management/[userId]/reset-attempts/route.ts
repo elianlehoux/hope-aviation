@@ -38,9 +38,9 @@ export async function POST(request: Request, context: RouteContext) {
   }
 
   // Delete all attempts for this user and exam
-  const { error } = await supabase
+  const { error, count } = await supabase
     .from("exam_attempts")
-    .delete()
+    .delete({ count: "exact" })
     .eq("user_id", userId)
     .eq("exam_id", examId);
 
@@ -48,9 +48,22 @@ export async function POST(request: Request, context: RouteContext) {
     return responseFromPostgrestError(error);
   }
 
-  return jsonOk({ 
+  // RLS silently filters deletes; if attempts are still there, the caller lacked permission.
+  if (!count) {
+    const { count: remaining } = await supabase
+      .from("exam_attempts")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .eq("exam_id", examId);
+    if (remaining) {
+      return jsonError("forbidden", "You do not have permission to reset these attempts.", 403);
+    }
+  }
+
+  return jsonOk({
     message: "Exam attempts reset successfully.",
     userId,
-    examId
+    examId,
+    deleted: count ?? 0,
   });
 }

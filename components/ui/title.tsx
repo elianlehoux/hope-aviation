@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
-const titleVariants = cva("text-[#00263e] font-sans tracking-tight", {
+const titleVariants = cva("text-primary font-sans tracking-tight", {
   variants: {
     level: {
       display1: "text-[64px] font-medium leading-[1.16]",
@@ -23,12 +23,14 @@ const titleVariants = cva("text-[#00263e] font-sans tracking-tight", {
 export interface TitleProps
   extends React.HTMLAttributes<HTMLHeadingElement>,
     VariantProps<typeof titleVariants> {
-  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p";
 }
 
 const Title = React.forwardRef<HTMLHeadingElement, TitleProps>(
   ({ className, level, as, ...props }, ref) => {
-    const Component = as || (level as "h1" | "h2" | "h3" | "h4" | "h5" | "h6") || "h1";
+    // Display levels are sizes, not elements: default them to h1 unless `as` says otherwise.
+    const Component =
+      as ?? (!level || level === "display1" || level === "display2" ? "h1" : level);
     return (
       <Component
         ref={ref}

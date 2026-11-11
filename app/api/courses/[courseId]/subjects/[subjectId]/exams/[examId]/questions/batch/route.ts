@@ -95,7 +95,7 @@ export async function POST(request: Request, context: RouteContext) {
   // Sort the inserted questions back to their intended order to match the `questions` array.
   insertedQuestions.sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
 
-  const optionsToInsert: { question_id: string; content: any; is_correct: boolean }[] = [];
+  const optionsToInsert: { question_id: string; content: unknown; is_correct: boolean }[] = [];
 
   for (let i = 0; i < questions.length; i++) {
     const originalQ = questions[i];

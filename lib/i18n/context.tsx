@@ -14,24 +14,19 @@ const LanguageContext = React.createContext<LanguageContextValue | null>(null);
 
 const STORAGE_KEY = "hope-lang";
 
-/**
- * Detect the user's preferred language from the browser.
- * Returns "es" if the primary language starts with "es", otherwise "en".
- */
-function detectBrowserLanguage(): Lang {
-  if (typeof window === "undefined") return "en";
-  const browserLang = navigator.language || (navigator as any).userLanguage || "en";
-  return browserLang.toLowerCase().startsWith("es") ? "es" : "en";
-}
+/** Spanish is the site's primary language; English is opt-in via the toggle. */
+const DEFAULT_LANG: Lang = "es";
 
-/**
- * Get stored language from localStorage, or detect from browser.
- */
+/** Stored preference from localStorage, or the default. */
 function getInitialLanguage(): Lang {
-  if (typeof window === "undefined") return "en";
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored === "en" || stored === "es") return stored;
-  return detectBrowserLanguage();
+  if (typeof window === "undefined") return DEFAULT_LANG;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === "en" || stored === "es") return stored;
+  } catch {
+    // Storage can be blocked (private mode); fall back to the default.
+  }
+  return DEFAULT_LANG;
 }
 
 /**
@@ -40,29 +35,29 @@ function getInitialLanguage(): Lang {
  */
 function resolveKey(key: string, lang: Lang): string {
   const parts = key.split(".");
-  let current: any = translations;
+  let current: unknown = translations;
 
   for (const part of parts) {
     if (current == null || typeof current !== "object") return key;
-    current = current[part];
+    current = (current as Record<string, unknown>)[part];
   }
 
   if (current && typeof current === "object" && lang in current) {
-    return current[lang];
+    return String((current as Record<Lang, string>)[lang]);
   }
 
   return key;
 }
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  // Always start with "en" to match server-rendered HTML and avoid hydration mismatch.
-  // The useEffect below will correct to the user's preferred language after mount.
-  const [lang, setLangState] = React.useState<Lang>("en");
-  const [mounted, setMounted] = React.useState(false);
+  // Start with the default to match server-rendered HTML and avoid a hydration mismatch;
+  // the effect below applies a stored preference after mount.
+  const [lang, setLangState] = React.useState<Lang>(DEFAULT_LANG);
 
   React.useEffect(() => {
-    setLangState(getInitialLanguage());
-    setMounted(true);
+    const initial = getInitialLanguage();
+    if (initial !== DEFAULT_LANG) setLangState(initial);
+    document.documentElement.lang = initial;
   }, []);
 
   const setLang = React.useCallback((newLang: Lang) => {

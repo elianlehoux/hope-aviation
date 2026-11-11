@@ -1,0 +1,408 @@
+{
+  "slug": "fundamentos-de-la-mision",
+  "title": "Fundamentos de la misión",
+  "description": "Lo esencial para empezar a servir con HOPE: quiénes somos, una vida espiritual que sostiene, cómo trabajar en equipo entre culturas y cómo prepararte para viajar.",
+  "finalExam": { "questionCount": 15, "passingScore": 70, "timeLimitMinutes": 30 },
+  "modules": [
+    {
+      "dir": "01-introduccion",
+      "title": "Introducción a HOPE",
+      "description": "Quiénes somos, por qué la aviación y qué camino recorre un voluntario.",
+      "classes": [
+        { "file": "01-que-es-hope.md", "title": "¿Qué es HOPE?", "description": "Origen, misión, visión y valores de HOPE." },
+        { "file": "02-la-aviacion-misionera.md", "title": "La aviación misionera", "description": "Por qué un avión cambia todo y con quién trabajamos." },
+        { "file": "03-el-voluntario-hope.md", "title": "El voluntario HOPE", "description": "Perfiles, camino y compromisos de quien sirve." }
+      ],
+      "exam": {
+        "title": "Evaluación: Introducción a HOPE",
+        "description": "Repasá qué es HOPE, por qué la aviación y cómo es el camino del voluntario.",
+        "passingScore": 70,
+        "maxAttempts": 3,
+        "questions": [
+          {
+            "text": "¿Cuál es la relación entre HOPE y la Universidad Adventista del Plata?",
+            "options": [
+              { "text": "HOPE surgió en la UAP, pero es un proyecto independiente.", "correct": true },
+              { "text": "HOPE es un departamento académico que depende de la UAP." },
+              { "text": "HOPE es una escuela de vuelo que funciona dentro del campus de la UAP." },
+              { "text": "HOPE es un programa del Servicio Voluntario Adventista de la UAP." }
+            ]
+          },
+          {
+            "text": "¿Con qué tres verbos resume HOPE su trabajo?",
+            "options": [
+              { "text": "Formar, conectar y servir.", "correct": true },
+              { "text": "Volar, transportar y evacuar." },
+              { "text": "Enseñar a volar, certificar y enviar." },
+              { "text": "Recaudar, construir y predicar." }
+            ]
+          },
+          {
+            "text": "¿Qué afirmación sobre HOPE y la formación de pilotos es correcta?",
+            "options": [
+              { "text": "HOPE no enseña a volar; ofrece formación complementaria.", "correct": true },
+              { "text": "HOPE otorga licencias de piloto misionero a quienes completan el campus." },
+              { "text": "HOPE solo acepta en el campus a pilotos con licencia comercial." },
+              { "text": "HOPE dicta el curso teórico de piloto privado en el campus." }
+            ]
+          },
+          {
+            "text": "¿Qué valor de HOPE se refiere a priorizar la vida, la prevención y la responsabilidad en cada operación?",
+            "options": [
+              { "text": "Seguridad", "correct": true },
+              { "text": "Excelencia" },
+              { "text": "Adaptabilidad" },
+              { "text": "Compasión" }
+            ]
+          },
+          {
+            "text": "¿Por qué la aviación es especialmente valiosa en las zonas aisladas de Argentina?",
+            "options": [
+              { "text": "Porque convierte horas de viaje en minutos donde no hay caminos.", "correct": true },
+              { "text": "Porque es más barata que el transporte terrestre en cualquier distancia." },
+              { "text": "Porque reemplaza a los médicos y docentes que faltan en esas zonas." },
+              { "text": "Porque las ambulancias aéreas ya llegan a todas las comunidades." }
+            ]
+          },
+          {
+            "text": "¿Qué busca HOPE en su relación con otras organizaciones?",
+            "options": [
+              { "text": "Prepararles voluntarios, sin reemplazar sus proyectos.", "correct": true },
+              { "text": "Dirigir los proyectos de esas organizaciones." },
+              { "text": "Comprar aeronaves y prestárselas a esas organizaciones." },
+              { "text": "Financiarlas a cambio de cupos para sus voluntarios." }
+            ]
+          },
+          {
+            "text": "Obtuviste el certificado del campus. ¿Qué afirmación es correcta?",
+            "options": [
+              { "text": "Es un primer paso: después viene una entrevista personal.", "correct": true },
+              { "text": "Te garantiza un lugar en el próximo proyecto que tenga cupo." },
+              { "text": "Reemplaza la experiencia previa que piden algunos proyectos." },
+              { "text": "Te autoriza a viajar en nombre de HOPE a cualquier proyecto." }
+            ]
+          },
+          {
+            "text": "Al llegar a una comunidad, ¿qué actitud se espera de un voluntario HOPE?",
+            "options": [
+              { "text": "Aprender antes que enseñar y trabajar junto a los líderes locales.", "correct": true },
+              { "text": "Mostrar cómo se hacen las cosas en su país para mejorar la comunidad." },
+              { "text": "Tomar la iniciativa y liderar para que el trabajo avance más rápido." },
+              { "text": "Concentrarse en su tarea técnica y no involucrarse con la comunidad." }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dir": "02-vida-espiritual",
+      "title": "Vida espiritual",
+      "description": "La fuente del servicio: caminar con Dios, carácter, discernimiento y cuidado en la soledad.",
+      "classes": [
+        { "file": "01-caminar-diario-con-dios.md", "title": "Caminar cada día con Dios", "description": "Prácticas que sostienen la vida espiritual, también en el terreno." },
+        { "file": "02-caracter-de-cristo.md", "title": "El carácter de Cristo", "description": "Actitudes que se ponen a prueba en la misión y cómo crecer en ellas." },
+        { "file": "03-cuando-ir-y-cuando-volver.md", "title": "Cuándo ir y cuándo volver", "description": "Discernir el tiempo de Dios, revisar motivaciones y terminar bien." },
+        { "file": "04-opresion-espiritual-y-liberacion.md", "title": "Opresión espiritual y liberación", "description": "Una mirada bíblica y equilibrada al conflicto espiritual." },
+        { "file": "05-solo-pero-no-solitario.md", "title": "Solo, pero no solitario", "description": "Soledad, aislamiento y renovación en la misión." }
+      ],
+      "exam": {
+        "title": "Evaluación: Vida espiritual",
+        "description": "Repasá las prácticas, actitudes y criterios de discernimiento de este módulo.",
+        "passingScore": 70,
+        "maxAttempts": 3,
+        "questions": [
+          {
+            "text": "¿Qué enseña la imagen de la vid y los pámpanos (Juan 15:5) sobre el servicio?",
+            "options": [
+              { "text": "Que separados de Cristo no podemos dar fruto.", "correct": true },
+              { "text": "Que el fruto depende sobre todo de la disciplina del voluntario." },
+              { "text": "Que hay que trabajar sin descanso para que la misión crezca." },
+              { "text": "Que cada creyente debe dar fruto por su propia cuenta." }
+            ]
+          },
+          {
+            "text": "En el terreno, tu rutina devocional se desarma. ¿Qué recomienda la clase?",
+            "options": [
+              { "text": "Un momento fijo cada día, aunque sea corto.", "correct": true },
+              { "text": "Suspenderla hasta volver a casa y retomarla con más tiempo." },
+              { "text": "Reemplazarla por los cultos y devocionales que organiza el equipo." },
+              { "text": "Compensar los días perdidos con jornadas largas de oración." }
+            ]
+          },
+          {
+            "text": "Según Filipenses 2, ¿qué caracteriza la actitud de Cristo?",
+            "options": [
+              { "text": "Se despojó a sí mismo y tomó forma de siervo.", "correct": true },
+              { "text": "Exigió el reconocimiento que le correspondía como Dios." },
+              { "text": "Evitó las tareas humildes para concentrarse en enseñar." },
+              { "text": "Se apartó de la gente para no contaminarse." }
+            ]
+          },
+          {
+            "text": "¿Cuál de estas NO es una de las señales para discernir si es momento de ir?",
+            "options": [
+              { "text": "El deseo de escapar de un problema personal.", "correct": true },
+              { "text": "Un llamado interno que se sostiene en el tiempo." },
+              { "text": "La confirmación de personas maduras que te conocen." },
+              { "text": "Puertas abiertas y un proyecto que necesita lo que podés dar." }
+            ]
+          },
+          {
+            "text": "¿Cuál de estas es una buena razón para volver de una misión?",
+            "options": [
+              { "text": "Los líderes locales ya pueden continuar el trabajo sin vos.", "correct": true },
+              { "text": "Tuviste una discusión fuerte con un compañero del equipo." },
+              { "text": "El trabajo dejó de ser emocionante y extrañás tu casa." },
+              { "text": "Sentís que la comunidad no valora lo suficiente tu esfuerzo." }
+            ]
+          },
+          {
+            "text": "¿Qué equilibrio propone la clase sobre el conflicto espiritual?",
+            "options": [
+              { "text": "Reconocer su realidad, con el foco puesto en Cristo.", "correct": true },
+              { "text": "Tratarlo como una superstición que conviene no alimentar." },
+              { "text": "Buscar una causa espiritual detrás de cada enfermedad o problema." },
+              { "text": "Dejar el tema solo en manos de los pastores, sin involucrarse." }
+            ]
+          },
+          {
+            "text": "Antes de concluir que el problema de una persona es espiritual, ¿qué conviene asegurar?",
+            "options": [
+              { "text": "Que la persona tenga acceso a evaluación médica y psicológica.", "correct": true },
+              { "text": "Que el equipo organice cuanto antes una oración de liberación." },
+              { "text": "Que la persona confiese públicamente lo que le pasa." },
+              { "text": "Que la familia acepte dejar de lado sus creencias tradicionales." }
+            ]
+          },
+          {
+            "text": "¿Cuál es la diferencia entre la soledad elegida y el aislamiento?",
+            "options": [
+              { "text": "La soledad elegida renueva; el aislamiento vacía y se prolonga.", "correct": true },
+              { "text": "No hay diferencia real: las dos te alejan de los demás." },
+              { "text": "El aislamiento es más espiritual porque evita las distracciones del equipo." },
+              { "text": "La soledad elegida dura más tiempo que el aislamiento." }
+            ]
+          },
+          {
+            "text": "¿Qué enseña el cuidado de Dios con Elías en 1 Reyes 19?",
+            "options": [
+              { "text": "Que muchas veces el desánimo empieza por el cansancio físico.", "correct": true },
+              { "text": "Que el desánimo es siempre consecuencia de la falta de fe." },
+              { "text": "Que un siervo de Dios fiel no debería sentirse solo ni desanimado." },
+              { "text": "Que la solución al desánimo es trabajar todavía más." }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dir": "03-vida-en-equipo",
+      "title": "Vida en equipo",
+      "description": "Comunicarse entre culturas, resolver conflictos, liderar sirviendo, poner límites y proteger a los más vulnerables.",
+      "classes": [
+        { "file": "01-comunicacion-transcultural.md", "title": "Comunicación transcultural", "description": "El iceberg cultural, diferencias que importan y postura de aprendiz." },
+        { "file": "02-resolucion-de-conflictos.md", "title": "Resolución de conflictos", "description": "Cómo abordar conflictos en el equipo, con la comunidad y con instituciones." },
+        { "file": "03-liderazgo-de-servicio.md", "title": "Liderazgo de servicio", "description": "Liderar sirviendo, sin perder la dirección, con inteligencia emocional." },
+        { "file": "04-limites-y-relaciones-sanas.md", "title": "Límites y relaciones sanas", "description": "Qué son los límites, por qué protegen la misión y cómo rendir cuentas." },
+        { "file": "05-proteccion-de-menores.md", "title": "Protección de menores y personas vulnerables", "description": "Código de conducta y qué hacer ante una revelación de abuso." }
+      ],
+      "exam": {
+        "title": "Evaluación: Vida en equipo",
+        "description": "Repasá comunicación transcultural, conflictos, liderazgo, límites y protección.",
+        "passingScore": 70,
+        "maxAttempts": 3,
+        "questions": [
+          {
+            "text": "Según la imagen del iceberg, ¿qué aspectos de una cultura suelen generar más conflictos?",
+            "options": [
+              { "text": "Lo que no se ve, como el tiempo, la autoridad y el respeto.", "correct": true },
+              { "text": "La comida, la ropa y la música de cada lugar." },
+              { "text": "El idioma, porque es lo primero que separa a las personas." },
+              { "text": "Las fiestas y celebraciones religiosas tradicionales." }
+            ]
+          },
+          {
+            "text": "En una cultura de comunicación indirecta, un \"sí\" sin entusiasmo puede significar:",
+            "options": [
+              { "text": "Cortesía o \"te escuché\", no necesariamente acuerdo.", "correct": true },
+              { "text": "Un acuerdo total con lo que se propuso." },
+              { "text": "Que la persona no entendió la pregunta." },
+              { "text": "Que hace falta insistir hasta obtener un compromiso." }
+            ]
+          },
+          {
+            "text": "Según Mateo 18:15, ¿cuál es el primer paso ante un conflicto con un hermano?",
+            "options": [
+              { "text": "Hablar a solas con la persona.", "correct": true },
+              { "text": "Contárselo al líder para que intervenga." },
+              { "text": "Pedir la opinión del resto del equipo." },
+              { "text": "Llevarlo ante la iglesia para que decida." }
+            ]
+          },
+          {
+            "text": "¿Cuál de estas frases ayuda más a resolver un conflicto?",
+            "options": [
+              { "text": "\"Me preocupé cuando no llegaste a la descarga; ¿qué pasó?\"", "correct": true },
+              { "text": "\"Vos siempre llegás tarde y nos complicás a todos.\"" },
+              { "text": "\"No quiero pelear, pero todos opinan que sos un irresponsable.\"" },
+              { "text": "\"No pasa nada, olvidate\", aunque te haya molestado." }
+            ]
+          },
+          {
+            "text": "¿Qué significa el liderazgo de servicio?",
+            "options": [
+              { "text": "Dar dirección buscando el crecimiento y el bien del equipo.", "correct": true },
+              { "text": "Dejar que cada integrante del equipo haga lo que le parezca." },
+              { "text": "Tomar todas las decisiones para que el equipo no cargue con ellas." },
+              { "text": "Hacer personalmente las tareas más difíciles en lugar de delegarlas." }
+            ]
+          },
+          {
+            "text": "En una operación aérea, ¿quién tiene la decisión final sobre el vuelo?",
+            "options": [
+              { "text": "El piloto al mando.", "correct": true },
+              { "text": "El líder del grupo de voluntarios." },
+              { "text": "El responsable de la comunidad que recibe." },
+              { "text": "La mayoría del equipo, por votación." }
+            ]
+          },
+          {
+            "text": "Según Daniel Goleman, ¿cuál de estos es un componente de la inteligencia emocional?",
+            "options": [
+              { "text": "La autorregulación.", "correct": true },
+              { "text": "La memoria de trabajo." },
+              { "text": "El pensamiento lógico." },
+              { "text": "La experiencia técnica." }
+            ]
+          },
+          {
+            "text": "Gálatas 6:2 dice \"sobrellevad los unos las cargas de los otros\" y 6:5 \"cada uno llevará su propia carga\". ¿Cómo se entienden juntas?",
+            "options": [
+              { "text": "Hay cargas que se comparten y responsabilidades que no se delegan.", "correct": true },
+              { "text": "La primera vale para la vida en la iglesia y la segunda para el trabajo." },
+              { "text": "Primero hay que resolver lo propio y recién después ayudar." },
+              { "text": "Que pedir ayuda es una señal de falta de madurez." }
+            ]
+          },
+          {
+            "text": "¿Por qué no conviene dar dinero o regalos por tu cuenta en la comunidad?",
+            "options": [
+              { "text": "Porque puede generar dependencia, celos y falsas expectativas.", "correct": true },
+              { "text": "Porque la ley de la mayoría de los países lo prohíbe expresamente." },
+              { "text": "Porque las familias suelen ofenderse al recibir ayuda material." },
+              { "text": "Porque los voluntarios no deben gastar dinero durante el viaje." }
+            ]
+          },
+          {
+            "text": "¿Cuál de estas conductas con menores es correcta?",
+            "options": [
+              { "text": "Estar con menores en lugares visibles y con otro adulto presente.", "correct": true },
+              { "text": "Mantener chats privados con adolescentes para acompañarlos mejor." },
+              { "text": "Hacer regalos personales a los niños que más lo necesitan, sin que se note." },
+              { "text": "Acompañar a un niño solo a su casa si él te lo pide." }
+            ]
+          },
+          {
+            "text": "Un niño te cuenta que está siendo maltratado. ¿Qué tenés que hacer?",
+            "options": [
+              { "text": "Escucharlo con calma, no prometer secreto y reportarlo ese mismo día.", "correct": true },
+              { "text": "Prometerle que vas a guardar el secreto para que confíe en vos." },
+              { "text": "Hacerle preguntas detalladas para confirmar que dice la verdad." },
+              { "text": "Confrontar a la persona sospechada para que sepa que alguien lo vigila." }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dir": "04-antes-de-viajar",
+      "title": "Antes de viajar",
+      "description": "Documentos, seguro, salud, seguridad en el terreno y ética al contar historias.",
+      "classes": [
+        { "file": "01-documentos-seguro-y-salud.md", "title": "Documentos, seguro y salud", "description": "Qué preparar y con cuánto tiempo antes de viajar." },
+        { "file": "02-seguridad-en-el-terreno.md", "title": "Seguridad en el terreno", "description": "Hábitos de seguridad personal y reglas cerca de aeronaves." },
+        { "file": "03-etica-de-la-imagen.md", "title": "Ética de la imagen", "description": "Fotografiar y contar historias con dignidad." }
+      ],
+      "exam": {
+        "title": "Evaluación: Antes de viajar",
+        "description": "Repasá documentos, seguro, salud, seguridad y ética de la imagen.",
+        "passingScore": 70,
+        "maxAttempts": 3,
+        "questions": [
+          {
+            "text": "¿Qué vigencia del pasaporte exigen muchos países al momento de entrar?",
+            "options": [
+              { "text": "Al menos seis meses.", "correct": true },
+              { "text": "Al menos un mes." },
+              { "text": "Al menos tres meses." },
+              { "text": "Al menos dos años." }
+            ]
+          },
+          {
+            "text": "¿Qué debería cubrir un buen seguro para un viaje de voluntariado?",
+            "options": [
+              { "text": "Atención médica, evacuación y repatriación, incluido el voluntariado.", "correct": true },
+              { "text": "La pérdida de equipaje, robos y la cancelación de vuelos comerciales." },
+              { "text": "Solo las urgencias médicas en hospitales públicos del país de destino." },
+              { "text": "Los vuelos comerciales de ida y vuelta al destino." }
+            ]
+          },
+          {
+            "text": "Para prevenir el dengue, ¿cuándo hay que protegerse de los mosquitos?",
+            "options": [
+              { "text": "Durante el día, que es cuando más pica.", "correct": true },
+              { "text": "Solo de noche, mientras dormís." },
+              { "text": "Solo en la temporada de lluvias." },
+              { "text": "No hace falta si te vacunaste contra la fiebre amarilla." }
+            ]
+          },
+          {
+            "text": "¿Cuál es la conducta correcta cerca de una aeronave?",
+            "options": [
+              { "text": "Seguir al piloto y nunca caminar por delante de la hélice.", "correct": true },
+              { "text": "Acercarte sin aviso si ves que el motor está apagado." },
+              { "text": "Ayudar a cargar sin esperar instrucciones para ganar tiempo." },
+              { "text": "Pasar por delante de la hélice solo cuando el motor está apagado." }
+            ]
+          },
+          {
+            "text": "El piloto cancela un vuelo por el clima y la comunidad los espera. ¿Cómo hay que entenderlo?",
+            "options": [
+              { "text": "Como el sistema de seguridad funcionando.", "correct": true },
+              { "text": "Como un fracaso del equipo que hay que evitar." },
+              { "text": "Como una decisión que conviene revisar con el grupo." },
+              { "text": "Como falta de fe frente a una necesidad urgente." }
+            ]
+          },
+          {
+            "text": "¿Qué conviene hacer ante un asalto?",
+            "options": [
+              { "text": "No resistirte, entregar lo que pidan y avisar al estar a salvo.", "correct": true },
+              { "text": "Negociar con calma para entregar solo una parte de lo que llevás." },
+              { "text": "Gritar y pedir ayuda para que los agresores se asusten y se vayan." },
+              { "text": "Resistirte para proteger el equipo del proyecto." }
+            ]
+          },
+          {
+            "text": "¿Cuál de estos es un principio para contar historias con dignidad?",
+            "options": [
+              { "text": "Mostrar capacidades, no solo necesidades, y dar crédito a los locales.", "correct": true },
+              { "text": "Dramatizar un poco la situación para que conmueva más." },
+              { "text": "Poner al voluntario en el centro, porque es quien cuenta la historia." },
+              { "text": "Mostrar la pobreza tal cual es, sin pedir permiso para no alterarla." }
+            ]
+          },
+          {
+            "text": "¿Qué corresponde hacer con las fotos de menores?",
+            "options": [
+              { "text": "Pedir permiso a sus padres o tutores y no mostrar dónde viven.", "correct": true },
+              { "text": "Publicarlas con la ubicación para que los donantes conozcan el lugar." },
+              { "text": "Publicar cualquier foto si es tierna o muestra algo positivo." },
+              { "text": "Pedirle permiso al niño, porque alcanza con su consentimiento." }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

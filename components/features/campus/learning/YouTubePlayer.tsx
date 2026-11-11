@@ -9,20 +9,29 @@ interface YouTubePlayerProps {
   onEnded?: () => void;
 }
 
+/** Minimal surface of the YouTube IFrame API that this player uses. */
+type YTPlayer = { destroy: () => void };
+type YTPlayerEvent = { data: number };
+type YTNamespace = {
+  Player: new (el: HTMLElement, opts: Record<string, unknown>) => YTPlayer;
+};
+
 declare global {
   interface Window {
     onYouTubeIframeAPIReady: () => void;
-    YT: any;
+    YT: YTNamespace;
   }
 }
 
 export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<YTPlayer | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const videoId = getYoutubeId(rawVideoId);
+  const onEndedRef = useRef(onEnded);
+  onEndedRef.current = onEnded;
 
   useEffect(() => {
     if (!videoId) {
@@ -46,7 +55,7 @@ export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerPro
           width: "100%",
           videoId: videoId,
           playerVars: {
-            autoplay: 1,
+            autoplay: 0,
             modestbranding: 1,
             rel: 0,
             origin: window.location.origin,
@@ -55,12 +64,12 @@ export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerPro
             onReady: () => {
               if (isMounted) setIsLoading(false);
             },
-            onStateChange: (event: any) => {
-              if (event.data === 0 && onEnded) {
-                onEnded();
+            onStateChange: (event: YTPlayerEvent) => {
+              if (event.data === 0) {
+                onEndedRef.current?.();
               }
             },
-            onError: (e: any) => {
+            onError: (e: YTPlayerEvent) => {
               console.error("YouTube Player Error:", e);
               if (isMounted) setError("Failed to load video. It might be private or restricted.");
             }
@@ -99,10 +108,10 @@ export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerPro
         playerRef.current = null;
       }
     };
-  }, [videoId, onEnded]);
+  }, [videoId]);
 
   return (
-    <div className="relative w-full aspect-video bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-700 border border-slate-800">
+    <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-primary/10 bg-primary">
       {isLoading && !error && (
         <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm z-10 text-white">
           <Loader2 className="size-10 animate-spin text-primary" />

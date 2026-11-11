@@ -61,7 +61,7 @@ To maintain maximum order, any new code must be placed within its designated dir
 - **`supabase/`**: SQL migrations and database documentation (`migrations/`, `README.md`).
 
 ## 8. Project Context
-**Hope Aviation** is a virtual campus platform for aviation training and education. The root `/` serves a public-facing landing page. The `/campus` route group is the authenticated product area where students access courses, schedules, grades, resources, and community features. All campus-related components should live under `components/features/campus/` and campus-specific types under `types/`.
+**Hope Aviation is not a flight school.** It is a missionary-aviation organization with a virtual campus. It teaches the extra skills a ministry needs (cross-cultural work, first aid, remote operations, emotional support, fundraising, spiritual grounding) and connects prepared volunteers with field projects. The root `/` is the public site. `/campus` is the product area for courses, exams, and staff tools. All campus-related components should live under `components/features/campus/` and campus-specific types under `types/`.
 
 ## 9. Database & backend (Supabase)
 
@@ -71,22 +71,13 @@ To maintain maximum order, any new code must be placed within its designated dir
 - **Types**: `types/database.ts` mirrors the schema for application code. After remote schema changes, regenerate types with the Supabase CLI (`supabase gen types typescript --linked`) and align exports as needed.
 - **Agent context**: For database and backend work, follow `AGENTS.md` and `.cursor/rules/hope-aviation-database-backend.mdc`.
 
-## 10. UI & Design System (Custom) - PREMIUM APPLE STYLE
-To maintain the high-end, professional branding of Hope Aviation, all UI development **MUST** strictly adhere to the established "Premium Apple-style" design system:
+## 10. UI & Design System
 
-- **CRITICAL - REUSE CUSTOM COMPONENTS**: Never recreate base UI elements. Always use the refined versions in `components/ui/` and `components/shared/` (e.g., `Button`, `Badge`, `Navbar`, `Table`, `Modal`).
-- **Aesthetics & Effects**:
-  - Use `backdrop-blur-xl` for navigation bars, modals, and overlays to create a sleek, translucent effect.
-  - Borders should be minimal and subtle (typically `border-slate-100`).
-  - Backgrounds for containers should be clean (`bg-white` or `bg-slate-50/50`).
-- **Typography**:
-  - Use `font-semibold` or `font-bold` with `tracking-tight` for a modern, compact look.
-  - Headers should use the `Title` component with appropriate hierarchy.
-- **Color Palette Consistency**:
-  - **Primary**: Brand Deep Blue (`#00263e`).
-  - **Secondary**: Soft Vibrant Blue tint (`bg-accent/10`, `text-accent`, `border-accent/20`).
-  - **Accent**: Brand Vibrant Blue (`#1749ff`).
-  - **Highlights**: Aviation Orange (`#ffaa00`).
-- **Airy Layouts**: Ensure generous vertical padding (`py-4` to `py-10`) to allow content to "breathe" and maintain a premium feel.
-- **Reference**: Always refer to the `/componentsdev` page to see the latest, correct implementation of every component and style.
+The design system is documented in **`DESIGN.md`** (single source of truth). It combines the original custom Hope identity (logo, Hope Navy `#00263e`, Hope Amber `#ffaa00`, Hope Blue `#1749ff`, warm paper surfaces, photography-led, alternating color bands) with a structural layer adapted from the Meta Store system (8px grid, pill buttons, radii, elevation, form states).
 
+- **CRITICAL - REUSE CUSTOM COMPONENTS**: Never recreate base UI elements. Always use the versions in `components/ui/` and `components/shared/` (e.g., `Button`, `Badge`, `Navbar`, `Table`, `Modal`, `Title`).
+- **Use tokens, not hex**: colors come from `app/globals.css` (`primary`, `brand-orange`/`highlight`, `accent`, `paper`, `ink`, `success`, `info`, …). Never hardcode `bg-[#1749ff]`-style values.
+- **Amber is the one warm accent**: primary CTAs (amber pill, navy text) and emotional highlights. Hope Blue stays structural (focus, progress, logo tile).
+- **Typography**: Bricolage Grotesque (`font-display`) for headlines, Instrument Sans (`font-sans`) for body/UI, IBM Plex Mono (`font-mono`) only for real data labels. Headers use the `Title` component.
+- **Tone**: honest and human. No cockpit/dark-tech aesthetics, no fake live counters.
+- **Reference**: `/componentsdev` shows the current implementation of every component.

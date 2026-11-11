@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { authCookieOptions } from "./cookie";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -18,6 +19,7 @@ export async function updateSession(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
+      cookieOptions: authCookieOptions(),
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -46,20 +48,26 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
-  if (
-    request.nextUrl.pathname !== "/" &&
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth") &&
-    !request.nextUrl.pathname.startsWith("/componentsdev") &&
-    !request.nextUrl.pathname.startsWith("/about") &&
-    !request.nextUrl.pathname.startsWith("/donate") &&
-    !request.nextUrl.pathname.startsWith("/courses") &&
-    !request.nextUrl.pathname.startsWith("/get-involved")
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
+  const previewAuth =
+    process.env.CAMPUS_PREVIEW_AUTH === "1" &&
+    process.env.NODE_ENV !== "production" &&
+    process.env.VERCEL_ENV !== "production";
+
+  // Only the campus needs a session. Everything else is public, so a mistyped
+  // URL shows the 404 page instead of bouncing an anonymous visitor to login.
+  const { pathname } = request.nextUrl;
+  const protectedPath =
+    (pathname === "/campus" || pathname.startsWith("/campus/")) && !previewAuth;
+
+  if (!user && protectedPath) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
+    // Send the user back where they were going after signing in.
+    url.search = "";
+    url.searchParams.set(
+      "next",
+      request.nextUrl.pathname + request.nextUrl.search,
+    );
     return NextResponse.redirect(url);
   }
 

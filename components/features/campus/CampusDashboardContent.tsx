@@ -1,293 +1,140 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
+import { ArrowRight, Library, UserRound } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n/context";
-import { ProfileCompletionBanner } from "@/components/features/campus/ProfileCompletionBanner";
-import { StudentCourseCard } from "@/components/features/campus/StudentCourseCard";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Title } from "@/components/ui/title";
-import { 
-  BookOpen, 
-  GraduationCap, 
-  Sparkles, 
-  CheckCircle, 
-  TrendingUp, 
-  ShieldAlert, 
-  Users 
-} from "lucide-react";
+import { getLocalizedText } from "@/lib/utils/i18n-helpers";
+import type { LearnerHome } from "@/lib/campus/home";
+import { CourseCard } from "@/components/features/campus/courses/CourseCard";
+import { CourseCover } from "@/components/features/campus/courses/CourseCover";
 
-interface ProfileProp {
-  first_name: string | null;
-  last_name: string | null;
-  birth_date: string | null;
-  country_code: string | null;
-}
-
-interface CampusDashboardContentProps {
-  showBanner: boolean;
-  activeEnrollments: any[];
-  completedEnrollments: any[];
-  catalogCourses: any[];
-  roles: string[];
-  stats: {
-    activeCoursesCount: number;
-    completedCoursesCount: number;
-    totalCompletedLessons: number;
-    averageProgress: number;
-  };
-  profile: ProfileProp | null;
-}
-
-const statsLabels: Record<string, { en: string; es: string }> = {
-  activeCourses: { en: "Active Courses", es: "Cursos Activos" },
-  completedCourses: { en: "Completed Courses", es: "Cursos Completados" },
-  lessonsCompleted: { en: "Lessons Completed", es: "Lecciones Completadas" },
-  averageProgress: { en: "Average Progress", es: "Progreso Promedio" },
-  staffPortal: { en: "Staff Portal", es: "Portal del Personal" },
-  staffPortalDesc: { en: "Quick links to access management hubs and admin tools.", es: "Enlaces rápidos para acceder a los paneles de gestión y herramientas de administración." },
-  adminConsole: { en: "Admin Console", es: "Consola de Administración" },
-  instructorConsole: { en: "Instructor Console", es: "Consola de Instructor" }
-};
-
-export function CampusDashboardContent({ 
-  showBanner, 
-  activeEnrollments, 
-  completedEnrollments, 
-  catalogCourses, 
-  roles, 
-  stats,
-  profile
-}: CampusDashboardContentProps) {
-  const { t, lang } = useTranslation();
-  
-  const isStaff = roles.includes("admin") || roles.includes("instructor");
+export function CampusDashboardContent({ home }: { home: LearnerHome }) {
+  const { lang } = useTranslation();
+  const es = lang === "es";
+  const active = home.myCourses.filter((c) => c.status === "active");
+  const current = active[0];
+  const others = home.myCourses.filter((c) => c !== current);
+  const staff = home.roles.includes("admin") || home.roles.includes("instructor");
 
   return (
-    <div className="space-y-12 max-w-7xl mx-auto pb-20">
-      {/* 1. Profile Completion Banner */}
-      {showBanner && (
-        <div className="animate-in fade-in slide-in-from-top-4 duration-1000">
-          <ProfileCompletionBanner />
-        </div>
-      )}
-
-      {/* 2. Header & Welcome Greeting */}
-      <div className="space-y-3">
-        <div className="flex items-center gap-3 text-[#ffaa00]">
-          <Sparkles className="size-6 animate-pulse" />
-          <h4 className="text-sm font-bold uppercase tracking-widest opacity-70">
-            {t("studentCourses.learningDashboard")}
-          </h4>
-        </div>
-        <Title level="h1" className="text-4xl md:text-5xl font-extrabold tracking-tight text-primary">
-          {lang === "es" 
-            ? `¡Hola, ${profile?.first_name || "Estudiante"}!` 
-            : `Hello, ${profile?.first_name || "Student"}!`}
-        </Title>
-        <p className="text-lg text-slate-500 font-medium max-w-3xl leading-relaxed">
-          {t("studentCourses.myAcademyDesc")}
-        </p>
-      </div>
-
-      {/* 3. Staff Portal Dashboard Quick Links (rendered if user is admin/instructor) */}
-      {isStaff && (
-        <section className="space-y-4 p-6 md:p-8 bg-slate-50/50 border border-slate-100/80 rounded-3xl animate-in fade-in duration-500 shadow-2xs">
-          <div className="flex items-center gap-2 text-primary font-bold">
-            <ShieldAlert className="size-5 text-accent shrink-0" />
-            <h3 className="text-xs font-bold uppercase tracking-wider opacity-85">
-              {statsLabels.staffPortal[lang]}
-            </h3>
-          </div>
-          <p className="text-xs text-slate-500 font-medium leading-relaxed">
-            {statsLabels.staffPortalDesc[lang]}
+    <div className="mx-auto max-w-6xl space-y-12 pb-16">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl">
+            {es ? "Hola" : "Hi"}, {home.firstName}
+          </h1>
+          <p className="mt-2 text-primary/65">
+            {current
+              ? es
+                ? "Retomá donde lo dejaste."
+                : "Pick up where you left off."
+              : es
+                ? "Formación para servir donde los caminos no llegan."
+                : "Training to serve where roads can't reach."}
           </p>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-3">
-            {roles.includes("admin") && (
-              <Link
-                href="/campus/admin"
-                className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-2xl hover:shadow-md hover:scale-[1.01] transition-all"
-              >
-                <div className="size-11 rounded-xl bg-[#E8F3FF] flex items-center justify-center text-accent shrink-0">
-                  <Users className="size-5" />
+        </div>
+        {staff ? (
+          <Button asChild variant="outline" size="sm">
+            <Link href="/campus/admin/courses">
+              <Library className="size-4" aria-hidden />
+              {es ? "Gestionar cursos" : "Manage courses"}
+            </Link>
+          </Button>
+        ) : null}
+      </header>
+
+      {!home.profileComplete ? (
+        <Link
+          href="/campus/profile"
+          className="flex items-center gap-4 rounded-2xl border border-highlight/40 bg-highlight/10 px-5 py-4 transition-colors hover:bg-highlight/15"
+        >
+          <UserRound className="size-5 shrink-0 text-primary" aria-hidden />
+          <p className="flex-1 text-sm text-primary/80">
+            <span className="font-semibold text-primary">{es ? "Completá tu perfil." : "Complete your profile."}</span>{" "}
+            {es
+              ? "Sumá tus datos: el nombre de tu perfil es el que aparece en tus certificados."
+              : "Add your details: the name on your profile is the one printed on your certificates."}
+          </p>
+          <ArrowRight className="size-4 shrink-0 text-primary/65" aria-hidden />
+        </Link>
+      ) : null}
+
+      {current ? (
+        <section aria-labelledby="continue-heading">
+          <h2 id="continue-heading" className="sr-only">
+            {es ? "Seguir aprendiendo" : "Continue learning"}
+          </h2>
+          <Link
+            href={`/campus/courses/${current.id}/learn`}
+            className="group grid overflow-hidden rounded-3xl bg-primary text-white md:grid-cols-[1fr_1.1fr]"
+          >
+            <div className="relative aspect-[16/9] md:aspect-auto">
+              <CourseCover src={current.thumbnailUrl} alt={getLocalizedText(current.title, lang)} seed={current.id} />
+            </div>
+            <div className="flex flex-col justify-center gap-5 p-6 sm:p-8 md:p-10">
+              <p className="text-sm font-medium text-highlight">{es ? "Seguir aprendiendo" : "Continue learning"}</p>
+              <h3 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">
+                {getLocalizedText(current.title, lang)}
+              </h3>
+              <div className="flex items-center gap-3">
+                <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/15">
+                  <div className="h-full rounded-full bg-highlight" style={{ width: `${current.progress}%` }} />
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-primary">{statsLabels.adminConsole[lang]}</h4>
-                  <p className="text-[10px] text-slate-400 font-medium leading-normal mt-0.5">Manage users, roles, courses & newsletter</p>
-                </div>
-              </Link>
-            )}
-            {(roles.includes("instructor") || roles.includes("admin")) && (
-              <Link
-                href="/campus/professors"
-                className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-2xl hover:shadow-md hover:scale-[1.01] transition-all"
-              >
-                <div className="size-11 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500 shrink-0">
-                  <BookOpen className="size-5" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-primary">{statsLabels.instructorConsole[lang]}</h4>
-                  <p className="text-[10px] text-slate-400 font-medium leading-normal mt-0.5">Review syllabus, classes, exams & grades</p>
-                </div>
-              </Link>
-            )}
-          </div>
+                <span className="text-sm font-semibold tabular-nums text-white/80">{current.progress}%</span>
+              </div>
+              <p className="text-sm text-white/65">
+                {current.completedLessons}/{current.lessonCount} {es ? "clases completadas" : "lessons completed"}
+              </p>
+              <span className="inline-flex w-fit items-center gap-2 rounded-full bg-highlight px-5 py-2.5 text-sm font-semibold text-primary transition-transform group-hover:translate-x-0.5">
+                {es ? "Continuar" : "Continue"}
+                <ArrowRight className="size-4" aria-hidden />
+              </span>
+            </div>
+          </Link>
         </section>
-      )}
+      ) : null}
 
-      {/* 4. Statistics Dashboard Row */}
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-        {/* Active Courses */}
-        <div className="p-6 bg-white border border-slate-100 rounded-3xl shadow-2xs flex items-center gap-4 hover:shadow-md transition-all group duration-300">
-          <div className="size-12 rounded-2xl bg-accent/5 text-accent flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
-            <BookOpen className="size-6" />
-          </div>
-          <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{statsLabels.activeCourses[lang]}</p>
-            <h3 className="text-2xl font-black text-primary tracking-tight mt-0.5">{stats.activeCoursesCount}</h3>
-          </div>
-        </div>
-
-        {/* Avg Progress */}
-        <div className="p-6 bg-white border border-slate-100 rounded-3xl shadow-2xs flex items-center gap-4 hover:shadow-md transition-all group duration-300">
-          <div className="size-12 rounded-2xl bg-[#ffaa00]/5 text-[#ffaa00] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
-            <TrendingUp className="size-6" />
-          </div>
-          <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{statsLabels.averageProgress[lang]}</p>
-            <h3 className="text-2xl font-black text-primary tracking-tight mt-0.5">{stats.averageProgress}%</h3>
-          </div>
-        </div>
-
-        {/* Completed Lessons */}
-        <div className="p-6 bg-white border border-slate-100 rounded-3xl shadow-2xs flex items-center gap-4 hover:shadow-md transition-all group duration-300">
-          <div className="size-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
-            <CheckCircle className="size-6" />
-          </div>
-          <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{statsLabels.lessonsCompleted[lang]}</p>
-            <h3 className="text-2xl font-black text-primary tracking-tight mt-0.5">{stats.totalCompletedLessons}</h3>
-          </div>
-        </div>
-
-        {/* Completed Courses */}
-        <div className="p-6 bg-white border border-slate-100 rounded-3xl shadow-2xs flex items-center gap-4 hover:shadow-md transition-all group duration-300">
-          <div className="size-12 rounded-2xl bg-primary/5 text-primary flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
-            <GraduationCap className="size-6" />
-          </div>
-          <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{statsLabels.completedCourses[lang]}</p>
-            <h3 className="text-2xl font-black text-primary tracking-tight mt-0.5">{stats.completedCoursesCount}</h3>
-          </div>
-        </div>
-      </div>
-
-      {/* 5. Active Courses (Continue Learning) */}
-      {activeEnrollments.length > 0 ? (
-        <section className="space-y-6">
-          <div className="flex items-center gap-3 pl-1">
-            <BookOpen className="size-6 text-[#ffaa00]" />
-            <h2 className="text-2xl font-bold tracking-tight text-primary">
-              {t("studentCourses.continueLearning")}
-            </h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {activeEnrollments.map((e) => (
-              <StudentCourseCard 
-                key={e.id} 
-                course={e.courses} 
-                enrollment={e} 
-                variant="active" 
-              />
+      {others.length > 0 ? (
+        <section className="space-y-5">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-primary">{es ? "Mis cursos" : "My courses"}</h2>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {others.map((course) => (
+              <CourseCard key={course.id} course={course} />
             ))}
           </div>
         </section>
-      ) : (
-        <section className="p-10 text-center rounded-3xl border border-slate-100 bg-slate-50/50 shadow-2xs max-w-3xl mx-auto">
-          <h3 className="text-lg font-bold text-primary mb-2">
-            {lang === "es" ? "Comienza tu viaje en aviación" : "Start Your Aviation Journey"}
-          </h3>
-          <p className="text-sm text-slate-500 font-medium max-w-md mx-auto mb-6 leading-relaxed">
-            {lang === "es" 
-              ? "Inscríbete en uno de nuestros cursos disponibles en el catálogo de abajo para empezar a aprender." 
-              : "Enroll in one of our available courses in the catalog below to begin your training."}
-          </p>
-        </section>
-      )}
+      ) : null}
 
-      {/* 6. Explore Catalog Section */}
-      <section className="space-y-8 py-10 border-t border-slate-100">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-1">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold tracking-tight text-primary">
-              {t("studentCourses.exploreCatalog")}
-            </h2>
-            <p className="text-sm text-slate-500 font-medium">
-              {t("studentCourses.catalogDesc")}
-            </p>
-          </div>
-          
-          <Tabs defaultValue="all" className="w-full md:w-auto">
-            <TabsList className="bg-slate-50 border border-slate-100 p-1 h-11 rounded-xl">
-              <TabsTrigger value="all" className="rounded-lg font-bold data-[state=active]:bg-white data-[state=active]:shadow-sm">
-                {t("studentCourses.allLevels")}
-              </TabsTrigger>
-              <TabsTrigger value="new" className="rounded-lg font-bold data-[state=active]:bg-white data-[state=active]:shadow-sm">
-                {t("studentCourses.newReleases")}
-              </TabsTrigger>
-              <TabsTrigger value="popular" className="rounded-lg font-bold data-[state=active]:bg-white data-[state=active]:shadow-sm">
-                {t("studentCourses.popular")}
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+      <section className="space-y-5">
+        <div className="flex items-end justify-between gap-4">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-primary">
+            {home.myCourses.length ? (es ? "Explorar cursos" : "Explore courses") : es ? "Empezá un curso" : "Start a course"}
+          </h2>
+          {home.catalog.length > 3 ? (
+            <Link href="/campus/courses" className="text-sm font-semibold text-primary/70 hover:text-primary">
+              {es ? "Ver todos" : "See all"}
+            </Link>
+          ) : null}
         </div>
-
-        {catalogCourses && catalogCourses.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {catalogCourses.slice(0, 6).map((course) => (
-              <StudentCourseCard key={course.id} course={course} variant="available" />
+        {home.catalog.length > 0 ? (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {home.catalog.slice(0, 3).map((course) => (
+              <CourseCard key={course.id} course={course} />
             ))}
           </div>
         ) : (
-          <div className="py-20 text-center rounded-3xl border-2 border-dashed border-slate-100 bg-slate-50/50">
-            <p className="text-slate-400 font-medium">{t("studentCourses.emptyCatalog")}</p>
-          </div>
-        )}
-
-        {catalogCourses && catalogCourses.length > 6 && (
-          <div className="flex justify-center pt-6">
-            <button className="px-8 py-3 rounded-2xl bg-white border border-slate-200 text-primary font-bold shadow-xs hover:border-primary hover:text-primary transition-all active:scale-95">
-              {t("studentCourses.loadMoreCourses")}
-            </button>
-          </div>
+          <p className="rounded-2xl border border-dashed border-primary/15 px-6 py-10 text-center text-sm text-primary/65">
+            {home.myCourses.length
+              ? es
+                ? "Ya estás inscripto en todos los cursos disponibles. Pronto sumamos más."
+                : "You're enrolled in every available course. More are on the way."
+              : es
+                ? "Todavía no hay cursos publicados. Pronto sumamos los primeros."
+                : "No courses are published yet. The first ones are on the way."}
+          </p>
         )}
       </section>
-
-      {/* 7. Certifications & Completed Courses Section */}
-      {completedEnrollments.length > 0 && (
-        <section className="space-y-6 pt-10 border-t border-slate-100">
-          <div className="flex items-center gap-3 px-1">
-            <div className="h-10 w-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
-              <GraduationCap className="size-6 text-emerald-600" />
-            </div>
-            <h2 className="text-2xl font-bold tracking-tight text-primary">
-              {t("studentCourses.certificationsTitle")}
-            </h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {completedEnrollments.map((e) => (
-              <StudentCourseCard 
-                key={e.id} 
-                course={e.courses} 
-                enrollment={e} 
-                variant="completed" 
-              />
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 }
