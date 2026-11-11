@@ -40,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local scratch, logs and agent artifacts
+_tmp_*
+*.log
+.claude/settings.local.json
+.claude/worktrees/
