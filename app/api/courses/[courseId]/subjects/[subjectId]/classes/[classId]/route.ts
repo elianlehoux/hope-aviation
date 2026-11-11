@@ -146,6 +146,9 @@ export async function PATCH(request: Request, context: RouteContext) {
   if (restPayload.order_index !== undefined) {
     updates.order_index = restPayload.order_index;
   }
+  if (restPayload.content !== undefined) {
+    updates.content = restPayload.content;
+  }
   if (payloadSubjectId !== undefined && payloadSubjectId !== subjectId) {
     updates.subject_id = targetSubjectId;
   }

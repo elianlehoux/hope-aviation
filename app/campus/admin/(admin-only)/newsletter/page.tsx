@@ -1,12 +1,12 @@
 import { NewsletterAdminPanel } from "@/components/features/admin/NewsletterAdminPanel";
 
 export const metadata = {
-  title: "Newsletter — Hope Aviation Admin",
+  title: "Boletín",
   description: "Manage subscribers and dispatch updates.",
 };
 
 /**
- * Admin Newsletter page — dashboard and email dispatch controls.
+ * Admin newsletter page: subscriber stats and email dispatch.
  */
 export default function AdminNewsletterPage() {
   return <NewsletterAdminPanel />;

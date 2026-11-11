@@ -89,22 +89,17 @@ export async function PATCH(request: Request, context: RouteContext) {
       );
     }
 
-    const missingExams = subjects.filter((s) => !s.exams?.length).length;
-    if (missingExams > 0) {
-      return jsonError(
-        "validation_error",
-        "Every module needs an exam before publish.",
-        400,
-      );
-    }
-
+    // Modules without an exam are allowed: they unlock the next one once their classes are done.
     const examIds = subjects.flatMap((s) => (s.exams ?? []).map((e: { id: string }) => e.id));
-    const { count: questionCount, error: qErr } = await supabase
-      .from("questions")
-      .select("id", { count: "exact", head: true })
-      .in("exam_id", examIds);
-
-    if (qErr) return responseFromPostgrestError(qErr);
+    let questionCount = 0;
+    if (examIds.length > 0) {
+      const { count, error: qErr } = await supabase
+        .from("questions")
+        .select("id", { count: "exact", head: true })
+        .in("exam_id", examIds);
+      if (qErr) return responseFromPostgrestError(qErr);
+      questionCount = count ?? 0;
+    }
 
     const { data: courseRow } = await supabase
       .from("courses")
@@ -116,10 +111,10 @@ export async function PATCH(request: Request, context: RouteContext) {
       payload.final_exam_question_count ??
       courseRow?.final_exam_question_count ??
       0;
-    if (configured > 0 && (questionCount ?? 0) < configured) {
+    if (configured > 0 && questionCount < configured) {
       return jsonError(
         "validation_error",
-        `The final exam needs ${configured} questions, but the course only has ${questionCount ?? 0}.`,
+        `The final exam needs ${configured} questions, but the course only has ${questionCount}.`,
         400,
       );
     }

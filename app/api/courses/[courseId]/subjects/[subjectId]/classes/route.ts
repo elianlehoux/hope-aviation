@@ -84,6 +84,7 @@ export async function POST(request: Request, context: RouteContext) {
       resource_url: p.resource_url?.trim() || null,
       duration_minutes: p.duration_minutes ?? null,
       order_index: p.order_index ?? null,
+      content: p.content ?? null,
     })
     .select("*")
     .single();

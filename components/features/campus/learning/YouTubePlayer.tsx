@@ -9,16 +9,23 @@ interface YouTubePlayerProps {
   onEnded?: () => void;
 }
 
+/** Minimal surface of the YouTube IFrame API that this player uses. */
+type YTPlayer = { destroy: () => void };
+type YTPlayerEvent = { data: number };
+type YTNamespace = {
+  Player: new (el: HTMLElement, opts: Record<string, unknown>) => YTPlayer;
+};
+
 declare global {
   interface Window {
     onYouTubeIframeAPIReady: () => void;
-    YT: any;
+    YT: YTNamespace;
   }
 }
 
 export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<YTPlayer | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,7 +55,7 @@ export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerPro
           width: "100%",
           videoId: videoId,
           playerVars: {
-            autoplay: 1,
+            autoplay: 0,
             modestbranding: 1,
             rel: 0,
             origin: window.location.origin,
@@ -57,12 +64,12 @@ export function YouTubePlayer({ videoId: rawVideoId, onEnded }: YouTubePlayerPro
             onReady: () => {
               if (isMounted) setIsLoading(false);
             },
-            onStateChange: (event: any) => {
+            onStateChange: (event: YTPlayerEvent) => {
               if (event.data === 0) {
                 onEndedRef.current?.();
               }
             },
-            onError: (e: any) => {
+            onError: (e: YTPlayerEvent) => {
               console.error("YouTube Player Error:", e);
               if (isMounted) setError("Failed to load video. It might be private or restricted.");
             }

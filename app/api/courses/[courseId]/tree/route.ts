@@ -11,10 +11,6 @@ type RouteContext = { params: Promise<{ courseId: string }> };
 
 type SubjectRow = Subject & { classes: Class[] | null; exams: Exam[] | null };
 
-type CourseTreeData = Course & {
-  subjects: SubjectRow[] | null;
-  total_questions_count?: number;
-};
 
 export async function GET(_request: Request, context: RouteContext) {
   const { courseId: rawId } = await context.params;

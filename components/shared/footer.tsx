@@ -1,159 +1,126 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { T } from "@/lib/i18n/context";
-import { Instagram } from "lucide-react";
+import { Instagram, Mail } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/context";
 import { CopyrightYear } from "@/components/shared/copyright-year";
-import { NewsletterForm } from "@/components/features/landing/NewsletterForm";
 
 interface FooterProps {
   minimal?: boolean;
 }
 
+const footLink =
+  "rounded-sm text-white/70 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
+
 /**
- * Footer — Premium Apple-style dark footer aligned with DESIGN.md and GEMINI.md.
- * Supports a `minimal` mode for specific content or distraction-free pages.
+ * Public footer on the ink band. Brochure tagline, three short link groups and
+ * contact. `minimal` keeps only the bottom line for distraction-free pages.
  */
 export function Footer({ minimal = false }: FooterProps) {
+  const { lang } = useTranslation();
+  const es = lang === "es";
+
+  const bottom = (
+    <div className="flex flex-col gap-3 text-sm text-white/50 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-wrap gap-x-1.5">
+        {/* CopyrightYear renders its own <p>: "© YYYY Hope Aviation." */}
+        <CopyrightYear />
+        <p>{es ? "Proyecto humanitario sin fines de lucro." : "Non-profit humanitarian project."}</p>
+      </div>
+      <div className="flex gap-5">
+        <Link href="/privacy" className={footLink}>
+          {es ? "Privacidad" : "Privacy"}
+        </Link>
+        <Link href="/terms" className={footLink}>
+          {es ? "Términos" : "Terms"}
+        </Link>
+      </div>
+    </div>
+  );
+
   if (minimal) {
-    return (
-      <footer className="w-full bg-ink border-t border-white/5 py-12 px-6">
-        <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 font-bold text-[10px] uppercase tracking-[0.25em] text-center md:text-left">
-          <div className="flex items-center gap-1.5 justify-center md:justify-start">
-            <CopyrightYear />
-            <span>•</span>
-            <T k="landing.footerRightsReserved" />
-          </div>
-          <p>
-            <T k="landing.footerDesigned" />
-          </p>
-        </div>
-      </footer>
-    );
+    return <footer className="w-full bg-ink py-10 text-white"><div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{bottom}</div></footer>;
   }
 
+  const groups = [
+    {
+      title: es ? "Aprender" : "Learn",
+      links: [
+        { href: "/campus", label: "Campus" },
+        { href: "/#cursos", label: es ? "Cursos" : "Courses" },
+        { href: "/#como-funciona", label: es ? "Cómo funciona" : "How it works" },
+      ],
+    },
+    {
+      title: es ? "Conocer" : "Explore",
+      links: [
+        { href: "/about", label: es ? "Nosotros" : "About us" },
+        { href: "/directorio", label: es ? "Directorio de proyectos" : "Project directory" },
+      ],
+    },
+    {
+      title: es ? "Sumarse" : "Get involved",
+      links: [
+        { href: "/donate", label: es ? "Donar" : "Donate" },
+        { href: "/get-involved/church", label: es ? "Tu iglesia" : "Your church" },
+        { href: "/get-involved/project", label: es ? "Tu proyecto" : "Your project" },
+        { href: "/get-involved/teach", label: es ? "Enseñar" : "Teach" },
+        { href: "/get-involved/volunteer", label: es ? "Voluntariado" : "Volunteer" },
+      ],
+    },
+  ];
+
   return (
-    <footer className="w-full bg-ink border-t border-white/5 pt-20 pb-12 px-6 md:px-8 lg:px-12 relative overflow-hidden">
-      {/* Background ambient glow */}
-      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[radial-gradient(circle_at_bottom_right,rgba(23,73,255,0.04),transparent_70%)] pointer-events-none z-0" />
-      
-      <div className="mx-auto max-w-7xl relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-16 items-start">
-          {/* Column 1: Brand & Social */}
-          <div className="flex flex-col items-start gap-5">
-            <Link href="/" className="group flex items-center">
-              <Image
-                src="/logos/Hope Black.svg"
-                alt="Hope Aviation"
-                width={120}
-                height={40}
-                className="h-10 scale-[2.1] origin-left brightness-0 invert transition-all duration-500 group-hover:scale-[2.15]"
-                style={{ width: "auto" }}
-                priority
-              />
+    <footer className="w-full bg-ink pb-10 pt-20 text-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-14 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <Link
+              href="/"
+              className="inline-flex rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logos/hope-logo.svg" alt="Hope Aviation" className="h-9 w-auto brightness-0 invert" />
             </Link>
-            <p className="text-slate-400 font-medium text-sm leading-relaxed mt-2 max-w-xs">
-              <T k="landing.footerTagline" />
+            <p className="mt-8 max-w-sm font-display text-3xl font-light leading-[1.1] tracking-[-0.02em]">
+              {es ? "Llevando esperanza donde los caminos no llegan." : "Bringing hope where roads can’t reach."}
             </p>
-            <div className="flex items-center gap-3 mt-1">
+            <div className="mt-8 flex flex-col gap-3 text-sm">
+              <a href="mailto:hope.aviation.uap@gmail.com" className={`inline-flex w-fit items-center gap-2 ${footLink}`}>
+                <Mail className="size-4" aria-hidden="true" />
+                hope.aviation.uap@gmail.com
+              </a>
               <a
                 href="https://instagram.com/hope.aviation"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-400 hover:text-white transition-all duration-300 p-2.5 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-full hover:scale-110 flex items-center justify-center size-10"
-                aria-label="Instagram"
+                className={`inline-flex w-fit items-center gap-2 ${footLink}`}
               >
-                <Instagram className="size-5" />
+                <Instagram className="size-4" aria-hidden="true" />
+                @hope.aviation
               </a>
             </div>
           </div>
 
-          {/* Column 2: Features */}
-          <div className="flex flex-col items-start">
-            <h4 className="font-bold text-white text-xs uppercase tracking-[0.2em] mb-6">
-              <T k="landing.footerFeatures" />
-            </h4>
-            <div className="flex flex-col gap-3.5 font-semibold text-slate-400 text-sm">
-              <Link
-                href="/#cursos"
-                className="hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block w-fit"
-              >
-                <T k="navbar.courses" />
-              </Link>
-              <Link
-                href="/about"
-                className="hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block w-fit"
-              >
-                <T k="navbar.about" />
-              </Link>
-              <Link
-                href="/campus"
-                className="hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block w-fit"
-              >
-                <T k="landing.enterCampus" />
-              </Link>
-              <Link
-                href="/get-involved/support"
-                className="hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block w-fit"
-              >
-                <T k="navbar.donate" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Column 3: Legal */}
-          <div className="flex flex-col items-start">
-            <h4 className="font-bold text-white text-xs uppercase tracking-[0.2em] mb-6">
-              Legal
-            </h4>
-            <div className="flex flex-col gap-3.5 font-semibold text-slate-400 text-sm">
-              <Link
-                href="/privacy"
-                className="hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block w-fit"
-              >
-                <T k="landing.footerPrivacy" />
-              </Link>
-              <Link
-                href="/terms"
-                className="hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block w-fit"
-              >
-                <T k="landing.footerTerms" />
-              </Link>
-              <a
-                href="mailto:hope.aviation.uap@gmail.com"
-                className="hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block w-fit"
-              >
-                <T k="landing.footerContact" />
-              </a>
-            </div>
-          </div>
-
-          {/* Column 4: Newsletter */}
-          <div className="flex flex-col items-start">
-            <h4 className="font-bold text-white text-xs uppercase tracking-[0.2em] mb-6">
-              <T k="landing.newsletterTitle" />
-            </h4>
-            <p className="text-slate-400 text-sm font-medium leading-relaxed mb-4">
-              <T k="landing.newsletterDesc" />
-            </p>
-            <div className="w-full">
-              <NewsletterForm />
-            </div>
+          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:col-span-6 lg:col-start-7">
+            {groups.map((group) => (
+              <div key={group.title}>
+                <h2 className="text-sm font-semibold text-white">{group.title}</h2>
+                <ul className="mt-4 flex flex-col gap-3 text-sm">
+                  {group.links.map((link) => (
+                    <li key={link.href}>
+                      <Link href={link.href} className={footLink}>
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
-        
-        {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 font-bold text-[10px] uppercase tracking-[0.25em] text-center md:text-left">
-          <div className="flex items-center gap-1.5 justify-center md:justify-start">
-            <CopyrightYear />
-            <span>•</span>
-            <T k="landing.footerRightsReserved" />
-          </div>
-          <p>
-            <T k="landing.footerDesigned" />
-          </p>
-        </div>
+
+        <div className="mt-16 border-t border-white/10 pt-8">{bottom}</div>
       </div>
     </footer>
   );

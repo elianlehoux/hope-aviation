@@ -24,7 +24,7 @@ export function CampusPageHeader({
           {title}
         </h1>
         {description ? (
-          <p className="mt-2 max-w-[60ch] text-base leading-relaxed text-primary/60">
+          <p className="mt-2 max-w-[60ch] text-base leading-relaxed text-primary/65">
             {description}
           </p>
         ) : null}

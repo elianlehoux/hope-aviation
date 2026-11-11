@@ -38,10 +38,10 @@ export default function PrivacyPage() {
               </div>
               <div>
                 <Title level="h1" className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-none">
-                  {lang === "es" ? "Política de Privacidad" : "Privacy Policy"}
+                  {lang === "es" ? "Política de privacidad" : "Privacy Policy"}
                 </Title>
                 <p className="text-slate-400 font-medium text-xs uppercase tracking-widest mt-2">
-                  {lang === "es" ? "Última actualización: Mayo 2026" : "Last updated: May 2026"}
+                  {lang === "es" ? "Última actualización: noviembre de 2026" : "Last updated: November 2026"}
                 </p>
               </div>
             </div>
@@ -52,42 +52,44 @@ export default function PrivacyPage() {
                 // Spanish Version
                 <>
                   <p>
-                    En <strong>Hope Aviation</strong>, nos tomamos muy en serio la privacidad de tus datos personales. Esta Política de Privacidad describe cómo recopilamos, utilizamos y resguardamos tu información al registrarte y utilizar nuestra plataforma de campus virtual.
+                    En <strong>Hope Aviation</strong> nos tomamos en serio la privacidad de tus datos personales. Esta política describe qué información recopilamos, para qué la usamos y cómo la cuidamos cuando te registrás y usás el campus virtual.
                   </p>
 
                   <section className="space-y-3">
                     <Title level="h3" className="text-lg md:text-xl font-bold text-white tracking-tight">
-                      1. Información que Recopilamos
+                      1. Información que recopilamos
                     </Title>
                     <p>
-                      Para brindarte acceso a la plataforma de aprendizaje, recopilamos únicamente los siguientes datos:
+                      Para darte acceso al campus recopilamos únicamente estos datos:
                     </p>
                     <ul className="list-disc list-inside pl-4 space-y-2 text-white/70">
-                      <li><strong>Información de Registro:</strong> Nombre completo, correo electrónico y contraseña al crear tu cuenta (estudiante o instructor).</li>
-                      <li><strong>Progreso Académico:</strong> Cursos en los que te inscribes, avance de lecciones completadas, calificaciones de exámenes y certificados emitidos.</li>
+                      <li><strong>Datos de registro:</strong> nombre, correo electrónico y contraseña al crear tu cuenta. Si entrás con Google, recibimos el nombre y el correo de tu cuenta de Google; no vemos tu contraseña de Google.</li>
+                      <li><strong>Datos de perfil:</strong> fecha de nacimiento, país y, si querés, teléfono. El nombre de tu perfil es el que aparece en tus certificados.</li>
+                      <li><strong>Progreso académico:</strong> cursos en los que te inscribís, clases completadas, resultados de exámenes y certificados emitidos.</li>
+                      <li><strong>Newsletter:</strong> si te suscribís, tu correo electrónico.</li>
                     </ul>
                   </section>
 
                   <section className="space-y-3">
                     <Title level="h3" className="text-lg md:text-xl font-bold text-white tracking-tight">
-                      2. Uso de la Información
+                      2. Uso de la información
                     </Title>
                     <p>
                       Los datos recopilados se utilizan exclusivamente con el fin de:
                     </p>
                     <ul className="list-disc list-inside pl-4 space-y-2 text-white/70">
                       <li>Administrar tu cuenta de usuario y permitirte el ingreso seguro al campus.</li>
-                      <li>Registrar tu progreso educativo y calificar evaluaciones académicas.</li>
-                      <li>Enviarte comunicaciones importantes sobre el estado del campus o el newsletter (si te has suscrito voluntariamente).</li>
+                      <li>Registrar tu progreso, corregir los exámenes y emitir tus certificados.</li>
+                      <li>Enviarte avisos importantes sobre el campus y, si te suscribiste, el newsletter.</li>
                     </ul>
                   </section>
 
                   <section className="space-y-3">
                     <Title level="h3" className="text-lg md:text-xl font-bold text-white tracking-tight">
-                      3. Cookies y Almacenamiento Local
+                      3. Cookies y almacenamiento local
                     </Title>
                     <p>
-                      Nuestra plataforma utiliza únicamente <strong>cookies técnicas y de sesión</strong> provistas por el servicio de base de datos y autenticación (Supabase Auth). Estas cookies son estrictamente necesarias para verificar tu identidad al navegar, mantener tu sesión iniciada de manera segura y proteger el campus de accesos no autorizados.
+                      El sitio usa únicamente <strong>cookies técnicas y de sesión</strong> del servicio de autenticación (Supabase Auth), necesarias para verificar tu identidad, mantener tu sesión iniciada de forma segura y proteger el campus de accesos no autorizados. Además guarda, en una cookie y en el almacenamiento local de tu navegador, el idioma que elegiste.
                     </p>
                     <p className="text-white/70 bg-white/5 border border-white/5 rounded-xl p-4 italic">
                       Nota: No utilizamos cookies de rastreo, píxeles de publicidad de terceros, ni tecnologías de análisis de comportamiento para marketing. Por esta razón, de acuerdo a la legislación vigente, no se requiere un banner de consentimiento de cookies, al ser cookies indispensables para la funcionalidad del servicio.
@@ -96,28 +98,28 @@ export default function PrivacyPage() {
 
                   <section className="space-y-3">
                     <Title level="h3" className="text-lg md:text-xl font-bold text-white tracking-tight">
-                      4. Compartir Información con Terceros
+                      4. Compartir información con terceros
                     </Title>
                     <p>
-                      No vendemos, alquilamos ni compartimos tu información personal con terceros bajo ningún concepto. Tu información se mantiene confidencial dentro del ecosistema de Hope Aviation.
+                      No vendemos, alquilamos ni compartimos tu información personal con terceros. La única información visible para otras personas es la de tus certificados: cada uno tiene un código y un link público de verificación que muestra tu nombre, el curso y la fecha, para que quien reciba ese link pueda comprobar que es auténtico. Tu fecha de nacimiento, tu país, tu teléfono y tu correo nunca se muestran ahí.
                     </p>
                   </section>
 
                   <section className="space-y-3">
                     <Title level="h3" className="text-lg md:text-xl font-bold text-white tracking-tight">
-                      5. Seguridad de los Datos
+                      5. Seguridad de los datos
                     </Title>
                     <p>
-                      Utilizamos la infraestructura en la nube de <strong>Supabase</strong> y <strong>Vercel</strong> para almacenar y transferir tus datos de forma encriptada (HTTPS/SSL). Implementamos medidas de seguridad técnicas para evitar el acceso no autorizado, alteración o pérdida de tus datos.
+                      Usamos la infraestructura en la nube de <strong>Supabase</strong> y <strong>Vercel</strong> para guardar y transmitir tus datos de forma cifrada (HTTPS). Aplicamos medidas técnicas para evitar el acceso no autorizado, la alteración o la pérdida de tus datos.
                     </p>
                   </section>
 
                   <section className="space-y-3">
                     <Title level="h3" className="text-lg md:text-xl font-bold text-white tracking-tight">
-                      6. Derechos sobre tus Datos y Contacto
+                      6. Tus derechos y contacto
                     </Title>
                     <p>
-                      Tienes derecho a solicitar el acceso, modificación o la eliminación total de tu cuenta y toda la información asociada en nuestras bases de datos. Si deseas ejercer este derecho o tienes alguna duda, puedes contactarte con nuestro equipo en:
+                      Tenés derecho a pedir el acceso, la corrección o la eliminación total de tu cuenta y de toda la información asociada. Para ejercerlo, o si tenés alguna duda, escribinos a:
                     </p>
                     <p className="mt-2 text-accent font-semibold">
                       <a href="mailto:hope.aviation.uap@gmail.com" className="hover:underline">
@@ -130,7 +132,7 @@ export default function PrivacyPage() {
                 // English Version
                 <>
                   <p>
-                    At <strong>Hope Aviation</strong>, we take your personal data privacy very seriously. This Privacy Policy describes how we collect, use, and safeguard your information when you register and interact with our virtual campus platform.
+                    At <strong>Hope Aviation</strong> we take the privacy of your personal data seriously. This policy describes what information we collect, what we use it for and how we look after it when you register and use the virtual campus.
                   </p>
 
                   <section className="space-y-3">
@@ -138,11 +140,13 @@ export default function PrivacyPage() {
                       1. Information We Collect
                     </Title>
                     <p>
-                      To provide you with access to the learning platform, we collect only the following data:
+                      To give you access to the campus we collect only this data:
                     </p>
                     <ul className="list-disc list-inside pl-4 space-y-2 text-white/70">
-                      <li><strong>Registration Details:</strong> Full name, email address, and password when creating your account (student or instructor).</li>
-                      <li><strong>Academic Progress:</strong> Enrolled courses, completed lesson progress, exam scores, and certificates issued.</li>
+                      <li><strong>Registration details:</strong> name, email address and password when you create your account. If you sign in with Google, we receive the name and email of your Google account; we never see your Google password.</li>
+                      <li><strong>Profile details:</strong> date of birth, country and, if you choose, phone number. The name on your profile is the one printed on your certificates.</li>
+                      <li><strong>Academic progress:</strong> courses you enroll in, completed lessons, exam results and certificates issued.</li>
+                      <li><strong>Newsletter:</strong> your email address, if you subscribe.</li>
                     </ul>
                   </section>
 
@@ -155,8 +159,8 @@ export default function PrivacyPage() {
                     </p>
                     <ul className="list-disc list-inside pl-4 space-y-2 text-white/70">
                       <li>Manage your user account and allow secure entry to the campus.</li>
-                      <li>Record your learning progress and grade academic assessments.</li>
-                      <li>Send vital communications about campus updates or the newsletter (if you voluntarily subscribed).</li>
+                      <li>Record your progress, grade exams and issue your certificates.</li>
+                      <li>Send you important notices about the campus and, if you subscribed, the newsletter.</li>
                     </ul>
                   </section>
 
@@ -165,7 +169,7 @@ export default function PrivacyPage() {
                       3. Cookies and Local Storage
                     </Title>
                     <p>
-                      Our platform uses only <strong>technical and session cookies</strong> provided by our database and authentication service (Supabase Auth). These cookies are strictly necessary to verify your identity as you navigate, keep your session securely logged in, and protect the campus from unauthorized access.
+                      The site uses only <strong>technical and session cookies</strong> from the authentication service (Supabase Auth), needed to verify your identity, keep your session securely signed in and protect the campus from unauthorized access. It also stores the language you chose in a cookie and in your browser&apos;s local storage.
                     </p>
                     <p className="text-white/70 bg-white/5 border border-white/5 rounded-xl p-4 italic">
                       Note: We do not use tracking cookies, third-party advertising pixels, or behavior analytics tools for marketing. Therefore, in accordance with active regulations, a cookie consent banner is not required, as these cookies are indispensable to perform the technical service.
@@ -177,7 +181,7 @@ export default function PrivacyPage() {
                       4. Data Sharing with Third Parties
                     </Title>
                     <p>
-                      We do not sell, rent, or share your personal information with third parties under any circumstances. Your information remains strictly confidential within the Hope Aviation ecosystem.
+                      We do not sell, rent or share your personal information with third parties. The only information other people can see is on your certificates: each one has a code and a public verification link that shows your name, the course and the date, so whoever receives that link can check it is genuine. Your date of birth, country, phone number and email are never shown there.
                     </p>
                   </section>
 
@@ -186,7 +190,7 @@ export default function PrivacyPage() {
                       5. Data Security
                     </Title>
                     <p>
-                      We use <strong>Supabase</strong> and <strong>Vercel</strong> cloud infrastructure to store and transmit your data in encrypted formats (HTTPS/SSL). We implement technical security measures to prevent unauthorized access, alteration, or loss of your records.
+                      We use <strong>Supabase</strong> and <strong>Vercel</strong> cloud infrastructure to store and transmit your data encrypted (HTTPS). We apply technical measures to prevent unauthorized access, alteration or loss of your data.
                     </p>
                   </section>
 
@@ -195,7 +199,7 @@ export default function PrivacyPage() {
                       6. Your Rights and Contact Information
                     </Title>
                     <p>
-                      You have the right to request access to, correction of, or the complete deletion of your account and all associated records in our databases. To exercise this right or ask any questions, please contact our team at:
+                      You have the right to request access to, correction of, or the complete deletion of your account and all associated information. To exercise it, or if you have any questions, write to us at:
                     </p>
                     <p className="mt-2 text-accent font-semibold">
                       <a href="mailto:hope.aviation.uap@gmail.com" className="hover:underline">

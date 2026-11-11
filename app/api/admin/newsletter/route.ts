@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin, requireSession } from "@/lib/api/auth";
-import { jsonError, jsonOk } from "@/lib/api/json";
+import { jsonOk } from "@/lib/api/json";
 import { responseFromPostgrestError } from "@/lib/api/supabase-errors";
 
 export async function GET() {

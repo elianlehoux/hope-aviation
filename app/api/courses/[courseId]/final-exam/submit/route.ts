@@ -5,9 +5,14 @@ import { parseUuidParam } from "@/lib/api/params";
 import { responseFromPostgrestError } from "@/lib/api/supabase-errors";
 import { examSubmitSchema } from "@/lib/validation/exams";
 import { revalidatePath } from "next/cache";
+import { examRpcErrorResponse } from "@/lib/campus/exam-paper";
 
 type RouteContext = { params: Promise<{ courseId: string }> };
 
+/**
+ * Grade the caller's open final exam session (`public.submit_final_exam`); on pass the
+ * enrollment is completed. Response: `{ data: { score, passed, correct, total } }`.
+ */
 export async function POST(request: Request, context: RouteContext) {
   const { courseId: rawCourseId } = await context.params;
   const courseId = parseUuidParam(rawCourseId);
@@ -18,7 +23,6 @@ export async function POST(request: Request, context: RouteContext) {
   const supabase = await createClient();
   const session = await requireSession(supabase);
   if (!session.ok) return session.response;
-  const userId = session.user.id;
 
   let body: unknown;
   try {
@@ -29,82 +33,39 @@ export async function POST(request: Request, context: RouteContext) {
 
   const parsed = examSubmitSchema.safeParse(body);
   if (!parsed.success) {
-    return jsonError("validation_error", "Invalid attempt payload.", 400);
+    return jsonError("invalid_answers", "Invalid attempt payload.", 400);
   }
 
-  const { answers } = parsed.data;
-
-  // 1. Fetch course to get passing score
-  const { data: course, error: courseErr } = await supabase
-    .from("courses")
-    .select("final_exam_passing_score, final_exam_question_count")
-    .eq("id", courseId)
-    .maybeSingle();
-
-  if (courseErr) return responseFromPostgrestError(courseErr);
-  if (!course) return jsonError("not_found", "Course not found.", 404);
-
-  // 2. Fetch enrollment to make sure they are active
-  const { data: enrollment, error: enrollmentErr } = await supabase
-    .from("enrollments")
-    .select("status")
-    .eq("user_id", userId)
+  // The session's question count is the denominator; read it before the RPC closes it.
+  const { data: open, error: openErr } = await supabase
+    .from("final_exam_sessions")
+    .select("question_ids")
+    .eq("user_id", session.user.id)
     .eq("course_id", courseId)
+    .is("finished_at", null)
     .maybeSingle();
+  if (openErr) return responseFromPostgrestError(openErr);
 
-  if (enrollmentErr) return responseFromPostgrestError(enrollmentErr);
-  if (!enrollment || (enrollment.status !== "active" && enrollment.status !== "completed")) {
-    return jsonError("unauthorized", "Not enrolled in this course.", 403);
-  }
+  const { data, error } = await supabase.rpc("submit_final_exam", {
+    p_course_id: courseId,
+    p_answers: parsed.data.answers,
+  });
 
-  const { data: courseExams, error: examsErr } = await supabase
-    .from("exams")
-    .select("id")
-    .eq("course_id", courseId);
-  if (examsErr) return responseFromPostgrestError(examsErr);
+  if (error) return examRpcErrorResponse(error);
 
-  const examIds = (courseExams ?? []).map((e) => e.id);
-  if (examIds.length === 0) {
-    return jsonError("validation_error", "This course has no module exams.", 400);
-  }
-
-  const { data: questions, error: qErr } = await supabase
-    .from("questions")
-    .select("id, points, options(id, is_correct)")
-    .in("exam_id", examIds);
-  if (qErr) return responseFromPostgrestError(qErr);
-
-  const courseQuestionIds = new Set((questions ?? []).map((q) => q.id));
-  for (const questionId of Object.keys(answers)) {
-    if (!courseQuestionIds.has(questionId)) {
-      return jsonError("validation_error", "Unknown question id in answers.", 400);
-    }
-  }
-
-  const targetCount = Math.max(1, course.final_exam_question_count || Object.keys(answers).length);
-  let correct = 0;
-  for (const [questionId, optionId] of Object.entries(answers)) {
-    const question = (questions ?? []).find((q) => q.id === questionId);
-    const opts = question?.options as { id: string; is_correct: boolean }[] | null;
-    if (opts?.find((o) => o.id === optionId && o.is_correct)) {
-      correct += 1;
-    }
-  }
-
-  const score = (correct / targetCount) * 100;
-  const passed = score >= course.final_exam_passing_score;
-
-  // 4. Mark completed if passed
-  if (passed && enrollment.status !== "completed") {
-    const { error: completeErr } = await supabase.rpc("complete_course_enrollment", { p_course_id: courseId });
-    if (completeErr) {
-       console.error("Failed to mark course completed:", completeErr);
-       // We still return true passed, but we might want to flag the error.
-    }
-  }
+  const result = (Array.isArray(data) ? data[0] : data) as
+    | { score: number | null; passed: boolean | null }
+    | null;
 
   revalidatePath("/campus");
   revalidatePath(`/campus/courses/${courseId}`);
 
-  return jsonOk({ score, passed });
+  const score = result?.score ?? 0;
+  const total = ((open?.question_ids as string[] | null) ?? []).length;
+  return jsonOk({
+    score,
+    passed: result?.passed === true,
+    correct: Math.round((score * total) / 100),
+    total,
+  });
 }

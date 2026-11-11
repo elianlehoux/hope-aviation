@@ -36,9 +36,11 @@ export type Database = {
     Tables: {
       classes: {
         Row: {
+          content: Json | null
           created_at: string
           description: Json | null
           duration_minutes: number | null
+          has_content: boolean | null
           id: string
           order_index: number | null
           resource_url: string | null
@@ -47,9 +49,11 @@ export type Database = {
           video_url: string | null
         }
         Insert: {
+          content?: Json | null
           created_at?: string
           description?: Json | null
           duration_minutes?: number | null
+          has_content?: boolean | null
           id?: string
           order_index?: number | null
           resource_url?: string | null
@@ -58,9 +62,11 @@ export type Database = {
           video_url?: string | null
         }
         Update: {
+          content?: Json | null
           created_at?: string
           description?: Json | null
           duration_minutes?: number | null
+          has_content?: boolean | null
           id?: string
           order_index?: number | null
           resource_url?: string | null
@@ -155,6 +161,8 @@ export type Database = {
       }
       enrollments: {
         Row: {
+          certificate_code: string | null
+          completed_at: string | null
           course_id: string
           enrolled_at: string
           id: string
@@ -162,6 +170,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          certificate_code?: string | null
+          completed_at?: string | null
           course_id: string
           enrolled_at?: string
           id?: string
@@ -169,6 +179,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+          certificate_code?: string | null
+          completed_at?: string | null
           course_id?: string
           enrolled_at?: string
           id?: string
@@ -287,6 +299,54 @@ export type Database = {
             columns: ["subject_id"]
             isOneToOne: false
             referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      final_exam_sessions: {
+        Row: {
+          course_id: string
+          finished_at: string | null
+          id: string
+          passed: boolean | null
+          question_ids: string[]
+          score: number | null
+          started_at: string
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          finished_at?: string | null
+          id?: string
+          passed?: boolean | null
+          question_ids: string[]
+          score?: number | null
+          started_at?: string
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          finished_at?: string | null
+          id?: string
+          passed?: boolean | null
+          question_ids?: string[]
+          score?: number | null
+          started_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "final_exam_sessions_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "final_exam_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -571,16 +631,6 @@ export type Database = {
           id: string | null
           question_id: string | null
         }
-        Insert: {
-          content?: Json | null
-          id?: string | null
-          question_id?: string | null
-        }
-        Update: {
-          content?: Json | null
-          id?: string | null
-          question_id?: string | null
-        }
         Relationships: [
           {
             foreignKeyName: "options_question_id_fkey"
@@ -597,12 +647,50 @@ export type Database = {
         Args: { p_role_id: string; p_user_id: string }
         Returns: undefined
       }
-      complete_course_enrollment: {
+      complete_course: {
         Args: { p_course_id: string }
-        Returns: undefined
+        Returns: {
+          certificate_code: string | null
+          completed_at: string | null
+          course_id: string
+          enrolled_at: string
+          id: string
+          status: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "enrollments"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
-      complete_exam_attempt: {
-        Args: { p_exam_id: string; p_passed: boolean; p_score: number }
+      course_subject_exam_chain_status: {
+        Args: { p_course_id: string; p_exam_id: string; p_subject_id: string }
+        Returns: {
+          exam_ok: boolean
+          subject_ok: boolean
+        }[]
+      }
+      exam_module_unlocked: {
+        Args: { p_exam_id: string; p_user_id: string }
+        Returns: boolean
+      }
+      exam_window_expired: {
+        Args: { p_limit_minutes: number; p_started_at: string }
+        Returns: boolean
+      }
+      has_role: {
+        Args: { p_role_slug: string; p_user_id: string }
+        Returns: boolean
+      }
+      is_course_instructor: {
+        Args: { p_course_id: string; p_user_id: string }
+        Returns: boolean
+      }
+      new_certificate_code: { Args: never; Returns: string }
+      start_exam_attempt: {
+        Args: { p_exam_id: string }
         Returns: {
           exam_id: string
           finished_at: string | null
@@ -619,25 +707,62 @@ export type Database = {
           isSetofReturn: false
         }
       }
-      course_subject_exam_chain_status: {
-        Args: { p_course_id: string; p_exam_id: string; p_subject_id: string }
+      start_final_exam: {
+        Args: { p_course_id: string }
         Returns: {
-          exam_ok: boolean
-          subject_ok: boolean
+          course_id: string
+          finished_at: string | null
+          id: string
+          passed: boolean | null
+          question_ids: string[]
+          score: number | null
+          started_at: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "final_exam_sessions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      submit_exam_attempt: {
+        Args: { p_answers: Json; p_exam_id: string }
+        Returns: {
+          exam_id: string
+          finished_at: string | null
+          id: string
+          passed: boolean | null
+          score: number | null
+          started_at: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "exam_attempts"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      submit_final_exam: {
+        Args: { p_answers: Json; p_course_id: string }
+        Returns: {
+          passed: boolean
+          score: number
         }[]
-      }
-      has_role: {
-        Args: { p_role_slug: string; p_user_id: string }
-        Returns: boolean
-      }
-      is_course_instructor: {
-        Args: { p_course_id: string; p_user_id: string }
-        Returns: boolean
       }
       subscribe_to_newsletter: { Args: { p_email: string }; Returns: boolean }
       unsubscribe_from_newsletter: {
         Args: { p_email: string }
         Returns: boolean
+      }
+      verify_certificate: {
+        Args: { p_code: string }
+        Returns: {
+          completed_at: string
+          course_title: Json
+          full_name: string
+        }[]
       }
     }
     Enums: {

@@ -17,6 +17,7 @@ export const translations = {
     create: { en: "Create", es: "Crear" },
     search: { en: "Search", es: "Buscar" },
     close: { en: "Close", es: "Cerrar" },
+    menu: { en: "Menu", es: "Menú" },
     back: { en: "Back", es: "Volver" },
     next: { en: "Next", es: "Siguiente" },
     previous: { en: "Previous", es: "Anterior" },
@@ -93,15 +94,15 @@ export const translations = {
     },
     featureCertifications: { en: "Certifications", es: "Certificaciones" },
     featureCertificationsDesc: {
-      en: "Earn recognized certificates upon completing each training program.",
-      es: "Obtén certificados reconocidos al completar cada programa de capacitación.",
+      en: "Get a verifiable certificate when you complete each course.",
+      es: "Obtén un certificado verificable al completar cada curso.",
     },
 
     // About section
     aboutTitle: { en: "Building bridges to new global opportunities.", es: "Construyendo puentes hacia nuevas oportunidades globales." },
     aboutDescription: {
-      en: "We are committed to connecting strategic projects with the right talent, providing the essential tools to develop versatile and high-impact professionals. Our vision extends beyond flight instruction; we aim to integrate volunteers from all backgrounds who wish to leverage their professional expertise in global aviation projects, driving excellence in every mission.",
-      es: "Nos dedicamos a conectar proyectos estratégicos con el talento idóneo, proporcionando las herramientas necesarias para formar profesionales versátiles y de alto impacto. Nuestra visión va más allá de la instrucción de vuelo; buscamos integrar a voluntarios de todas las disciplinas que deseen poner su profesión al servicio de proyectos aeronáuticos globales, impulsando la excelencia en cada misión.",
+      en: "We want to connect strategic projects with the right talent, providing the essential tools to develop versatile and high-impact professionals. Our vision extends beyond flight instruction; we aim to integrate volunteers from all backgrounds who wish to leverage their professional expertise in global aviation projects, driving excellence in every mission.",
+      es: "Queremos conectar proyectos estratégicos con el talento idóneo, proporcionando las herramientas necesarias para formar profesionales versátiles y de alto impacto. Nuestra visión va más allá de la instrucción de vuelo; buscamos integrar a voluntarios de todas las disciplinas que deseen poner su profesión al servicio de proyectos aeronáuticos globales, impulsando la excelencia en cada misión.",
     },
     aboutInnovation: { en: "Innovation", es: "Innovación" },
     aboutExcellence: { en: "Excellence", es: "Excelencia" },
@@ -129,7 +130,7 @@ export const translations = {
     getInvolvedContact: { en: "Contact Us", es: "Contactanos" },
 
     // Church card
-    churchTitle: { en: "Connect Your Church", es: "Conectá tu Iglesia" },
+    churchTitle: { en: "Connect Your Church", es: "Conectá tu iglesia" },
     churchDescription: {
       en: "If your church wants to partner with us through special or monthly offerings, get in touch so we can coordinate together.",
       es: "Si tu iglesia quiere asociarse con nosotros a través de ofrendas especiales o mensuales, ponete en contacto para que podamos coordinar juntos.",
@@ -148,7 +149,7 @@ export const translations = {
     },
 
     // Project card
-    projectTitle: { en: "Connect Your Project", es: "Conectá tu Proyecto" },
+    projectTitle: { en: "Connect Your Project", es: "Conectá tu proyecto" },
     projectDescription: {
       en: "If you want to collaborate as partners, have aircraft available, a place to operate, know of a need somewhere, or offer courses to add to the campus — reach out to us.",
       es: "Si querés colaborar como partner, tenés aviones disponibles, un lugar para operar, conocés una necesidad en algún lugar, o das cursos y querés sumarlos al campus — contactanos.",
@@ -168,7 +169,7 @@ export const translations = {
     teachFeature3: { en: "Impact future mission workers", es: "Impactá a futuros misioneros" },
 
     // Volunteer card
-    volunteerTitle: { en: "Volunteer", es: "Sé Voluntario" },
+    volunteerTitle: { en: "Volunteer", es: "Sé voluntario" },
     volunteerDescription: {
       en: "Help us with online tasks — video editing, filming, production, marketing, and more. Your skills can make a real difference from anywhere.",
       es: "Ayudanos con tareas online — edición de video, filmación, producción, marketing y más. Tus habilidades pueden hacer una diferencia real desde cualquier lugar.",
@@ -207,57 +208,57 @@ export const translations = {
       en: "Many people have the desire and calling to serve, but lack the specific, technical, and humanitarian training needed to face the realities of the mission. It is not enough to know how to fly or have a profession; it requires training that combines technical excellence, cultural sensitivity, and a deep calling to service.",
       es: "Muchas personas tienen el deseo y la vocación de servir, pero carecen de la formación específica, técnica y humanitaria necesaria para enfrentar las realidades de la misión. No basta con saber volar o tener una profesión; se requiere una formación que combine excelencia técnica, sensibilidad cultural y una profunda vocación de servicio."
     },
-    visionTitle: { en: "Our Vision", es: "Nuestra Visión" },
+    visionTitle: { en: "Our Vision", es: "Nuestra visión" },
     visionText: {
-      en: "To be the bridge that connects passionate volunteers with global projects that need hands and wings. We seek to form a global network of trained professionals, with integrity and ready to serve, ensuring that every volunteer we send is a valuable asset to the organizations operating in the field.",
-      es: "Ser el puente que conecta a voluntarios apasionados con proyectos globales que necesitan manos y alas. Buscamos formar una red global de profesionales capacitados, íntegros y listos para servir, asegurando que cada voluntario que enviamos sea un activo valioso para las organizaciones que operan en el terreno."
+      en: "To be the bridge that connects passionate volunteers with global projects that need hands and wings. We seek to form a global network of trained professionals, with integrity and ready to serve, so that every volunteer we recommend is a real help to the organizations operating in the field.",
+      es: "Ser el puente que conecta a voluntarios apasionados con proyectos globales que necesitan manos y alas. Buscamos formar una red global de profesionales capacitados, íntegros y listos para servir, para que cada voluntario que recomendemos sea una verdadera ayuda para las organizaciones que operan en el terreno."
     },
     pillarsTitle: { en: "What we do", es: "Qué hacemos" },
-    pillar1Title: { en: "1. Virtual Campus: Comprehensive Training", es: "1. Campus Virtual: Formación Integral" },
+    pillar1Title: { en: "1. Virtual Campus: Comprehensive Training", es: "1. Campus virtual: formación integral" },
     pillar1Desc: {
       en: "Our heart is our Virtual Campus. We understand that our job is not to teach how to fly, but to teach how to serve. At HOPE, we offer the complementary training that is often missing in traditional instruction:",
-      es: "Nuestro corazón es nuestro Campus Virtual. Entendemos que nuestra labor no es enseñar a volar, sino enseñar a servir. En HOPE, ofrecemos la formación complementaria que a menudo falta en la instrucción tradicional:"
+      es: "El corazón del proyecto es el campus virtual. Entendemos que nuestra labor no es enseñar a volar, sino enseñar a servir. En HOPE ofrecemos la formación complementaria que a menudo falta en la instrucción tradicional:"
     },
-    pillar1Spiritual: { en: "Spiritual Formation: Cultivating a calling to service based on values.", es: "Formación Espiritual: Cultivar una vocación de servicio fundamentada en valores." },
-    pillar1Technical: { en: "Technical Formation: Specific training for missionary and humanitarian environments.", es: "Formación Técnica: Capacitación específica para entornos misioneros y humanitarios." },
-    pillar1Humanitarian: { en: "Humanitarian Formation: Understanding the complexity of working with vulnerable communities.", es: "Formación Humanitaria: Entender la complejidad de trabajar con comunidades vulnerables." },
+    pillar1Spiritual: { en: "Spiritual Formation: Cultivating a calling to service based on values.", es: "Formación espiritual: cultivar una vocación de servicio fundamentada en valores." },
+    pillar1Technical: { en: "Technical Formation: Specific training for missionary and humanitarian environments.", es: "Formación técnica: capacitación específica para entornos misioneros y humanitarios." },
+    pillar1Humanitarian: { en: "Humanitarian Formation: Understanding the complexity of working with vulnerable communities.", es: "Formación humanitaria: entender la complejidad de trabajar con comunidades vulnerables." },
     pillar1Conclusion: {
       en: "We prepare both those taking their first steps in volunteering and experienced professionals looking to transform their career into a life mission.",
       es: "Preparamos tanto a quienes dan sus primeros pasos en el voluntariado como a profesionales experimentados que buscan transformar su carrera en una misión de vida."
     },
-    pillar2Title: { en: "2. Strategic Connection with Projects", es: "2. Conexión Estratégica con Proyectos" },
+    pillar2Title: { en: "2. Strategic Connection with Projects", es: "2. Conexión estratégica con proyectos" },
     pillar2Desc: {
-      en: "HOPE acts as a bridge between the volunteer and the mission field. We function as a filter and evaluator:",
-      es: "HOPE actúa como un puente entre el voluntario y el campo de misión. Funcionamos como un filtro y evaluador:"
+      en: "HOPE wants to be a bridge between the volunteer and the mission field, working as a filter and evaluator:",
+      es: "HOPE quiere ser un puente entre el voluntario y el campo de misión, funcionando como filtro y evaluador:"
     },
-    pillar2Evaluation: { en: "Evaluation: We conduct a rigorous process to ensure candidates have the commitment, maturity, and necessary technical skills.", es: "Evaluación: Realizamos un proceso riguroso para asegurar que los candidatos cuenten con el compromiso, la madurez y las habilidades técnicas necesarias." },
-    pillar2Connection: { en: "Connection: We work in partnership with missionary organizations and global NGOs, recommending the ideal candidates according to the specific needs of each project.", es: "Conexión: Trabajamos en alianza con organizaciones misioneras y ONGs globales, recomendando a los candidatos idóneos según las necesidades específicas de cada proyecto." },
-    pillar2Security: { en: "Security: We guarantee that those who join these missions have the necessary preparation for the challenges they will encounter.", es: "Seguridad: Garantizamos que quienes se integran a estas misiones posean la preparación necesaria para los desafíos que encontrarán." },
-    pillar3Title: { en: "3. Talent Development", es: "3. Desarrollo de Talentos" },
+    pillar2Evaluation: { en: "Evaluation: Before recommending anyone, we will make sure they have the commitment, maturity, and necessary technical skills.", es: "Evaluación: antes de recomendar a alguien, nos aseguraremos de que tenga el compromiso, la madurez y las habilidades técnicas necesarias." },
+    pillar2Connection: { en: "Connection: We are in conversation with mission aviation organizations so we can recommend the right candidates for the specific needs of each project.", es: "Conexión: conversamos con organizaciones de aviación misionera para poder recomendar a los candidatos idóneos según las necesidades específicas de cada proyecto." },
+    pillar2Security: { en: "Security: Our goal is that whoever joins a mission arrives prepared for the challenges they will encounter.", es: "Seguridad: buscamos que quien se integre a una misión llegue con la preparación necesaria para los desafíos que va a encontrar." },
+    pillar3Title: { en: "3. Talent Development", es: "3. Desarrollo de talentos" },
     pillar3Desc: {
-      en: "We don't send volunteers randomly. Our goal is for every person who passes through our platform to be a highly competent professional, capable of facing critical situations with judgment, safety, and compassion.",
-      es: "No enviamos voluntarios al azar. Nuestro objetivo es que cada persona que pase por nuestra plataforma sea un profesional altamente competente, capaz de afrontar situaciones críticas con criterio, seguridad y compasión."
+      en: "We will not send volunteers at random. Our goal is for every person who passes through our platform to be a highly competent professional, capable of facing critical situations with judgment, safety, and compassion.",
+      es: "No vamos a enviar voluntarios al azar. Nuestro objetivo es que cada persona que pase por nuestra plataforma sea un profesional altamente competente, capaz de afrontar situaciones críticas con criterio, seguridad y compasión."
     },
     measureTitle: { en: "How do we measure ourselves?", es: "¿Cómo nos medimos?" },
     measureDesc: {
-      en: "Our success is not measured by our fleet, but by the quality of our volunteers and the positive impact they generate in partner organizations. We focus on:",
-      es: "Nuestro éxito no se mide por nuestra flota, sino por la calidad de nuestros voluntarios y el impacto positivo que generan en las organizaciones aliadas. Nos enfocamos en:"
+      en: "Our success will not be measured in aircraft, but in how well our volunteers are prepared and the positive impact they have on the organizations they serve. We focus on:",
+      es: "Nuestro éxito no se va a medir en aviones, sino en la preparación de nuestros voluntarios y el impacto positivo que generen en las organizaciones donde sirvan. Nos enfocamos en:"
     },
-    measureQuality: { en: "Training Quality: Ensuring our graduates stand out for their professionalism.", es: "Calidad de Formación: Asegurando que nuestros graduados destaquen por su profesionalismo." },
-    measureAlignment: { en: "Alignment: Connecting the right person with the right project.", es: "Alineación: Conectando a la persona correcta con el proyecto correcto." },
-    measureIntegrity: { en: "Integrity: Always keeping our Christian values at the center of our training.", es: "Integridad: Manteniendo siempre nuestros valores cristianos en el centro de nuestra capacitación." },
-    ctaTitle: { en: "Do you feel called to serve?", es: "¿Te sientes llamado a servir?" },
+    measureQuality: { en: "Training quality: that everyone who trains with us stands out for their professionalism.", es: "Calidad de formación: que quienes se formen con nosotros se destaquen por su profesionalismo." },
+    measureAlignment: { en: "Alignment: Connecting the right person with the right project.", es: "Alineación: conectar a la persona correcta con el proyecto correcto." },
+    measureIntegrity: { en: "Integrity: Always keeping our Christian values at the center of our training.", es: "Integridad: mantener siempre nuestros valores cristianos en el centro de la formación." },
+    ctaTitle: { en: "Do you feel called to serve?", es: "¿Sentís el llamado a servir?" },
     ctaDesc: {
       en: "The mission field needs prepared people. You don't need to wait to have an aircraft to start impacting lives; you can start preparing today.",
-      es: "El campo misionero necesita personas preparadas. No necesitas esperar a tener una aeronave para comenzar a impactar vidas; puedes empezar preparándote hoy."
+      es: "El campo misionero necesita personas preparadas. No hace falta esperar a tener un avión para empezar a impactar vidas: podés empezar a prepararte hoy."
     },
-    ctaPrepare: { en: "Prepare: Join our Virtual Campus and acquire the tools to serve.", es: "Prepárate: Únete a nuestro Campus Virtual y adquiere las herramientas para servir." },
-    ctaConnect: { en: "Connect: If you are a professional or volunteer with a calling to serve, get to know the projects we collaborate with.", es: "Conéctate: Si eres un profesional o voluntario con vocación de servicio, conoce los proyectos con los que colaboramos." },
-    ctaSupport: { en: "Support: Help us strengthen our educational platform and our management team so more people can be trained.", es: "Apoya: Ayúdanos a fortalecer nuestra plataforma educativa y nuestro equipo de gestión para que más personas puedan formarse." },
+    ctaPrepare: { en: "Prepare: Join our Virtual Campus and acquire the tools to serve.", es: "Preparate: sumate al campus virtual y conseguí las herramientas para servir." },
+    ctaConnect: { en: "Connect: If you are a professional or volunteer with a calling to serve, get to know the projects we are in contact with.", es: "Conectate: si sos profesional o voluntario con vocación de servicio, conocé los proyectos con los que estamos en contacto." },
+    ctaSupport: { en: "Support: Help us strengthen our educational platform so more people can be trained.", es: "Apoyá: ayudanos a fortalecer la plataforma educativa para que más personas puedan formarse." },
     ctaFooter: { en: "Training with purpose. Connections that transform.", es: "Capacitación con propósito. Conexiones que transforman." },
-    joinCampus: { en: "Join the Campus", es: "Unirse al Campus" },
-    exploreProjects: { en: "Explore Projects", es: "Explorar Proyectos" },
-    supportUs: { en: "Support Us", es: "Apóyanos" }
+    joinCampus: { en: "Join the Campus", es: "Entrar al campus" },
+    exploreProjects: { en: "Explore Projects", es: "Explorar proyectos" },
+    supportUs: { en: "Support Us", es: "Apoyanos" }
   },
 
   // ── Donate Page ──
@@ -296,9 +297,10 @@ export const translations = {
 
   // ── Campus Layout / Navigation ──
   campus: {
+    people: { en: "People", es: "Personas" },
     home: { en: "Home", es: "Inicio" },
     myLearning: { en: "My Learning", es: "Mi Aprendizaje" },
-    myCertificates: { en: "My Certificates", es: "Mis Certificados" },
+    myCertificates: { en: "My certificates", es: "Mis certificados" },
     userManagement: { en: "User Management", es: "Gestión de Usuarios" },
     users: { en: "Users", es: "Usuarios" },
     roles: { en: "Roles", es: "Roles" },
@@ -349,7 +351,7 @@ export const translations = {
     lastName: { en: "Last Name", es: "Apellido" },
     phoneNumber: { en: "Phone Number", es: "Número de Teléfono" },
     birthDate: { en: "Birth Date", es: "Fecha de Nacimiento" },
-    birthDateNote: { en: "Strictly required for official certifications.", es: "Estrictamente requerido para certificaciones oficiales." },
+    birthDateNote: { en: "Required to issue your certificates.", es: "Necesario para emitir tus certificados." },
     location: { en: "Location", es: "Ubicación" },
     countryRegion: { en: "Country / Region", es: "País / Región" },
     searchCountry: { en: "Search and select country...", es: "Buscar y seleccionar país..." },
@@ -455,7 +457,7 @@ export const translations = {
 
   // ── Certificates ──
   certificates: {
-    title: { en: "My Certificates", es: "Mis Certificados" },
+    title: { en: "My certificates", es: "Mis certificados" },
     description: {
       en: "This section is currently under construction. Soon, you will be able to view and download all your earned certificates from completed courses here.",
       es: "Esta sección está actualmente en construcción. Pronto podrás ver y descargar todos tus certificados obtenidos de cursos completados aquí.",

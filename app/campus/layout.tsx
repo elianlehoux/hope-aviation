@@ -2,9 +2,10 @@ import Link from "next/link";
 import { cache, Suspense } from "react";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { createClient } from "@/lib/supabase/server";
+import { getLearnerUser, getUserRoles } from "@/lib/campus/learning";
 import { CampusMobileNav } from "@/components/features/campus/CampusMobileNav";
 import { CampusSidebar } from "@/components/features/campus/CampusSidebar";
+import { CampusMain, HideInClassroom } from "@/components/features/campus/CampusChrome";
 import { UserMenu } from "@/components/features/campus/UserMenu";
 import { LanguageToggle } from "@/components/shared/language-toggle";
 import {
@@ -41,9 +42,9 @@ export default function CampusLayout({
         <Suspense fallback={<HeaderFallback />}>
           <CampusHeaderBar />
         </Suspense>
-        <main className="flex-1 p-6 md:p-8">
-          <Suspense fallback={<ContentFallback />}>{children}</Suspense>
-        </main>
+        <Suspense fallback={<ContentFallback />}>
+          <CampusMain>{children}</CampusMain>
+        </Suspense>
       </div>
     </div>
   );
@@ -51,23 +52,24 @@ export default function CampusLayout({
 
 function AsideFallback() {
   return (
-    <div className="sticky top-0 hidden h-[100dvh] w-64 border-r border-primary/10 bg-white xl:flex" />
+    <div className="sticky top-0 hidden h-[100dvh] w-60 shrink-0 border-r border-primary/10 bg-paper xl:flex" />
   );
 }
 
 function HeaderFallback() {
-  return <div className="h-16 border-b border-primary/10 bg-white/80" />;
+  return <div className="h-16 border-b border-primary/10" />;
 }
 
 function ContentFallback() {
-  return <div className="h-32 animate-pulse rounded-2xl bg-primary/5" />;
+  return (
+    <div className="flex-1 px-4 py-6 sm:px-6 md:px-10 md:py-10">
+      <div className="h-32 animate-pulse rounded-2xl bg-primary/5" />
+    </div>
+  );
 }
 
 const getCampusSession = cache(async function getCampusSession() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const [{ user }, slugs] = await Promise.all([getLearnerUser(), getUserRoles()]);
   const preview = isCampusPreviewEnabled();
 
   if (!user) {
@@ -75,18 +77,10 @@ const getCampusSession = cache(async function getCampusSession() {
     redirect("/auth/login?clear=1");
   }
 
-  const { data: roleRows } = await supabase
-    .from("roles_users")
-    .select("roles(slug)")
-    .eq("user_id", user.id);
-
-  const slugs = (roleRows || [])
-    .map((row: { roles?: { slug?: string } | { slug?: string }[] | null }) => {
-      const rel = row.roles;
-      if (Array.isArray(rel)) return rel[0]?.slug;
-      return rel?.slug;
-    })
-    .filter((slug): slug is string => Boolean(slug));
+  // Deactivated accounts (also via Google sign-in) are signed out on the login page.
+  const { supabase } = await getLearnerUser();
+  const { data: profile } = await supabase.from("profiles").select("is_active").eq("id", user.id).maybeSingle();
+  if (profile && profile.is_active === false) redirect("/auth/login?clear=1&inactive=1");
 
   const cookieStore = await cookies();
   const cookieRole = parsePreviewRole(cookieStore.get(PREVIEW_COOKIE)?.value);
@@ -130,21 +124,20 @@ function CampusHeader({
   role: PreviewRole;
 }) {
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-primary/10 bg-white/80 px-4 backdrop-blur-xl md:px-6">
-      <div className="xl:hidden">
-        <CampusMobileNav navLinks={navLinks} />
-      </div>
-      <Link
-        href="/"
-        className="hidden text-xs font-medium text-primary/50 transition-colors hover:text-primary sm:block xl:hidden"
-      >
-        Hope Aviation
-      </Link>
-      <div className="ml-auto flex items-center gap-3">
-        {preview ? <RolePreviewSwitcher currentRole={role} /> : null}
-        <LanguageToggle />
-        <UserMenu user={user as never} />
-      </div>
-    </header>
+    <HideInClassroom>
+      <header className="sticky top-0 z-40 flex h-16 items-center gap-2 border-b border-primary/10 bg-paper/85 px-4 backdrop-blur-xl md:px-6">
+        <div className="flex items-center gap-1 xl:hidden">
+          <CampusMobileNav navLinks={navLinks} />
+          <Link href="/campus" aria-label="Hope Aviation campus">
+            <img src="/logos/hope-logo.svg" alt="Hope Aviation" className="h-6 w-auto" />
+          </Link>
+        </div>
+        <div className="ml-auto flex items-center gap-2">
+          {preview ? <RolePreviewSwitcher currentRole={role} /> : null}
+          <LanguageToggle />
+          <UserMenu user={user as never} />
+        </div>
+      </header>
+    </HideInClassroom>
   );
 }

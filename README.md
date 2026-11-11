@@ -7,6 +7,8 @@ Website and virtual campus for **Hope Aviation**, a non-profit humanitarian proj
 - **Landing** (`/`): public site — who we are, how to get involved, donations, newsletter.
 - **Campus** (`/campus`): authenticated learning platform. Structure: **Course → Subjects → Classes (video, resources) → Exams**, with lesson progress, module-gated exams, a final exam and certificates. Content is bilingual (`es` / `en`).
 
+**Status:** in development.
+
 ## Stack
 
 - Next.js 16 (App Router, Turbopack, `cacheComponents`), React 19, TypeScript
@@ -16,6 +18,8 @@ Website and virtual campus for **Hope Aviation**, a non-profit humanitarian proj
 - pnpm
 
 ## Getting started
+
+Requires Node.js 24 (see `.nvmrc`) and pnpm.
 
 ```bash
 pnpm install
@@ -40,6 +44,9 @@ pnpm dev:local               # starts Supabase locally, runs Next.js, stops Supa
 | `pnpm db:push` | Apply new migrations to the linked project |
 | `pnpm db:migration:new <name>` | Create a migration |
 | `pnpm db:types:linked` / `db:types:local` | Regenerate `types/supabase.generated.ts` |
+| `pnpm test:unit` | Unit tests (Node test runner) |
+| `pnpm test:db` | Database tests against local Supabase |
+| `pnpm content:build content/courses/<slug>` | Build a course's SQL seed from `content/` |
 
 ## Project layout
 

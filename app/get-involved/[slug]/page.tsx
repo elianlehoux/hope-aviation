@@ -1,4 +1,4 @@
-import Link from "next/link";
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,21 @@ const VALID_SLUGS = ["church", "project", "teach", "volunteer", "support"] as co
 
 export function generateStaticParams() {
   return VALID_SLUGS.map((slug) => ({ slug }));
+}
+
+/** Tab titles; they mirror each option's `landing.*Title` heading in Spanish, the site default. */
+const PAGE_TITLES: Record<(typeof VALID_SLUGS)[number], string> = {
+  church: "Conectá tu iglesia",
+  project: "Conectá tu proyecto",
+  teach: "Enseñá",
+  volunteer: "Sé voluntario",
+  support: "Doná",
+};
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const title = PAGE_TITLES[slug as keyof typeof PAGE_TITLES];
+  return title ? { title } : {};
 }
 
 interface InvolvementOption {
@@ -92,8 +107,6 @@ export default async function GetInvolvedPage({
     notFound();
     return null;
   }
-
-  const Icon = option.icon;
 
   return (
     <main className="relative min-h-screen flex flex-col bg-[#1C1E21] text-white font-sans overflow-hidden">

@@ -29,7 +29,7 @@ export function CampusEmpty({
     <CampusSurface className="flex flex-col items-center px-6 py-16 text-center">
       <h2 className="font-display text-lg font-bold text-primary">{title}</h2>
       {description ? (
-        <p className="mt-2 max-w-sm text-sm leading-relaxed text-primary/60">
+        <p className="mt-2 max-w-sm text-sm leading-relaxed text-primary/65">
           {description}
         </p>
       ) : null}

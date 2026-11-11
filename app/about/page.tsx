@@ -2,438 +2,257 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRef, useEffect, useState, type ReactNode } from "react";
 import { Navbar } from "@/components/shared/navbar";
-import { Title } from "@/components/ui/title";
-import { Button } from "@/components/ui/button";
-import { LazyGlobe } from "@/components/ui/globe-lazy";
-import { T } from "@/lib/i18n/context";
 import { Footer } from "@/components/shared/footer";
+import { Button } from "@/components/ui/button";
+import { T, useTranslation } from "@/lib/i18n/context";
 import {
-  ArrowLeft,
-  ArrowRight,
-  Globe,
-  Target,
-  CheckCircle2,
-  ShieldCheck,
-  BookOpen,
-  GraduationCap,
-  Network,
-  Users,
-  BookMarked,
   Heart,
-  HandHeart,
-  Sparkles,
-  ChevronDown,
+  Target,
+  Users,
+  CheckCircle2,
+  Network,
+  ShieldCheck,
+  type LucideIcon,
 } from "lucide-react";
 
-/* ─────────────────────────── Scroll-reveal wrapper ─────────────────────────── */
-function Reveal({
-  children,
-  className = "",
-  delay = 0,
-}: {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+/**
+ * About page. Same band rhythm as the home (photo → white → amber → paper →
+ * white → navy) with real brochure photography instead of icon placeholders.
+ * Body copy stays on the existing aboutPage.* translation keys.
+ */
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setVisible(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+const display =
+  "font-display font-light leading-[1.02] tracking-[-0.03em] text-[clamp(2.25rem,5vw,4.25rem)]";
 
+function Bullet({ icon: Icon, k }: { icon: LucideIcon; k: string }) {
   return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ease-out ${visible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-8"
-        } ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      {children}
-    </div>
-  );
-}
-
-/* ─────────────────────── Pillar bullet component ──────────────────────────── */
-function Bullet({
-  icon: Icon,
-  translationKey,
-  color = "accent",
-}: {
-  icon: typeof Heart;
-  translationKey: string;
-  color?: "accent" | "aviation-orange";
-}) {
-  const colorMap = {
-    accent: "text-accent bg-accent/10",
-    "aviation-orange": "text-highlight bg-highlight/10",
-  };
-  return (
-    <li className="flex items-start gap-4 group">
-      <span
-        className={`shrink-0 mt-1 size-10 rounded-xl flex items-center justify-center ${colorMap[color]} transition-transform duration-300 group-hover:scale-110`}
-      >
-        <Icon className="size-5" />
+    <li className="flex items-start gap-4">
+      <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-highlight/15 text-primary">
+        <Icon className="size-[18px]" aria-hidden="true" />
       </span>
-      <p className="text-[17px] leading-relaxed text-white/60">
-        <T k={translationKey} />
+      <p className="leading-relaxed text-primary/75">
+        <T k={k} />
       </p>
     </li>
   );
 }
 
-/* ═══════════════════════════════ PAGE ═══════════════════════════════════════ */
+function Pillar({
+  image,
+  alt,
+  titleKey,
+  descKey,
+  children,
+  flip = false,
+}: {
+  image: string;
+  alt: string;
+  titleKey: string;
+  descKey: string;
+  children?: React.ReactNode;
+  flip?: boolean;
+}) {
+  return (
+    <article className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+      <div
+        className={`relative aspect-[4/3] overflow-hidden rounded-[24px] bg-paper-deep lg:col-span-6 ${flip ? "lg:order-2 lg:col-start-7" : ""}`}
+      >
+        <Image src={image} alt={alt} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
+      </div>
+      <div className={`lg:col-span-5 ${flip ? "lg:order-1 lg:col-start-1" : "lg:col-start-8"}`}>
+        <h3 className="font-display text-3xl font-normal leading-tight tracking-tight text-primary md:text-4xl">
+          <T k={titleKey} />
+        </h3>
+        <p className="mt-5 text-lg leading-relaxed text-primary/75">
+          <T k={descKey} />
+        </p>
+        {children}
+      </div>
+    </article>
+  );
+}
 
 export default function AboutPage() {
+  const { lang } = useTranslation();
+  const es = lang === "es";
+
   return (
-    <main className="min-h-screen bg-[#1C1E21] overflow-hidden">
-      <Navbar />
-
-      {/* ═══════════════════════ HERO ═══════════════════════════════════════ */}
-      <section className="relative min-h-[90vh] flex flex-col items-center justify-start overflow-hidden bg-primary">
-        {/* Background photo */}
-        <Image
-          src="/Untitled-1 copy.webp"
-          alt="Kids watching an airplane"
-          fill
-          priority
-          className="object-cover object-center opacity-30"
-        />
-        {/* Gradient scrims */}
-        <div className="absolute inset-0 bg-gradient-to-b from-primary via-transparent to-[#1C1E21]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent" />
-
-        {/* Text Content - Positioned at the top to clear the background airplane */}
-        <div className="relative z-10 mx-auto max-w-4xl px-6 text-center flex flex-col items-center gap-6 pt-32 sm:pt-40">
-          <Reveal delay={100}>
-            <Title
-              level="h1"
-              className="!text-5xl sm:!text-6xl md:!text-7xl font-extrabold !text-white tracking-tight leading-[1.08]"
-            >
+    <>
+      <Navbar overlay />
+      <main className="bg-white text-primary">
+        {/* Hero: a small plane in a wide sky, watched from the ground */}
+        <section className="relative isolate flex min-h-[min(88svh,56rem)] items-end overflow-hidden bg-primary text-white">
+          <Image
+            src="/images/landing/plane-watchers.webp"
+            alt={
+              es
+                ? "Dos personas, desenfocadas en primer plano, miran un avión pequeño en el cielo"
+                : "Two people, blurred in the foreground, watch a small plane in the sky"
+            }
+            fill
+            priority
+            sizes="100vw"
+            className="-z-20 object-cover"
+          />
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,38,62,0.55)_0%,rgba(0,38,62,0.15)_40%,rgba(0,38,62,0.8)_100%)]" />
+          <div className="mx-auto w-full max-w-7xl px-4 pb-16 pt-40 sm:px-6 md:pb-20 lg:px-8">
+            <h1 className="animate-rise max-w-[16ch] font-display text-[clamp(2.75rem,7vw,6rem)] font-light leading-[0.96] tracking-[-0.035em]">
               <T k="aboutPage.title" />
-            </Title>
-          </Reveal>
-
-          <Reveal delay={200}>
-            <p className="text-xl md:text-2xl text-white/60 font-medium leading-relaxed max-w-2xl mt-6">
+            </h1>
+            <p className="animate-rise mt-6 max-w-2xl text-lg leading-relaxed text-white/85 md:text-xl" style={{ animationDelay: "120ms" }}>
               <T k="aboutPage.subtitle" />
             </p>
-          </Reveal>
-        </div>
+          </div>
+        </section>
 
-        {/* Floating Arrow - Positioned at bottom to avoid background interference */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
-          <Reveal delay={350}>
-            <ChevronDown className="size-6 text-white/30 animate-bounce" />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ═══════════════════ CHALLENGE TEXT ═════════════════════════════════ */}
-      <section className="py-24 md:py-32 px-6 bg-[#1C1E21]">
-        <div className="mx-auto max-w-3xl text-center">
-          <Reveal delay={100}>
-            <p className="text-xl md:text-2xl text-white/60 leading-relaxed font-medium">
+        {/* The challenge */}
+        <section className="bg-white py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <p className="reveal max-w-4xl font-display text-[clamp(1.5rem,3vw,2.5rem)] font-light leading-[1.25] tracking-[-0.02em] text-primary">
               <T k="aboutPage.challengeText" />
             </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ═══════════════════ VISION (deeper dark + globe) ═══════════════════ */}
-      <section className="relative py-32 md:py-40 px-6 bg-ink overflow-hidden">
-        {/* Ambient glow */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent/10 rounded-full blur-[160px] -mr-96 -mt-96 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-highlight/8 rounded-full blur-[120px] -ml-64 -mb-64 pointer-events-none" />
-
-        <div className="mx-auto max-w-7xl relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Text side */}
-          <div>
-            <Reveal delay={100}>
-              <Title
-                level="h2"
-                className="!text-4xl md:!text-5xl font-bold !text-white mb-8 tracking-tight"
-              >
-                <T k="aboutPage.visionTitle" />
-              </Title>
-            </Reveal>
-            <Reveal delay={200}>
-              <p className="text-xl md:text-2xl text-white/60 leading-relaxed font-medium">
-                <T k="aboutPage.visionText" />
-              </p>
-            </Reveal>
           </div>
+        </section>
 
-          {/* Globe side */}
-          <Reveal>
-            <div className="relative flex items-center justify-center min-h-[400px] md:min-h-[500px]">
-              <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent rounded-full blur-3xl opacity-30" />
-              <LazyGlobe className="w-full max-w-[500px] z-10" />
-            </div>
-          </Reveal>
-        </div>
-      </section>
+        {/* Vision (amber band) */}
+        <section className="relative isolate overflow-hidden bg-highlight py-20 text-primary md:py-28">
+          <svg
+            className="pointer-events-none absolute -bottom-32 -left-24 -z-10 h-[30rem] w-[30rem] text-primary/10"
+            viewBox="0 0 400 400"
+            fill="none"
+            aria-hidden="true"
+          >
+            {[40, 70, 100, 130, 160, 190].map((r) => (
+              <ellipse key={r} cx="180" cy="220" rx={r * 1.2} ry={r} stroke="currentColor" strokeWidth="1.25" />
+            ))}
+          </svg>
+          <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+            <h2 className={`${display} lg:col-span-5`}>
+              <T k="aboutPage.visionTitle" />
+            </h2>
+            <p className="text-xl leading-relaxed text-primary/85 lg:col-span-6 lg:col-start-7 md:text-2xl">
+              <T k="aboutPage.visionText" />
+            </p>
+          </div>
+        </section>
 
-      {/* ═══════════════════ PILLARS (dark gallery) ═════════════════════════ */}
-      <section className="py-32 px-6 bg-[#1C1E21]">
-        <div className="mx-auto max-w-7xl">
-          <Reveal>
-            <div className="text-center mb-20 md:mb-28">
-              <Title
-                level="h2"
-                className="!text-4xl md:!text-6xl font-extrabold tracking-tight !text-white"
+        {/* What we do */}
+        <section className="bg-paper py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 className={`reveal ${display} text-primary`}>
+              <T k="aboutPage.pillarsTitle" />
+            </h2>
+
+            <div className="mt-16 flex flex-col gap-20 md:gap-28">
+              <Pillar
+                image="/images/landing/cockpit-study.webp"
+                alt={es ? "Dos voluntarios estudian los instrumentos en una cabina" : "Two volunteers study the instruments in a cockpit"}
+                titleKey="aboutPage.pillar1Title"
+                descKey="aboutPage.pillar1Desc"
               >
-                <T k="aboutPage.pillarsTitle" />
-              </Title>
-            </div>
-          </Reveal>
+                <ul className="mt-8 space-y-4">
+                  <Bullet icon={Heart} k="aboutPage.pillar1Spiritual" />
+                  <Bullet icon={Target} k="aboutPage.pillar1Technical" />
+                  <Bullet icon={Users} k="aboutPage.pillar1Humanitarian" />
+                </ul>
+                <p className="mt-8 text-primary/65">
+                  <T k="aboutPage.pillar1Conclusion" />
+                </p>
+              </Pillar>
 
-          <div className="flex flex-col gap-28 md:gap-36">
-            {/* ──── Pillar 1 ──── */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-              <Reveal>
-                <div className="aspect-[4/3] bg-white/5 rounded-[24px] overflow-hidden relative border border-white/10 flex items-center justify-center p-12 group">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-transparent" />
-                  <BookOpen className="size-40 text-accent/20 relative z-10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-3" />
-                </div>
-              </Reveal>
-              <Reveal delay={150}>
-                <div>
-                  <span className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-accent/10 text-accent font-bold text-xs uppercase tracking-widest mb-6">
-                    01
-                  </span>
-                  <Title
-                    level="h3"
-                    className="!text-3xl md:!text-4xl font-bold mb-6 !text-white"
-                  >
-                    <T k="aboutPage.pillar1Title" />
-                  </Title>
-                  <p className="text-lg text-white/50 leading-relaxed mb-8">
-                    <T k="aboutPage.pillar1Desc" />
-                  </p>
-                  <ul className="space-y-5 mb-8">
-                    <Bullet icon={Heart} translationKey="aboutPage.pillar1Spiritual" />
-                    <Bullet icon={Target} translationKey="aboutPage.pillar1Technical" />
-                    <Bullet icon={Users} translationKey="aboutPage.pillar1Humanitarian" />
-                  </ul>
-                  <p className="text-white/30 font-medium italic text-[15px]">
-                    <T k="aboutPage.pillar1Conclusion" />
-                  </p>
-                </div>
-              </Reveal>
-            </div>
+              <Pillar
+                flip
+                image="/images/landing/airfield-group.webp"
+                alt={es ? "Un grupo conversa junto a un avión en un campo de pasto" : "A group talks next to an airplane on a grass field"}
+                titleKey="aboutPage.pillar2Title"
+                descKey="aboutPage.pillar2Desc"
+              >
+                <ul className="mt-8 space-y-4">
+                  <Bullet icon={CheckCircle2} k="aboutPage.pillar2Evaluation" />
+                  <Bullet icon={Network} k="aboutPage.pillar2Connection" />
+                  <Bullet icon={ShieldCheck} k="aboutPage.pillar2Security" />
+                </ul>
+              </Pillar>
 
-            {/* ──── Pillar 2 ──── */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-              <Reveal delay={150} className="order-2 lg:order-1">
-                <div>
-                  <span className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-highlight/10 text-highlight font-bold text-xs uppercase tracking-widest mb-6">
-                    02
-                  </span>
-                  <Title
-                    level="h3"
-                    className="!text-3xl md:!text-4xl font-bold mb-6 !text-white"
-                  >
-                    <T k="aboutPage.pillar2Title" />
-                  </Title>
-                  <p className="text-lg text-white/50 leading-relaxed mb-8">
-                    <T k="aboutPage.pillar2Desc" />
-                  </p>
-                  <ul className="space-y-5">
-                    <Bullet icon={CheckCircle2} translationKey="aboutPage.pillar2Evaluation" color="aviation-orange" />
-                    <Bullet icon={Network} translationKey="aboutPage.pillar2Connection" color="aviation-orange" />
-                    <Bullet icon={ShieldCheck} translationKey="aboutPage.pillar2Security" color="aviation-orange" />
-                  </ul>
-                </div>
-              </Reveal>
-              <Reveal className="order-1 lg:order-2">
-                <div className="aspect-[4/3] bg-white/5 rounded-[24px] overflow-hidden relative border border-white/10 flex items-center justify-center p-12 group">
-                  <div className="absolute inset-0 bg-gradient-to-bl from-highlight/10 to-transparent" />
-                  <Network className="size-40 text-highlight/20 relative z-10 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3" />
-                </div>
-              </Reveal>
-            </div>
-
-            {/* ──── Pillar 3 ──── */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-              <Reveal>
-                <div className="aspect-[4/3] rounded-[24px] overflow-hidden relative border border-white/10 bg-white/5 group">
-                  {/* Real airplane image */}
-                  <Image
-                    src="/avion.svg"
-                    alt="Aviation illustration"
-                    fill
-                    className="object-contain p-8 transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-transparent pointer-events-none" />
-                </div>
-              </Reveal>
-              <Reveal delay={150}>
-                <div>
-                  <span className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-accent/10 text-accent font-bold text-xs uppercase tracking-widest mb-6">
-                    03
-                  </span>
-                  <Title
-                    level="h3"
-                    className="!text-3xl md:!text-4xl font-bold mb-6 !text-white"
-                  >
-                    <T k="aboutPage.pillar3Title" />
-                  </Title>
-                  <p className="text-lg text-white/50 leading-relaxed">
-                    <T k="aboutPage.pillar3Desc" />
-                  </p>
-                </div>
-              </Reveal>
+              <Pillar
+                image="/images/landing/cessna-sky.webp"
+                alt={es ? "Avión liviano en vuelo contra un cielo azul" : "Light aircraft flying against a blue sky"}
+                titleKey="aboutPage.pillar3Title"
+                descKey="aboutPage.pillar3Desc"
+              />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ═══════════════════ MEASUREMENT ═══════════════════════════════════ */}
-      <section className="py-32 px-6 bg-ink">
-        <div className="mx-auto max-w-5xl">
-          <Reveal>
-            <div className="text-center mb-16">
-              <Target className="size-12 text-white/15 mx-auto mb-6" />
-              <Title
-                level="h2"
-                className="!text-4xl md:!text-5xl font-bold mb-6 tracking-tight !text-white"
-              >
+        {/* How we measure ourselves */}
+        <section className="bg-white py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid gap-8 lg:grid-cols-12">
+              <h2 className={`reveal ${display} text-primary lg:col-span-6`}>
                 <T k="aboutPage.measureTitle" />
-              </Title>
-              <p className="text-xl text-white/50 leading-relaxed max-w-2xl mx-auto">
+              </h2>
+              <p className="max-w-md self-end text-lg leading-relaxed text-primary/75 lg:col-span-5 lg:col-start-8">
                 <T k="aboutPage.measureDesc" />
               </p>
             </div>
-          </Reveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { icon: BookMarked, key: "aboutPage.measureQuality", color: "text-accent" },
-              { icon: Network, key: "aboutPage.measureAlignment", color: "text-highlight" },
-              { icon: Heart, key: "aboutPage.measureIntegrity", color: "text-accent" },
-            ].map((item, i) => (
-              <Reveal key={item.key} delay={i * 120}>
-                <div className="bg-white/5 rounded-[20px] p-8 border border-white/10 hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 h-full">
-                  <item.icon className={`size-8 ${item.color} mb-6`} />
-                  <p className="text-[17px] text-white/70 font-medium leading-relaxed">
-                    <T k={item.key} />
-                  </p>
-                </div>
-              </Reveal>
-            ))}
+            <ul className="mt-14 grid gap-px overflow-hidden rounded-[20px] border border-primary/10 bg-primary/10 md:grid-cols-3">
+              {["aboutPage.measureQuality", "aboutPage.measureAlignment", "aboutPage.measureIntegrity"].map((k) => (
+                <li key={k} className="bg-white p-6 text-lg leading-relaxed text-primary/80 md:p-8">
+                  <T k={k} />
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ═══════════════════ CTA (immersive card) ══════════════════════════ */}
-      <section className="py-32 px-6 bg-[#1C1E21]">
-        <div className="mx-auto max-w-6xl">
-          <Reveal>
-            <div className="bg-primary rounded-[32px] p-10 md:p-16 lg:p-20 relative overflow-hidden">
-              {/* Ambient blobs */}
-              <div className="absolute top-0 right-0 w-96 h-96 bg-accent/20 rounded-full blur-[120px] -mr-48 -mt-48" />
-              <div className="absolute bottom-0 left-0 w-80 h-80 bg-highlight/15 rounded-full blur-[100px] -ml-40 -mb-40" />
-
-              <div className="relative z-10">
-                {/* Header */}
-                <div className="text-center mb-14">
-                  <Reveal>
-                    <Title
-                      level="h2"
-                      className="!text-4xl md:!text-5xl font-extrabold !text-white mb-6 tracking-tight"
-                    >
-                      <T k="aboutPage.ctaTitle" />
-                    </Title>
-                  </Reveal>
-                  <Reveal delay={100}>
-                    <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto font-medium">
-                      <T k="aboutPage.ctaDesc" />
-                    </p>
-                  </Reveal>
-                </div>
-
-                {/* CTA Cards */}
-                <Reveal delay={200}>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14">
-                    {[
-                      {
-                        icon: GraduationCap,
-                        textKey: "aboutPage.ctaPrepare",
-                        btnKey: "aboutPage.joinCampus",
-                        href: "/campus",
-                        primary: true,
-                      },
-                      {
-                        icon: Globe,
-                        textKey: "aboutPage.ctaConnect",
-                        btnKey: "aboutPage.exploreProjects",
-                        href: "/get-involved/project",
-                        primary: false,
-                      },
-                      {
-                        icon: HandHeart,
-                        textKey: "aboutPage.ctaSupport",
-                        btnKey: "aboutPage.supportUs",
-                        href: "/donate",
-                        primary: false,
-                      },
-                    ].map((card) => (
-                      <div
-                        key={card.btnKey}
-                        className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 flex flex-col hover:bg-white/10 transition-colors duration-300"
-                      >
-                        <card.icon className="size-7 text-white/80 mb-4" />
-                        <p className="text-white/70 text-[15px] font-medium leading-relaxed mb-6 flex-1">
-                          <T k={card.textKey} />
-                        </p>
-                        <Button
-                          asChild
-                          className={`w-full rounded-full font-bold h-11 text-sm transition-all duration-200 ${card.primary
-                              ? "bg-white text-primary hover:bg-slate-100"
-                              : "bg-transparent border border-white/20 text-white hover:bg-white/10"
-                            }`}
-                        >
-                          <Link href={card.href}>
-                            <T k={card.btnKey} />
-                          </Link>
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </Reveal>
-
-                {/* Tagline */}
-                <Reveal delay={300}>
-                  <div className="text-center pt-8 border-t border-white/10">
-                    <p className="text-xl md:text-2xl text-white/80 font-bold tracking-tight">
-                      <T k="aboutPage.ctaFooter" />
-                    </p>
-                  </div>
-                </Reveal>
-              </div>
+        {/* Call to action (navy band) */}
+        <section className="bg-primary py-20 text-white md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid gap-8 lg:grid-cols-12">
+              <h2 className={`${display} lg:col-span-6`}>
+                <T k="aboutPage.ctaTitle" />
+              </h2>
+              <p className="max-w-md self-end text-lg leading-relaxed text-white/80 lg:col-span-5 lg:col-start-8">
+                <T k="aboutPage.ctaDesc" />
+              </p>
             </div>
-          </Reveal>
-        </div>
-      </section>
-      {/* ═══════════════════ FOOTER (minimal dark) ════════════════════════ */}
-      <Footer minimal />
-    </main>
+
+            <ul className="mt-14 grid gap-6 border-t border-white/15 pt-10 md:grid-cols-3">
+              {[
+                { textKey: "aboutPage.ctaPrepare", btnKey: "aboutPage.joinCampus", href: "/campus", primary: true },
+                { textKey: "aboutPage.ctaConnect", btnKey: "aboutPage.exploreProjects", href: "/directorio", primary: false },
+                { textKey: "aboutPage.ctaSupport", btnKey: "aboutPage.supportUs", href: "/donate", primary: false },
+              ].map((card) => (
+                <li key={card.btnKey} className="flex flex-col">
+                  <p className="flex-1 leading-relaxed text-white/80">
+                    <T k={card.textKey} />
+                  </p>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant={card.primary ? "default" : "outline"}
+                    className={`mt-6 h-12 w-fit px-7 focus-visible:ring-white ${
+                      card.primary
+                        ? "bg-highlight text-primary hover:bg-highlight/90"
+                        : "border-white/35 text-white hover:bg-white hover:text-primary"
+                    }`}
+                  >
+                    <Link href={card.href}>
+                      <T k={card.btnKey} />
+                    </Link>
+                  </Button>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-16 font-display text-2xl font-light tracking-tight text-white md:text-3xl">
+              <T k="aboutPage.ctaFooter" />
+            </p>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }

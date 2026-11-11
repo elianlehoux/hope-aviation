@@ -13,7 +13,7 @@ export function ProfileCompletionBanner() {
     <CampusSurface className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h3 className="font-display text-lg font-bold text-primary">{t("profileBanner.title")}</h3>
-        <p className="mt-1 max-w-xl text-sm leading-relaxed text-primary/60">
+        <p className="mt-1 max-w-xl text-sm leading-relaxed text-primary/65">
           {t("profileBanner.description")}
         </p>
       </div>

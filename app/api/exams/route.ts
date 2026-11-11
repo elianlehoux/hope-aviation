@@ -1,13 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireSession, requireStaff } from "@/lib/api/auth";
-import { jsonError, jsonOk } from "@/lib/api/json";
+import { jsonOk } from "@/lib/api/json";
 import { responseFromPostgrestError } from "@/lib/api/supabase-errors";
 
 /**
  * Global Admin Exams endpoint
  * Returns all exams with their corresponding course and subject relations.
  */
-export async function GET(_request: Request) {
+export async function GET() {
   const supabase = await createClient();
   const session = await requireSession(supabase);
   if (!session.ok) return session.response;
