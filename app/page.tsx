@@ -8,15 +8,18 @@ import {
   WhyArgentinaSection,
   TrainingPathSection,
   RegionsSection,
+  ValuesBand,
   GetInvolvedBand,
   NewsletterBand,
 } from "@/components/features/landing/HomeSections";
 import { FeaturedCourses } from "@/components/features/landing/FeaturedCourses";
 import { CoursesGallery } from "@/components/features/landing/CoursesGallery";
+import { MotionRoot } from "@/components/features/landing/motion";
+import { MOTION_BOOT_SCRIPT } from "@/components/features/landing/motion-boot";
 
 /**
  * Public home page. Bands follow the 2025 brochure rhythm:
- * photo hero → white → amber → paper → white → ink → blue → paper → ink footer.
+ * photo hero → navy strip → white → amber → paper → white → ink → photo → blue → paper → ink footer.
  * Hope Aviation is not a flight school: it trains pilots and volunteers for
  * mission aviation through a free online campus and connects them with
  * organizations already in the field.
@@ -24,6 +27,9 @@ import { CoursesGallery } from "@/components/features/landing/CoursesGallery";
 export default function LandingPage() {
   return (
     <>
+      {/* Marks the page as animated before first paint; MotionRoot takes over after hydration. */}
+      <script dangerouslySetInnerHTML={{ __html: MOTION_BOOT_SCRIPT }} />
+      <MotionRoot />
       <Navbar overlay />
       <main id="contenido" className="flex flex-col bg-white font-sans text-primary">
         <Hero />
@@ -35,6 +41,7 @@ export default function LandingPage() {
           <FeaturedCourses />
         </Suspense>
         <RegionsSection />
+        <ValuesBand />
         <GetInvolvedBand />
         <NewsletterBand />
       </main>

@@ -35,9 +35,20 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
 
+  const [hidden, setHidden] = React.useState(false);
+
   React.useEffect(() => {
     if (!overlay) return;
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      // Tuck the bar away while reading down the page; any scroll up brings it back.
+      if (Math.abs(y - last) > 6) {
+        setHidden(y > last && y > 480);
+        last = y;
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -62,8 +73,9 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
   return (
     <header
       className={cn(
-        "z-50 w-full transition-[background-color,border-color,box-shadow] duration-300",
+        "z-50 w-full transition-[background-color,border-color,box-shadow,transform] duration-300 focus-within:translate-y-0 motion-reduce:transition-none",
         overlay ? "fixed inset-x-0 top-0" : "sticky top-0",
+        hidden && !open && "-translate-y-full",
         clear
           ? "border-b border-transparent bg-transparent"
           : "border-b border-primary/10 bg-white/85 backdrop-blur-xl supports-[backdrop-filter]:bg-white/75",

@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { CourseCover } from "@/components/features/campus/courses/CourseCover";
 import { useTranslation } from "@/lib/i18n/context";
+import { Words } from "@/components/features/landing/motion";
 import type { TranslatedText } from "@/types/database";
 
 export interface CourseData {
@@ -80,13 +81,13 @@ export function CoursesGallery({ courses, loading = false }: { courses: CourseDa
   ];
 
   return (
-    <section id="cursos" className="bg-white py-20 md:py-28">
+    <section id="cursos" className="scroll-mt-20 bg-white py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-12">
-          <h2 className="reveal font-display text-[clamp(2.25rem,5vw,4.25rem)] font-light leading-[1.02] tracking-[-0.03em] text-primary lg:col-span-7">
-            {es ? "Todo lo que el avión no enseña." : "Everything the airplane doesn't teach."}
+          <h2 className="font-display text-[clamp(2.25rem,5vw,4.25rem)] font-light leading-[1.02] tracking-[-0.03em] text-primary lg:col-span-7">
+            <Words text={es ? "Todo lo que el avión no enseña." : "Everything the airplane doesn\u2019t teach."} />
           </h2>
-          <p className="max-w-md self-end text-lg leading-relaxed text-primary/75 lg:col-span-4 lg:col-start-9">
+          <p data-reveal="up" className="max-w-md self-end text-lg leading-relaxed text-primary/75 lg:col-span-4 lg:col-start-9">
             {es
               ? "Formación técnica, humanitaria y espiritual para situaciones reales de misión, que la instrucción aeronáutica tradicional no cubre."
               : "Technical, humanitarian and spiritual training for real mission situations that traditional flight training doesn't cover."}
@@ -101,14 +102,14 @@ export function CoursesGallery({ courses, loading = false }: { courses: CourseDa
           </div>
         ) : courses.length > 0 ? (
           <ul className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {courses.map((course) => {
+            {courses.map((course, index) => {
               const title = resolveText(course.title, lang);
               const description = resolveText(course.description, lang);
               return (
-                <li key={course.id}>
+                <li key={course.id} data-reveal="up" style={{ ["--i" as string]: index }}>
                   <Link
                     href={`/campus/courses/${course.id}`}
-                    className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-primary/10 bg-paper transition-shadow hover:shadow-[0_2px_4px_rgba(0,0,0,0.08)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                    className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-primary/10 bg-paper transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:-translate-y-1.5 hover:shadow-[0_24px_48px_rgba(0,38,62,0.14)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
                   >
                     <div className="relative aspect-[16/10] overflow-hidden bg-paper-deep">
                       {/* Same artwork as the campus cards: the thumbnail, or the branded navy cover. */}
@@ -116,7 +117,7 @@ export function CoursesGallery({ courses, loading = false }: { courses: CourseDa
                         src={course.thumbnail_url}
                         alt=""
                         seed={course.id}
-                        className="transition-transform duration-700 group-hover:scale-[1.03] motion-reduce:transition-none"
+                        className="transition-transform duration-700 group-hover:scale-[1.06] motion-reduce:transition-none"
                       />
                     </div>
                     <div className="flex flex-1 flex-col p-6">
@@ -144,11 +145,11 @@ export function CoursesGallery({ courses, loading = false }: { courses: CourseDa
             {es ? "Seis áreas de formación" : "Six training areas"}
           </h3>
           <ul className="mt-8 grid gap-x-10 gap-y-8 border-t border-primary/10 pt-8 sm:grid-cols-2 lg:grid-cols-3">
-            {areas.map((area) => {
+            {areas.map((area, index) => {
               const Icon = area.icon;
               return (
-                <li key={area.title} className="flex gap-4">
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-highlight/15 text-primary">
+                <li key={area.title} className="group flex gap-4" data-reveal="up" style={{ ["--i" as string]: index % 3 }}>
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-highlight/15 text-primary transition-[background-color,transform] duration-300 group-hover:-rotate-6 group-hover:scale-110 group-hover:bg-highlight motion-reduce:transition-none">
                     <Icon className="size-5" aria-hidden="true" />
                   </span>
                   <div>

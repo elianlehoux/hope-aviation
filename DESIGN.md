@@ -212,6 +212,19 @@ Mostly flat — separation comes from color bands and borders.
 
 ---
 
+### Landing motion
+
+The landing animates without a library (`components/features/landing/motion.tsx` plus the "Landing motion" block in `app/globals.css`):
+
+- Headlines rise word by word from a mask (`<Words>`); body copy and cards fade up, staggered with `--i`.
+- Photos open with a bottom-up wipe and drift slower than the page (`.parallax`, driven by `--p`).
+- Scroll-linked pieces: the amber mission sentence fills in, the training route draws itself, the "Formar. Conectar. Servir." photo opens from a rounded card.
+- Real figures count up once (`<CountUp>`); the server renders the final value, never an invented number.
+- Everything is gated on the `motion-ready` class: with `prefers-reduced-motion` or without JavaScript the page renders in its final state.
+- Amber text only on navy, ink or blue. On white or paper, emphasize with navy text and an amber underline (`emphasis="underline"`).
+
+---
+
 ## 8. Responsive
 
 | Breakpoint | Width | Notes |
